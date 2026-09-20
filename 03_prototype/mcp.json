@@ -1,8 +1,11 @@
 {
   "name": "API Radar MCP Server",
   "version": "1.0.0",
-  "description": "MCP server exposing API Radar data (60 models × 40 channels × 1,287 price points) to any MCP-compatible client (Claude Desktop / Zed / Continue). Zero auth, CORS open, browser-only detection.",
-  "author": { "name": "API优选咨询", "url": "https://apireader.top" },
+  "description": "MCP server exposing API优选咨询 data (frontend: 38 models × 32 channels × 193 prices; backend D1: 60 models × 40 channels × 1287 prices) to any MCP-compatible client (Claude Desktop / Zed / Continue). Zero auth, CORS open, browser-only detection.",
+  "author": {
+    "name": "API优选咨询",
+    "url": "https://apireader.top"
+  },
   "license": "MIT",
   "homepage": "https://apireader.top",
   "documentation": "https://apireader.top/method.html",
@@ -13,8 +16,13 @@
         "mcpServers": {
           "api-radar": {
             "command": "npx",
-            "args": ["-y", "@apireader/mcp-server"],
-            "env": { "APIRADAR_BASE": "https://apireader.top" }
+            "args": [
+              "-y",
+              "@apireader/mcp-server"
+            ],
+            "env": {
+              "APIRADAR_BASE": "https://apireader.top"
+            }
           }
         }
       }
@@ -25,7 +33,10 @@
         "mcpServers": {
           "api-radar": {
             "command": "npx",
-            "args": ["-y", "@apireader/mcp-server"]
+            "args": [
+              "-y",
+              "@apireader/mcp-server"
+            ]
           }
         }
       }
@@ -35,7 +46,14 @@
       "config_block": {
         "experimental": {
           "modelContextProtocolServers": [
-            { "name": "api-radar", "command": "npx", "args": ["-y", "@apireader/mcp-server"] }
+            {
+              "name": "api-radar",
+              "command": "npx",
+              "args": [
+                "-y",
+                "@apireader/mcp-server"
+              ]
+            }
           ]
         }
       }
@@ -43,10 +61,17 @@
   },
   "server": {
     "command": "npx",
-    "args": ["-y", "@apireader/mcp-server"],
+    "args": [
+      "-y",
+      "@apireader/mcp-server"
+    ],
     "transport": "stdio",
     "endpoint_url": "https://apireader.top/mcp/stream",
-    "capabilities": ["tools", "resources", "prompts"]
+    "capabilities": [
+      "tools",
+      "resources",
+      "prompts"
+    ]
   },
   "tools": [
     {
@@ -55,9 +80,23 @@
       "inputSchema": {
         "type": "object",
         "properties": {
-          "vendor_id": { "type": "string", "description": "v_anthropic / v_openai / v_google / v_xai / v_deepseek ..." },
-          "scene": { "type": "string", "enum": ["coding", "reasoning", "agents", "multimodal", "long_context"] },
-          "open_weight_only": { "type": "boolean" }
+          "vendor_id": {
+            "type": "string",
+            "description": "v_anthropic / v_openai / v_google / v_xai / v_deepseek ..."
+          },
+          "scene": {
+            "type": "string",
+            "enum": [
+              "coding",
+              "reasoning",
+              "agents",
+              "multimodal",
+              "long_context"
+            ]
+          },
+          "open_weight_only": {
+            "type": "boolean"
+          }
         }
       }
     },
@@ -66,27 +105,43 @@
       "description": "获取单个模型详情（含官方输入/输出价、缓存价、上下文）",
       "inputSchema": {
         "type": "object",
-        "required": ["model_id"],
+        "required": [
+          "model_id"
+        ],
         "properties": {
-          "model_id": { "type": "string", "example": "m_claude_sonnet_5" }
+          "model_id": {
+            "type": "string",
+            "example": "m_claude_sonnet_5"
+          }
         }
       }
     },
     {
       "name": "list_providers",
       "description": "列出 40 个分发渠道（含官方 / 第三方 / 自部署）",
-      "inputSchema": { "type": "object", "properties": {} }
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
     },
     {
       "name": "compare_prices",
       "description": "对指定模型横向比较所有渠道价格，返回最低价方案",
       "inputSchema": {
         "type": "object",
-        "required": ["model_id"],
+        "required": [
+          "model_id"
+        ],
         "properties": {
-          "model_id": { "type": "string" },
-          "max_input_usd": { "type": "number" },
-          "max_output_usd": { "type": "number" }
+          "model_id": {
+            "type": "string"
+          },
+          "max_input_usd": {
+            "type": "number"
+          },
+          "max_output_usd": {
+            "type": "number"
+          }
         }
       }
     },
@@ -95,15 +150,47 @@
       "description": "按月输入/输出/缓存 token 量算月成本，支持长上下文加价 + 批量折扣",
       "inputSchema": {
         "type": "object",
-        "required": ["model_id", "input_m", "output_m"],
+        "required": [
+          "model_id",
+          "input_m",
+          "output_m"
+        ],
         "properties": {
-          "model_id": { "type": "string" },
-          "input_m": { "type": "number", "description": "月输入 token 百万" },
-          "output_m": { "type": "number", "description": "月输出 token 百万" },
-          "cache_m": { "type": "number" },
-          "cache_hit_ratio": { "type": "number", "default": 0.6 },
-          "ctx_tier": { "type": "string", "enum": ["32k", "128k", "1m", "10m"] },
-          "mode": { "type": "string", "enum": ["realtime", "batch"], "default": "realtime" }
+          "model_id": {
+            "type": "string"
+          },
+          "input_m": {
+            "type": "number",
+            "description": "月输入 token 百万"
+          },
+          "output_m": {
+            "type": "number",
+            "description": "月输出 token 百万"
+          },
+          "cache_m": {
+            "type": "number"
+          },
+          "cache_hit_ratio": {
+            "type": "number",
+            "default": 0.6
+          },
+          "ctx_tier": {
+            "type": "string",
+            "enum": [
+              "32k",
+              "128k",
+              "1m",
+              "10m"
+            ]
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "realtime",
+              "batch"
+            ],
+            "default": "realtime"
+          }
         }
       }
     },
@@ -113,8 +200,20 @@
       "inputSchema": {
         "type": "object",
         "properties": {
-          "since": { "type": "string", "format": "date" },
-          "event_type": { "type": "string", "enum": ["price_change", "new_model", "outage", "capability_update", "policy_change"] }
+          "since": {
+            "type": "string",
+            "format": "date"
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "price_change",
+              "new_model",
+              "outage",
+              "capability_update",
+              "policy_change"
+            ]
+          }
         }
       }
     },
@@ -124,7 +223,18 @@
       "inputSchema": {
         "type": "object",
         "properties": {
-          "scene": { "type": "string", "enum": ["reasoning", "coding", "throughput", "cheapest_input", "largest_context", "all"], "default": "all" }
+          "scene": {
+            "type": "string",
+            "enum": [
+              "reasoning",
+              "coding",
+              "throughput",
+              "cheapest_input",
+              "largest_context",
+              "all"
+            ],
+            "default": "all"
+          }
         }
       }
     }
@@ -153,18 +263,52 @@
     {
       "name": "compare_two_models",
       "description": "提示词模板：横向对比模型 A 和 B",
-      "arguments": [{ "name": "model_a_id", "required": true }, { "name": "model_b_id", "required": true }]
+      "arguments": [
+        {
+          "name": "model_a_id",
+          "required": true
+        },
+        {
+          "name": "model_b_id",
+          "required": true
+        }
+      ]
     },
     {
       "name": "cost_breakdown",
       "description": "提示词模板：算完月成本后给一份文字解读",
-      "arguments": [{ "name": "model_id", "required": true }, { "name": "input_m", "required": true }, { "name": "output_m", "required": true }]
+      "arguments": [
+        {
+          "name": "model_id",
+          "required": true
+        },
+        {
+          "name": "input_m",
+          "required": true
+        },
+        {
+          "name": "output_m",
+          "required": true
+        }
+      ]
     }
   ],
   "x-statistics": {
-    "tools_count": 7,
-    "resources_count": 3,
-    "prompts_count": 2,
+    "frontend_snapshot": {
+      "models": 38,
+      "providers": 32,
+      "offerings": 193,
+      "events": 13,
+      "source": "data.js (前端静态快照)"
+    },
+    "database": {
+      "models": 60,
+      "providers": 40,
+      "offerings": 1287,
+      "events": 13,
+      "source": "D1 数据库"
+    },
+    "hardcore_probes": 5,
     "last_updated": "2026-09-21"
   }
 }

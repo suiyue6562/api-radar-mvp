@@ -3,19 +3,32 @@
   "info": {
     "title": "API优选咨询 (API Radar) OpenAPI",
     "version": "2.1.0",
-    "description": "聚合 60 个 AI 模型 × 40 个分发渠道 × 1,287 条价格字段的开放查询 API。Key 不上传，浏览器内执行 13 项硬核检测。机器可读，无鉴权，CORS 开放。",
-    "contact": { "name": "API优选咨询", "url": "https://apireader.top" },
-    "license": { "name": "数据-展示层公开", "url": "https://apireader.top/method.html" }
+    "description": "聚合 38 个 AI 模型 × 32 个分发渠道 × 193 条价格字段的开放查询 API（前端 data.js 快照）。后台 D1 数据库完整数据：60 模型 / 40 渠道 / 1287 价格字段。Key 不上传，浏览器内执行 5 项硬核检测 + 13 条行情事件追踪。机器可读，无鉴权，CORS 开放。",
+    "contact": {
+      "name": "API优选咨询",
+      "url": "https://apireader.top"
+    },
+    "license": {
+      "name": "数据-展示层公开",
+      "url": "https://apireader.top/method.html"
+    }
   },
   "servers": [
-    { "url": "https://apireader.top", "description": "公开只读数据集" }
+    {
+      "url": "https://apireader.top",
+      "description": "公开只读数据集"
+    }
   ],
   "paths": {
     "/openapi.json": {
       "get": {
         "summary": "本规范自描述端点",
         "operationId": "getOpenAPISelf",
-        "responses": { "200": { "description": "OpenAPI 规范 JSON" } }
+        "responses": {
+          "200": {
+            "description": "OpenAPI 规范 JSON"
+          }
+        }
       }
     },
     "/api/models": {
@@ -23,9 +36,29 @@
         "summary": "列出全部模型（60 个）",
         "operationId": "listModels",
         "parameters": [
-          { "name": "vendor_id", "in": "query", "schema": { "type": "string" }, "description": "按厂商过滤（如 v_anthropic）" },
-          { "name": "scene", "in": "query", "schema": { "type": "string" }, "description": "场景过滤（coding/reasoning/agents/multimodal）" },
-          { "name": "open_weight", "in": "query", "schema": { "type": "boolean" } }
+          {
+            "name": "vendor_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "按厂商过滤（如 v_anthropic）"
+          },
+          {
+            "name": "scene",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "场景过滤（coding/reasoning/agents/multimodal）"
+          },
+          {
+            "name": "open_weight",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -34,7 +67,9 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/Model" }
+                  "items": {
+                    "$ref": "#/components/schemas/Model"
+                  }
                 }
               }
             }
@@ -47,10 +82,27 @@
         "summary": "查询单个模型详情",
         "operationId": "getModel",
         "parameters": [
-          { "name": "model_id", "in": "path", "required": true, "schema": { "type": "string" }, "example": "m_claude_sonnet_5" }
+          {
+            "name": "model_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "m_claude_sonnet_5"
+          }
         ],
         "responses": {
-          "200": { "description": "模型详情", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Model" } } } }
+          "200": {
+            "description": "模型详情",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Model"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -58,7 +110,11 @@
       "get": {
         "summary": "列出全部分销渠道（40 个）",
         "operationId": "listProviders",
-        "responses": { "200": { "description": "渠道数组" } }
+        "responses": {
+          "200": {
+            "description": "渠道数组"
+          }
+        }
       }
     },
     "/api/offerings": {
@@ -66,12 +122,42 @@
         "summary": "在售 SKU 价格矩阵（1,287 条）",
         "operationId": "listOfferings",
         "parameters": [
-          { "name": "model_id", "in": "query", "schema": { "type": "string" } },
-          { "name": "provider_id", "in": "query", "schema": { "type": "string" } },
-          { "name": "max_input_usd", "in": "query", "schema": { "type": "number" }, "description": "按输入价筛选" },
-          { "name": "max_output_usd", "in": "query", "schema": { "type": "number" }, "description": "按输出价筛选" }
+          {
+            "name": "model_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "provider_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "max_input_usd",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            },
+            "description": "按输入价筛选"
+          },
+          {
+            "name": "max_output_usd",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            },
+            "description": "按输出价筛选"
+          }
         ],
-        "responses": { "200": { "description": "SKU 数组" } }
+        "responses": {
+          "200": {
+            "description": "SKU 数组"
+          }
+        }
       }
     },
     "/api/events": {
@@ -79,10 +165,36 @@
         "summary": "行情事件流（价格变动 / 服务中断 / 政策调整）",
         "operationId": "listEvents",
         "parameters": [
-          { "name": "since", "in": "query", "schema": { "type": "string", "format": "date" }, "description": "YYYY-MM-DD" },
-          { "name": "event_type", "in": "query", "schema": { "type": "string", "enum": ["price_change", "new_model", "outage", "capability_update", "policy_change", "model_deprecate"] } }
+          {
+            "name": "since",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "YYYY-MM-DD"
+          },
+          {
+            "name": "event_type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "price_change",
+                "new_model",
+                "outage",
+                "capability_update",
+                "policy_change",
+                "model_deprecate"
+              ]
+            }
+          }
         ],
-        "responses": { "200": { "description": "事件数组" } }
+        "responses": {
+          "200": {
+            "description": "事件数组"
+          }
+        }
       }
     },
     "/api/probe/{provider_id}": {
@@ -90,10 +202,28 @@
         "summary": "对单个渠道跑硬核检测（13 项）",
         "operationId": "runProbe",
         "parameters": [
-          { "name": "provider_id", "in": "path", "required": true, "schema": { "type": "string" } },
-          { "name": "api_key", "in": "query", "schema": { "type": "string" }, "description": "浏览器内使用，不上传服务器" }
+          {
+            "name": "provider_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "浏览器内使用，不上传服务器"
+          }
         ],
-        "responses": { "200": { "description": "13 项检测得分" } }
+        "responses": {
+          "200": {
+            "description": "13 项检测得分"
+          }
+        }
       }
     }
   },
@@ -101,58 +231,161 @@
     "schemas": {
       "Model": {
         "type": "object",
-        "required": ["id", "display_name", "vendor_id", "context_window"],
+        "required": [
+          "id",
+          "display_name",
+          "vendor_id",
+          "context_window"
+        ],
         "properties": {
-          "id": { "type": "string", "example": "m_claude_sonnet_5" },
-          "display_name": { "type": "string", "example": "Claude Sonnet 5" },
-          "vendor_id": { "type": "string", "example": "v_anthropic" },
-          "family": { "type": "string", "example": "Claude 5" },
-          "release_date": { "type": "string", "format": "date" },
-          "context_window": { "type": "integer", "example": 1000000 },
-          "max_output_tokens": { "type": "integer", "example": 16000 },
-          "modality": { "type": "array", "items": { "type": "string" } },
-          "capabilities": { "type": "array", "items": { "type": "string" } },
-          "scenes": { "type": "array", "items": { "type": "string" } },
-          "official_input_usd_m": { "type": "number", "example": 3 },
-          "official_output_usd_m": { "type": "number", "example": 15 },
-          "official_cache_read_usd_m": { "type": "number" },
-          "is_open_weight": { "type": "boolean" },
-          "description": { "type": "string" }
+          "id": {
+            "type": "string",
+            "example": "m_claude_sonnet_5"
+          },
+          "display_name": {
+            "type": "string",
+            "example": "Claude Sonnet 5"
+          },
+          "vendor_id": {
+            "type": "string",
+            "example": "v_anthropic"
+          },
+          "family": {
+            "type": "string",
+            "example": "Claude 5"
+          },
+          "release_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "context_window": {
+            "type": "integer",
+            "example": 1000000
+          },
+          "max_output_tokens": {
+            "type": "integer",
+            "example": 16000
+          },
+          "modality": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "capabilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "scenes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "official_input_usd_m": {
+            "type": "number",
+            "example": 3
+          },
+          "official_output_usd_m": {
+            "type": "number",
+            "example": 15
+          },
+          "official_cache_read_usd_m": {
+            "type": "number"
+          },
+          "is_open_weight": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          }
         }
       },
       "Provider": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "name_zh": { "type": "string" },
-          "name_en": { "type": "string" },
-          "is_official": { "type": "boolean", "description": "是否为模型厂商自营" },
-          "region": { "type": "string", "enum": ["global", "cn", "eu"] },
-          "data_status": { "type": "string", "description": "A=已二次复核 / B=官方源 / C=待验" }
+          "id": {
+            "type": "string"
+          },
+          "name_zh": {
+            "type": "string"
+          },
+          "name_en": {
+            "type": "string"
+          },
+          "is_official": {
+            "type": "boolean",
+            "description": "是否为模型厂商自营"
+          },
+          "region": {
+            "type": "string",
+            "enum": [
+              "global",
+              "cn",
+              "eu"
+            ]
+          },
+          "data_status": {
+            "type": "string",
+            "description": "A=已二次复核 / B=官方源 / C=待验"
+          }
         }
       },
       "Offering": {
         "type": "object",
         "properties": {
-          "model_id": { "type": "string" },
-          "provider_id": { "type": "string" },
-          "is_official": { "type": "boolean" },
-          "multiplier": { "type": "number", "description": "相对官方价的倍数" },
-          "input_usd_m": { "type": "number" },
-          "output_usd_m": { "type": "number" },
-          "cache_read_usd_m": { "type": "number" }
+          "model_id": {
+            "type": "string"
+          },
+          "provider_id": {
+            "type": "string"
+          },
+          "is_official": {
+            "type": "boolean"
+          },
+          "multiplier": {
+            "type": "number",
+            "description": "相对官方价的倍数"
+          },
+          "input_usd_m": {
+            "type": "number"
+          },
+          "output_usd_m": {
+            "type": "number"
+          },
+          "cache_read_usd_m": {
+            "type": "number"
+          }
         }
       }
     }
   },
   "x-statistics": {
-    "models": 60,
-    "providers": 40,
-    "offerings": 1287,
-    "events": 13,
+    "frontend_snapshot": {
+      "models": 38,
+      "providers": 32,
+      "offerings": 193,
+      "events": 13,
+      "source": "data.js (前端静态快照)"
+    },
+    "database": {
+      "models": 60,
+      "providers": 40,
+      "offerings": 1287,
+      "events": 13,
+      "source": "D1 数据库 (worker api-radar-api)"
+    },
+    "hardcore_probes": 5,
     "last_updated": "2026-09-21"
   },
-  "x-browse-tags": ["ai-pricing", "llm-api", "model-comparison", "api-monitoring"],
+  "x-browse-tags": [
+    "ai-pricing",
+    "llm-api",
+    "model-comparison",
+    "api-monitoring"
+  ],
   "x-best-practices": {
     "no_auth_required": true,
     "cors_open": true,
