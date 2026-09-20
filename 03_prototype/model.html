@@ -5,189 +5,147 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>模型详情 - API Radar</title>
 <link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+.main h1 { font-size: 28px; margin-bottom: 4px; }
+.page-meta { color: var(--muted); margin-bottom: 24px; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.detail-card { padding: 22px; }
+.detail-card h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 12px; }
+.info-table { width: 100%; }
+.info-table td { padding: 6px 0; border: 0; font-size: 13px; }
+.info-table td:first-child { color: var(--muted); width: 110px; }
+.price-display { display: flex; flex-direction: column; gap: 8px; }
+.price-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.price-row:last-child { border: 0; }
+.price-label { color: var(--muted); }
+.price-value { font-family: var(--font-mono); font-weight: 700; color: var(--accent); }
+.price-value-big { font-size: 18px; }
+.provider-mini-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); text-decoration: none; color: inherit; }
+.provider-mini-item:last-child { border: 0; }
+.provider-mini-item:hover { background: rgba(0,217,255,0.04); }
+.channels-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
+.channel-card { background: var(--bg-deep); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-decoration: none; color: inherit; transition: all 0.15s; display: block; }
+.channel-card:hover { border-color: var(--accent); }
+.channel-card .ch-name { font-weight: 600; font-size: 12px; }
+.channel-card .ch-price { font-family: var(--font-mono); color: var(--accent); font-size: 13px; font-weight: 700; }
+.channel-card .ch-meta { font-size: 10px; color: var(--muted); }
+.breadcrumb { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+.breadcrumb a { color: var(--muted); }
+.breadcrumb a:hover { color: var(--accent); }
+</style>
 </head>
 <body>
-
-<header class="topbar">
-  <div class="brand">API<span class="dot">Radar</span><small>AI API 决策工具</small></div>
-  <nav class="mainnav">
-    <a href="index.html">首页</a>
-    <a href="models.html">模型库</a>
-    <a href="providers.html">渠道库</a>
-    <a href="compare.html">比价</a>
-    <a href="events.html">行情</a>
-    <a href="watch.html">关注</a>
-  </nav>
-  <div class="topbar-search">
-    <input type="text" id="topbar-search-input" placeholder="搜索模型或渠道...">
-  </div>
-</header>
-
-<main id="model-detail-main">
-  <div style="text-align:center;padding:80px;color:var(--muted);">加载中...</div>
+<div id="topbar"></div>
+<main class="main">
+  <div class="breadcrumb" id="breadcrumb"></div>
+  <div id="model-content"></div>
 </main>
-
-<footer>
-  <div class="footer-inner">
-    <span>API Radar v0.1 · W1 内测版</span>
-    <div class="footer-links">
-      <a href="method.html">数据方法</a>
-      <a href="#">免责声明</a>
-      <a href="#">纠错入口</a>
-    </div>
-  </div>
-</footer>
-
 <script src="data.js"></script>
 <script src="app.js"></script>
 <script>
-// 模型详情页
-document.addEventListener('DOMContentLoaded', () => {
+(function() {
+  if (typeof renderTopbar === 'function') renderTopbar('models');
+  const D = API_RADAR_DATA;
   const params = new URLSearchParams(location.search);
-  const id = params.get('id');
-  if (!id) { location.href = 'models.html'; return; }
-  const model = getModel(id);
-  if (!model) { document.getElementById('model-detail-main').innerHTML = '<div style="text-align:center;padding:80px;color:var(--muted);">模型不存在</div>'; return; }
-  const vendor = getVendor(model.vendor_id);
-  const fx = API_RADAR_DATA.fx_rate.USD_CNY;
-  const inputCny = model.official_input_cny_m || (model.official_input_usd_m ? model.official_input_usd_m * fx : 0);
-  const outputCny = model.official_output_cny_m || (model.official_output_usd_m ? model.official_output_usd_m * fx : 0);
-  const cacheCny = model.official_cache_read_cny_m || (model.official_cache_read_usd_m ? model.official_cache_read_usd_m * fx : null);
-  const offerings = getOfferingsForModel(id);
-  const events = getEventsForTarget('model', id);
-  const watching = isWatching('model', id);
+  const id = params.get('id') || D.models[0].id;
+  const model = D.models.find(m => m.id === id) || D.models[0];
+  const vendor = D.vendors.find(v => v.id === model.vendor_id);
 
-  document.title = model.display_name + ' - API Radar';
+  document.getElementById('breadcrumb').innerHTML = '<a href="index.html">首页</a> / <a href="models.html">模型</a> / ' + model.display_name;
 
-  const main = document.getElementById('model-detail-main');
-  main.innerHTML = `
-    <nav class="breadcrumb">
-      <a href="index.html">首页</a> · <a href="models.html">模型库</a> · <span>${model.display_name}</span>
-    </nav>
+  const offerings = D.offerings.filter(o => o.model_id === model.id);
+  const sorted = [...offerings].sort((a, b) => (a.input_usd_m + a.output_usd_m) - (b.input_usd_m + b.output_usd_m));
 
-    <section class="detail-header">
+  document.getElementById('model-content').innerHTML = `
+    <div class="flex items-center gap-3">
+      <div style="width:56px;height:56px;border-radius:14px;background:var(--bg-card);display:flex;align-items:center;justify-content:center;font-size:28px;">${vendor?.logo || '🤖'}</div>
       <div>
         <h1>${model.display_name}</h1>
-        <div class="detail-subtitle">
-          <a href="provider.html?id=${vendor.id}">${vendor.name_zh}</a> ·
-          <span class="status-dot ${model.status === 'available' ? 'available' : 'limited'}"></span>
-          ${model.status === 'available' ? '可用' : '受限'}
-          · 发布 ${model.release_date || '未知'}
-        </div>
-        <div class="detail-tags">
-          ${model.alias.map(a => `<span class="tag">${a}</span>`).join('')}
-        </div>
+        <div class="page-meta">${vendor?.name || ''} · ${model.family} · ${model.release_date} 发布 · ${model.license}</div>
       </div>
-      <button class="btn-watch" onclick="watchThisModel('${model.id}', '${model.display_name}')">
-    ${watching ? '★ 已关注' : '☆ 关注'}
-  </button>
-    </section>
+    </div>
+    <p class="muted" style="margin:16px 0 32px;line-height:1.7;">${model.description || ''}</p>
 
-    <section class="detail-grid">
+    <div class="detail-grid">
       <!-- 左：能力 -->
-      <div class="detail-card">
-        <h3>能力参数</h3>
+      <div class="card detail-card">
+        <h3>📊 能力参数</h3>
         <table class="info-table">
           <tr><td>上下文窗口</td><td><strong>${fmtCtx(model.context_window)}</strong> tokens</td></tr>
           <tr><td>最大输出</td><td>${model.max_output_tokens ? fmtCtx(model.max_output_tokens) + ' tokens' : '未公布'}</td></tr>
           <tr><td>模态</td><td>${(model.modality || []).join(' / ')}</td></tr>
-          <tr><td>能力</td><td>${(model.capabilities || []).map(c => '<span class="tag tag-cap">' + c + '</span>').join(' ') || '—'}</td></tr>
-          <tr><td>典型场景</td><td>${(model.scenes || []).map(s => '<span class="tag tag-scene">' + s + '</span>').join(' ') || '—'}</td></tr>
+          <tr><td>开源</td><td>${model.is_open_weight ? '<span class="tag tag-success">是</span>' : '<span class="tag">否</span>'}</td></tr>
         </table>
+        <div style="margin-top:14px;">
+          <h3 style="margin-bottom:6px;">核心能力</h3>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            ${(model.capabilities || []).map(c => '<span class="tag tag-accent" style="font-size:11px;">' + c + '</span>').join('')}
+          </div>
+        </div>
+        <div style="margin-top:14px;">
+          <h3 style="margin-bottom:6px;">典型场景</h3>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            ${(model.scenes || []).map(s => '<span class="tag tag-purple" style="font-size:11px;">' + s + '</span>').join('')}
+          </div>
+        </div>
       </div>
 
       <!-- 中：官方价格 -->
-      <div class="detail-card">
-        <h3>官方价格</h3>
+      <div class="card detail-card">
+        <h3>💵 官方价格</h3>
         <div class="price-display">
           <div class="price-row">
             <span class="price-label">输入</span>
-            <span class="price-value">${fmtCNY(inputCny)} <span class="price-unit">/ M tokens</span></span>
+            <span class="price-value price-value-big">${fmtUSD(model.official_input_usd_m)} <span class="muted text-xs" style="color:var(--muted);">/ M tokens</span></span>
           </div>
           <div class="price-row">
             <span class="price-label">输出</span>
-            <span class="price-value">${fmtCNY(outputCny)} <span class="price-unit">/ M tokens</span></span>
+            <span class="price-value price-value-big">${fmtUSD(model.official_output_usd_m)} <span class="muted text-xs" style="color:var(--muted);">/ M tokens</span></span>
           </div>
-          ${cacheCny !== null ? `
+          ${model.official_cache_read_usd_m ? `
           <div class="price-row">
             <span class="price-label">缓存读取</span>
-            <span class="price-value">${fmtCNY(cacheCny)} <span class="price-unit">/ M tokens</span></span>
+            <span class="price-value">${fmtUSD(model.official_cache_read_usd_m)} <span class="muted text-xs" style="color:var(--muted);">/ M tokens</span></span>
           </div>` : ''}
         </div>
-        <div class="price-note">
-          ${model.official_input_usd_m ? 'USD 原始价：$' + model.official_input_usd_m + ' / $' + model.official_output_usd_m + ' 输入/输出' : 'CNY 直接计价'}
-          · 汇率日期 ${API_RADAR_DATA.fx_rate.date}
+        <div class="muted text-xs" style="margin-top:12px;line-height:1.6;">
+          USD 原始价 · ${model.license}<br>
+          汇率 ${API_RADAR_DATA.fx_rate.date} · 1 USD = ${API_RADAR.FX} CNY
         </div>
-        <a href="compare.html?model=${model.id}" class="btn-primary" style="display:block;text-align:center;margin-top:12px;">📊 横向比价（含 5 渠道）</a>
+        <a href="compare.html?model=${model.id}" class="btn btn-primary" style="display:block;text-align:center;margin-top:16px;">📊 横向比价（含 ${offerings.length} 渠道）</a>
       </div>
 
-      <!-- 中-右：可用渠道三栏简览 -->
-      <div class="detail-card" style="grid-column: span 2;">
-        <h3>支持渠道 · ${offerings.length} 家</h3>
-        <div class="model-channels-tri" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px;">
-          ${offerings.slice(0,9).map(o => {
-            const p = getProvider(o.provider_id);
-            const cost = calcCost(model, o, 1e6, 0.2e6, 0);
-            return `<a href="provider.html?id=${p.id}" style="text-decoration:none;color:inherit;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;display:block;">
-              <div style="font-weight:600;font-size:12px;margin-bottom:4px;">${p.name} ${o.is_official ? '<span style="color:var(--accent2);font-size:10px;">官方</span>' : '<span style="color:var(--warning);font-size:10px;">中转</span>'}</div>
-              <div style="font-family:monospace;color:var(--accent);font-size:13px;">${fmtCNY(cost.total)}</div>
-              <div style="font-size:10px;color:var(--muted);">/月 1.2亿tok · ${o.multiplier}×</div>
-            </a>`;
-          }).join('')}
+      <!-- 右：使用场景与风险 -->
+      <div class="card detail-card">
+        <h3>⚡ 适用与注意</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--fg);">
+          ${model.is_open_weight ? '<div>✅ 开源可自托管</div>' : '<div>🔒 闭源，依赖服务商</div>'}
+          ${(model.context_window >= 1000000) ? '<div>📏 1M 长上下文</div>' : ''}
+          ${(model.official_cache_read_usd_m && model.official_cache_read_usd_m > 0) ? '<div>💾 支持 prompt cache</div>' : ''}
+          ${(model.modality || []).includes('image') ? '<div>🖼️ 支持图像理解</div>' : ''}
+          ${(model.modality || []).includes('audio') ? '<div>🔊 支持音频</div>' : ''}
         </div>
       </div>
-      <div class="detail-card">
-        <h3>支持渠道 <span style="color:var(--muted);font-weight:400;font-size:13px;">· ${offerings.length} 家</span></h3>
-        <div class="provider-mini-list">
-          ${offerings.length === 0 ? '<div class="empty-state">暂无渠道收录</div>' :
-            offerings.slice(0, 8).map(o => {
-              const p = getProvider(o.provider_id);
-              const cost = calcCost(model, o, 1e6, 0.2e6, 0);
-              return `<a href="provider.html?id=${p.id}" class="provider-mini-item">
-                <div>
-                  <div style="font-weight:600;">${p.name} ${o.is_official ? '<span style="color:var(--accent2);font-size:10px;">官方</span>' : ''}</div>
-                  <div style="font-size:11px;color:var(--muted);">${p.payment_currency.join('/')}</div>
-                </div>
-                <div style="text-align:right;">
-                  <div style="font-family:monospace;font-size:13px;color:var(--accent);">${fmtCNY(cost.total)}</div>
-                  <div style="font-size:11px;color:var(--muted);">/ 月 1.2 亿 tok</div>
-                </div>
-              </a>`;
-            }).join('')
-          }
-        </div>
-      </div>
-    </section>
+    </div>
 
-    <!-- 历史事件 -->
-    <section class="detail-section">
-      <h3>📊 近期变化</h3>
-      ${events.length === 0 ? '<div class="empty-state">暂无近期变化</div>' :
-        events.sort((a, b) => new Date(b.effective_date) - new Date(a.effective_date)).map(e => {
-          const dotClass = e.severity === 'high' ? 'dot-high' : e.severity === 'medium' ? 'dot-medium' : 'dot-low';
-          return `<div class="event-item">
-            <div class="event-dot ${dotClass}"></div>
-            <div class="event-content">
-              <div class="event-title">${e.headline}</div>
-              <div class="event-summary">${e.summary || ''}</div>
-              <div class="event-meta">
-                <span>⏱ ${timeAgo(e.effective_date)}</span>
-                <span>📋 ${e.event_type}</span>
-                ${e.source_urls && e.source_urls[0] ? `<a href="${e.source_urls[0]}" target="_blank">🔗 来源</a>` : ''}
-              </div>
-            </div>
-          </div>`;
-        }).join('')
-      }
-    </section>
+    <!-- 渠道列表 -->
+    <h2 style="margin:32px 0 16px;">📡 可用渠道（${offerings.length}）</h2>
+    <div class="channels-grid">
+      ${sorted.slice(0, 18).map(o => {
+        const p = D.providers.find(x => x.id === o.provider_id);
+        if (!p) return '';
+        const cost = calcCost(model, o, 100, 20, 0);
+        return `<a href="provider.html?id=${p.id}" class="channel-card">
+          <div class="ch-name">${p.name} ${o.multiplier === 1.0 ? '<span style="color:var(--accent);font-size:9px;">官方</span>' : '<span style="color:var(--muted);font-size:9px;">×' + o.multiplier + '</span>'}</div>
+          <div class="ch-price">${fmtCNY(cost.total)}</div>
+          <div class="ch-meta">月 1.2亿tok · ${p.type === 'official' ? '官方' : p.type === 'aggregator' ? '中转' : p.type === 'gateway' ? '网关' : p.type === 'self_host' ? '自托管' : '云厂商'}</div>
+        </a>`;
+      }).join('')}
+    </div>
+    ${offerings.length > 18 ? '<div class="muted text-center" style="margin-top:12px;">还有 ' + (offerings.length - 18) + ' 个渠道在 <a href="compare.html?model=' + model.id + '">比价页</a> 查看</div>' : ''}
   `;
-});
-
-function watchThisModel(id, name) {
-  const added = toggleWatch('model', id, name);
-  alert(added ? '已添加到关注列表' : '已从关注列表移除');
-  location.reload();
-}
+})();
 </script>
 </body>
 </html>

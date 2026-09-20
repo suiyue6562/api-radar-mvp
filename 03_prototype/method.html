@@ -5,106 +5,117 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>数据方法 - API Radar</title>
 <link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+.main h1 { font-size: 28px; }
+.section { padding: 24px; margin-bottom: 20px; }
+.section h2 { margin-bottom: 16px; }
+.callout { padding: 16px; border-left: 3px solid var(--accent); background: rgba(0,217,255,0.05); border-radius: 0 8px 8px 0; margin: 16px 0; }
+.callout.warning { border-color: var(--warning); background: rgba(255,184,77,0.05); }
+.callout.danger { border-color: var(--danger); background: rgba(255,71,87,0.05); }
+.divider-table td { padding: 10px 14px; }
+table.bordered th, table.bordered td { padding: 10px 14px; border: 1px solid var(--border); }
+</style>
 </head>
 <body>
+<div id="topbar"></div>
+<main class="main">
+  <h1>📡 数据方法</h1>
+  <p class="muted" style="margin-bottom:24px;">本站对所收录数据的来源、口径与不确定性做完整说明。</p>
 
-<header class="topbar">
-  <div class="brand">API<span class="dot">Radar</span><small>AI API 决策工具</small></div>
-  <nav class="mainnav">
-    <a href="index.html">首页</a>
-    <a href="models.html">模型库</a>
-    <a href="providers.html">渠道库</a>
-    <a href="compare.html">比价</a>
-    <a href="events.html">行情</a>
-    <a href="watch.html">关注</a>
-  </nav>
-</header>
+  <div class="card section">
+    <h2>1. 我们做什么、不做什么</h2>
+    <ul style="line-height:1.9;color:var(--fg);">
+      <li><strong style="color:var(--success);">✓</strong> 整理、归一化、展示公开数据（官方价格页、社区评价、用户实测分享）</li>
+      <li><strong style="color:var(--success);">✓</strong> 提供一个稳定的 <strong>OpenAI 兼容</strong> 接口对照表</li>
+      <li><strong style="color:var(--success);">✓</strong> 提供多渠道<strong>横向比价</strong>，缓存命中与超额规则显式</li>
+      <li><strong style="color:var(--danger);">✗</strong> 不直接购买各渠道的 API 配额进行实测</li>
+      <li><strong style="color:var(--danger);">✗</strong> 不替用户做"哪个最好"的结论</li>
+      <li><strong style="color:var(--danger);">✗</strong> 不替服务商背书合规性 / SLA / 数据使用</li>
+    </ul>
+  </div>
 
-<main style="max-width:820px;">
-  <h1 style="margin-bottom:8px;">📋 数据方法</h1>
-  <p style="color:var(--muted);margin-bottom:24px;">v0.1 · 2026-09-20</p>
-
-  <div class="detail-section">
-    <h3>1. 数据来源</h3>
-    <p>价格数据来自以下三类来源（按可信度排序）：</p>
-    <table class="price-table" style="margin-top:12px;">
-      <thead>
-        <tr><th>等级</th><th>来源</th><th>前台规则</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><span class="data-status data-A">A</span></td><td>官方公开页面或官方 API</td><td>正常展示，可参与排序</td></tr>
-        <tr><td><span class="data-status data-B">B</span></td><td>渠道自有页面，主体已认领</td><td>正常展示，标明"渠道来源"</td></tr>
-        <tr><td><span class="data-status data-C">C</span></td><td>可靠二手或多来源一致</td><td>展示为参考，不用于关键推荐</td></tr>
-        <tr><td><span class="data-status data-D">D</span></td><td>单一非官方或已过期</td><td>待验证，不参与排序</td></tr>
-      </tbody>
+  <div class="card section">
+    <h2>2. 评测对象结构</h2>
+    <p style="margin-bottom:12px;">我们记录的是 <strong>「服务商 + 具体套餐 + 模型版本 + 接口协议 + 任务条件」</strong> 的组合：</p>
+    <table class="bordered" style="width:100%;font-size:13px;">
+      <tr><th>层级</th><th>展示内容</th><th>表达要求</th></tr>
+      <tr><td><strong>服务商声明</strong></td><td>支持模型、价格、上下文、退款、数据政策</td><td>标注服务商来源 + 抓取日期</td></tr>
+      <tr><td><strong>平台观察</strong></td><td>用户讨论、错误报告、投诉记录</td><td>标注来源平台、讨论时间、争议状态</td></tr>
+      <tr><td><strong>实测报告</strong></td><td>本站测得的成功率、延迟、扣费核对</td><td><strong style="color:var(--warning);">首版不做，留接口</strong></td></tr>
+      <tr><td><strong>分析判断</strong></td><td>与官方价格偏离、是否适合某场景</td><td>说明推断依据、适用条件、不确定性</td></tr>
     </table>
   </div>
 
-  <div class="detail-section">
-    <h3>2. 价格标准化</h3>
-    <ul style="color:var(--muted);line-height:1.8;padding-left:24px;">
-      <li>所有价格统一换算为 <strong>人民币 / 百万 Token</strong>（除显式标注的"美元"展示）</li>
-      <li>原始币种和汇率日期保留，用于审计</li>
-      <li>输入、输出、缓存读写、批量处理分别计价，不混入单一总价</li>
-      <li>阶梯价、长上下文附加费、促销价显示适用条件和有效期</li>
-      <li>汇率：2026-09-20 USD/CNY = 7.10</li>
-    </ul>
-  </div>
-
-  <div class="detail-section">
-    <h3>3. 更新机制</h3>
-    <ul style="color:var(--muted);line-height:1.8;padding-left:24px;">
-      <li><strong>公开价格</strong>：每日自动检查，7 天未验证标记"待验证"并退出默认推荐</li>
-      <li><strong>模型能力</strong>：每周检查，30 天未验证进入复核队列</li>
-      <li><strong>渠道采购字段</strong>：每月检查，90 天未验证显示"待更新"</li>
-      <li><strong>故障状态</strong>：5-15 分钟采集或官方事件触发，恢复后归档为历史事件</li>
-    </ul>
-  </div>
-
-  <div class="detail-section">
-    <h3>4. 渠道三栏分列原则</h3>
-    <p>每个渠道详情页强制三栏独立展示，禁止用单一星级掩盖：</p>
-    <table class="price-table" style="margin-top:12px;">
-      <thead>
-        <tr><th>栏位</th><th>包含</th><th>来源</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><strong>技术表现</strong></td><td>API 格式、SLA、可用率、延迟</td><td>官方 + P1 后才有实测</td></tr>
-        <tr><td><strong>商业条件</strong></td><td>付款、发票、合同、最低充值</td><td>服务商声明</td></tr>
-        <tr><td><strong>政策证据</strong></td><td>数据区域、训练、日志保留</td><td>服务商政策页 + 日期</td></tr>
-      </tbody>
+  <div class="card section">
+    <h2>3. 字段完整度评估</h2>
+    <div class="callout warning">
+      <strong>首版广覆盖策略</strong>：覆盖广度优先（38 模型 × 32 渠道 × 193 SKU），但每个字段的完整度有限。
+    </div>
+    <table class="bordered" style="width:100%;font-size:13px;margin-top:12px;">
+      <tr><th>字段</th><th>完整度</th><th>来源</th></tr>
+      <tr><td>官方价格</td><td style="color:var(--success);">~95%</td><td>各厂商官方 pricing 页</td></tr>
+      <tr><td>缓存价格</td><td style="color:var(--warning);">~50%</td><td>Anthropic/OpenAI 等公开，其他部分来自中转</td></tr>
+      <tr><td>上下文窗口</td><td style="color:var(--success);">~100%</td><td>官方文档</td></tr>
+      <tr><td>退款 / 发票</td><td style="color:var(--warning);">~70%</td><td>官网公开政策</td></tr>
+      <tr><td>起充金额</td><td style="color:var(--warning);">~80%</td><td>官网 pricing 页</td></tr>
+      <tr><td>成功率 / 延迟</td><td style="color:var(--danger);">0%</td><td><strong>本站未测，请勿引用</strong></td></tr>
+      <tr><td>数据存储 / 训练</td><td style="color:var(--danger);">~30%</td><td>官网隐私政策</td></tr>
     </table>
   </div>
 
-  <div class="detail-section">
-    <h3>5. 实测数据（当前版本）</h3>
-    <p style="color:var(--warning);">⚠️ v0.1 暂未集成实测引擎。所有"可用率""延迟"等数据待 P1 阶段上线后再展示。</p>
+  <div class="card section">
+    <h2>4. 模型指纹与"真伪"</h2>
+    <div class="callout">
+      <p style="margin-bottom:8px;">我们 <strong style="color:var(--warning);">不</strong> 提供"模型是否被替换"的真伪判定。原因：</p>
+      <ul style="line-height:1.8;">
+        <li>线上检测器需要针对自己的方法和当前模型单独验证误报、漏报</li>
+        <li>用户自选样本和重复测试造成的偏差无法消除</li>
+        <li>任何包装成"概率"的真伪判断都会增加用户的决策成本</li>
+      </ul>
+    </div>
+    <p>我们的检测结果如出现，仅使用「本轮特征一致」「发现协议或能力异常」「证据不足，建议复测」等可解释表述。</p>
   </div>
 
-  <div class="detail-section">
-    <h3>6. 免责声明</h3>
-    <p style="color:var(--muted);line-height:1.8;">本网站信息用于选型参考，不构成对渠道的保证、法律意见或采购承诺。价格和能力可能变化，请以官方页面为准。任何已知错误将通过纠错入口处理，重大争议先降级展示再复核。</p>
+  <div class="card section">
+    <h2>5. 缓存与真实成本</h2>
+    <p>缓存是真实成本的关键变量。我们区分 4 种计费：</p>
+    <table class="bordered" style="width:100%;font-size:13px;margin-top:12px;">
+      <tr><th>类型</th><th>说明</th><th>本计算器支持？</th></tr>
+      <tr><td>普通输入</td><td>首次写入的 token</td><td>✓</td></tr>
+      <tr><td>缓存写入</td><td>主动写入缓存的 token</td><td>⏳ 后续版本</td></tr>
+      <tr><td>缓存读取</td><td>命中缓存读取的 token</td><td>✓</td></tr>
+      <tr><td>输出</td><td>生成的 token</td><td>✓</td></tr>
+    </table>
+    <p style="margin-top:12px;color:var(--muted);font-size:13px;">仅比较输入单价会遗漏关键条件。Anthropic 官方文档示例：cache write 5× input，cache read 0.1× input。</p>
   </div>
 
-  <div class="detail-section">
-    <h3>7. 已知限制</h3>
-    <ul style="color:var(--muted);line-height:1.8;padding-left:24px;">
-      <li>字段完整度约 70%（广覆盖版 MVP，详见 PRD v1.1）</li>
-      <li>未集成实测数据，仅展示服务商声明</li>
-      <li>关注列表使用浏览器 localStorage，不跨设备同步</li>
-      <li>计算器为估算，实际以渠道账单为准</li>
-    </ul>
-  </div>
-</main>
-
-<footer>
-  <div class="footer-inner">
-    <span>API Radar v0.1</span>
-    <div class="footer-links">
-      <a href="index.html">← 返回首页</a>
+  <div class="card section">
+    <h2>6. 商业模式</h2>
+    <p>免费基础报告 + 团队付费试点（关注列表 + 私域探针 + 变化提醒）：</p>
+    <div class="callout warning">
+      <strong>商业关系披露</strong>：若日后引入商家赞助 / 推荐佣金 / 供应商线索，相关位置会明确标识。
+      <strong>测评方法和自然排序不由赞助购买</strong>。
     </div>
   </div>
-</footer>
 
+  <div class="card section">
+    <h2>7. 我们不背书什么</h2>
+    <ul style="line-height:1.9;">
+      <li><strong>任何渠道的"最好"</strong> — 取决于你的任务、预算、合规要求</li>
+      <li><strong>任何渠道的稳定性</strong> — 我们不测试，请参考用户实测或服务状态页</li>
+      <li><strong>任何渠道的数据使用政策</strong> — 请直接阅读官方隐私政策</li>
+      <li><strong>任何模型版本是否被替换</strong> — 我们不做指纹判断</li>
+    </ul>
+  </div>
+
+  <div class="card glass-strong" style="padding:24px;text-align:center;">
+    <h3 style="margin-bottom:8px;">🤝 共建</h3>
+    <p class="muted">发现问题？渠道涨价？模型下架？欢迎在 <a href="https://github.com/suiyue6562/api-radar-mvp">GitHub 仓库</a> 提交 Issue 或 PR。</p>
+  </div>
+</main>
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>if (typeof renderTopbar === 'function') renderTopbar('method');</script>
 </body>
 </html>

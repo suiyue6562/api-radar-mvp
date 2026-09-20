@@ -5,143 +5,103 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>模型库 - API Radar</title>
 <link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+.main h1 { font-size: 28px; margin-bottom: 8px; }
+.page-desc { color: var(--muted); margin-bottom: 24px; }
+.filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; padding: 16px; }
+</style>
 </head>
 <body>
+<div id="topbar"></div>
+<main class="main">
+  <h1>🧠 模型库</h1>
+  <p class="page-desc" id="page-meta">加载中...</p>
 
-<header class="topbar">
-  <div class="brand">API<span class="dot">Radar</span><small>AI API 决策工具</small></div>
-  <nav class="mainnav">
-    <a href="index.html">首页</a>
-    <a href="models.html" class="active">模型库</a>
-    <a href="providers.html">渠道库</a>
-    <a href="compare.html">比价</a>
-    <a href="events.html">行情</a>
-    <a href="watch.html">关注</a>
-  </nav>
-  <div class="topbar-search">
-    <input type="text" id="topbar-search-input" placeholder="搜索...">
-  </div>
-</header>
-
-<main>
-  <h1 style="margin-bottom:8px;">模型库 <span style="color:var(--muted);font-weight:400;font-size:14px;">· <span id="model-count">0</span> 个</span></h1>
-  <p style="color:var(--muted);margin-bottom:24px;">所有收录的大模型 API，含官方价格和渠道覆盖</p>
-
-  <div class="filter-bar" style="margin-bottom:20px;">
-    <label>厂商：</label>
-    <select id="model-filter-vendor"><option value="">全部</option></select>
-    <label>能力：</label>
-    <select id="model-filter-cap">
-      <option value="">全部</option>
-      <option value="tool_call">工具调用</option>
-      <option value="vision">视觉</option>
-      <option value="caching">缓存</option>
-      <option value="json_mode">JSON</option>
+  <div class="card filter-bar">
+    <select id="vendor-filter" style="padding:10px 14px;background:var(--bg-deep);border:1px solid var(--border);border-radius:8px;color:var(--fg);min-width:160px;">
+      <option value="">所有厂商</option>
     </select>
-    <label>上下文：</label>
-    <select id="model-filter-context">
-      <option value="">全部</option>
-      <option value="0-32000">≤32K</option>
-      <option value="32001-128000">32K-128K</option>
-      <option value="128001-1000000">128K-1M</option>
-      <option value="1000001-">1M+</option>
+    <select id="license-filter" style="padding:10px 14px;background:var(--bg-deep);border:1px solid var(--border);border-radius:8px;color:var(--fg);min-width:140px;">
+      <option value="">所有许可</option>
+      <option value="open">开源</option>
+      <option value="proprietary">闭源</option>
     </select>
-    <label>排序：</label>
-    <select id="model-filter-sort">
-      <option value="input">输入价升序</option>
-      <option value="output">输出价升序</option>
-      <option value="context">上下文降序</option>
-      <option value="vendor">按厂商</option>
-    </select>
+    <input type="text" id="model-search" placeholder="🔍 搜索模型名 / 能力" style="padding:10px 14px;background:var(--bg-deep);border:1px solid var(--border);border-radius:8px;color:var(--fg);min-width:280px;flex:1;">
   </div>
 
-  <div class="model-grid" id="model-grid"></div>
+  <div id="model-grid" class="model-grid"></div>
 </main>
-
-<footer>
-  <div class="footer-inner">
-    <span>API Radar v0.1</span>
-    <div class="footer-links">
-      <a href="method.html">数据方法</a>
-    </div>
-  </div>
-</footer>
-
 <script src="data.js"></script>
 <script src="app.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  setupModelFilters();
-  document.getElementById('model-filter-sort').addEventListener('change', renderModelGrid);
-  renderModelGrid();
-});
+(function() {
+  if (typeof renderTopbar === 'function') renderTopbar('models');
+  const D = API_RADAR_DATA;
 
-// 重写 renderModelGrid 以支持排序
-function renderModelGrid() {
+  document.getElementById('page-meta').textContent = D.models.length + ' 个模型 · 按厂商 / 价格筛选';
+
   const grid = document.getElementById('model-grid');
-  if (!grid) return;
+  const vendorFilter = document.getElementById('vendor-filter');
+  const licenseFilter = document.getElementById('license-filter');
+  const search = document.getElementById('model-search');
 
-  const vendorFilter = document.getElementById('model-filter-vendor')?.value || '';
-  const capFilter = document.getElementById('model-filter-cap')?.value || '';
-  const ctxFilter = document.getElementById('model-filter-context')?.value || '';
-  const sortBy = document.getElementById('model-filter-sort')?.value || 'input';
-  const fx = API_RADAR_DATA.fx_rate.USD_CNY;
+  // 填厂商筛选
+  D.vendors.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v.id;
+    opt.textContent = v.name;
+    vendorFilter.appendChild(opt);
+  });
 
-  let models = API_RADAR_DATA.models.slice();
+  function render() {
+    let models = D.models.slice();
+    const v = vendorFilter.value;
+    const l = licenseFilter.value;
+    const q = (search.value || '').trim().toLowerCase();
+    if (v) models = models.filter(m => m.vendor_id === v);
+    if (l === 'open') models = models.filter(m => m.is_open_weight);
+    if (l === 'proprietary') models = models.filter(m => !m.is_open_weight);
+    if (q) models = models.filter(m =>
+      m.display_name.toLowerCase().includes(q) ||
+      (m.capabilities || []).join(' ').toLowerCase().includes(q) ||
+      (m.family || '').toLowerCase().includes(q)
+    );
 
-  if (vendorFilter) models = models.filter(m => m.vendor_id === vendorFilter);
-  if (capFilter) models = models.filter(m => (m.capabilities || []).includes(capFilter));
+    if (models.length === 0) {
+      grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div>没有匹配的模型</div>';
+      return;
+    }
 
-  if (ctxFilter) {
-    models = models.filter(m => {
-      const c = m.context_window;
-      if (ctxFilter === '0-32000') return c <= 32000;
-      if (ctxFilter === '32001-128000') return c > 32000 && c <= 128000;
-      if (ctxFilter === '128001-1000000') return c > 128000 && c <= 1000000;
-      if (ctxFilter === '1000001-') return c > 1000000;
-      return true;
-    });
+    grid.innerHTML = models.map(m => {
+      const vendor = D.vendors.find(x => x.id === m.vendor_id);
+      const price = m.official_input_usd_m;
+      const output = m.official_output_usd_m;
+      return `<a href="model.html?id=${m.id}" class="card model-card" style="text-decoration:none;color:inherit;">
+        <div class="model-card-head">
+          <div class="model-card-logo">${vendor?.logo || '🤖'}</div>
+          <div style="flex:1;min-width:0;">
+            <div class="model-card-title">${m.display_name}</div>
+            <div class="model-card-vendor">${vendor?.name || ''} · ${m.release_date}</div>
+          </div>
+        </div>
+        <div class="flex between items-center" style="margin-top:8px;">
+          <div class="model-card-price mono">${fmtUSD(price)} <span class="muted text-xs">in</span> · ${fmtUSD(output)} <span class="muted text-xs">out</span></div>
+          <div class="muted text-xs">${fmtCtx(m.context_window)} ctx</div>
+        </div>
+        <div class="model-card-tags">
+          ${(m.capabilities || []).slice(0, 3).map(c => '<span class="tag">' + c + '</span>').join('')}
+          ${m.is_open_weight ? '<span class="tag tag-success">开源</span>' : ''}
+        </div>
+      </a>`;
+    }).join('');
   }
 
-  // 排序
-  models.forEach(m => {
-    m._inputCny = m.official_input_cny_m || (m.official_input_usd_m ? m.official_input_usd_m * fx : 0);
-    m._outputCny = m.official_output_cny_m || (m.official_output_usd_m ? m.official_output_usd_m * fx : 0);
-  });
-  if (sortBy === 'input') models.sort((a, b) => a._inputCny - b._inputCny);
-  else if (sortBy === 'output') models.sort((a, b) => a._outputCny - b._outputCny);
-  else if (sortBy === 'context') models.sort((a, b) => b.context_window - a.context_window);
-  else if (sortBy === 'vendor') models.sort((a, b) => {
-    const va = getVendor(a.vendor_id)?.name_zh || '';
-    const vb = getVendor(b.vendor_id)?.name_zh || '';
-    return va.localeCompare(vb);
-  });
-
-  grid.innerHTML = '';
-  models.forEach(m => {
-    const v = getVendor(m.vendor_id);
-    const offerings = getOfferingsForModel(m.id);
-    const card = document.createElement('a');
-    card.href = 'model.html?id=' + m.id;
-    card.className = 'model-card';
-    card.innerHTML =
-      '<div class="model-card-name">' + m.display_name + '</div>' +
-      '<div class="model-card-vendor">' + v.name_zh + '</div>' +
-      '<div class="model-card-price">¥' + m._inputCny.toFixed(1) + ' / ¥' + m._outputCny.toFixed(1) + ' 输入/输出</div>' +
-      '<div class="model-card-context">📏 ' + fmtCtx(m.context_window) + ' · ' + offerings.length + ' 渠道</div>' +
-      '<div class="model-card-tags">' +
-        (m.scenes || []).slice(0, 3).map(s => '<span class="tag tag-scene">' + s + '</span>').join('') +
-        (m.capabilities || []).slice(0, 2).map(c => '<span class="tag tag-cap">' + c + '</span>').join('') +
-      '</div>';
-    grid.appendChild(card);
-  });
-
-  if (models.length === 0) {
-    grid.innerHTML = '<div class="empty-state">无匹配模型</div>';
-  }
-
-  document.getElementById('model-count').textContent = models.length;
-}
+  vendorFilter.addEventListener('change', render);
+  licenseFilter.addEventListener('change', render);
+  search.addEventListener('input', render);
+  render();
+})();
 </script>
 </body>
 </html>
