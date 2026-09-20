@@ -278,7 +278,7 @@ async function start() {
   state.key = $("in-key").value.trim();
   state.model = $("in-model").value.trim();
   state.protocol = $("in-protocol").value;
-  if (!state.url || !state.key || !state.model) { alert("请填完整 URL / Key / 模型"); return; }
+  if (!state.url || !state.key || !state.model) { alert("请填完整：基础地址、API 密钥、模型名"); return; }
 
   state.checks = {
     reachable: $("chk-reachable").checked,
@@ -414,11 +414,11 @@ async function checkModel() {
     setStep("model", status, `${latency}ms · "${content.slice(0, 20)}"`);
 
     renderRow("r-model", [
-      { key: "Probe 响应", val: '"' + content.slice(0, 30) + '"', status: saysFour ? "ok" : "fail" },
+      { key: "探测响应", val: '"' + content.slice(0, 30) + '"', status: saysFour ? "ok" : "fail" },
       { key: "响应延迟", val: latency + "ms", status: latency > 5000 ? "warn" : "ok" },
-      { key: "是否回答 4", val: saysFour ? "✅ 是" : "❌ 否", status: saysFour ? "ok" : "fail" },
+      { key: "答案正确性", val: saysFour ? "✅ 答对" : "❌ 答错", status: saysFour ? "ok" : "fail" },
       { key: "回答字数", val: content.length + " 字", status: isSuspicious ? "warn" : "ok" },
-      { key: "模型 ID（响应中）", val: data?.model || data?.id || "N/A", status: "ok" }
+      { key: "响应模型 ID", val: data?.model || data?.id || "N/A", status: "ok" }
     ]);
 
     if (!saysFour) addWarning("danger", "模型回答 '2+2' 不是 4。这极大概率不是真实模型（可能是个 shell 接口或被冒充）。");
@@ -453,8 +453,8 @@ async function checkPerf() {
     renderRow("r-perf", [
       { key: "响应延迟", val: latency + "ms (" + speedLabel + ")", status: latency < 5000 ? "ok" : "warn" },
       { key: "消耗 tokens", val: tokens, status: "ok" },
-      { key: "input_tokens", val: usage.prompt_tokens || usage.input_tokens || 0, status: "ok" },
-      { key: "output_tokens", val: usage.completion_tokens || usage.output_tokens || 0, status: "ok" }
+      { key: "输入 Tokens", val: usage.prompt_tokens || usage.input_tokens || 0, status: "ok" },
+      { key: "输出 Tokens", val: usage.completion_tokens || usage.output_tokens || 0, status: "ok" }
     ]);
   } catch (e) {
     state.results.perf = { status: "fail", error: e.message };
@@ -492,8 +492,8 @@ async function checkStream() {
     renderRow("r-stream", [
       { key: "流式 chunks", val: chunks, status: chunks > 1 ? "ok" : "fail" },
       { key: "首 token 延迟", val: ttft + "ms", status: ttft < 1000 ? "ok" : "warn" },
-      { key: "总响应", val: totalTime + "ms", status: "ok" },
-      { key: "总字节", val: totalBytes + "B", status: "ok" }
+      { key: "总耗时", val: totalTime + "ms", status: "ok" },
+      { key: "返回字节", val: totalBytes + "B", status: "ok" }
     ]);
     if (chunks <= 1) addWarning("warning", "声称支持流式但只收到 1 个 chunk。可能不支持流式。");
   } catch (e) {
