@@ -36,6 +36,7 @@
 
 /* 入口卡片 (4 个) */
 .entry-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 40px 0; }
+.entry-cards[style*="repeat(5"] { grid-template-columns: repeat(5, 1fr) !important; }
 .entry-card { padding: 32px 24px; cursor: pointer; position: relative; overflow: hidden; }
 .entry-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--grad-primary); opacity: 0; transition: opacity 0.2s; }
 .entry-card:hover::before { opacity: 1; }
@@ -94,7 +95,7 @@
 
 /* 响应式 */
 @media (max-width: 900px) {
-  .entry-cards { grid-template-columns: 1fr; }
+  .entry-cards, .entry-cards[style*="repeat(5"] { grid-template-columns: 1fr !important; }
   .stats-bar { grid-template-columns: repeat(2, 1fr); }
   .calc-grid { grid-template-columns: 1fr; }
   .calc-breakdown { grid-template-columns: repeat(3, 1fr); }
@@ -119,8 +120,12 @@
     </h1>
     <p class="hero-desc">
       比价 · 排障 · 监控 · 测试。四件事不需要四个工具。
-      基于 2026 年最新公开数据，覆盖 Claude / GPT / Gemini / DeepSeek / Qwen / GLM 等 21 家厂商的官方与中转渠道。
+      基于 2026 年最新公开数据，覆盖 21 家厂商的官方与中转渠道。
     </p>
+    <div style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="playground.html" class="btn btn-primary" style="text-decoration:none;font-size:15px;padding:12px 24px;">▶ 立即试用 Playground</a>
+      <a href="business.html" class="btn btn-ghost" style="text-decoration:none;font-size:14px;padding:12px 24px;">查看 40 家服务商 →</a>
+    </div>
 
     <!-- 搜索 -->
     <div class="search-wrap">
@@ -138,8 +143,14 @@
     <div class="card stat-card"><div class="stat-num" id="stat-events">0</div><div class="stat-label">本月事件</div></div>
   </section>
 
-  <!-- 四个入口 -->
-  <section class="entry-cards">
+  <!-- 五个入口 -->
+  <section class="entry-cards" style="grid-template-columns: repeat(5, 1fr);">
+    <a href="playground.html" class="card entry-card card-hover" style="text-decoration:none;color:inherit;">
+      <div class="entry-card-icon">▶️</div>
+      <h3>立即试用 API</h3>
+      <p>浏览器直接测试任意模型，参数可调、流式输出、3 模型同屏对比</p>
+      <div class="muted text-xs" style="margin-top:12px;">→ Playground</div>
+    </a>
     <a href="compare.html" class="card entry-card card-hover" style="text-decoration:none;color:inherit;">
       <div class="entry-card-icon">💰</div>
       <h3>准备充值 · 比方案</h3>
