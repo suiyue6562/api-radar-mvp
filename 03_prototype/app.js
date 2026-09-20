@@ -227,11 +227,16 @@ function renderPriceTable() {
   }).join('');
 }
 
-// ============ 计算器 ============
+// ============ 计算器 v2 (含缓存命中/长上下文/批量折扣) ============
 function setupCalculator() {
   const sel = $('calc-model');
   if (!sel) return;
-  sel.innerHTML = D.models.map(m => `<option value="${m.id}">${m.display_name} (${fmtUSD(m.official_input_usd_m)}/${fmtUSD(m.official_output_usd_m)})</option>`).join('');
+  sel.innerHTML = D.models.map(m => {
+    const name = m.name || m.display_name || m.id;
+    const inp = m.price_input_per_m || m.official_input_usd_m || 0;
+    const out = m.price_output_per_m || m.official_output_usd_m || 0;
+    return `<option value="${m.id}">${name} (${fmtUSD(inp)}/${fmtUSD(out)})</option>`;
+  }).join('');
 
   function runCalc() {
     const modelId = sel.value;
@@ -239,29 +244,84 @@ function setupCalculator() {
     const input = parseFloat($('calc-input').value) || 0;
     const output = parseFloat($('calc-output').value) || 0;
     const cache = parseFloat($('calc-cache').value) || 0;
+    const cacheRatio = Math.min(100, Math.max(0, parseFloat($('calc-cache-ratio').value) || 0)) / 100;
+    const ctxTier = $('calc-ctx-tier').value;
+    const mode = $('calc-mode').value;
     const currency = $('calc-currency').value;
 
-    // 用官方价
-    const cost = {
-      inputCost: (model.official_input_usd_m || 0) * input,
-      outputCost: (model.official_output_usd_m || 0) * output,
-      cacheCost: (model.official_cache_read_usd_m || 0) * cache,
-    };
-    cost.total = cost.inputCost + cost.outputCost + cost.cacheCost;
+    const inp = model.price_input_per_m || model.official_input_usd_m || 0;
+    const out = model.price_output_per_m || model.official_output_usd_m || 0;
+    const cachePrice = model.price_cache_read_per_m || model.official_cache_read_usd_m || 0;
 
+    // 1. 计算未加价的输入成本（包含未命中的缓存）
+    const cacheHit = cache * cacheRatio;
+    const cacheMiss = cache * (1 - cacheRatio);
+    const inputCost = (input + cacheMiss) * inp;
+    const outputCost = output * out;
+    const cacheCost = cacheHit * (cachePrice || inp);  // 没有缓存价就 fallback 到输入价
+
+    // 2. 长上下文加价
+    let ctxMultiplier = 1.0;
+    if (ctxTier === '128k') ctxMultiplier = 1.5;
+    else if (ctxTier === '1m') ctxMultiplier = 2.0;
+    else if (ctxTier === '10m') ctxMultiplier = 3.0;
+    
+    // 只有支持该上下文段的模型才加价
+    const ctx = model.context_window || 32000;
+    let supportsCtx = true;
+    if (ctxTier === '128k' && ctx < 128000) supportsCtx = false;
+    if (ctxTier === '1m' && ctx < 1000000) supportsCtx = false;
+    if (ctxTier === '10m' && ctx < 5000000) supportsCtx = false;
+    if (!supportsCtx) ctxMultiplier = 1.0;
+    
+    const longCtxExtra = (inputCost + outputCost + cacheCost) * (ctxMultiplier - 1);
+
+    // 3. 批量折扣
+    let batchDiscount = 0;
+    if (mode === 'batch') {
+      const bd = model.batch_discount || 0.5;  // 默认 50% 折扣
+      batchDiscount = (inputCost + outputCost + cacheCost + longCtxExtra) * (1 - bd);
+    }
+
+    // 4. 总成本
+    const total = inputCost + outputCost + cacheCost + longCtxExtra - batchDiscount;
+
+    // 显示
     const disp = (n) => fmtPrice(n, currency);
     $('calc-result').style.display = 'block';
-    $('result-total').textContent = disp(cost.total);
-    $('result-info').textContent = `${model.display_name} · 官方渠道`;
-    $('result-input').textContent = disp(cost.inputCost);
-    $('result-output').textContent = disp(cost.outputCost);
-    $('result-cache').textContent = disp(cost.cacheCost);
+    $('result-total').textContent = disp(total);
+    const modelName = model.name || model.display_name || model.id;
+    $('result-info').textContent = `${modelName} · 官方渠道`;
+    $('result-input').textContent = disp(inputCost);
+    $('result-output').textContent = disp(outputCost);
+    $('result-cache').textContent = disp(cacheCost);
+    $('result-longctx').textContent = disp(longCtxExtra);
+    $('result-batch').textContent = batchDiscount > 0 ? '-' + disp(batchDiscount) : '—';
+    $('result-batch').style.color = batchDiscount > 0 ? '#22c55e' : 'var(--muted)';
+
+    // 提示
+    const tips = [];
+    if (!cachePrice && cache > 0) {
+      tips.push(`⚠️ ${modelName} 没有缓存价，已按输入价估算`);
+    }
+    if (!supportsCtx) {
+      tips.push(`⚠️ ${modelName} 上下文只有 ${fmtCtx(ctx)}，不支持长上下文加价`);
+    }
+    if (mode === 'batch') {
+      tips.push(`💡 批量 API 通常有 24h 延迟，适合离线处理`);
+    }
+    if (cacheRatio > 0 && cache > 0) {
+      const saved = (cacheHit * inp) - cacheCost;
+      if (saved > 0) tips.push(`💡 缓存命中 ${(cacheRatio*100).toFixed(0)}% → 节省 ${disp(saved)}/月`);
+    }
+    $('result-note').innerHTML = tips.length ? tips.join('；') : `基于官方价 + ${(ctxMultiplier*100).toFixed(0)}% 上下文系数 + ${mode==='batch'?'50%':'无'}批量折扣`;
   }
 
   $('calc-btn')?.addEventListener('click', runCalc);
   sel.addEventListener('change', runCalc);
-  ['calc-input', 'calc-output', 'calc-cache', 'calc-currency'].forEach(id => {
+  ['calc-input', 'calc-output', 'calc-cache', 'calc-cache-ratio', 'calc-ctx-tier', 'calc-mode', 'calc-currency'].forEach(id => {
     $(id)?.addEventListener('change', runCalc);
+    $(id)?.addEventListener('input', runCalc);
   });
 
   // 初始计算

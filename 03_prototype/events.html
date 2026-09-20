@@ -33,8 +33,11 @@ select.filter-sel { padding: 8px 12px; border-radius: 8px; border: 1px solid var
 <body>
 <div id="topbar"></div>
 <main class="main">
-  <h1>📊 行情事件</h1>
-  <p class="muted" style="margin-bottom:16px;">价格变动 · 新模型发布 · 服务中断 · 政策调整 — 2024-09 至 2026-09</p>
+  <div class="page-hero fade-in">
+    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>实时 · 30 天回顾</span></div>
+    <h1><span class="gradient-text">📊 行情事件</span></h1>
+    <p class="subtitle">价格变动 · 新模型发布 · 服务中断 · 政策调整 — 2024-09 至 2026-09</p>
+  </div>
   <div class="event-filters" id="event-filters">
     <span class="filter-label">类型：</span>
     <button class="filter-chip active" data-type="">全部</button>

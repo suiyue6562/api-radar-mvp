@@ -58,14 +58,12 @@
   const sorted = [...offerings].sort((a, b) => (a.input_usd_m + a.output_usd_m) - (b.input_usd_m + b.output_usd_m));
 
   document.getElementById('model-content').innerHTML = `
-    <div class="flex items-center gap-3">
-      <div style="width:56px;height:56px;border-radius:14px;background:var(--bg-card);display:flex;align-items:center;justify-content:center;font-size:28px;">${vendor?.logo || '🤖'}</div>
-      <div>
-        <h1>${model.display_name}</h1>
-        <div class="page-meta">${vendor?.name || ''} · ${model.family} · ${model.release_date} 发布 · ${model.license}</div>
-      </div>
-    </div>
-    <p class="muted" style="margin:16px 0 32px;line-height:1.7;">${model.description || ''}</p>
+  <div class="page-hero fade-in" style="text-align:left;padding:32px 0 16px;">
+    <div class="page-hero-tagline" style="margin-bottom:8px;"><span class="page-hero-tagline-dot"></span><span>${vendor?.name || ''} · ${model.family || ''}</span></div>
+    <h1 style="font-size:36px;text-align:left;"><span class="gradient-text">${model.display_name || model.name || model.id}</span></h1>
+    <p class="subtitle" style="text-align:left;margin:8px 0 0;">${model.release_date || ''} 发布 · ${model.license || ''} · ${model.context_window ? fmtCtx(model.context_window) + ' context' : ''}</p>
+  </div>
+  <p class="muted" style="margin:0 0 32px;line-height:1.7;">${model.description || model.notes || ''}</p>
 
     <div class="detail-grid">
       <!-- 左：能力 -->

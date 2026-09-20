@@ -14,9 +14,11 @@
 <body>
 <div id="topbar"></div>
 <main class="main">
-
-  <h1>📡 渠道库</h1>
-  <p class="page-desc">{{total}} 个渠道 · 官方 / 中转 / 网关 / 自托管</p>
+  <div class="page-hero fade-in">
+    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>40 个渠道 · 实时</span></div>
+    <h1><span class="gradient-text">📡 渠道库</span></h1>
+    <p class="subtitle">{{total}} 个渠道 · 官方 / 中转 / 网关 / 自托管</p>
+  </div>
   <div class="filter-bar" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
     <select id="type-filter" style="padding:8px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;color:var(--fg);">
       <option value="">所有类型</option>

@@ -363,3 +363,46 @@ tbody tr:hover { background: rgba(0,217,255,0.04); }
   color: var(--muted);
 }
 .empty-state-icon { font-size: 48px; opacity: 0.4; margin-bottom: 16px; }
+/* ===== 页面通用 page-hero（所有页面一致） ===== */
+.page-hero { padding: 48px 0 24px; text-align: center; position: relative; }
+.page-hero-tagline { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: rgba(0,217,255,0.08); border: 1px solid rgba(0,217,255,0.2); color: var(--accent); font-size: 12px; font-weight: 600; margin-bottom: 16px; }
+.page-hero-tagline-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: var(--glow-cyan); animation: pulse-glow 2s infinite; }
+.page-hero h1 { font-size: 42px; line-height: 1.1; margin-bottom: 12px; font-weight: 800; }
+.page-hero .subtitle { color: var(--muted); font-size: 15px; max-width: 640px; margin: 0 auto; }
+
+/* ===== 全站网格背景动画（首页有 hero-tagline 的也用） ===== */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(rgba(120,160,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120,160,255,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: -1;
+  mask-image: radial-gradient(circle at 50% 30%, rgba(0,0,0,0.6) 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(circle at 50% 30%, rgba(0,0,0,0.6) 0%, transparent 70%);
+}
+
+/* 渐变光斑 */
+body::after {
+  content: '';
+  position: fixed;
+  top: -20%; left: -20%;
+  width: 60vw; height: 60vw;
+  background: radial-gradient(circle, rgba(0,217,255,0.08) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: -1;
+  animation: float-glow 20s ease-in-out infinite;
+}
+@keyframes float-glow {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(20vw, 10vh); }
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 900px) {
+  .page-hero h1 { font-size: 28px; }
+  .page-hero { padding: 32px 0 16px; }
+}
