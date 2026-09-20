@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API 服务商 - API Radar</title>
+<meta name="description" content="国内外 AI API 服务商汇总：OpenAI、Anthropic、Google、DeepSeek、阿里云、字节、豆包、智谱等。官方渠道、中转聚合、自托管方案一站式对比。">
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+.biz-hero { padding: 48px 0 24px; text-align: center; }
+.biz-hero h1 { font-size: 42px; margin-bottom: 12px; font-weight: 800; }
+.biz-hero .gradient-text { background: linear-gradient(135deg, #00d9ff 0%, #b066ff 50%, #ff6b9d 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.biz-hero p { color: var(--muted); max-width: 600px; margin: 0 auto; }
+
+/* 广告位 */
+.ad-slot { padding: 16px 24px; border-radius: 12px; margin: 16px 0; text-align: center; position: relative; }
+.ad-slot::before { content: '广告'; position: absolute; top: 8px; right: 12px; font-size: 10px; color: var(--muted); background: rgba(120,160,255,0.1); padding: 2px 6px; border-radius: 4px; }
+.ad-banner { background: linear-gradient(135deg, rgba(0,217,255,0.12), rgba(176,107,255,0.08)); border: 1px solid rgba(120,160,255,0.2); }
+.ad-card { background: rgba(15,22,41,0.72); border: 1px solid rgba(120,160,255,0.15); }
+.ad-banner a, .ad-card a { color: inherit; text-decoration: none; }
+
+/* 布局 */
+.biz-grid { display: grid; grid-template-columns: 280px 1fr; margin-top: 24px; gap: 24px; }
+@media (max-width: 900px) { .biz-grid { grid-template-columns: 1fr; } }
+
+/* 左侧筛选 */
+.biz-sidebar { padding: 20px; height: fit-content; position: sticky; top: 80px; }
+.biz-sidebar h4 { margin: 16px 0 8px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.biz-sidebar h4:first-child { margin-top: 0; }
+.filter-chip { display: inline-block; padding: 6px 12px; margin: 3px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 16px; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+.filter-chip:hover { border-color: var(--accent); }
+.filter-chip.active { background: var(--grad-primary); border-color: var(--accent); color: #001428; font-weight: 700; }
+
+/* 商家卡片 */
+.biz-list { display: flex; flex-direction: column; gap: 12px; }
+.biz-card { padding: 20px; display: grid; grid-template-columns: 80px 1fr auto; gap: 16px; align-items: center; transition: all 0.2s; }
+.biz-card:hover { border-color: var(--border-hover); transform: translateY(-1px); }
+.biz-logo { width: 64px; height: 64px; border-radius: 14px; background: var(--bg-deep); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; }
+.biz-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.biz-info .biz-vendor { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+.biz-info .biz-desc { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 8px; }
+.biz-info .biz-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+.biz-info .biz-tags .tag { font-size: 10px; padding: 2px 8px; }
+.biz-meta { text-align: right; font-size: 12px; color: var(--muted); }
+.biz-meta .biz-price { font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.biz-meta .biz-region { font-size: 11px; }
+.biz-meta a { display: inline-block; margin-top: 8px; padding: 6px 12px; background: var(--grad-primary); color: #001428; border-radius: 6px; font-size: 11px; font-weight: 700; text-decoration: none; }
+@media (max-width: 600px) {
+  .biz-card { grid-template-columns: 60px 1fr; }
+  .biz-card .biz-meta { grid-column: span 2; text-align: left; }
+}
+
+.biz-sort { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.biz-sort select { padding: 8px 12px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; color: var(--fg); font-size: 13px; }
+.biz-count { color: var(--muted); font-size: 13px; }
+
+.section-divider { display: flex; align-items: center; gap: 12px; margin: 32px 0 16px; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
+.section-divider::before, .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+</style>
+</head>
+<body>
+<div id="topbar"></div>
+
+<main class="main">
+  <div class="biz-hero fade-in">
+    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>实时 · 40 家服务商</span></div>
+    <h1><span class="gradient-text">API 服务商目录</span></h1>
+    <p>对接全球主流大模型 API 服务商。官方直连 / 中转聚合 / 自托管 / 个人开发者方案一站式对比。</p>
+  </div>
+
+  <!-- 顶部广告位 -->
+  <div class="ad-slot ad-banner" id="ad-home_top"></div>
+
+  <div class="biz-grid">
+    <!-- 左侧筛选 -->
+    <aside class="card glass-strong biz-sidebar">
+      <h4>类型</h4>
+      <div id="filter-type"></div>
+      <h4>地区</h4>
+      <div id="filter-region"></div>
+      <h4>付款</h4>
+      <div id="filter-currency"></div>
+      <h4>协议</h4>
+      <div id="filter-protocol"></div>
+      <h4>支持发票</h4>
+      <div id="filter-invoice"></div>
+    </aside>
+
+    <!-- 右侧商家列表 -->
+    <div>
+      <div class="biz-sort">
+        <span class="biz-count" id="biz-count">—</span>
+        <div class="flex gap-2">
+          <label style="font-size:12px;color:var(--muted);">排序：</label>
+          <select id="biz-sort">
+            <option value="price">价格升序</option>
+            <option value="popular">热度</option>
+            <option value="name">名称</option>
+            <option value="min_charge">最低充值</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 列表中部广告位 -->
+      <div class="ad-slot ad-card" id="ad-home_mid" style="display:none;"></div>
+
+      <div class="biz-list" id="biz-list"></div>
+    </div>
+  </div>
+</main>
+
+<div id="footer"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+if (typeof renderTopbar === "function") renderTopbar("business");
+
+// 状态
+const state = {
+  type: new Set(),
+  region: new Set(),
+  currency: new Set(),
+  protocol: new Set(),
+  invoiceOnly: false
+};
+
+const TYPE_LABEL = { official: "官方", aggregator: "聚合", gateway: "网关", self_host: "自托管", platform: "平台", individual: "个人" };
+const REGION_LABEL = { global: "全球", cn: "国内" };
+const PROTOCOL_LABEL = { openai: "OpenAI", anthropic: "Anthropic", gemini: "Gemini" };
+
+function renderFilter(containerId, field, items, labelMap) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = items.map(v => {
+    const label = labelMap ? labelMap[v] || v : v;
+    return `<span class="filter-chip" data-field="${field}" data-value="${v}">${label}</span>`;
+  }).join("");
+  c.querySelectorAll(".filter-chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      const set = state[chip.dataset.field];
+      if (set.has(chip.dataset.value)) {
+        set.delete(chip.dataset.value);
+        chip.classList.remove("active");
+      } else {
+        set.add(chip.dataset.value);
+        chip.classList.add("active");
+      }
+      renderBiz();
+    });
+  });
+}
+
+function init() {
+  // 从数据派生筛选选项
+  const types = [...new Set(D.providers.map(p => p.type).filter(Boolean))];
+  const regions = [...new Set(D.providers.map(p => p.region).filter(Boolean))];
+  const currencies = [...new Set(D.providers.flatMap(p => p.payment_currency || []))];
+  const protocols = [...new Set(D.providers.flatMap(p => p.api_protocol || []))];
+
+  renderFilter("filter-type", "type", types, TYPE_LABEL);
+  renderFilter("filter-region", "region", regions, REGION_LABEL);
+  renderFilter("filter-currency", "currency", currencies);
+  renderFilter("filter-protocol", "protocol", protocols, PROTOCOL_LABEL);
+
+  // 发票
+  const c = document.getElementById("filter-invoice");
+  c.innerHTML = `<span class="filter-chip" id="invoice-chip">可开发票</span>`;
+  document.getElementById("invoice-chip").addEventListener("click", () => {
+    state.invoiceOnly = !state.invoiceOnly;
+    document.getElementById("invoice-chip").classList.toggle("active");
+    renderBiz();
+  });
+
+  document.getElementById("biz-sort").addEventListener("change", renderBiz);
+
+  // 广告
+  loadAd("home_top");
+  loadAd("home_mid");
+
+  renderBiz();
+}
+
+function getFiltered() {
+  return D.providers.filter(p => {
+    if (state.type.size && !state.type.has(p.type)) return false;
+    if (state.region.size && !state.region.has(p.region)) return false;
+    if (state.currency.size) {
+      const pc = p.payment_currency || [];
+      if (!pc.some(c => state.currency.has(c))) return false;
+    }
+    if (state.protocol.size) {
+      const ap = p.api_protocol || [];
+      if (!ap.some(x => state.protocol.has(x))) return false;
+    }
+    if (state.invoiceOnly && !p.invoice_available) return false;
+    return true;
+  });
+}
+
+function renderBiz() {
+  const list = getFiltered();
+  const sortBy = document.getElementById("biz-sort").value;
+  list.sort((a, b) => {
+    if (sortBy === "price") {
+      return (a.min_charge || 0) - (b.min_charge || 0);
+    } else if (sortBy === "min_charge") {
+      return (a.min_charge || 0) - (b.min_charge || 0);
+    } else if (sortBy === "popular") {
+      return (a.id < b.id ? -1 : 1);
+    } else {
+      return (a.name_zh || "").localeCompare(b.name_zh || "", "zh");
+    }
+  });
+
+  document.getElementById("biz-count").textContent = `共 ${list.length} 家服务商`;
+
+  const html = list.map((p, i) => {
+    const tag = TYPE_LABEL[p.type] || p.type;
+    const region = REGION_LABEL[p.region] || p.region;
+    const protocols = (p.api_protocol || []).map(x => PROTOCOL_LABEL[x] || x).join(" / ");
+    const invoices = p.invoice_available ? "发票✓" : "发票✗";
+    const logo = p.id.replace(/^p_/, "").slice(0, 2).toUpperCase();
+    // 在列表中部插入广告
+    const adMarker = i === Math.floor(list.length / 2) && list.length > 5 ? "AD_INSERT" : "";
+    return `
+    <div class="card glass-strong biz-card">
+      <div class="biz-logo">${logo}</div>
+      <div class="biz-info">
+        <h3>${p.name_zh || p.id}</h3>
+        <div class="biz-vendor">${p.name_en || ""} · ${tag} · ${region}</div>
+        <div class="biz-desc">${p.notes || "—"}</div>
+        <div class="biz-tags">
+          ${protocols ? `<span class="tag" style="background:rgba(0,217,255,0.1);color:#00d9ff;">${protocols}</span>` : ""}
+          <span class="tag">${(p.payment_currency || []).join(" / ")}</span>
+          <span class="tag">${invoices}</span>
+        </div>
+      </div>
+      <div class="biz-meta">
+        <div class="biz-price">${p.min_charge ? "$" + p.min_charge : "免费"}</div>
+        <div class="biz-region">最低充值</div>
+        ${p.website ? `<a href="${p.website}" target="_blank" rel="noopener">官网 →</a>` : ""}
+      </div>
+    </div>
+    ${adMarker}`;
+  }).join("");
+
+  // 处理广告插入
+  const finalHtml = html.replace("AD_INSERT", `<div class="ad-slot ad-card" style="margin: 16px 0;"><div style="padding: 24px; text-align: center; color: var(--muted);">[广告位] 您的广告可以放这里</div></div>`);
+  document.getElementById("biz-list").innerHTML = finalHtml || '<div style="text-align:center; padding: 40px; color: var(--muted);">没有匹配的服务商</div>';
+}
+
+async function loadAd(slot) {
+  try {
+    const resp = await fetch("https://api.apireader.top/api/ads?slot=" + slot);
+    const ads = await resp.json();
+    if (ads && ads.length) {
+      const ad = ads[0];
+      const slot = document.getElementById("ad-" + slot);
+      if (!slot) return;
+      slot.innerHTML = `<a href="${ad.link_url || "#"}" target="_blank" rel="noopener sponsored">
+        <div style="padding: 20px; text-align: center;">
+          <strong style="color: var(--accent); font-size: 16px;">${ad.title || ad.advertiser || "广告"}</strong>
+          ${ad.content ? `<div style="color: var(--muted); margin-top: 8px;">${ad.content}</div>` : ""}
+        </div>
+      </a>`;
+      slot.addEventListener("click", () => {
+        fetch("https://api.apireader.top/api/ads/" + ad.id + "/click", { method: "POST" });
+      });
+      slot.style.display = "block";
+    }
+  } catch (e) {}
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+name = "api-radar-api"
+main = "src/index.js"
+compatibility_date = "2024-09-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "api-radar-db"
+database_id = "c7342bc8-0cef-476a-9245-9a7a6acc5cfa"
+
+[vars]
+ADMIN_TOKEN = "apiradar-admin-2026-chen"
