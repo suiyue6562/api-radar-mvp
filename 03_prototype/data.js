@@ -197,7 +197,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Claude Fable",
       "overall_score": 15,
-      "weekly_tokens_m": 69600,
       "capability_icons": [
         "🧠",
         "🔧",
@@ -249,7 +248,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Claude Opus ",
       "overall_score": 15,
-      "weekly_tokens_m": 153000,
       "capability_icons": [
         "🧠",
         "🔧",
@@ -299,7 +297,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Claude Sonne",
       "overall_score": 15,
-      "weekly_tokens_m": 213000,
       "capability_icons": [
         "🧠",
         "🖼️"
@@ -347,7 +344,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Claude Opus ",
       "overall_score": 15,
-      "weekly_tokens_m": 136500,
       "capability_icons": [
         "🧠",
         "🖼️"
@@ -400,7 +396,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "GPT-5.6 Sol",
       "overall_score": 15,
-      "weekly_tokens_m": 76500,
       "capability_icons": [
         "🧠",
         "🔧",
@@ -452,7 +447,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "GPT-5.5",
       "overall_score": 15,
-      "weekly_tokens_m": 97500,
       "capability_icons": [
         "🧠",
         "🔧",
@@ -499,7 +493,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "GPT-5.5 Pro",
       "overall_score": 15,
-      "weekly_tokens_m": 88500,
       "capability_icons": [
         "🧠",
         "🖼️"
@@ -543,7 +536,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "GPT-5.2",
       "overall_score": 11,
-      "weekly_tokens_m": 102000,
       "capability_icons": [
         "🧠"
       ]
@@ -596,7 +588,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Gemini 3.1 P",
       "overall_score": 19,
-      "weekly_tokens_m": 109600,
       "capability_icons": [
         "🧠",
         "🖼️",
@@ -647,7 +638,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Gemini 3.5 F",
       "overall_score": 27,
-      "weekly_tokens_m": 30000,
       "capability_icons": [
         "🖼️",
         "🎤"
@@ -699,7 +689,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Gemini 3 Fla",
       "overall_score": 42,
-      "weekly_tokens_m": 50400,
       "capability_icons": [
         "🧠",
         "🖼️",
@@ -747,7 +736,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Grok 4.3",
       "overall_score": 39,
-      "weekly_tokens_m": 51200,
       "capability_icons": [
         "🧠",
         "🔧",
@@ -792,7 +780,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Grok 4 Fast",
       "overall_score": 45,
-      "weekly_tokens_m": 100000,
       "capability_icons": [
         "🧠"
       ]
@@ -840,7 +827,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "DeepSeek V4 ",
       "overall_score": 46,
-      "weekly_tokens_m": 53600,
       "capability_icons": [
         "🧠"
       ]
@@ -889,7 +875,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "DeepSeek V4 ",
       "overall_score": 49,
-      "weekly_tokens_m": 40000,
       "capability_icons": [
         "🧠",
         "🖼️"
@@ -934,7 +919,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "DeepSeek V3.",
       "overall_score": 34,
-      "weekly_tokens_m": 66400,
       "capability_icons": [
         "🧠"
       ]
@@ -979,7 +963,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "DeepSeek R1",
       "overall_score": 30,
-      "weekly_tokens_m": 40000,
       "capability_icons": [
         "🧠"
       ]
@@ -1030,7 +1013,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Qwen3.8 Max",
       "overall_score": 28,
-      "weekly_tokens_m": 91200,
       "capability_icons": [
         "🧠",
         "🖼️",
@@ -1076,7 +1058,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Qwen3.7 Max",
       "overall_score": 23,
-      "weekly_tokens_m": 27900,
       "capability_icons": [
         "🖼️"
       ]
@@ -1117,7 +1098,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Qwen3.6 Max ",
       "overall_score": 23,
-      "weekly_tokens_m": 24300,
       "capability_icons": [
         "🖼️"
       ]
@@ -1161,7 +1141,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Qwen3.8 Flas",
       "overall_score": 46,
-      "weekly_tokens_m": 34200,
       "capability_icons": [
         "🖼️"
       ]
@@ -1207,7 +1186,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "GLM-5.2",
       "overall_score": 35,
-      "weekly_tokens_m": 35700,
       "capability_icons": [
         "🖼️"
       ]
@@ -1249,7 +1227,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "GLM-5.1",
       "overall_score": 24,
-      "weekly_tokens_m": 36000,
       "capability_icons": [
         "🖼️"
       ]
@@ -1291,7 +1268,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "GLM-4.6V",
       "overall_score": 27,
-      "weekly_tokens_m": 22200,
       "capability_icons": [
         "🖼️"
       ]
@@ -1336,7 +1312,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Kimi K3",
       "overall_score": 4,
-      "weekly_tokens_m": 29700,
       "capability_icons": [
         "🖼️"
       ]
@@ -1380,7 +1355,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Kimi K2.6",
       "overall_score": 27,
-      "weekly_tokens_m": 21900,
       "capability_icons": [
         "🖼️"
       ]
@@ -1426,7 +1400,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Doubao Seed ",
       "overall_score": 17,
-      "weekly_tokens_m": 37500,
       "capability_icons": [
         "🖼️",
         "🎤"
@@ -1470,7 +1443,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Doubao Seed ",
       "overall_score": 33,
-      "weekly_tokens_m": 44400,
       "capability_icons": [
         "🖼️"
       ]
@@ -1512,7 +1484,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "ERNIE 5.1",
       "overall_score": 27,
-      "weekly_tokens_m": 41100,
       "capability_icons": [
         "💬"
       ]
@@ -1557,7 +1528,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Llama 4 Mave",
       "overall_score": 43,
-      "weekly_tokens_m": 29100,
       "capability_icons": [
         "🖼️"
       ]
@@ -1601,7 +1571,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Llama 4 Scou",
       "overall_score": 45,
-      "weekly_tokens_m": 17700,
       "capability_icons": [
         "🖼️"
       ]
@@ -1642,7 +1611,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Mistral Larg",
       "overall_score": 18,
-      "weekly_tokens_m": 57600,
       "capability_icons": [
         "🧠"
       ]
@@ -1681,7 +1649,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Mistral Medi",
       "overall_score": 18,
-      "weekly_tokens_m": 41400,
       "capability_icons": [
         "💬"
       ]
@@ -1721,7 +1688,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Devstral 2",
       "overall_score": 14,
-      "weekly_tokens_m": 37800,
       "capability_icons": [
         "💬"
       ]
@@ -1765,7 +1731,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "MiniMax M3",
       "overall_score": 43,
-      "weekly_tokens_m": 22800,
       "capability_icons": [
         "🖼️"
       ]
@@ -1807,7 +1772,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "MiniMax M2.7",
       "overall_score": 23,
-      "weekly_tokens_m": 44700,
       "capability_icons": [
         "💬"
       ]
@@ -1847,7 +1811,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "Step-3.5 Fla",
       "overall_score": 35,
-      "weekly_tokens_m": 24900,
       "capability_icons": [
         "💬"
       ]
@@ -1888,7 +1851,6 @@ var API_RADAR_DATA = {
       ],
       "fingerprint_signature": "MiMo-V2 Flas",
       "overall_score": 35,
-      "weekly_tokens_m": 41400,
       "capability_icons": [
         "💬"
       ]
