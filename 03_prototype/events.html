@@ -57,6 +57,11 @@ select.filter-sel { padding: 8px 12px; border-radius: 8px; border: 1px solid var
 <script>
 (function() {
   if (typeof renderTopbar === 'function') renderTopbar('events');
+  
+function escapeHtml(s) {
+  return String(s || "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", """: "&quot;", "'": "&#39;"})[c]);
+}
+
   const EVENTS = API_RADAR_DATA.events;
   let current = { type: '', severity: '', targetType: '' };
   const typeMap = { price_change: '价格变动', new_model: '新模型', outage: '中断', capability_update: '能力', policy_change: '政策', model_deprecate: '停用' };
@@ -78,16 +83,16 @@ select.filter-sel { padding: 8px 12px; border-radius: 8px; border: 1px solid var
       filtered.map(e => {
         const date = new Date(e.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' });
         const sev = e.severity || 'medium';
-        const targetTag = e.target_type === 'model' ? '<span class="tag tag-accent">' + (e.target_name || '') + '</span>' : e.target_type === 'provider' ? '<span class="tag tag-purple">' + (e.target_name || '') + '</span>' : '';
+        const targetTag = e.target_type === 'model' ? '<span class="tag tag-accent">' + escapeHtml(e.target_name || '') + '</span>' : e.target_type === 'provider' ? '<span class="tag tag-purple">' + escapeHtml(e.target_name || '') + '</span>' : '';
         return `<div class="event-item sev-${sev}">
           <div class="event-icon">${iconMap[e.event_type] || '📌'}</div>
           <div class="event-body">
-            <div class="event-title">${e.title} <span class="tag" style="background:rgba(120,160,255,0.12);">${sevLabel[sev] || sev}</span></div>
-            <div class="event-desc">${e.description || ''}</div>
+            <div class="event-title">${escapeHtml(e.title)} <span class="tag" style="background:rgba(120,160,255,0.12);">${escapeHtml(sevLabel[sev] || sev)}</span></div>
+            <div class="event-desc">${escapeHtml(e.description || '')}</div>
             <div class="event-meta">
               ${(e.tags || []).map(t => '<span class="tag" style="background:rgba(120,160,255,0.1);">' + (typeMap[t] || t) + '</span>').join('')}
               ${targetTag}
-              ${(e.source_urls && e.source_urls[0]) ? '<a href="' + e.source_urls[0] + '" target="_blank" style="margin-left:auto;color:var(--accent);font-size:11px;">🔗 来源</a>' : ''}
+              ${(e.source_urls && e.source_urls[0]) ? '<a href="' + encodeURIComponent(e.source_urls[0]) + '" target="_blank" style="margin-left:auto;color:var(--accent);font-size:11px;">🔗 来源</a>' : ''}
             </div>
           </div>
           <div class="event-date">${date}</div>
