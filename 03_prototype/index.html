@@ -108,23 +108,39 @@
 <div id="topbar"></div>
 
 <main class="main">
-  <!-- HERO -->
+  <!-- HERO 重构：痛点 + 价值主张 + 社会证明 -->
   <section class="hero fade-in">
+    <!-- 数据点徽章（动态） -->
     <div class="hero-tagline">
       <span class="hero-tagline-dot"></span>
-      <span>2026 · 实时数据 · <span id="hero-counts">60 模型 / 40 渠道</span></span>
+      <span id="hero-tagline-text">2026 实时数据 · 60 模型 · 40 渠道</span>
     </div>
+
+    <!-- 痛点标题 -->
     <h1>
-      <span class="gradient-text">AI API 决策情报</span><br>
-      <span style="font-size:32px;font-weight:500;color:var(--muted);">开发者 + 小团队的渠道选择工具</span>
+      <span class="gradient-text">选错 API 渠道</span><br>
+      <span style="font-size:32px;font-weight:500;color:var(--muted);">每月白花 30% 预算</span>
     </h1>
-    <p class="hero-desc">
-      比价 · 排障 · 监控 · 测试。四件事不需要四个工具。
-      基于 2026 年最新公开数据，覆盖 21 家厂商的官方与中转渠道。
+
+    <!-- 价值主张（具体可验证） -->
+    <p class="hero-desc" style="max-width:680px;font-size:17px;">
+      同一个 prompt，<strong style="color:var(--accent);">Claude vs GPT vs DeepSeek vs Qwen</strong> 输出质量差多少？
+      同一个模型，<strong style="color:var(--accent);">官方 vs 硅基流动 vs OpenRouter</strong> 实际计费差多少？
+      5 分钟跑一遍比一周自己查文档更靠谱。
     </p>
-    <div style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-      <a href="playground.html" class="btn btn-primary" style="text-decoration:none;font-size:15px;padding:12px 24px;">▶ 立即试用 Playground</a>
-      <a href="business.html" class="btn btn-ghost" style="text-decoration:none;font-size:14px;padding:12px 24px;">查看 40 家服务商 →</a>
+
+    <!-- 主 CTA -->
+    <div style="margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="playground.html" class="btn btn-primary" style="text-decoration:none;font-size:16px;padding:14px 28px;font-weight:700;">▶ 立即试用 Playground</a>
+      <a href="compare.html" class="btn btn-ghost" style="text-decoration:none;font-size:15px;padding:14px 28px;">💰 计算器比价</a>
+      <a href="business.html" class="btn btn-ghost" style="text-decoration:none;font-size:14px;padding:14px 24px;">40 家服务商 →</a>
+    </div>
+
+    <!-- 社会证明（动态拉数据） -->
+    <div style="margin-top:24px;display:flex;gap:24px;justify-content:center;flex-wrap:wrap;font-size:13px;color:var(--muted);">
+      <span>📊 今日 <strong id="proof-tests" style="color:var(--accent);">—</strong> 次 API 测试</span>
+      <span>👥 累计 <strong id="proof-users" style="color:var(--accent);">—</strong> 位独立用户</span>
+      <span>💾 已收录 <strong id="proof-models">60</strong> 个模型价格</span>
     </div>
 
     <!-- 搜索 -->
@@ -135,7 +151,32 @@
     </div>
   </section>
 
-  <!-- STATS -->
+  <!-- 核心场景（不是抽象口号，是真实任务） -->
+  <section style="margin:48px 0;">
+    <div class="section-head"><h2>🎯 你来这里是要做什么？</h2></div>
+    <div class="entry-cards" style="grid-template-columns: repeat(3, 1fr);">
+      <a href="playground.html" class="card entry-card card-hover" style="text-decoration:none;color:inherit;">
+        <div class="entry-card-icon">▶️</div>
+        <h3>测一下 API 能不能用</h3>
+        <p>已充值、想确认不踩坑。填 Key → 跑模型 → 看回复。30 秒。</p>
+        <div class="muted text-xs" style="margin-top:12px;">→ Playground（3 模型同屏对比）</div>
+      </a>
+      <a href="compare.html" class="card entry-card card-hover" style="text-decoration:none;color:inherit;">
+        <div class="entry-card-icon">💰</div>
+        <h3>选渠道准备充值</h3>
+        <p>输入月用量 → 看 5+ 渠道月成本（含缓存命中、超额）</p>
+        <div class="muted text-xs" style="margin-top:12px;">→ 横向比价</div>
+      </a>
+      <a href="events.html" class="card entry-card card-hover" style="text-decoration:none;color:inherit;">
+        <div class="entry-card-icon">🔧</div>
+        <h3>当前 API 不好用</h3>
+        <p>查最近 30 天价格变动 / 服务中断 / 政策调整</p>
+        <div class="muted text-xs" style="margin-top:12px;">→ 行情事件</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 实时数据 -->
   <section class="stats-bar fade-in">
     <div class="card stat-card"><div class="stat-num" id="stat-models">0</div><div class="stat-label">模型</div></div>
     <div class="card stat-card"><div class="stat-num" id="stat-providers">0</div><div class="stat-label">渠道</div></div>
@@ -143,39 +184,7 @@
     <div class="card stat-card"><div class="stat-num" id="stat-events">0</div><div class="stat-label">本月事件</div></div>
   </section>
 
-  <!-- 五个入口 -->
-  <section class="entry-cards" style="grid-template-columns: repeat(5, 1fr);">
-    <a href="playground.html" class="card entry-card card-hover" style="text-decoration:none;color:inherit;">
-      <div class="entry-card-icon">▶️</div>
-      <h3>立即试用 API</h3>
-      <p>浏览器直接测试任意模型，参数可调、流式输出、3 模型同屏对比</p>
-      <div class="muted text-xs" style="margin-top:12px;">→ Playground</div>
-    </a>
-    <a href="compare.html" class="card entry-card card-hover" style="text-decoration:none;color:inherit;">
-      <div class="entry-card-icon">💰</div>
-      <h3>准备充值 · 比方案</h3>
-      <p>输入月用量，对比 5+ 渠道的精确成本，包括缓存命中与超额规则</p>
-      <div class="muted text-xs" style="margin-top:12px;">→ 横向比价</div>
-    </a>
-    <a href="test.html" class="card entry-card card-hover" style="text-decoration:none;color:inherit;">
-      <div class="entry-card-icon">🔑</div>
-      <h3>渠道不通 · 测一下</h3>
-      <p>API key 充值后不确定能不能用？粘贴 key 10 秒告诉你是否兼容</p>
-      <div class="muted text-xs" style="margin-top:12px;">→ 兼容性测试</div>
-    </a>
-    <a href="events.html" class="card entry-card card-hover" style="text-decoration:none;color:inherit;">
-      <div class="entry-card-icon">🔧</div>
-      <h3>当前不好用 · 查问题</h3>
-      <p>查看最近 30 天的价格变动 / 服务中断 / 政策变更</p>
-      <div class="muted text-xs" style="margin-top:12px;">→ 行情事件</div>
-    </a>
-    <a href="watch.html" class="card entry-card card-hover" style="text-decoration:none;color:inherit;">
-      <div class="entry-card-icon">🔔</div>
-      <h3>关注的渠道 · 看变化</h3>
-      <p>订阅关注的模型/渠道，价格变化时自动记录</p>
-      <div class="muted text-xs" style="margin-top:12px;">→ 我的关注</div>
-    </a>
-  </section>
+
 
 
   <!-- 广告位：入口卡片后 -->
