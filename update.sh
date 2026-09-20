@@ -20,7 +20,7 @@ git clone "$REPO" "$DEPLOY_DIR" 2>&1 | tail -2
 # 3. 重启 HTTP 服务
 pkill -f "http.server 8080" 2>/dev/null
 sleep 1
-cd "$DEPLOY_DIR"
+cd "$DEPLOY_DIR/03_prototype"
 nohup python3 -m http.server 8080 --bind 0.0.0.0 > /tmp/radar.log 2>&1 &
 sleep 2
 
