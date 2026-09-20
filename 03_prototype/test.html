@@ -61,7 +61,7 @@
 
   <div class="test-hero">
     <h1><span class="gradient-text">🔑 API Key 兼容性测试</span></h1>
-    <p>粘贴你的 base_url + API key + 模型名，10 秒告诉你这个渠道能不能用、协议是否兼容、出错怎么办</p>
+    <p>粘贴你的基础地址 + API 密钥 + 模型名，10 秒告诉你这个渠道能不能用、协议是否兼容、出错怎么办</p>
   </div>
 
   <div class="test-grid">
@@ -76,12 +76,12 @@
       </div>
 
       <div class="form-group">
-        <label>Base URL</label>
+        <label>基础地址 (Base URL)</label>
         <input type="text" id="base-url" placeholder="https://api.deepseek.com/v1">
       </div>
 
       <div class="form-group">
-        <label>API Key</label>
+        <label>API 密钥</label>
         <input type="password" id="api-key" placeholder="sk-..." autocomplete="off">
       </div>
 
@@ -172,7 +172,7 @@ async function runTest() {
   const modelName = $('model-name').value.trim();
 
   if (!baseUrl || !apiKey || !modelName) {
-    showResult('error', '❌ 请填完整', { msg: 'Base URL、API Key、模型名 都必须填' });
+    showResult('error', '❌ 请填完整', { msg: '基础地址、API 密钥、模型名 都必须填' });
     return;
   }
 
