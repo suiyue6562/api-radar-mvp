@@ -7,7 +7,7 @@
     ? "http://127.0.0.1:8080"
     : (location.hostname.includes("apiyouxuan.top") || location.hostname.endsWith("workers.dev")
         ? location.origin
-        : "https://api.apiyouxuan.top");
+        : "https://api.apireader.top");
 
   async function loadAd(slot) {
     try {

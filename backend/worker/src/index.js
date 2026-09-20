@@ -14,6 +14,20 @@ export default {
 
     if (host.startsWith('admin.')) {
       if (path === '/' || path === '/index.html' || path === '') {
+        // 从 GitHub raw 拉最新版 admin.html（始终最新）
+        try {
+          const resp = await fetch("https://raw.githubusercontent.com/suiyue6562/api-radar-mvp/main/03_prototype/admin.html");
+          if (resp.ok) {
+            const html = await resp.text();
+            return new Response(html, {
+              headers: { 
+                'Content-Type': 'text/html; charset=utf-8',
+                'Cache-Control': 'public, max-age=60'
+              }
+            });
+          }
+        } catch (e) {}
+        // fallback 到内嵌
         return new Response(ADMIN_HTML, {
           headers: { 'Content-Type': 'text/html; charset=utf-8' }
         });
