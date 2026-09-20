@@ -1,0 +1,21 @@
+name: Smoke Test
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 */6 * * *'   # 每 6 小时跑一次
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run smoke tests
+        run: |
+          cd tests
+          python smoke_test.py

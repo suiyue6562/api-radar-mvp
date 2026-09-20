@@ -1,196 +1,163 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>API 真伪检测 - API Radar</title>
-<meta name="description" content="给你的 API 渠道做体检。验证可达性、鉴权、模型真实性、性能指标。防骗、防伪、防降智。">
-<link rel="stylesheet" href="style.css">
-<style>
-.ap-hero { padding: 32px 0 16px; text-align: center; }
-.ap-hero h1 { font-size: 36px; margin-bottom: 8px; }
-.ap-hero .gradient-text { background: var(--grad-primary); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-.ap-hero p { color: var(--muted); font-size: 14px; max-width: 600px; margin: 0 auto; }
 
-/* 输入面板 */
-.ap-input-card { padding: 20px; max-width: 720px; margin: 0 auto; }
-.ap-input-card label { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.05em; margin-top: 12px; }
-.ap-input-card label:first-child { margin-top: 0; }
-.ap-input-card input { width: 100%; padding: 10px 14px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 8px; color: var(--fg); font-size: 14px; font-family: var(--font-mono); }
-.ap-input-card input:focus { outline: none; border-color: var(--accent); }
-
-/* 测试项 checklist */
-.ap-checks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 12px; }
-.ap-check { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--bg-deep); border-radius: 6px; font-size: 13px; }
-.ap-check input[type=checkbox] { width: auto; }
-
-/* 按钮 */
-.ap-start-btn { width: 100%; padding: 14px; font-size: 16px; margin-top: 16px; font-weight: 700; }
-
-/* 进度 */
-.ap-progress { display: none; padding: 24px; max-width: 720px; margin: 16px auto; }
-.ap-progress.show { display: block; }
-.ap-step { display: flex; align-items: center; gap: 12px; padding: 10px; border-bottom: 1px solid var(--border); }
-.ap-step:last-child { border-bottom: 0; }
-.ap-step-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
-.ap-step-icon.pending { background: var(--bg-deep); color: var(--muted); border: 1px solid var(--border); }
-.ap-step-icon.running { background: rgba(0,217,255,0.2); color: var(--accent); animation: pulse 1.5s infinite; }
-.ap-step-icon.ok { background: rgba(34,197,94,0.2); color: #22c55e; }
-.ap-step-icon.warn { background: rgba(255,184,77,0.2); color: #ffb84d; }
-.ap-step-icon.fail { background: rgba(255,71,87,0.2); color: #ff4757; }
-.ap-step-name { flex: 1; font-size: 14px; }
-.ap-step-result { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
-@keyframes pulse { 50% { opacity: 0.5; } }
-
-/* 报告 */
-.ap-report { display: none; max-width: 720px; margin: 16px auto; }
-.ap-report.show { display: block; }
-
-.ap-score { text-align: center; padding: 32px; background: var(--grad-glow); border: 1px solid var(--border-strong); border-radius: 14px; margin-bottom: 16px; }
-.ap-score-num { font-family: var(--font-mono); font-size: 64px; font-weight: 800; background: var(--grad-primary); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; }
-.ap-score-label { color: var(--muted); font-size: 12px; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
-.ap-score-verdict { margin-top: 16px; font-size: 18px; font-weight: 700; }
-
-/* 详情项 */
-.ap-section { padding: 20px; margin-bottom: 12px; }
-.ap-section h3 { margin: 0 0 12px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
-.ap-section h3 .icon { width: 24px; height: 24px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; }
-.ap-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px solid var(--border); }
-.ap-row:last-child { border-bottom: 0; }
-.ap-row .key { color: var(--muted); }
-.ap-row .val { font-family: var(--font-mono); font-weight: 600; }
-.ap-row .val.ok { color: #22c55e; }
-.ap-row .val.warn { color: #ffb84d; }
-.ap-row .val.fail { color: #ff4757; }
-
-/* 警告 */
-.ap-warning { background: rgba(255,184,77,0.08); border: 1px solid rgba(255,184,77,0.3); border-radius: 8px; padding: 12px; margin-bottom: 16px; font-size: 13px; color: var(--muted); }
-.ap-warning strong { color: #ffb84d; }
-
-.ap-danger { background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.3); border-radius: 8px; padding: 12px; margin-bottom: 16px; font-size: 13px; color: var(--muted); }
-.ap-danger strong { color: #ff4757; }
-
-/* 隐私提示 */
-.ap-privacy { background: rgba(0,217,255,0.06); border: 1px solid rgba(0,217,255,0.2); border-radius: 8px; padding: 12px; font-size: 12px; color: var(--muted); margin-top: 16px; }
-
-/* Tab */
-.ap-tabs { display: flex; gap: 4px; padding: 4px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; margin: 24px auto; width: fit-content; }
-.ap-tabs button { background: transparent; color: var(--muted); padding: 8px 16px; font-size: 13px; }
-.ap-tabs button.active { background: var(--grad-primary); color: #001428; font-weight: 700; }
-
-@media (max-width: 600px) {
-  .ap-checks { grid-template-columns: 1fr; }
-  .ap-score-num { font-size: 48px; }
-}
-</style>
-</head>
-<body>
-<div id="topbar"></div>
-
-<main class="main" style="max-width: 800px;">
-  <div class="ap-hero fade-in">
-    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>浏览器直跑 · Key 不上传</span></div>
-    <h1><span class="gradient-text">🔍 API 真伪检测</span></h1>
-    <p>给你的 API 渠道做体检：验证可达性、鉴权、模型真实性、性能指标。<br>防骗、防伪、防降智、防充值到假渠道。</p>
-  </div>
-
-  <div class="ap-tabs">
-    <button class="active" data-mode="full">深度体检（30 秒）</button>
-    <button data-mode="quick">快速检测（5 秒）</button>
-  </div>
-
-  <!-- 输入 -->
-  <div class="card glass-strong ap-input-card" id="input-card">
-    <label>Base URL</label>
-    <input type="text" id="in-url" placeholder="https://api.example.com/v1">
-
-    <label>API Key</label>
-    <input type="password" id="in-key" placeholder="sk-...">
-
-    <label>声称模型名（渠道说支持哪个模型）</label>
-    <input type="text" id="in-model" placeholder="如：gpt-4, claude-sonnet-5, deepseek-chat">
-
-    <label>声称协议</label>
-    <select id="in-protocol" style="width:100%;padding:10px;background:var(--bg-deep);border:1px solid var(--border);border-radius:8px;color:var(--fg);font-size:14px;">
-      <option value="openai">OpenAI 兼容</option>
-      <option value="anthropic">Anthropic 兼容</option>
-    </select>
-
-    <label style="margin-top:16px;">检测项</label>
-    <div class="ap-checks">
-      <label class="ap-check"><input type="checkbox" id="chk-reachable" checked> 可达性 + TLS</label>
-      <label class="ap-check"><input type="checkbox" id="chk-auth" checked> 鉴权有效性</label>
-      <label class="ap-check"><input type="checkbox" id="chk-model" checked> 模型真实性</label>
-      <label class="ap-check"><input type="checkbox" id="chk-perf" checked> 性能 + 计费</label>
-      <label class="ap-check"><input type="checkbox" id="chk-stream" checked> 流式响应</label>
-      <label class="ap-check"><input type="checkbox" id="chk-cors" checked> CORS 浏览器直跑</label>
-    </div>
-
-    <button class="ap-start-btn" id="start-btn">▶ 开始体检</button>
-
-    <div class="ap-privacy">
-      🔒 <strong style="color:var(--accent);">隐私保护：</strong>所有检测在浏览器内完成。API Key <strong>不会上传</strong>到我们的服务器，直接由你的浏览器发请求到目标 URL。
-    </div>
-  </div>
-
-  <!-- 进度 -->
-  <div class="card glass-strong ap-progress" id="progress-card">
-    <h3 style="margin:0 0 16px;font-size:16px;">🔬 体检进行中</h3>
-    <div id="steps-container"></div>
-  </div>
-
-  <!-- 报告 -->
-  <div class="ap-report" id="report-card">
-    <div class="ap-score">
-      <div class="ap-score-num" id="score-num">--</div>
-      <div class="ap-score-label">综合评分（10 分制）</div>
-      <div class="ap-score-verdict" id="score-verdict">--</div>
-    </div>
-
-    <div id="warnings-container"></div>
-
-    <div class="card glass-strong ap-section">
-      <h3><span class="icon" style="background:rgba(0,217,255,0.15);color:#00d9ff;">🌐</span>可达性</h3>
-      <div id="r-reachable"></div>
-    </div>
-
-    <div class="card glass-strong ap-section">
-      <h3><span class="icon" style="background:rgba(176,107,255,0.15);color:#b066ff;">🔐</span>鉴权</h3>
-      <div id="r-auth"></div>
-    </div>
-
-    <div class="card glass-strong ap-section">
-      <h3><span class="icon" style="background:rgba(255,107,157,0.15);color:#ff6b9d;">🤖</span>模型真实性</h3>
-      <div id="r-model"></div>
-    </div>
-
-    <div class="card glass-strong ap-section">
-      <h3><span class="icon" style="background:rgba(34,197,94,0.15);color:#22c55e;">⚡</span>性能</h3>
-      <div id="r-perf"></div>
-    </div>
-
-    <div class="card glass-strong ap-section" id="r-stream-section" style="display:none;">
-      <h3><span class="icon" style="background:rgba(0,217,255,0.15);color:#00d9ff;">📡</span>流式</h3>
-      <div id="r-stream"></div>
-    </div>
-
-    <div class="card glass-strong ap-section" id="r-cors-section" style="display:none;">
-      <h3><span class="icon" style="background:rgba(255,184,77,0.15);color:#ffb84d;">🔗</span>CORS</h3>
-      <div id="r-cors"></div>
-    </div>
-
-    <div style="text-align:center;margin-top:24px;">
-      <button onclick="location.reload()" class="secondary">重新检测另一个</button>
-      <a href="compare.html" class="btn btn-ghost" style="text-decoration:none;margin-left:8px;">去看更便宜的渠道 →</a>
-    </div>
-  </div>
-</main>
-
-<script src="data.js"></script>
-<script src="app.js"></script>
-<script>
+function escapeHtml(s) { return String(s || "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"})[c]); }
 if (typeof renderTopbar === "function") renderTopbar("playground");
 
+
+const PRESETS = [
+  { name: "中英翻译", icon: "🌐", system: "你是一个专业翻译。将用户输入的中文翻译成英文，保持原意自然流畅。", user: "人工智能正在改变世界。" },
+  { name: "总结", icon: "📝", system: "你是文章摘要助手。用 3 句话总结用户输入的核心要点。", user: "请粘贴一段长文，我帮你总结..." },
+  { name: "代码助手", icon: "💻", system: "你是 Python 专家。帮用户写清晰、可运行的代码，优先使用标准库。", user: "写一个函数：输入 URL 列表，并发下载并返回状态码" },
+  { name: "中翻英+润色", icon: "✍️", system: "你是英文写作教练。先翻译，再优化用词让表达更地道专业。", user: "请粘贴中文..." },
+  { name: "SQL 助手", icon: "🗄️", system: "你是 SQL 专家。生成可执行的 SQL 查询，附简短解释。", user: "查询最近 30 天订单，按用户分组统计总金额" },
+  { name: "JSON 提取", icon: "📋", system: "你是 JSON 提取助手。从用户输入中提取结构化数据，返回 JSON。", user: "用户：李明，30 岁，北京，手机 13800138000" },
+  { name: "代码解释", icon: "🔍", system: "你是代码审查员。逐行解释代码的功能和潜在问题。", user: "粘贴代码..." },
+  { name: "情感分析", icon: "💬", system: "你是情感分析助手。返回：情感类型（正面/负面/中性）、置信度、关键词。", user: "粘贴文本..." }
+];
+
+function renderPresets() {
+  const row = document.getElementById("preset-row");
+  row.innerHTML = PRESETS.map((p, i) =>
+    `<button class="preset-btn" data-idx="${i}" style="padding:8px 14px;background:var(--bg-deep);border:1px solid var(--border);border-radius:8px;color:var(--fg);font-size:13px;cursor:pointer;transition:all 0.15s;">
+       ${p.icon} ${p.name}
+     </button>`
+  ).join("");
+  row.querySelectorAll(".preset-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const p = PRESETS[btn.dataset.idx];
+      $("param-system").value = p.system;
+      $("user-input").value = p.user;
+      $("user-input").focus();
+    });
+  });
+}
+
+
+function generateCode(lang) {
+  const url = $("cfg-base-url").value.trim();
+  const key = $("cfg-api-key").value.trim();
+  const model = $("cfg-model").value.trim();
+  const sys = $("param-system").value.trim();
+  const msgs = [];
+  if (sys) msgs.push({ role: "system", content: sys });
+  msgs.push({ role: "user", content: $("user-input").value.trim() || "你的 prompt" });
+  
+  if (lang === "curl") {
+    const body = JSON.stringify({model, messages: msgs, stream: false});
+    return `curl -X POST "${url}" \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer ${key}" \\
+  -d '${body}'`;
+  }
+  if (lang === "python") { {
+    return `import requests
+
+url = "${url}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer ${key}",
+}
+payload = {
+    "model": "${model}",
+    "messages": ${JSON.stringify(msgs, null, 4)},
+}
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())`;
+  }
+  if (lang === "js") {
+    return `const resp = await fetch("${url}", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer ${key}"
+  },
+  body: JSON.stringify({
+    model: "${model}",
+    messages: ${JSON.stringify(msgs, null, 2)}
+  })
+});
+const data = await resp.json();
+console.log(data);`;
+  }
+  if (lang === "node") {
+    return `const https = require('https');
+
+const data = JSON.stringify({
+  model: "${model}",
+  messages: ${JSON.stringify(msgs, null, 2)}
+});
+
+const options = {
+  hostname: new URL("${url}").hostname,
+  port: 443,
+  path: new URL("${url}").pathname,
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Content-Length': data.length,
+    'Authorization': 'Bearer ${key}'
+  }
+};
+
+const req = https.request(options, res => {
+  let body = '';
+  res.on('data', chunk => body += chunk);
+  res.on('end', () => console.log(JSON.parse(body)));
+});
+req.write(data);
+req.end();`;
+  }
+}
+
+function updateCodeOutput() {
+  const lang = $("code-lang").value;
+  $("code-output").textContent = generateCode(lang);
+}
+
+function copyCode() {
+  const text = $("code-output").textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = "✓ 已复制";
+    setTimeout(() => btn.textContent = "📋 复制到剪贴板", 1500);
+  });
+}
+
+
+// ============ 分享链接 ============
+function generateShareLink() {
+  const data = {
+    u: $("cfg-base-url").value.trim(),
+    m: $("cfg-model").value.trim(),
+    s: $("param-system").value,
+    p: $("user-input").value,
+    t: $("param-temp").value,
+    mtk: $("param-maxtok").value,
+    p2: $("param-topp").value
+  };
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  const url = location.origin + location.pathname + "#share=" + encoded;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById("share-btn");
+    btn.textContent = "✓ 已复制";
+    setTimeout(() => btn.textContent = "🔗 分享当前配置", 1500);
+  });
+}
+
+function loadFromShare() {
+  const hash = location.hash;
+  if (!hash.startsWith("#share=")) return;
+  try {
+    const json = decodeURIComponent(escape(atob(hash.slice(7))));
+    const data = JSON.parse(json);
+    if (data.u) $("cfg-base-url").value = data.u;
+    if (data.m) $("cfg-model").value = data.m;
+    if (data.s) $("param-system").value = data.s;
+    if (data.p) $("user-input").value = data.p;
+    if (data.t) { $("param-temp").value = data.t; $("val-temp").textContent = data.t; }
+    if (data.mtk) { $("param-maxtok").value = data.mtk; $("val-maxtok").textContent = data.mtk; }
+    if (data.p2) { $("param-topp").value = data.p2; $("val-topp").textContent = data.p2; }
+  } catch(e) { console.error("Bad share link", e); }
+}
 const $ = (id) => document.getElementById(id);
 const STEPS = {
   reachable: { name: "可达性 + TLS", icon: "🌐" },
@@ -219,7 +186,7 @@ function addStep(id) {
   wrap.id = "step-" + id;
   wrap.innerHTML = `
     <div class="ap-step-icon pending" id="step-icon-${id}">⏳</div>
-    <div class="ap-step-name">${STEPS[id].icon} ${STEPS[id].name}</div>
+    <div class="ap-step-name">${STEPS[id].icon} ${escapeHtml(STEPS[id].name)}</div>
     <div class="ap-step-result" id="step-result-${id}">等待</div>
   `;
   $("steps-container").appendChild(wrap);
@@ -252,7 +219,7 @@ function renderRow(parentId, rows) {
 function addWarning(type, msg) {
   const wrap = document.createElement("div");
   wrap.className = type === "danger" ? "ap-danger" : "ap-warning";
-  wrap.innerHTML = type === "danger" ? `<strong>🚨 高风险：</strong>${msg}` : `<strong>⚠️ 注意：</strong>${msg}`;
+  wrap.innerHTML = type === "danger" ? `<strong>🚨 高风险：</strong>${escapeHtml(msg)}` : `<strong>⚠️ 注意：</strong>${escapeHtml(msg)}`;
   $("warnings-container").appendChild(wrap);
 }
 
@@ -411,7 +378,7 @@ async function checkModel() {
     else if (latency > 10000) { status = "warn"; label = "响应过慢，疑似中转"; }
 
     state.results.model = { status, latency, content, rawResponse: data };
-    setStep("model", status, `${latency}ms · "${content.slice(0, 20)}"`);
+    setStep("model", status, `${latency}ms · "${escapeHtml(content.slice(0, 20))}"`);
 
     renderRow("r-model", [
       { key: "Probe 响应", val: '"' + content.slice(0, 30) + '"', status: saysFour ? "ok" : "fail" },
@@ -549,13 +516,4 @@ function showReport() {
   $("report-card").scrollIntoView({ behavior: "smooth" });
 }
 
-renderPresets();
-updateCodeOutput();
-loadFromShare();
-document.getElementById("code-lang").addEventListener("change", updateCodeOutput);
-document.getElementById("show-raw-btn").addEventListener("click", showRawModal);
-["param-system","user-input"].forEach(id => document.getElementById(id).addEventListener("input", updateTokenCount));
 $("start-btn").addEventListener("click", start);
-</script>
-</body>
-</html>
