@@ -73,7 +73,8 @@ function renderTopbar(active = '') {
     { href: 'events.html', label: '行情', id: 'events' },
     { href: 'watch.html', label: '关注', id: 'watch' },
     { href: 'method.html', label: '方法', id: 'method' },
-  ];
+        { href: 'test.html', label: '测试', id: 'test' },
+      ];
   $('topbar').innerHTML = `
     <div class="topbar-inner">
       <a href="index.html" class="brand">
