@@ -286,6 +286,24 @@
   <!-- 广告位：内容区中段 -->
   <div class="ad-slot" data-slot="home_mid" style="margin: 24px 0;"></div>
 
+
+  <!-- 实时流量 -->
+  <section style="margin-top:48px;">
+    <div class="card glass-strong" style="padding:24px;">
+      <div class="section-head" style="margin-top:0;">
+        <h2>📊 实时流量</h2>
+        <span class="live-signal"><span class="live-dot"></span>本页浏览自动统计</span>
+      </div>
+      <div id="traffic-stats" class="stats-bar" style="margin: 16px 0;">
+        <div class="card stat-card"><div class="stat-num" id="pv-total">—</div><div class="stat-label">总浏览量</div></div>
+        <div class="card stat-card"><div class="stat-num" id="pv-24h">—</div><div class="stat-label">24h 浏览</div></div>
+        <div class="card stat-card"><div class="stat-num" id="unique-users">—</div><div class="stat-label">独立用户</div></div>
+        <div class="card stat-card"><div class="stat-num" id="top-path">—</div><div class="stat-label">最热页面</div></div>
+      </div>
+      <p class="muted" style="font-size:12px;">所有浏览通过 Cloudflare Workers 实时记录。后台可看详细数据。</p>
+    </div>
+  </section>
+
   <!-- 数据方法 -->
   <section style="margin-top:48px;">
     <div class="card glass-strong" style="padding:24px;">
@@ -302,6 +320,7 @@
 
 <script src="data.js"></script>
 <script src="ads.js"></script>
+<script src="ab.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

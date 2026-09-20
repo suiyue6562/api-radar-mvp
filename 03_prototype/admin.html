@@ -130,6 +130,7 @@ pre { background: #050714; border: 1px solid rgba(120,160,255,0.12); border-radi
       <button data-tab="ads">广告位</button>
       <button data-tab="watch">关注列表</button>
       <button data-tab="log">操作日志</button>
+      <button data-tab="ab">A/B 测试</button>
       <button data-tab="export">数据导出</button>
     </div>
 
@@ -187,7 +188,7 @@ async function loadStats() {
 function switchTab(tab) {
   currentTab = tab;
   document.querySelectorAll("#tab-bar button").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
-  const renderers = { models: renderModels, providers: renderProviders, vendors: renderVendors, events: renderEvents, ads: renderAds, watch: renderWatch, log: renderLog, export: renderExport };
+  const renderers = { models: renderModels, providers: renderProviders, vendors: renderVendors, events: renderEvents, ads: renderAds, watch: renderWatch, log: renderLog, ab: renderAB, export: renderExport };
   renderers[tab] ? renderers[tab]() : null;
 }
 
@@ -304,6 +305,92 @@ async function renderLog() {
       <tbody>${log.map(r => '<tr><td class="muted">' + new Date(r.ts).toLocaleString("zh-CN", { hour12: false }) + '</td><td><span class="tag">' + (ACTION_LABEL[r.action] || r.action) + '</span></td><td>' + r.table_name + '</td><td><code style="font-size:11px;">' + r.record_id + '</code></td><td>' + (r.username || "—") + '</td></tr>').join("")}</tbody>
     </table>
   `;
+}
+
+
+async function renderAB() {
+  const exps = await api("/api/admin/ab_experiments");
+  if (exps.error) { $("tab-content").innerHTML = '<p class="muted">加载失败</p>'; return; }
+  const traffic = await api("/api/stats/traffic");
+  const total24 = traffic && traffic.last_24h ? traffic.last_24h.reduce((s, x) => s + x.pv, 0) : 0;
+  const total7 = traffic && traffic.last_7d ? traffic.last_7d.reduce((s, x) => s + x.pv, 0) : 0;
+
+  const html = `
+    <h3>A/B 实验管理 <span class="muted">${exps.length} 个实验</span></h3>
+
+    <div class="card" style="margin-bottom:16px;">
+      <h4>流量总览</h4>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-num">${total24}</div><div class="stat-label">24 小时 PV</div></div>
+        <div class="stat-card"><div class="stat-num">${total7}</div><div class="stat-label">7 天 PV</div></div>
+        <div class="stat-card"><div class="stat-num">${exps.length}</div><div class="stat-label">活跃实验</div></div>
+      </div>
+    </div>
+
+    <table>
+      <thead><tr><th>ID</th><th>名称</th><th>状态</th><th>流量分配</th><th>目标</th><th>操作</th></tr></thead>
+      <tbody>
+        ${exps.map(e => {
+          const split = JSON.parse(e.traffic_split || '{}');
+          const splitText = Object.entries(split).map(([k,v]) => k + ':' + v + '%').join(', ');
+          const statusTag = e.status === "running" ? '<span class="tag tag-success">运行中</span>' : (e.status === "paused" ? '<span class="tag tag-warn">暂停</span>' : '<span class="tag">' + e.status + '</span>');
+          return '<tr><td><code>' + e.id + '</code></td><td>' + e.name + '</td><td>' + statusTag + '</td><td>' + splitText + '</td><td>' + (e.goal_event || '-') + '</td><td><div class="btn-group"><button onclick="viewABResults(\'' + e.id + '\')">查看结果</button><button onclick="editAB(\'' + e.id + '\')">编辑</button><button class="danger" onclick="deleteAB(\'' + e.id + '\')">删除</button></div></td></tr>';
+        }).join("")}
+        ${!exps.length ? '<tr><td colspan="6" style="text-align:center;color:#8896b8;padding:32px;">还没有创建实验<br><br><button onclick="createAB()" style="margin-top:12px;">+ 创建第一个实验</button></td></tr>' : ''}
+      </tbody>
+    </table>
+    ${exps.length ? '<button onclick="createAB()" style="margin-top:16px;">+ 新建实验</button>' : ''}
+  `;
+  $("tab-content").innerHTML = html;
+}
+
+async function viewABResults(expId) {
+  const r = await api("/api/ab/results/" + expId);
+  if (r.error) { alert("加载失败：" + r.error); return; }
+  const buckets = {};
+  (r.buckets || []).forEach(b => buckets[b.variant] = b.users);
+  const events = {};
+  (r.events || []).forEach(e => {
+    if (!events[e.variant]) events[e.variant] = {};
+    events[e.variant][e.event_type] = e.c;
+  });
+  let msg = "实验 " + expId + " 结果\n\n";
+  msg += "流量分布：\n";
+  Object.entries(buckets).forEach(([v, u]) => msg += "  " + v + ": " + u + " 用户\n");
+  msg += "\n事件转化：\n";
+  Object.entries(events).forEach(([v, evs]) => {
+    msg += "  " + v + ":\n";
+    Object.entries(evs).forEach(([e, c]) => msg += "    " + e + ": " + c + " 次\n");
+  });
+  alert(msg);
+}
+
+function createAB() {
+  const id = prompt("实验 ID（英文+下划线，如 exp_homepage_v1）:");
+  if (!id) return;
+  const name = prompt("实验名称:");
+  if (!name) return;
+  const split = prompt("流量分配（JSON，如 {\"control\":50,\"variant_a\":50}）:");
+  if (!split) return;
+  const goal = prompt("目标事件（如 click_button）:") || "click_button";
+  api("/api/admin/ab_experiments", {
+    method: "POST",
+    body: { id, name, status: "running", traffic_split: split, goal_event: goal }
+  }).then(r => {
+    if (r.error) alert("创建失败：" + r.error);
+    else renderAB();
+  });
+}
+
+function editAB(expId) {
+  alert("编辑功能开发中。可用 SQL 编辑：" + expId);
+}
+
+async function deleteAB(expId) {
+  if (!confirm("确认删除实验 " + expId + "？")) return;
+  const r = await api("/api/admin/ab_experiments/" + expId, { method: "DELETE" });
+  if (r.error) alert("删除失败：" + r.error);
+  else renderAB();
 }
 
 function renderExport() {

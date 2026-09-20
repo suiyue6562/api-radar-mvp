@@ -391,6 +391,68 @@ async function handleApi(request, env, path, method) {
     await q(env, 'DELETE FROM watches WHERE id = ?', [id]);
     return jsonOk({ ok: true });
   }
+  // ============ A/B 测试 ============
+  if (method === 'POST' && path === '/api/ab/assign') {
+    const body = await request.json();
+    const userToken = body.user_token;
+    const expId = body.experiment_id;
+    if (!userToken || !expId) return jsonErr('Missing fields', 400);
+
+    // 检查已有分桶
+    let bucket = await q(env, 'SELECT * FROM user_buckets WHERE user_token = ? AND experiment_id = ?', [userToken, expId]);
+    if (bucket.length) {
+      return jsonOk({ variant: bucket[0].variant, cached: true });
+    }
+
+    // 拉实验
+    const exp = await q(env, 'SELECT * FROM ab_experiments WHERE id = ? AND status = ?', [expId, 'running']);
+    if (!exp.length) return jsonErr('Experiment not found or not running', 404);
+
+    const split = JSON.parse(exp[0].traffic_split || '{}');
+    const variants = Object.keys(split);
+    if (!variants.length) return jsonErr('No variants', 400);
+
+    // 用 hash 分桶（保证同 user_token 总落同一 variant）
+    let hash = 0;
+    const str = userToken + ':' + expId;
+    for (let i = 0; i < str.length; i++) hash = ((hash << 5) - hash + str.charCodeAt(i)) | 0;
+    const idx = Math.abs(hash) % 100;
+    let acc = 0, chosen = variants[0];
+    for (const v of variants) {
+      acc += split[v] || 0;
+      if (idx < acc) { chosen = v; break; }
+    }
+
+    await q(env, 'INSERT INTO user_buckets (user_token, experiment_id, variant) VALUES (?, ?, ?)', [userToken, expId, chosen]);
+    return jsonOk({ variant: chosen, cached: false });
+  }
+
+  if (method === 'POST' && path === '/api/ab/event') {
+    const body = await request.json();
+    if (!body.experiment_id || !body.variant || !body.event_type) return jsonErr('Missing fields', 400);
+    await q(env, 'INSERT INTO ab_events (experiment_id, variant, user_token, event_type) VALUES (?, ?, ?, ?)',
+      [body.experiment_id, body.variant, body.user_token || '', body.event_type]);
+    return jsonOk({ ok: true });
+  }
+
+  if (method === 'GET' && path.startsWith('/api/ab/results/')) {
+    const expId = path.split('/').pop();
+    const events = await q(env, 'SELECT variant, event_type, COUNT(*) as c FROM ab_events WHERE experiment_id = ? GROUP BY variant, event_type', [expId]);
+    const buckets = await q(env, 'SELECT variant, COUNT(*) as users FROM user_buckets WHERE experiment_id = ? GROUP BY variant', [expId]);
+    return jsonOk({ experiment_id: expId, buckets, events });
+  }
+
+  if (method === 'GET' && path === '/api/stats/traffic') {
+    // 流量统计
+    const last24h = await q(env, "SELECT path, COUNT(*) as pv FROM page_views WHERE ts >= datetime('now', '-1 day') GROUP BY path ORDER BY pv DESC LIMIT 20");
+    const last7d = await q(env, "SELECT path, COUNT(*) as pv FROM page_views WHERE ts >= datetime('now', '-7 days') GROUP BY path ORDER BY pv DESC LIMIT 20");
+    const sources = await q(env, "SELECT user_agent, COUNT(*) as c FROM page_views WHERE ts >= datetime('now', '-1 day') GROUP BY user_agent ORDER BY c DESC LIMIT 10");
+    return jsonOk({ last_24h: last24h, last_7d: last7d, sources });
+  }
+
+  if (path.startsWith('/api/admin/')) {
+    return await handleAdmin(request, env, path, method);
+  }
   if (path.startsWith('/api/admin/')) {
     return await handleAdmin(request, env, path, method);
   }
@@ -408,7 +470,7 @@ async function handleAdmin(request, env, path, method) {
   if (path === '/api/admin/log' && method === 'GET') return jsonOk(await q(env, 'SELECT * FROM change_log ORDER BY ts DESC LIMIT 100'));
   if (path === '/api/admin/stats' && method === 'GET') return jsonOk(await getStats(env));
   if (path === '/api/admin/export') return jsonOk(await getAllData(env));
-  const allowed = ['vendors', 'models', 'providers', 'offerings', 'events', 'ads'];
+  const allowed = ['vendors', 'models', 'providers', 'offerings', 'events', 'ads', 'ab_experiments'];
   if (!allowed.includes(table)) return jsonErr('Table not editable: ' + table, 400);
   if (method === 'POST' && !id) return await insertRecord(env, table, await request.json(), request);
   if (method === 'PATCH' && id) return await updateRecord(env, table, id, await request.json(), request);
