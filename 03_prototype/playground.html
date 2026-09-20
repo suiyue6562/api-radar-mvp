@@ -126,6 +126,11 @@
       <label class="ap-check"><input type="checkbox" id="chk-perf" checked> 性能 + Token</label>
       <label class="ap-check"><input type="checkbox" id="chk-stream" checked> 流式响应</label>
       <label class="ap-check"><input type="checkbox" id="chk-cors" checked> CORS 浏览器直跑</label>
+      <label class="ap-check"><input type="checkbox" id="chk-fakestream" checked> <b>假流式识别 (v3)</b> - chunk 大小分布</label>
+      <label class="ap-check"><input type="checkbox" id="chk-tls" checked> TLS 证书深度 (v3) - HSTS / 签名</label>
+      <label class="ap-check"><input type="checkbox" id="chk-redirect" checked> HTTP→HTTPS 重定向 (v3)</label>
+      <label class="ap-check"><input type="checkbox" id="chk-headers" checked> 响应头合规 (v3) - CORS/限流/RequestID</label>
+      <label class="ap-check"><input type="checkbox" id="chk-stability" checked> 时间稳定性 (v3) - 3 次采样 + 标准差</label>
     </div>
 
     <div id="price-input" style="margin-top:12px;display:none;padding:12px;background:var(--bg-deep);border-radius:8px;">
@@ -188,6 +193,31 @@
       <div id="r-cors"></div>
     </div>
 
+    <div class="card glass-strong ap-section" id="r-fakestream-section" style="display:none;">
+      <h3><span class="icon" style="background:rgba(255,107,157,0.15);color:#ff6b9d;">🎭</span>假流式识别</h3>
+      <div id="r-fakestream"></div>
+    </div>
+
+    <div class="card glass-strong ap-section" id="r-tls-section" style="display:none;">
+      <h3><span class="icon" style="background:rgba(0,255,163,0.15);color:#00ffa3;">🔒</span>TLS 证书深度</h3>
+      <div id="r-tls"></div>
+    </div>
+
+    <div class="card glass-strong ap-section" id="r-redirect-section" style="display:none;">
+      <h3><span class="icon" style="background:rgba(176,107,255,0.15);color:#b066ff;">↪️</span>HTTPS 重定向</h3>
+      <div id="r-redirect"></div>
+    </div>
+
+    <div class="card glass-strong ap-section" id="r-headers-section" style="display:none;">
+      <h3><span class="icon" style="background:rgba(0,217,255,0.15);color:#00d9ff;">📋</span>响应头合规</h3>
+      <div id="r-headers"></div>
+    </div>
+
+    <div class="card glass-strong ap-section" id="r-stability-section" style="display:none;">
+      <h3><span class="icon" style="background:rgba(34,197,94,0.15);color:#22c55e;">📊</span>时间稳定性</h3>
+      <div id="r-stability"></div>
+    </div>
+
     <div style="text-align:center;margin-top:24px;">
       <button onclick="location.reload()" class="secondary">重新检测另一个</button>
       <a href="compare.html" class="btn btn-ghost" style="text-decoration:none;margin-left:8px;">去看更便宜的渠道 →</a>
@@ -211,7 +241,12 @@ const STEPS = {
   price: { name: "价格真实性", icon: "💰" },
   perf: { name: "性能 + Token", icon: "⏱️" },
   stream: { name: "流式响应", icon: "📡" },
-  cors: { name: "CORS 浏览器直跑", icon: "🔗" }
+  cors: { name: "CORS 浏览器直跑", icon: "🔗" },
+  fakestream: { name: "假流式识别 v3", icon: "🎭" },
+  tls: { name: "TLS 证书 v3", icon: "🔒" },
+  redirect: { name: "HTTPS 重定向 v3", icon: "↪️" },
+  headers: { name: "响应头合规 v3", icon: "📋" },
+  stability: { name: "时间稳定性 v3", icon: "📊" }
 };
 
 const state = { checks: {}, results: {}, url: "", key: "", model: "", protocol: "openai" };
@@ -301,7 +336,12 @@ async function start() {
     price: $("chk-price").checked,
     perf: $("chk-perf").checked,
     stream: $("chk-stream").checked,
-    cors: $("chk-cors").checked
+    cors: $("chk-cors").checked,
+    fakestream: $("chk-fakestream").checked,
+    tls: $("chk-tls").checked,
+    redirect: $("chk-redirect").checked,
+    headers: $("chk-headers").checked,
+    stability: $("chk-stability").checked
   };
 
   $("input-card").style.display = "none";
@@ -318,6 +358,11 @@ async function start() {
   if (state.checks.perf) await checkPerf();
   if (state.checks.stream) await checkStream();
   if (state.checks.cors) await checkCORS();
+  if (state.checks.fakestream) await checkFakeStream();
+  if (state.checks.tls) await checkTLSDeep();
+  if (state.checks.redirect) await checkHttpsRedirect();
+  if (state.checks.headers) await checkResponseHeaders();
+  if (state.checks.stability) await checkStability();
 
   showReport();
 }
@@ -490,6 +535,107 @@ async function checkPerf() {
   }
 }
 
+
+
+// ============ 检查 5.5：假流式识别 v3 ============
+async function checkFakeStream() {
+  setStep("fakestream", "running");
+  try {
+    const r = await RADAR_V3.detectFakeStream(state.url, state.key, state.model);
+    if (r.error) {
+      setStep("fakestream", "fail", r.error);
+      addWarning("danger", "流式测试失败：" + r.error);
+      return;
+    }
+    state.results.fakestream = r;
+    setStep("fakestream", r.status, r.numChunks + " chunks, 最大/总=" + r.fakeStreamScore + "%");
+    if (r.status === "fail") addWarning("danger", "⚠️ 假流式！声称流式但只有 " + r.numChunks + " 个 chunk，最大块占 " + r.fakeStreamScore + "% - 这不是真正的 SSE");
+    document.getElementById("r-fakestream-section").style.display = "block";
+    renderRow("r-fakestream", [
+      { key: "chunk 数量", val: r.numChunks + " 个", status: r.numChunks > 3 ? "ok" : "fail" },
+      { key: "总字节", val: r.totalBytes + " B", status: "ok" },
+      { key: "首 chunk 大小", val: r.firstChunkSize + " B", status: r.firstChunkSize < r.totalBytes / 2 ? "ok" : "warn" },
+      { key: "最大 chunk", val: r.maxChunkSize + " B", status: r.maxChunkSize < r.totalBytes * 0.8 ? "ok" : "fail" },
+      { key: "平均 chunk", val: r.avgChunkSize + " B", status: "ok" },
+      { key: "假流式评分", val: r.fakeStreamScore + "%", status: r.fakeStreamScore > 80 ? "fail" : "ok" }
+    ]);
+  } catch (e) {
+    setStep("fakestream", "fail", e.message);
+    addWarning("danger", "假流式检测异常：" + e.message);
+  }
+}
+
+// ============ 检查 5.6：TLS 证书深度 v3 ============
+async function checkTLSDeep() {
+  setStep("tls", "running");
+  try {
+    const r = await RADAR_V3.tlsDeepCheck(state.url);
+    if (r.error) { setStep("tls", "fail", r.error); return; }
+    state.results.tls = r;
+    setStep("tls", r.status, r.issues.length === 0 ? "全部合规" : r.issues.length + " 个问题");
+    document.getElementById("r-tls-section").style.display = "block";
+    const rows = [
+      { key: "HTTPS", val: r.isHttps ? "✓ 是" : "❌ 否", status: r.isHttps ? "ok" : "fail" },
+      { key: "HSTS", val: r.hasHSTS ? "✓ 启用" : "❌ 未启用", status: r.hasHSTS ? "ok" : "fail" },
+      { key: "Server 标识", val: r.server || "✓ 未暴露", status: r.server ? "warn" : "ok" },
+      { key: "X-Powered-By", val: r.xPoweredBy || "✓ 未暴露", status: r.xPoweredBy ? "warn" : "ok" }
+    ];
+    renderRow("r-tls", rows);
+    r.issues.forEach(iss => addWarning("warning", "TLS 问题：" + iss));
+  } catch (e) { setStep("tls", "fail", e.message); }
+}
+
+// ============ 检查 5.7：HTTPS 重定向 v3 ============
+async function checkHttpsRedirect() {
+  setStep("redirect", "running");
+  try {
+    const r = await RADAR_V3.httpsRedirectCheck(state.url);
+    if (r.error) { setStep("redirect", "warn", r.error); }
+    else {
+      setStep("redirect", r.status, r.message);
+      state.results.redirect = r;
+      document.getElementById("r-redirect-section").style.display = "block";
+      renderRow("r-redirect", [
+        { key: "HTTP 状态", val: r.httpStatus || "N/A", status: r.httpStatus === 301 || r.httpStatus === 308 ? "ok" : "warn" },
+        { key: "是否重定向", val: r.redirects ? "✓ 是" : "❌ 否", status: r.redirects ? "ok" : "warn" },
+        { key: "重定向到 HTTPS", val: r.redirectsToHttps ? "✓ 是" : "❌ 否", status: r.redirectsToHttps ? "ok" : "fail" }
+      ]);
+      if (!r.redirectsToHttps && r.redirects) addWarning("warning", "HTTP 不强制重定向到 HTTPS - 中间人攻击风险");
+    }
+  } catch (e) { setStep("redirect", "fail", e.message); }
+}
+
+// ============ 检查 5.8：响应头合规 v3 ============
+async function checkResponseHeaders() {
+  setStep("headers", "running");
+  try {
+    const r = await RADAR_V3.responseHeadersCheck(state.url, state.key, state.model);
+    if (r.error) { setStep("headers", "fail", r.error); return; }
+    setStep("headers", r.status, r.checks.filter(c => c.status === "fail").length === 0 ? "合规" : "有问题");
+    state.results.headers = r;
+    document.getElementById("r-headers-section").style.display = "block";
+    renderRow("r-headers", r.checks);
+  } catch (e) { setStep("headers", "fail", e.message); }
+}
+
+// ============ 检查 5.9：时间稳定性 v3 ============
+async function checkStability() {
+  setStep("stability", "running");
+  try {
+    const r = await RADAR_V3.stabilityCheck(state.url, state.key, state.model);
+    if (r.error) { setStep("stability", "fail", r.error); return; }
+    setStep("stability", r.status, "平均 " + r.avg + "ms, CV=" + r.cv);
+    state.results.stability = r;
+    document.getElementById("r-stability-section").style.display = "block";
+    renderRow("r-stability", [
+      { key: "样本数", val: r.samples.length + " 次", status: "ok" },
+      { key: "平均延迟", val: r.avg + "ms", status: "ok" },
+      { key: "标准差", val: r.std + "ms", status: r.std < r.avg * 0.3 ? "ok" : "warn" },
+      { key: "变异系数 (CV)", val: r.cv, status: r.cv === "fail" ? "fail" : (r.cv === "warn" ? "warn" : "ok") }
+    ]);
+    if (r.status === "warn") addWarning("warning", "稳定性 " + r.cv + " - " + r.message);
+  } catch (e) { setStep("stability", "fail", e.message); }
+}
 
 // ============ 检查 3.5：速率限制探测 ============
 async function checkRate() {
