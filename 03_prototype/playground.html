@@ -120,10 +120,19 @@
     <div class="ap-checks">
       <label class="ap-check"><input type="checkbox" id="chk-reachable" checked> 可达性 + TLS</label>
       <label class="ap-check"><input type="checkbox" id="chk-auth" checked> 鉴权有效性</label>
-      <label class="ap-check"><input type="checkbox" id="chk-model" checked> 模型真实性</label>
-      <label class="ap-check"><input type="checkbox" id="chk-perf" checked> 性能 + 计费</label>
+      <label class="ap-check"><input type="checkbox" id="chk-model" checked> <b>模型指纹 (v2)</b> - 5 个标准答案探测 + 延迟指纹</label>
+      <label class="ap-check"><input type="checkbox" id="chk-rate" checked> 速率限制 (5/10/20 并发探测)</label>
+      <label class="ap-check"><input type="checkbox" id="chk-price"> 价格真实性（输入声称价格后启用）</label>
+      <label class="ap-check"><input type="checkbox" id="chk-perf" checked> 性能 + Token</label>
       <label class="ap-check"><input type="checkbox" id="chk-stream" checked> 流式响应</label>
       <label class="ap-check"><input type="checkbox" id="chk-cors" checked> CORS 浏览器直跑</label>
+    </div>
+
+    <div id="price-input" style="margin-top:12px;display:none;padding:12px;background:var(--bg-deep);border-radius:8px;">
+      <label style="font-size:11px;color:var(--muted);">声称输入价 (USD / 1M tokens)</label>
+      <input type="number" id="claimed-input-price" step="any" placeholder="例：3.0" style="margin-bottom:8px;">
+      <label style="font-size:11px;color:var(--muted);">声称输出价 (USD / 1M tokens)</label>
+      <input type="number" id="claimed-output-price" step="any" placeholder="例：15.0">
     </div>
 
     <button class="ap-start-btn" id="start-btn">▶ 开始体检</button>
@@ -188,15 +197,19 @@
 
 <script src="data.js"></script>
 <script src="app.js"></script>
+<script src="probes.js"></script>
 <script>
 if (typeof renderTopbar === "function") renderTopbar("playground");
 
 const $ = (id) => document.getElementById(id);
+
 const STEPS = {
   reachable: { name: "可达性 + TLS", icon: "🌐" },
   auth: { name: "鉴权有效性", icon: "🔐" },
-  model: { name: "模型真实性", icon: "🤖" },
-  perf: { name: "性能 + 计费", icon: "⚡" },
+  model: { name: "模型指纹 v2", icon: "🤖" },
+  rate: { name: "速率限制探测", icon: "⚡" },
+  price: { name: "价格真实性", icon: "💰" },
+  perf: { name: "性能 + Token", icon: "⏱️" },
   stream: { name: "流式响应", icon: "📡" },
   cors: { name: "CORS 浏览器直跑", icon: "🔗" }
 };
@@ -284,6 +297,8 @@ async function start() {
     reachable: $("chk-reachable").checked,
     auth: $("chk-auth").checked,
     model: $("chk-model").checked,
+    rate: $("chk-rate").checked,
+    price: $("chk-price").checked,
     perf: $("chk-perf").checked,
     stream: $("chk-stream").checked,
     cors: $("chk-cors").checked
@@ -298,6 +313,8 @@ async function start() {
   if (state.checks.reachable) await checkReachable();
   if (state.checks.auth) await checkAuth();
   if (state.checks.model) await checkModel();
+  if (state.checks.rate) await checkRate();
+  if (state.checks.price) await checkPrice();
   if (state.checks.perf) await checkPerf();
   if (state.checks.stream) await checkStream();
   if (state.checks.cors) await checkCORS();
@@ -383,49 +400,60 @@ async function checkAuth() {
   }
 }
 
-// ============ 检查 3：模型真实性 ============
+// ============ 检查 3：模型真实性 v2 (deepCheck) ============
 async function checkModel() {
   setStep("model", "running");
   try {
-    // 用固定 prompt 验证模型响应特征
-    const probe = state.protocol === "openai"
-      ? { model: state.model, messages: [{ role: "user", content: "What is 2+2? Reply with only the number." }], max_tokens: 10, temperature: 0 }
-      : { model: state.model, messages: [{ role: "user", content: "What is 2+2? Reply with only the number." }], max_tokens: 10, temperature: 0 };
-    const url = state.protocol === "openai" ? state.url + "/chat/completions" : state.url + "/v1/messages";
-    const headers = state.protocol === "openai"
-      ? { "Content-Type": "application/json", "Authorization": "Bearer " + state.key }
-      : { "Content-Type": "application/json", "x-api-key": state.key, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" };
+    const deep = await RADAR_PROBES.deepCheck(
+      state.url, state.key, state.model, state.protocol,
+      (id, status, text) => setStep(id, status, text)
+    );
 
-    const t0 = Date.now();
-    const resp = await fetch(url, { method: "POST", headers, body: JSON.stringify(probe), signal: AbortSignal.timeout(15000) });
-    const data = await resp.json().catch(() => ({}));
-    const latency = Date.now() - t0;
-    const content = data?.choices?.[0]?.message?.content || data?.content?.[0]?.text || "";
+    if (deep.fatal) {
+      state.results.model = { status: "fail", error: deep.error };
+      setStep("model", "fail", deep.error);
+      addWarning("danger", "模型探测失败：" + deep.error);
+      return;
+    }
 
-    // 真伪特征
-    const saysFour = /4/.test(content);
-    const isSuspicious = !saysFour || content.length > 20;
-    let status = "ok", label = "响应正常";
-    if (!saysFour) { status = "fail"; label = "模型不响应"; }
-    else if (isSuspicious) { status = "warn"; label = "回答过长，疑似不是该模型"; }
-    else if (latency > 10000) { status = "warn"; label = "响应过慢，疑似中转"; }
+    // 综合状态
+    let status = "ok";
+    if (deep.score >= 80) status = "ok";
+    else if (deep.score >= 50) status = "warn";
+    else status = "fail";
 
-    state.results.model = { status, latency, content, rawResponse: data };
-    setStep("model", status, `${latency}ms · "${content.slice(0, 20)}"`);
+    state.results.model = { status, score: deep.score, deep };
+    setStep("model", status, `得分 ${deep.score}/100`);
 
-    renderRow("r-model", [
-      { key: "探测响应", val: '"' + content.slice(0, 30) + '"', status: saysFour ? "ok" : "fail" },
-      { key: "响应延迟", val: latency + "ms", status: latency > 5000 ? "warn" : "ok" },
-      { key: "答案正确性", val: saysFour ? "✅ 答对" : "❌ 答错", status: saysFour ? "ok" : "fail" },
-      { key: "回答字数", val: content.length + " 字", status: isSuspicious ? "warn" : "ok" },
-      { key: "响应模型 ID", val: data?.model || data?.id || "N/A", status: "ok" }
-    ]);
+    // 渲染报告
+    const rows = [
+      { key: "综合得分", val: deep.score + "/100", status: deep.score >= 80 ? "ok" : (deep.score >= 50 ? "warn" : "fail") },
+      { key: "答案正确率", val: deep.passRate + "% (" + deep.passWeight + "/" + deep.totalWeight + " 权重)", status: deep.passRate >= 80 ? "ok" : (deep.passRate >= 50 ? "warn" : "fail") },
+      { key: "平均延迟", val: deep.avgLatency + "ms", status: deep.avgLatency > 8000 ? "warn" : "ok" },
+      { key: "指纹匹配", val: deep.fp ? deep.fp.label : "未知模型", status: deep.fp ? "ok" : "warn" },
+      { key: "延迟指纹", val: deep.fpVerdict, status: deep.fpDetails.includes("符合") ? "ok" : (deep.fpDetails ? "warn" : "ok") }
+    ];
+    deep.results.forEach((r, i) => {
+      rows.push({
+        key: "探测 " + (i + 1) + ": " + r.probe,
+        val: r.pass ? "✅ " + (r.content ? r.content.slice(0, 30) : "通过") : "❌ " + r.reason,
+        status: r.pass ? "ok" : "fail"
+      });
+    });
+    renderRow("r-model", rows);
 
-    if (!saysFour) addWarning("danger", "模型回答 '2+2' 不是 4。这极大概率不是真实模型（可能是个 shell 接口或被冒充）。");
-    if (data?.model && data.model !== state.model) addWarning("warning", "声称调用 '" + state.model + "'，但返回的模型 ID 是 '" + data.model + "'。可能是被替换或动态转发。");
+    if (deep.score < 50) {
+      addWarning("danger", "模型真实性得分仅 " + deep.score + "/100 - 该渠道极大概率不是真实 " + state.model);
+    } else if (deep.score < 80) {
+      addWarning("warning", "模型真实性得分 " + deep.score + "/100 - 部分探测失败，可能是限流或模型被替换");
+    }
+    if (deep.fpDetails && !deep.fpDetails.includes("符合")) {
+      addWarning("warning", deep.fpDetails);
+    }
   } catch (e) {
     state.results.model = { status: "fail", error: e.message };
     setStep("model", "fail", e.message);
+    addWarning("danger", "模型检查异常：" + e.message);
   }
 }
 
@@ -459,6 +487,58 @@ async function checkPerf() {
   } catch (e) {
     state.results.perf = { status: "fail", error: e.message };
     setStep("perf", "fail", e.message);
+  }
+}
+
+
+// ============ 检查 3.5：速率限制探测 ============
+async function checkRate() {
+  setStep("rate", "running");
+  try {
+    const result = await RADAR_PROBES.rateLimitCheck(state.url, state.key, state.model, state.protocol);
+    state.results.rate = { status: "ok", result };
+    const total = Object.values(result).map(r => r.rate).reduce((a, b) => a + b, 0) / 3;
+    setStep("rate", total >= 80 ? "ok" : (total >= 50 ? "warn" : "fail"), `并发测试均通过 ${Math.round(total)}%`);
+    
+    const rows = Object.entries(result).map(([k, v]) => ({
+      key: "并发 " + k.slice(1) + " 请求",
+      val: v.ok + "/" + v.total + " 通过 (" + v.rate + "%)" + (v.rateLimited ? " | " + v.rateLimited + " 限流" : ""),
+      status: v.rate >= 80 ? "ok" : (v.rate >= 50 ? "warn" : "fail")
+    }));
+    renderRow("r-rate", rows);
+    
+    if (total < 50) addWarning("danger", "速率限制触发严重 - 并发 " + (Object.keys(result).join("/")) + " 中大部分失败");
+    else if (total < 80) addWarning("warning", "速率限制较严 - 高并发可能触发 429");
+  } catch (e) {
+    state.results.rate = { status: "fail", error: e.message };
+    setStep("rate", "fail", e.message);
+  }
+}
+
+// ============ 检查 3.6：价格真实性 ============
+async function checkPrice() {
+  setStep("price", "running");
+  try {
+    const inp = parseFloat($("claimed-input-price").value);
+    const out = parseFloat($("claimed-output-price").value);
+    if (!inp || !out) {
+      setStep("price", "warn", "未填声称价格，跳过");
+      state.results.price = { status: "warn", skipped: true };
+      return;
+    }
+    const r = await RADAR_PROBES.priceVerify(state.url, state.key, state.model, state.protocol, inp, out);
+    state.results.price = { status: "ok", r };
+    setStep("price", "ok", "已验证");
+    renderRow("r-price", [
+      { key: "声称输入价", val: "$" + inp + "/M tokens", status: "ok" },
+      { key: "声称输出价", val: "$" + out + "/M tokens", status: "ok" },
+      { key: "实际 input tokens", val: r.inputTokens || "N/A", status: "ok" },
+      { key: "实际 output tokens", val: r.outputTokens || "N/A", status: "ok" },
+      { key: "实际成本", val: "$" + (r.costUsd || "0") + " USD", status: "ok" }
+    ]);
+  } catch (e) {
+    state.results.price = { status: "fail", error: e.message };
+    setStep("price", "fail", e.message);
   }
 }
 
