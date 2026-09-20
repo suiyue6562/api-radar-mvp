@@ -3,524 +3,553 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Playground - API Radar</title>
-<meta name="description" content="免费在线测试任意 AI API。支持 OpenAI/Anthropic 协议，流式输出，多模型对比，Token 费用统计。">
+<title>API 真伪检测 - API Radar</title>
+<meta name="description" content="给你的 API 渠道做体检。验证可达性、鉴权、模型真实性、性能指标。防骗、防伪、防降智。">
 <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-.pg-hero { padding: 32px 0 16px; text-align: center; }
-.pg-hero h1 { font-size: 36px; margin-bottom: 8px; }
-.pg-hero p { color: var(--muted); font-size: 14px; }
+.ap-hero { padding: 32px 0 16px; text-align: center; }
+.ap-hero h1 { font-size: 36px; margin-bottom: 8px; }
+.ap-hero .gradient-text { background: var(--grad-primary); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.ap-hero p { color: var(--muted); font-size: 14px; max-width: 600px; margin: 0 auto; }
 
-/* 三栏布局 */
-.pg-layout { display: grid; grid-template-columns: 240px 1fr 320px; gap: 16px; margin-top: 16px; }
-@media (max-width: 1100px) { .pg-layout { grid-template-columns: 1fr; } }
+/* 输入面板 */
+.ap-input-card { padding: 20px; max-width: 720px; margin: 0 auto; }
+.ap-input-card label { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.05em; margin-top: 12px; }
+.ap-input-card label:first-child { margin-top: 0; }
+.ap-input-card input { width: 100%; padding: 10px 14px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 8px; color: var(--fg); font-size: 14px; font-family: var(--font-mono); }
+.ap-input-card input:focus { outline: none; border-color: var(--accent); }
 
-/* 左：参数面板 */
-.pg-params { padding: 16px; height: fit-content; position: sticky; top: 80px; }
-.param-group { margin-bottom: 16px; }
-.param-group label { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.05em; }
-.param-group input[type="range"] { width: 100%; }
-.param-group .val { color: var(--accent); font-family: var(--font-mono); font-weight: 700; font-size: 13px; float: right; }
-.param-group select, .param-group input[type="number"], .param-group input[type="text"] { width: 100%; padding: 8px 12px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 6px; color: var(--fg); font-size: 13px; }
-.param-group input[type="checkbox"] { margin-right: 6px; }
-.param-group textarea { width: 100%; min-height: 80px; padding: 10px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 6px; color: var(--fg); font-family: var(--font-mono); font-size: 13px; resize: vertical; }
-.param-group textarea:focus { outline: none; border-color: var(--accent); }
+/* 测试项 checklist */
+.ap-checks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 12px; }
+.ap-check { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--bg-deep); border-radius: 6px; font-size: 13px; }
+.ap-check input[type=checkbox] { width: auto; }
 
-/* 中：对话区 */
-.pg-chat { display: flex; flex-direction: column; height: calc(100vh - 200px); min-height: 600px; }
-.pg-messages { flex: 1; overflow-y: auto; padding: 16px; }
-.pg-msg { margin-bottom: 16px; padding: 12px 16px; border-radius: 12px; max-width: 90%; }
-.pg-msg.user { background: var(--grad-glow); border: 1px solid var(--border-strong); margin-left: auto; }
-.pg-msg.assistant { background: var(--bg-card); border: 1px solid var(--border); }
-.pg-msg.system { background: rgba(255,184,77,0.08); border: 1px solid rgba(255,184,77,0.3); font-size: 12px; color: var(--muted); }
-.pg-msg-role { font-size: 10px; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.05em; }
-.pg-msg-content { white-space: pre-wrap; word-wrap: break-word; line-height: 1.6; font-size: 14px; }
-.pg-msg-meta { font-size: 11px; color: var(--muted); margin-top: 6px; font-family: var(--font-mono); }
+/* 按钮 */
+.ap-start-btn { width: 100%; padding: 14px; font-size: 16px; margin-top: 16px; font-weight: 700; }
 
-/* 右：历史/保存 */
-.pg-sidebar { padding: 16px; height: fit-content; }
-.saved-item { padding: 8px 12px; background: var(--bg-deep); border-radius: 6px; margin-bottom: 6px; font-size: 12px; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; }
-.saved-item:hover { border-color: var(--border-hover); }
-.saved-item .name { font-weight: 600; margin-bottom: 2px; }
-.saved-item .preview { color: var(--muted); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* 进度 */
+.ap-progress { display: none; padding: 24px; max-width: 720px; margin: 16px auto; }
+.ap-progress.show { display: block; }
+.ap-step { display: flex; align-items: center; gap: 12px; padding: 10px; border-bottom: 1px solid var(--border); }
+.ap-step:last-child { border-bottom: 0; }
+.ap-step-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.ap-step-icon.pending { background: var(--bg-deep); color: var(--muted); border: 1px solid var(--border); }
+.ap-step-icon.running { background: rgba(0,217,255,0.2); color: var(--accent); animation: pulse 1.5s infinite; }
+.ap-step-icon.ok { background: rgba(34,197,94,0.2); color: #22c55e; }
+.ap-step-icon.warn { background: rgba(255,184,77,0.2); color: #ffb84d; }
+.ap-step-icon.fail { background: rgba(255,71,87,0.2); color: #ff4757; }
+.ap-step-name { flex: 1; font-size: 14px; }
+.ap-step-result { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+@keyframes pulse { 50% { opacity: 0.5; } }
 
-/* 输入区 */
-.pg-input-area { padding: 12px; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-end; }
-.pg-input-area textarea { flex: 1; min-height: 60px; max-height: 200px; padding: 10px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 8px; color: var(--fg); font-size: 14px; resize: vertical; }
+/* 报告 */
+.ap-report { display: none; max-width: 720px; margin: 16px auto; }
+.ap-report.show { display: block; }
 
-/* 配置栏 */
-.pg-config { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 8px; padding: 12px; border-bottom: 1px solid var(--border); }
-.pg-config input, .pg-config select { padding: 8px 12px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 6px; color: var(--fg); font-size: 13px; width: 100%; }
+.ap-score { text-align: center; padding: 32px; background: var(--grad-glow); border: 1px solid var(--border-strong); border-radius: 14px; margin-bottom: 16px; }
+.ap-score-num { font-family: var(--font-mono); font-size: 64px; font-weight: 800; background: var(--grad-primary); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; }
+.ap-score-label { color: var(--muted); font-size: 12px; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
+.ap-score-verdict { margin-top: 16px; font-size: 18px; font-weight: 700; }
 
-.pg-actions { display: flex; gap: 6px; }
+/* 详情项 */
+.ap-section { padding: 20px; margin-bottom: 12px; }
+.ap-section h3 { margin: 0 0 12px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+.ap-section h3 .icon { width: 24px; height: 24px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; }
+.ap-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px solid var(--border); }
+.ap-row:last-child { border-bottom: 0; }
+.ap-row .key { color: var(--muted); }
+.ap-row .val { font-family: var(--font-mono); font-weight: 600; }
+.ap-row .val.ok { color: #22c55e; }
+.ap-row .val.warn { color: #ffb84d; }
+.ap-row .val.fail { color: #ff4757; }
 
-/* 对比模式 */
-.pg-compare { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.pg-compare-col { padding: 16px; min-height: 300px; }
-.pg-compare-col h4 { font-size: 13px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+/* 警告 */
+.ap-warning { background: rgba(255,184,77,0.08); border: 1px solid rgba(255,184,77,0.3); border-radius: 8px; padding: 12px; margin-bottom: 16px; font-size: 13px; color: var(--muted); }
+.ap-warning strong { color: #ffb84d; }
+
+.ap-danger { background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.3); border-radius: 8px; padding: 12px; margin-bottom: 16px; font-size: 13px; color: var(--muted); }
+.ap-danger strong { color: #ff4757; }
 
 /* 隐私提示 */
-.privacy-note { background: rgba(0,217,255,0.06); border: 1px solid rgba(0,217,255,0.2); border-radius: 8px; padding: 10px 12px; font-size: 12px; color: var(--muted); margin-top: 12px; }
+.ap-privacy { background: rgba(0,217,255,0.06); border: 1px solid rgba(0,217,255,0.2); border-radius: 8px; padding: 12px; font-size: 12px; color: var(--muted); margin-top: 16px; }
 
-/* Tab 切换 */
-.pg-mode-tabs { display: flex; gap: 4px; padding: 4px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; width: fit-content; }
-.pg-mode-tabs button { background: transparent; color: var(--muted); padding: 6px 14px; font-size: 13px; }
-.pg-mode-tabs button.active { background: var(--grad-primary); color: #001428; }
+/* Tab */
+.ap-tabs { display: flex; gap: 4px; padding: 4px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; margin: 24px auto; width: fit-content; }
+.ap-tabs button { background: transparent; color: var(--muted); padding: 8px 16px; font-size: 13px; }
+.ap-tabs button.active { background: var(--grad-primary); color: #001428; font-weight: 700; }
 
-/* 流式光标 */
-.streaming-cursor::after { content: "▍"; color: var(--accent); animation: blink 1s infinite; }
-@keyframes blink { 50% { opacity: 0; } }
-
-/* 复制/重新生成按钮 */
-.msg-actions { margin-top: 8px; display: flex; gap: 6px; }
-.msg-actions button { padding: 4px 10px; background: rgba(120,160,255,0.1); color: var(--muted); border: 0; font-size: 11px; border-radius: 4px; cursor: pointer; }
-.msg-actions button:hover { background: rgba(0,217,255,0.15); color: var(--accent); }
+@media (max-width: 600px) {
+  .ap-checks { grid-template-columns: 1fr; }
+  .ap-score-num { font-size: 48px; }
+}
 </style>
 </head>
 <body>
 <div id="topbar"></div>
 
-<main class="main" style="max-width: 1280px;">
-  <div class="pg-hero fade-in">
-    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>免费 · 浏览器直跑 · 不上传 Key</span></div>
-    <h1><span class="gradient-text">API Playground</span></h1>
-    <p>测试任意 OpenAI / Anthropic 兼容的 API。支持流式输出、参数调节、多模型对比。</p>
+<main class="main" style="max-width: 800px;">
+  <div class="ap-hero fade-in">
+    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>浏览器直跑 · Key 不上传</span></div>
+    <h1><span class="gradient-text">🔍 API 真伪检测</span></h1>
+    <p>给你的 API 渠道做体检：验证可达性、鉴权、模型真实性、性能指标。<br>防骗、防伪、防降智、防充值到假渠道。</p>
   </div>
 
-  <!-- 配置栏 -->
-  <div class="card glass-strong" style="padding: 16px;">
-    <div class="pg-config">
-      <div><label style="font-size:11px;color:var(--muted);">Base URL</label><input type="text" id="cfg-base-url" placeholder="https://api.deepseek.com/v1"></div>
-      <div><label style="font-size:11px;color:var(--muted);">API Key</label><input type="password" id="cfg-api-key" placeholder="sk-..."></div>
-      <div><label style="font-size:11px;color:var(--muted);">模型</label><input type="text" id="cfg-model" placeholder="deepseek-chat"></div>
-      <div><label style="font-size:11px;color:var(--muted);">协议</label><select id="cfg-protocol"><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option></select></div>
-      <div class="pg-actions" style="align-self:end;">
-        <button id="btn-send">▶ 发送</button>
-        <button class="secondary" id="btn-stop" disabled>⏹</button>
-      </div>
-    </div>
-    <div class="privacy-note">
-      <strong style="color:var(--accent);">🔒 隐私保护：</strong>API Key 仅在本地浏览器使用，<strong>不会上传</strong>到我们的服务器。直接由你的浏览器发请求到 base_url。
-    </div>
+  <div class="ap-tabs">
+    <button class="active" data-mode="full">深度体检（30 秒）</button>
+    <button data-mode="quick">快速检测（5 秒）</button>
   </div>
 
-  <!-- 模式切换 -->
-  <div class="pg-mode-tabs">
-    <button class="active" data-mode="single">单模型对话</button>
-    <button data-mode="compare">多模型对比</button>
-  </div>
+  <!-- 输入 -->
+  <div class="card glass-strong ap-input-card" id="input-card">
+    <label>Base URL</label>
+    <input type="text" id="in-url" placeholder="https://api.example.com/v1">
 
-  <!-- 单模型模式 -->
-  <div id="mode-single" class="pg-layout">
-    <!-- 左侧参数 -->
-    <div class="card glass-strong pg-params">
-      <h4 style="margin-top:0;">参数</h4>
-      <div class="param-group">
-        <label>Temperature <span class="val" id="val-temp">0.7</span></label>
-        <input type="range" id="param-temp" min="0" max="2" step="0.1" value="0.7">
-      </div>
-      <div class="param-group">
-        <label>Max Tokens <span class="val" id="val-maxtok">1024</span></label>
-        <input type="range" id="param-maxtok" min="1" max="8192" step="1" value="1024">
-      </div>
-      <div class="param-group">
-        <label>Top P <span class="val" id="val-topp">1.0</span></label>
-        <input type="range" id="param-topp" min="0" max="1" step="0.05" value="1">
-      </div>
-      <div class="param-group">
-        <label><input type="checkbox" id="param-stream" checked> 流式输出</label>
-      </div>
-      <div class="param-group">
-        <label>System Prompt</label>
-        <textarea id="param-system" placeholder="你是 ..."></textarea>
-      </div>
+    <label>API Key</label>
+    <input type="password" id="in-key" placeholder="sk-...">
+
+    <label>声称模型名（渠道说支持哪个模型）</label>
+    <input type="text" id="in-model" placeholder="如：gpt-4, claude-sonnet-5, deepseek-chat">
+
+    <label>声称协议</label>
+    <select id="in-protocol" style="width:100%;padding:10px;background:var(--bg-deep);border:1px solid var(--border);border-radius:8px;color:var(--fg);font-size:14px;">
+      <option value="openai">OpenAI 兼容</option>
+      <option value="anthropic">Anthropic 兼容</option>
+    </select>
+
+    <label style="margin-top:16px;">检测项</label>
+    <div class="ap-checks">
+      <label class="ap-check"><input type="checkbox" id="chk-reachable" checked> 可达性 + TLS</label>
+      <label class="ap-check"><input type="checkbox" id="chk-auth" checked> 鉴权有效性</label>
+      <label class="ap-check"><input type="checkbox" id="chk-model" checked> 模型真实性</label>
+      <label class="ap-check"><input type="checkbox" id="chk-perf" checked> 性能 + 计费</label>
+      <label class="ap-check"><input type="checkbox" id="chk-stream" checked> 流式响应</label>
+      <label class="ap-check"><input type="checkbox" id="chk-cors" checked> CORS 浏览器直跑</label>
     </div>
 
-    <!-- 中间对话 -->
-    <div class="card glass-strong pg-chat">
-      <div class="pg-messages" id="messages"></div>
-      <div class="pg-input-area">
-        <textarea id="user-input" placeholder="输入消息，Enter 发送，Shift+Enter 换行"></textarea>
-        <button id="btn-send-input">发送</button>
-      </div>
-    </div>
+    <button class="ap-start-btn" id="start-btn">▶ 开始体检</button>
 
-    <!-- 右侧历史/保存 -->
-    <div class="card glass-strong pg-sidebar">
-      <h4 style="margin-top:0;">已保存测试</h4>
-      <div id="saved-list"></div>
-      <button onclick="saveCurrent()" style="margin-top:8px;width:100%;">+ 保存当前测试</button>
-      <button class="secondary" onclick="clearHistory()" style="margin-top:6px;width:100%;">清空全部</button>
-      <div class="privacy-note" style="margin-top:16px;">
-        <strong style="color:var(--accent);">已保存 =</strong> System Prompt + 模型参数（不含 Key 和对话内容）
-      </div>
+    <div class="ap-privacy">
+      🔒 <strong style="color:var(--accent);">隐私保护：</strong>所有检测在浏览器内完成。API Key <strong>不会上传</strong>到我们的服务器，直接由你的浏览器发请求到目标 URL。
     </div>
   </div>
 
-  <!-- 对比模式 -->
-  <div id="mode-compare" style="display:none;">
-    <div class="card glass-strong" style="padding: 16px; margin-bottom: 16px;">
-      <h4 style="margin-top:0;">对比 3 个模型</h4>
-      <p class="muted" style="font-size: 12px;">填 3 组 (Base URL, API Key, 模型)，同 prompt 跑一次。结果并列展示。</p>
-      <div id="compare-configs" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:12px;"></div>
-      <textarea id="compare-prompt" placeholder="对比 prompt（同时发给 3 个模型）" style="margin-top:12px;width:100%;min-height:60px;"></textarea>
-      <button onclick="runCompare()" style="margin-top:12px;">▶ 同时发送</button>
-    </div>
-    <div class="pg-compare" id="compare-results"></div>
+  <!-- 进度 -->
+  <div class="card glass-strong ap-progress" id="progress-card">
+    <h3 style="margin:0 0 16px;font-size:16px;">🔬 体检进行中</h3>
+    <div id="steps-container"></div>
   </div>
 
+  <!-- 报告 -->
+  <div class="ap-report" id="report-card">
+    <div class="ap-score">
+      <div class="ap-score-num" id="score-num">--</div>
+      <div class="ap-score-label">综合评分（10 分制）</div>
+      <div class="ap-score-verdict" id="score-verdict">--</div>
+    </div>
+
+    <div id="warnings-container"></div>
+
+    <div class="card glass-strong ap-section">
+      <h3><span class="icon" style="background:rgba(0,217,255,0.15);color:#00d9ff;">🌐</span>可达性</h3>
+      <div id="r-reachable"></div>
+    </div>
+
+    <div class="card glass-strong ap-section">
+      <h3><span class="icon" style="background:rgba(176,107,255,0.15);color:#b066ff;">🔐</span>鉴权</h3>
+      <div id="r-auth"></div>
+    </div>
+
+    <div class="card glass-strong ap-section">
+      <h3><span class="icon" style="background:rgba(255,107,157,0.15);color:#ff6b9d;">🤖</span>模型真实性</h3>
+      <div id="r-model"></div>
+    </div>
+
+    <div class="card glass-strong ap-section">
+      <h3><span class="icon" style="background:rgba(34,197,94,0.15);color:#22c55e;">⚡</span>性能</h3>
+      <div id="r-perf"></div>
+    </div>
+
+    <div class="card glass-strong ap-section" id="r-stream-section" style="display:none;">
+      <h3><span class="icon" style="background:rgba(0,217,255,0.15);color:#00d9ff;">📡</span>流式</h3>
+      <div id="r-stream"></div>
+    </div>
+
+    <div class="card glass-strong ap-section" id="r-cors-section" style="display:none;">
+      <h3><span class="icon" style="background:rgba(255,184,77,0.15);color:#ffb84d;">🔗</span>CORS</h3>
+      <div id="r-cors"></div>
+    </div>
+
+    <div style="text-align:center;margin-top:24px;">
+      <button onclick="location.reload()" class="secondary">重新检测另一个</button>
+      <a href="compare.html" class="btn btn-ghost" style="text-decoration:none;margin-left:8px;">去看更便宜的渠道 →</a>
+    </div>
+  </div>
 </main>
-
-<div id="footer"></div>
 
 <script src="data.js"></script>
 <script src="app.js"></script>
-<script src="ab.js"></script>
 <script>
 if (typeof renderTopbar === "function") renderTopbar("playground");
 
 const $ = (id) => document.getElementById(id);
+const STEPS = {
+  reachable: { name: "可达性 + TLS", icon: "🌐" },
+  auth: { name: "鉴权有效性", icon: "🔐" },
+  model: { name: "模型真实性", icon: "🤖" },
+  perf: { name: "性能 + 计费", icon: "⚡" },
+  stream: { name: "流式响应", icon: "📡" },
+  cors: { name: "CORS 浏览器直跑", icon: "🔗" }
+};
 
-// 参数滑块同步
-function bindSlider(id, valId) {
-  const s = $(id), v = $(valId);
-  s.addEventListener("input", () => v.textContent = s.value);
-}
-bindSlider("param-temp", "val-temp");
-bindSlider("param-maxtok", "val-maxtok");
-bindSlider("param-topp", "val-topp");
-
-// 模式切换
-document.querySelectorAll(".pg-mode-tabs button").forEach(b => {
-  b.addEventListener("click", () => {
-    document.querySelectorAll(".pg-mode-tabs button").forEach(x => x.classList.remove("active"));
-    b.classList.add("active");
-    const m = b.dataset.mode;
-    $("mode-single").style.display = m === "single" ? "" : "none";
-    $("mode-compare").style.display = m === "compare" ? "" : "none";
-  });
-});
-
-// 对话状态
-let conv = [];  // [{role, content}]
+const state = { checks: {}, results: {}, url: "", key: "", model: "", protocol: "openai" };
 let abortCtrl = null;
 
-// 加载已保存
-function loadSaved() {
-  try {
-    const s = JSON.parse(localStorage.getItem("pg_saved") || "[]");
-    $("saved-list").innerHTML = s.length ? s.map((it, i) =>
-      '<div class="saved-item" data-idx="' + i + '">' +
-        '<div class="name">' + escapeHtml(it.name) + '</div>' +
-        '<div class="preview">' + escapeHtml(it.model || "") + ' · ' + escapeHtml((it.system || "").slice(0, 30)) + '</div>' +
-      '</div>'
-    ).join("") : '<div class="muted" style="padding:16px;text-align:center;">还没有</div>';
-    document.querySelectorAll(".saved-item").forEach(el => {
-      el.addEventListener("click", () => {
-        const it = s[el.dataset.idx];
-        $("cfg-base-url").value = it.base_url || "";
-        $("cfg-model").value = it.model || "";
-        $("param-system").value = it.system || "";
-        if (it.params) {
-          $("param-temp").value = it.params.temperature || 0.7;
-          $("val-temp").textContent = it.params.temperature || 0.7;
-          $("param-maxtok").value = it.params.max_tokens || 1024;
-          $("val-maxtok").textContent = it.params.max_tokens || 1024;
-          $("param-topp").value = it.params.top_p || 1;
-          $("val-topp").textContent = it.params.top_p || 1;
-        }
-      });
-    });
-  } catch (e) {}
-}
-
-function saveCurrent() {
-  const name = prompt("给这个测试起个名字：");
-  if (!name) return;
-  const list = JSON.parse(localStorage.getItem("pg_saved") || "[]");
-  list.push({
-    name,
-    base_url: $("cfg-base-url").value.trim(),
-    model: $("cfg-model").value.trim(),
-    system: $("param-system").value.trim(),
-    params: {
-      temperature: parseFloat($("param-temp").value),
-      max_tokens: parseInt($("param-maxtok").value),
-      top_p: parseFloat($("param-topp").value)
-    }
+document.querySelectorAll(".ap-tabs button").forEach(b => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll(".ap-tabs button").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    const quick = b.dataset.mode === "quick";
+    ["chk-perf","chk-stream","chk-cors"].forEach(id => $(id).checked = !quick);
   });
-  localStorage.setItem("pg_saved", JSON.stringify(list));
-  loadSaved();
-}
+});
 
-function clearHistory() {
-  if (!confirm("清空所有已保存测试？")) return;
-  localStorage.removeItem("pg_saved");
-  loadSaved();
-}
-
-// 添加消息
-function addMsg(role, content, meta) {
+function addStep(id) {
   const wrap = document.createElement("div");
-  wrap.className = "pg-msg " + role;
-  const roleMap = { user: "你", assistant: "AI", system: "System" };
-  let html = '<div class="pg-msg-role">' + roleMap[role] + '</div>';
-  html += '<div class="pg-msg-content">' + escapeHtml(content || "") + '</div>';
-  if (meta) html += '<div class="pg-msg-meta">' + escapeHtml(meta) + '</div>';
-  if (role === "assistant") {
-    html += '<div class="msg-actions"><button onclick="copyMsg(this)">📋 复制</button><button onclick="regenMsg(this)">🔄 重新生成</button></div>';
-  }
-  wrap.innerHTML = html;
-  $("messages").appendChild(wrap);
-  $("messages").scrollTop = $("messages").scrollHeight;
-  return wrap;
+  wrap.className = "ap-step";
+  wrap.id = "step-" + id;
+  wrap.innerHTML = `
+    <div class="ap-step-icon pending" id="step-icon-${id}">⏳</div>
+    <div class="ap-step-name">${STEPS[id].icon} ${STEPS[id].name}</div>
+    <div class="ap-step-result" id="step-result-${id}">等待</div>
+  `;
+  $("steps-container").appendChild(wrap);
 }
 
-function copyMsg(btn) {
-  const content = btn.parentElement.previousElementSibling.textContent;
-  navigator.clipboard.writeText(content).then(() => {
-    btn.textContent = "✓ 已复制";
-    setTimeout(() => btn.textContent = "📋 复制", 1500);
+function setStep(id, status, resultText) {
+  const icon = $(`step-icon-${id}`);
+  const result = $(`step-result-${id}`);
+  const statusMap = {
+    pending: ["⏳", "pending", "等待"],
+    running: ["⏳", "running", "检测中..."],
+    ok: ["✅", "ok", resultText || "通过"],
+    warn: ["⚠️", "warn", resultText || "警告"],
+    fail: ["❌", "fail", resultText || "失败"]
+  };
+  const [emoji, cls, txt] = statusMap[status] || statusMap.pending;
+  icon.className = "ap-step-icon " + cls;
+  icon.textContent = emoji;
+  result.textContent = txt;
+}
+
+function renderRow(parentId, rows) {
+  const el = $(parentId);
+  el.innerHTML = rows.map(r => {
+    const cls = r.status || "";
+    return `<div class="ap-row"><span class="key">${r.key}</span><span class="val ${cls}">${r.val}</span></div>`;
+  }).join("");
+}
+
+function addWarning(type, msg) {
+  const wrap = document.createElement("div");
+  wrap.className = type === "danger" ? "ap-danger" : "ap-warning";
+  wrap.innerHTML = type === "danger" ? `<strong>🚨 高风险：</strong>${msg}` : `<strong>⚠️ 注意：</strong>${msg}`;
+  $("warnings-container").appendChild(wrap);
+}
+
+function calcScore() {
+  let s = 10;
+  Object.values(state.results).forEach(r => {
+    if (r.status === "fail") s -= 3;
+    else if (r.status === "warn") s -= 1;
   });
+  return Math.max(0, Math.min(10, s));
 }
 
-function regenMsg(btn) {
-  // 删除最后一条 assistant，重新发
-  const msg = btn.closest(".pg-msg");
-  if (msg && confirm("重新生成最后一条回复？")) {
-    msg.remove();
-    conv.pop();
-    sendMsg(conv[conv.length - 1]?.content || "");
-  }
+function verdict(score) {
+  if (score >= 9) return { text: "✅ 真品，可以放心用", color: "#22c55e" };
+  if (score >= 7) return { text: "🟢 基本可信，建议先用小金额", color: "#00d9ff" };
+  if (score >= 5) return { text: "⚠️ 有风险，建议先小金额测试", color: "#ffb84d" };
+  if (score >= 3) return { text: "🚨 高风险，建议立即停止", color: "#ff6b9d" };
+  return { text: "❌ 大概率是假渠道/假 API", color: "#ff4757" };
 }
 
-// 发送消息
-async function sendMsg(text) {
-  const baseUrl = $("cfg-base-url").value.trim();
-  const apiKey = $("cfg-api-key").value.trim();
-  const model = $("cfg-model").value.trim();
-  const protocol = $("cfg-protocol").value;
-  const stream = $("param-stream").checked;
+async function start() {
+  state.url = $("in-url").value.trim().replace(/\/$/, "");
+  state.key = $("in-key").value.trim();
+  state.model = $("in-model").value.trim();
+  state.protocol = $("in-protocol").value;
+  if (!state.url || !state.key || !state.model) { alert("请填完整 URL / Key / 模型"); return; }
 
-  if (!baseUrl || !apiKey || !model) {
-    alert("请填 Base URL / API Key / 模型");
-    return;
-  }
-
-  const systemPrompt = $("param-system").value.trim();
-  const messages = [];
-  if (systemPrompt) messages.push({ role: "system", content: systemPrompt });
-  if (text) messages.push({ role: "user", content: text });
-
-  if (text) {
-    addMsg("user", text);
-    conv.push({ role: "user", content: text });
-  }
-
-  const params = {
-    temperature: parseFloat($("param-temp").value),
-    max_tokens: parseInt($("param-maxtok").value),
-    top_p: parseFloat($("param-topp").value)
+  state.checks = {
+    reachable: $("chk-reachable").checked,
+    auth: $("chk-auth").checked,
+    model: $("chk-model").checked,
+    perf: $("chk-perf").checked,
+    stream: $("chk-stream").checked,
+    cors: $("chk-cors").checked
   };
 
-  $("btn-send").disabled = true;
-  $("btn-send-input").disabled = true;
-  $("btn-stop").disabled = false;
-  abortCtrl = new AbortController();
+  $("input-card").style.display = "none";
+  $("progress-card").classList.add("show");
+  $("steps-container").innerHTML = "";
+  Object.keys(STEPS).forEach(id => { if (state.checks[id]) addStep(id); });
 
-  const startTime = Date.now();
-  let assistantMsg = null;
-  let fullContent = "";
-  let totalTokens = null;
+  // 顺序执行
+  if (state.checks.reachable) await checkReachable();
+  if (state.checks.auth) await checkAuth();
+  if (state.checks.model) await checkModel();
+  if (state.checks.perf) await checkPerf();
+  if (state.checks.stream) await checkStream();
+  if (state.checks.cors) await checkCORS();
 
+  showReport();
+}
+
+// ============ 检查 1：可达性 ============
+async function checkReachable() {
+  setStep("reachable", "running");
   try {
-    if (protocol === "openai") {
-      const url = baseUrl.replace(/\/$/, "") + "/chat/completions";
-      const headers = { "Content-Type": "application/json", "Authorization": "Bearer " + apiKey };
-
-      const resp = await fetch(url, {
-        method: "POST",
-        headers,
-        body: JSON.stringify(Object.assign({ model, messages, stream }, params)),
-        signal: abortCtrl.signal
-      });
-
-      if (!resp.ok) {
-        const errText = await resp.text();
-        addMsg("system", "❌ HTTP " + resp.status + ": " + errText.slice(0, 500));
-        return;
-      }
-
-      if (stream) {
-        assistantMsg = addMsg("assistant", "", "");
-        const contentEl = assistantMsg.querySelector(".pg-msg-content");
-        contentEl.classList.add("streaming-cursor");
-        const reader = resp.body.getReader();
-        const decoder = new TextDecoder();
-        let buf = "";
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          buf += decoder.decode(value, { stream: true });
-          const lines = buf.split("\n");
-          buf = lines.pop();
-          for (const line of lines) {
-            if (line.startsWith("data: ")) {
-              const data = line.slice(6).trim();
-              if (data === "[DONE]") break;
-              try {
-                const obj = JSON.parse(data);
-                const delta = obj.choices?.[0]?.delta?.content || "";
-                if (delta) {
-                  fullContent += delta;
-                  contentEl.textContent = fullContent;
-                  $("messages").scrollTop = $("messages").scrollHeight;
-                }
-                if (obj.usage) totalTokens = obj.usage.total_tokens;
-              } catch (e) {}
-            }
-          }
-        }
-        contentEl.classList.remove("streaming-cursor");
-      } else {
-        const data = await resp.json();
-        fullContent = data.choices?.[0]?.message?.content || "(无回复)";
-        totalTokens = data.usage?.total_tokens;
-        assistantMsg = addMsg("assistant", fullContent);
-      }
-    } else if (protocol === "anthropic") {
-      const url = baseUrl.replace(/\/$/, "") + "/v1/messages";
-      const headers = { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" };
-      const resp = await fetch(url, {
-        method: "POST",
-        headers,
-        body: JSON.stringify(Object.assign({ model, messages: messages.filter(m => m.role !== "system"), system: systemPrompt || undefined, max_tokens: params.max_tokens }, { temperature: params.temperature, top_p: params.top_p })),
-        signal: abortCtrl.signal
-      });
-      if (!resp.ok) {
-        addMsg("system", "❌ HTTP " + resp.status + ": " + (await resp.text()).slice(0, 500));
-        return;
-      }
-      const data = await resp.json();
-      fullContent = data.content?.[0]?.text || "(无回复)";
-      totalTokens = (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
-      assistantMsg = addMsg("assistant", fullContent);
-    }
-
-    const duration = ((Date.now() - startTime) / 1000).toFixed(2);
-    let meta = "⚡ " + duration + "s";
-    if (totalTokens) meta += " · " + totalTokens + " tokens";
-    const metaEl = assistantMsg.querySelector(".pg-msg-meta");
-    if (metaEl) metaEl.textContent = meta;
-
-    conv.push({ role: "assistant", content: fullContent });
+    const t0 = Date.now();
+    const resp = await fetch(state.url.replace(/\/v1$/, "") + "/models", {
+      method: "GET",
+      headers: { "Authorization": "Bearer " + state.key },
+      signal: AbortSignal.timeout(10000)
+    }).catch(() => null);
+    const latency = Date.now() - t0;
+    const reachable = resp !== null;
+    const tls = location.protocol === "https:";
+    state.results.reachable = {
+      status: reachable ? "ok" : "fail",
+      latency,
+      statusCode: resp ? resp.status : null,
+      tls
+    };
+    setStep("reachable", state.results.reachable.status, reachable ? `${latency}ms` : "连接失败");
+    renderRow("r-reachable", [
+      { key: "URL 可达", val: reachable ? "✅ 是" : "❌ 否", status: reachable ? "ok" : "fail" },
+      { key: "HTTPS", val: tls ? "✅ 是" : "❌ 否", status: tls ? "ok" : "fail" },
+      { key: "响应延迟", val: latency + "ms", status: latency > 3000 ? "warn" : "ok" },
+      { key: "HTTP 状态", val: resp ? resp.status : "N/A", status: resp && resp.status < 400 ? "ok" : "fail" }
+    ]);
+    if (!reachable) addWarning("danger", "无法连接到目标 URL。这可能是：URL 拼错 / 域名挂了 / 被防火墙屏蔽。");
+    else if (latency > 3000) addWarning("warning", "响应延迟较高（" + latency + "ms），用户体验会受影响。");
   } catch (e) {
-    if (e.name === "AbortError") {
-      addMsg("system", "⏹ 已停止");
+    state.results.reachable = { status: "fail", error: e.message };
+    setStep("reachable", "fail", e.message);
+    renderRow("r-reachable", [{ key: "URL 可达", val: "❌ 否", status: "fail" }, { key: "错误", val: e.message, status: "fail" }]);
+    addWarning("danger", "连接错误：" + e.message);
+  }
+}
+
+// ============ 检查 2：鉴权 ============
+async function checkAuth() {
+  setStep("auth", "running");
+  try {
+    const url = state.protocol === "openai"
+      ? state.url + "/chat/completions"
+      : state.url + "/v1/messages";
+    const headers = state.protocol === "openai"
+      ? { "Content-Type": "application/json", "Authorization": "Bearer " + state.key }
+      : { "Content-Type": "application/json", "x-api-key": state.key, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" };
+    const body = state.protocol === "openai"
+      ? JSON.stringify({ model: state.model, messages: [{ role: "user", content: "hi" }], max_tokens: 5 })
+      : JSON.stringify({ model: state.model, messages: [{ role: "user", content: "hi" }], max_tokens: 5 });
+
+    const resp = await fetch(url, { method: "POST", headers, body, signal: AbortSignal.timeout(15000) });
+    const data = await resp.json().catch(() => ({}));
+
+    let authOk = false, status = "fail", label = "鉴权失败";
+    if (resp.status === 200) { authOk = true; status = "ok"; label = "鉴权通过"; }
+    else if (resp.status === 401 || resp.status === 403) { status = "fail"; label = "Key 无效或过期"; }
+    else if (resp.status === 404) { status = "fail"; label = "模型不存在或路径错"; }
+    else if (resp.status === 429) { status = "warn"; label = "限流（Key 可能是好的）"; }
+    else if (resp.status >= 500) { status = "warn"; label = "服务端错误"; }
+
+    state.results.auth = { status, code: resp.status, body: data };
+    setStep("auth", status, label);
+
+    const errMsg = data?.error?.message || data?.message || "";
+    renderRow("r-auth", [
+      { key: "HTTP 状态", val: resp.status, status: status },
+      { key: "鉴权结果", val: authOk ? "✅ 通过" : "❌ 失败", status: status },
+      { key: "响应内容", val: authOk ? "(成功)" : errMsg.slice(0, 80), status: authOk ? "ok" : "fail" }
+    ]);
+    if (!authOk && resp.status === 401) addWarning("danger", "API Key 无效。可能原因：key 拼错 / 渠道挂了 / 充值被清零。");
+    if (resp.status === 404) addWarning("danger", "模型 " + state.model + " 不存在或路径错误。这是**最常见的假渠道迹象**：假 API 会乱编模型名。");
+  } catch (e) {
+    state.results.auth = { status: "fail", error: e.message };
+    setStep("auth", "fail", e.message);
+    renderRow("r-auth", [{ key: "鉴权结果", val: "❌ 请求失败", status: "fail" }, { key: "错误", val: e.message, status: "fail" }]);
+  }
+}
+
+// ============ 检查 3：模型真实性 ============
+async function checkModel() {
+  setStep("model", "running");
+  try {
+    // 用固定 prompt 验证模型响应特征
+    const probe = state.protocol === "openai"
+      ? { model: state.model, messages: [{ role: "user", content: "What is 2+2? Reply with only the number." }], max_tokens: 10, temperature: 0 }
+      : { model: state.model, messages: [{ role: "user", content: "What is 2+2? Reply with only the number." }], max_tokens: 10, temperature: 0 };
+    const url = state.protocol === "openai" ? state.url + "/chat/completions" : state.url + "/v1/messages";
+    const headers = state.protocol === "openai"
+      ? { "Content-Type": "application/json", "Authorization": "Bearer " + state.key }
+      : { "Content-Type": "application/json", "x-api-key": state.key, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" };
+
+    const t0 = Date.now();
+    const resp = await fetch(url, { method: "POST", headers, body: JSON.stringify(probe), signal: AbortSignal.timeout(15000) });
+    const data = await resp.json().catch(() => ({}));
+    const latency = Date.now() - t0;
+    const content = data?.choices?.[0]?.message?.content || data?.content?.[0]?.text || "";
+
+    // 真伪特征
+    const saysFour = /4/.test(content);
+    const isSuspicious = !saysFour || content.length > 20;
+    let status = "ok", label = "响应正常";
+    if (!saysFour) { status = "fail"; label = "模型不响应"; }
+    else if (isSuspicious) { status = "warn"; label = "回答过长，疑似不是该模型"; }
+    else if (latency > 10000) { status = "warn"; label = "响应过慢，疑似中转"; }
+
+    state.results.model = { status, latency, content, rawResponse: data };
+    setStep("model", status, `${latency}ms · "${content.slice(0, 20)}"`);
+
+    renderRow("r-model", [
+      { key: "Probe 响应", val: '"' + content.slice(0, 30) + '"', status: saysFour ? "ok" : "fail" },
+      { key: "响应延迟", val: latency + "ms", status: latency > 5000 ? "warn" : "ok" },
+      { key: "是否回答 4", val: saysFour ? "✅ 是" : "❌ 否", status: saysFour ? "ok" : "fail" },
+      { key: "回答字数", val: content.length + " 字", status: isSuspicious ? "warn" : "ok" },
+      { key: "模型 ID（响应中）", val: data?.model || data?.id || "N/A", status: "ok" }
+    ]);
+
+    if (!saysFour) addWarning("danger", "模型回答 '2+2' 不是 4。这极大概率不是真实模型（可能是个 shell 接口或被冒充）。");
+    if (data?.model && data.model !== state.model) addWarning("warning", "声称调用 '" + state.model + "'，但返回的模型 ID 是 '" + data.model + "'。可能是被替换或动态转发。");
+  } catch (e) {
+    state.results.model = { status: "fail", error: e.message };
+    setStep("model", "fail", e.message);
+  }
+}
+
+// ============ 检查 4：性能 ============
+async function checkPerf() {
+  setStep("perf", "running");
+  try {
+    const probe = { model: state.model, messages: [{ role: "user", content: "Say OK" }], max_tokens: 5 };
+    const url = state.url + "/chat/completions";
+    const headers = { "Content-Type": "application/json", "Authorization": "Bearer " + state.key };
+
+    const t0 = Date.now();
+    const resp = await fetch(url, { method: "POST", headers, body: JSON.stringify(probe), signal: AbortSignal.timeout(15000) });
+    const data = await resp.json().catch(() => ({}));
+    const latency = Date.now() - t0;
+
+    // 取 token 计费
+    const usage = data?.usage || {};
+    const tokens = usage.total_tokens || (usage.input_tokens + usage.output_tokens) || 0;
+
+    state.results.perf = { status: "ok", latency, tokens, usage };
+    setStep("perf", "ok", latency + "ms · " + tokens + " tokens");
+
+    const speedLabel = latency < 1500 ? "快" : latency < 5000 ? "中" : "慢";
+    renderRow("r-perf", [
+      { key: "响应延迟", val: latency + "ms (" + speedLabel + ")", status: latency < 5000 ? "ok" : "warn" },
+      { key: "消耗 tokens", val: tokens, status: "ok" },
+      { key: "input_tokens", val: usage.prompt_tokens || usage.input_tokens || 0, status: "ok" },
+      { key: "output_tokens", val: usage.completion_tokens || usage.output_tokens || 0, status: "ok" }
+    ]);
+  } catch (e) {
+    state.results.perf = { status: "fail", error: e.message };
+    setStep("perf", "fail", e.message);
+  }
+}
+
+// ============ 检查 5：流式 ============
+async function checkStream() {
+  setStep("stream", "running");
+  try {
+    const url = state.url + "/chat/completions";
+    const headers = { "Content-Type": "application/json", "Authorization": "Bearer " + state.key };
+    const body = JSON.stringify({ model: state.model, messages: [{ role: "user", content: "Hi" }], max_tokens: 10, stream: true });
+    const t0 = Date.now();
+    const resp = await fetch(url, { method: "POST", headers, body, signal: AbortSignal.timeout(15000) });
+    const reader = resp.body.getReader();
+    let firstChunkTime = null;
+    let chunks = 0;
+    let totalBytes = 0;
+    const decoder = new TextDecoder();
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (firstChunkTime === null) firstChunkTime = Date.now();
+      chunks++;
+      totalBytes += value.length;
+      decoder.decode(value);
+    }
+    const totalTime = Date.now() - t0;
+    const ttft = firstChunkTime ? firstChunkTime - t0 : totalTime;
+    state.results.stream = { status: "ok", chunks, ttft, totalTime, totalBytes };
+    setStep("stream", "ok", chunks + " chunks, TTFT " + ttft + "ms");
+    $("r-stream-section").style.display = "block";
+    renderRow("r-stream", [
+      { key: "流式 chunks", val: chunks, status: chunks > 1 ? "ok" : "fail" },
+      { key: "首 token 延迟", val: ttft + "ms", status: ttft < 1000 ? "ok" : "warn" },
+      { key: "总响应", val: totalTime + "ms", status: "ok" },
+      { key: "总字节", val: totalBytes + "B", status: "ok" }
+    ]);
+    if (chunks <= 1) addWarning("warning", "声称支持流式但只收到 1 个 chunk。可能不支持流式。");
+  } catch (e) {
+    state.results.stream = { status: "fail", error: e.message };
+    setStep("stream", "fail", e.message);
+    $("r-stream-section").style.display = "block";
+    renderRow("r-stream", [{ key: "流式", val: "❌ 不支持或失败", status: "fail" }]);
+  }
+}
+
+// ============ 检查 6：CORS ============
+async function checkCORS() {
+  setStep("cors", "running");
+  try {
+    const url = state.url + "/chat/completions";
+    const headers = { "Content-Type": "application/json", "Authorization": "Bearer " + state.key };
+    const body = JSON.stringify({ model: state.model, messages: [{ role: "user", content: "Hi" }], max_tokens: 5 });
+    const resp = await fetch(url, { method: "POST", headers, body, mode: "cors", signal: AbortSignal.timeout(10000) });
+    const allowOrigin = resp.headers.get("access-control-allow-origin");
+    const status = resp.ok ? "ok" : "warn";
+    state.results.cors = { status, allowOrigin, ok: resp.ok };
+    setStep("cors", status, allowOrigin || (resp.ok ? "支持" : "受限"));
+    $("r-cors-section").style.display = "block";
+    renderRow("r-cors", [
+      { key: "CORS", val: allowOrigin ? "✅ " + allowOrigin : "⚠️ 受限", status: status },
+      { key: "HTTP 状态", val: resp.status, status: status }
+    ]);
+    if (!allowOrigin && resp.ok) addWarning("warning", "API 可用但 CORS 受限。该渠道不允许浏览器直接调用，需要服务端代理。");
+  } catch (e) {
+    if (e.name === "TypeError" && e.message.includes("fetch")) {
+      state.results.cors = { status: "fail", error: "CORS 阻止" };
+      setStep("cors", "fail", "CORS 阻止");
+      $("r-cors-section").style.display = "block";
+      renderRow("r-cors", [{ key: "CORS", val: "❌ 被浏览器阻止", status: "fail" }]);
+      addWarning("warning", "CORS 被浏览器阻止。这表明该渠道不允许从浏览器直接调用（需要服务端代理或本地工具）。");
     } else {
-      addMsg("system", "❌ " + e.message);
+      state.results.cors = { status: "fail", error: e.message };
+      setStep("cors", "fail", e.message);
     }
-  } finally {
-    $("btn-send").disabled = false;
-    $("btn-send-input").disabled = false;
-    $("btn-stop").disabled = true;
-    abortCtrl = null;
   }
 }
 
-function escapeHtml(s) {
-  return String(s || "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", """: "&quot;" })[c]);
+// ============ 报告 ============
+function showReport() {
+  const score = calcScore();
+  const v = verdict(score);
+
+  $("progress-card").classList.remove("show");
+  $("report-card").classList.add("show");
+  $("score-num").textContent = score.toFixed(1);
+  $("score-verdict").textContent = v.text;
+  $("score-verdict").style.color = v.color;
+  $("report-card").scrollIntoView({ behavior: "smooth" });
 }
 
-// 绑定发送
-$("btn-send").addEventListener("click", () => {
-  const text = $("user-input").value.trim();
-  if (!text) return;
-  $("user-input").value = "";
-  sendMsg(text);
-});
-$("btn-send-input").addEventListener("click", () => {
-  const text = $("user-input").value.trim();
-  if (!text) return;
-  $("user-input").value = "";
-  sendMsg(text);
-});
-$("user-input").addEventListener("keydown", e => {
-  if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault();
-    const text = $("user-input").value.trim();
-    if (!text) return;
-    $("user-input").value = "";
-    sendMsg(text);
-  }
-});
-$("btn-stop").addEventListener("click", () => {
-  if (abortCtrl) abortCtrl.abort();
-});
-
-// 对比模式
-function initCompare() {
-  const c = $("compare-configs");
-  c.innerHTML = [0,1,2].map(i =>
-    '<div style="background:var(--bg-deep);padding:12px;border-radius:8px;">' +
-      '<div style="font-size:12px;color:var(--muted);margin-bottom:8px;">模型 ' + (i+1) + '</div>' +
-      '<input type="text" placeholder="Base URL" data-cmp="base_url" data-idx="' + i + '" style="margin-bottom:6px;">' +
-      '<input type="password" placeholder="API Key" data-cmp="api_key" data-idx="' + i + '" style="margin-bottom:6px;">' +
-      '<input type="text" placeholder="模型名" data-cmp="model" data-idx="' + i + '">' +
-    '</div>'
-  ).join("");
-  // 自动从单模型模式填第一组
-  c.querySelectorAll("input").forEach(inp => {
-    inp.style.cssText = "padding:8px;background:var(--bg-deep);border:1px solid var(--border);border-radius:6px;color:var(--fg);font-size:12px;width:100%;box-sizing:border-box;";
-  });
-}
-
-async function runCompare() {
-  const prompt = $("compare-prompt").value.trim();
-  if (!prompt) { alert("请填对比 prompt"); return; }
-  const configs = [0,1,2].map(i => ({
-    base_url: document.querySelector('[data-cmp="base_url"][data-idx="' + i + '"]').value.trim(),
-    api_key: document.querySelector('[data-cmp="api_key"][data-idx="' + i + '"]').value.trim(),
-    model: document.querySelector('[data-cmp="model"][data-idx="' + i + '"]').value.trim()
-  }));
-
-  $("compare-results").innerHTML = configs.map((c, i) =>
-    '<div class="card glass-strong pg-compare-col">' +
-      '<h4>' + (c.model || "模型 " + (i+1)) + '</h4>' +
-      '<div id="cmp-' + i + '" class="muted" style="font-size:12px;">请求中...</div>' +
-    '</div>'
-  ).join("");
-
-  await Promise.all(configs.map((cfg, i) => callCompare(cfg, prompt, "cmp-" + i)));
-}
-
-async function callCompare(cfg, prompt, targetId) {
-  if (!cfg.base_url || !cfg.api_key || !cfg.model) {
-    document.getElementById(targetId).innerHTML = '<em class="muted">未填配置</em>';
-    return;
-  }
-  try {
-    const start = Date.now();
-    const resp = await fetch(cfg.base_url.replace(/\/$/, "") + "/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + cfg.api_key },
-      body: JSON.stringify({ model: cfg.model, messages: [{ role: "user", content: prompt }], max_tokens: 1024 })
-    });
-    if (!resp.ok) throw new Error("HTTP " + resp.status);
-    const data = await resp.json();
-    const content = data.choices?.[0]?.message?.content || "(无回复)";
-    const tokens = data.usage?.total_tokens;
-    const dur = ((Date.now() - start) / 1000).toFixed(2);
-    document.getElementById(targetId).innerHTML = '<div style="white-space:pre-wrap;font-size:13px;line-height:1.6;">' + escapeHtml(content) + '</div>' +
-      '<div class="muted" style="margin-top:12px;font-size:11px;">⚡ ' + dur + 's' + (tokens ? ' · ' + tokens + ' tokens' : '') + '</div>';
-  } catch (e) {
-    document.getElementById(targetId).innerHTML = '<em class="muted">❌ ' + e.message + '</em>';
-  }
-}
-
-loadSaved();
-initCompare();
+$("start-btn").addEventListener("click", start);
 </script>
 </body>
 </html>
