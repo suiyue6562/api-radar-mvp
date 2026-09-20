@@ -23,6 +23,11 @@
 .stat-num { font-family: var(--font-mono); font-size: 36px; font-weight: 800; background: var(--grad-primary); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
 
+
+/* Hero 工具输入框 */
+#hero-url { color: var(--fg); }
+#hero-url::placeholder { color: var(--muted); }
+
 /* 搜索 */
 .search-wrap { max-width: 720px; margin: 32px auto 0; position: relative; }
 .search-input { width: 100%; padding: 18px 60px 18px 24px; font-size: 15px; background: var(--bg-card); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); }
@@ -108,46 +113,49 @@
 <div id="topbar"></div>
 
 <main class="main">
-  <!-- HERO 重构：痛点 + 价值主张 + 社会证明 -->
+  <!-- HERO v3：痛点 + 工具即 Hero + 社会证明 -->
   <section class="hero fade-in">
-    <!-- 数据点徽章（动态） -->
     <div class="hero-tagline">
       <span class="hero-tagline-dot"></span>
       <span id="hero-tagline-text">2026 实时数据 · 60 模型 · 40 渠道</span>
     </div>
 
-    <!-- 痛点标题 -->
     <h1>
-      <span class="gradient-text">选错 API 渠道</span><br>
-      <span style="font-size:32px;font-weight:500;color:var(--muted);">每月白花 30% 预算</span>
+      <span class="gradient-text">5 分钟验证 API 真假</span><br>
+      <span style="font-size:28px;font-weight:500;color:var(--muted);">别充值完发现跑不通</span>
     </h1>
 
-    <!-- 价值主张（具体可验证） -->
     <p class="hero-desc" style="max-width:680px;font-size:17px;">
-      同一个 prompt，<strong style="color:var(--accent);">Claude、GPT、DeepSeek、Qwen 横向对比</strong> 输出质量差多少？
-      同一个模型，<strong style="color:var(--accent);">对比官方、硅基流动、OpenRouter 三个渠道</strong> 实际计费差多少？
-      5 分钟跑一遍比一周自己查文档更靠谱。
+      浏览器内粘贴 <strong style="color:var(--accent);">基础地址 + API 密钥</strong>，
+      我们跑 <strong style="color:var(--accent);">13 项检测</strong>（可达性、鉴权、模型指纹、速率限制、价格、假流式、TLS...），
+      告诉你这个渠道是不是真的。
     </p>
 
-    <!-- 主 CTA -->
-    <div style="margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-      <a href="playground.html" class="btn btn-primary" style="text-decoration:none;font-size:16px;padding:14px 28px;font-weight:700;">▶ 立即试用 Playground</a>
-      <a href="compare.html" class="btn btn-ghost" style="text-decoration:none;font-size:15px;padding:14px 28px;">💰 计算器比价</a>
-      <a href="business.html" class="btn btn-ghost" style="text-decoration:none;font-size:14px;padding:14px 24px;">40 家服务商 →</a>
+    <!-- Hero 工具：在线 URL 输入框（直接放 hero 让用户立刻能用） -->
+    <div style="max-width:720px;margin:28px auto 0;background:var(--bg-card);border:1px solid var(--border-strong);border-radius:14px;padding:6px;display:flex;gap:8px;">
+      <input type="text" id="hero-url" placeholder="https://api.deepseek.com/v1" style="flex:1;background:transparent;border:0;padding:14px;font-size:15px;color:var(--fg);outline:none;">
+      <button onclick="document.getElementById('hero-url').value && (location.href='playground.html?url='+encodeURIComponent(document.getElementById('hero-url').value))" style="padding:12px 24px;font-size:14px;margin:0;">▶ 检测</button>
     </div>
+    <p style="margin-top:12px;font-size:12px;color:var(--muted);">🔒 你的 API Key 只在浏览器内使用，不上传服务器</p>
 
-    <!-- 社会证明（动态拉数据） -->
-    <div style="margin-top:24px;display:flex;gap:24px;justify-content:center;flex-wrap:wrap;font-size:13px;color:var(--muted);">
-      <span>📊 今日 <strong id="proof-tests" style="color:var(--accent);">—</strong> 次 API 测试</span>
-      <span>👥 累计 <strong id="proof-users" style="color:var(--accent);">—</strong> 位独立用户</span>
-      <span>💾 已收录 <strong id="proof-models">60</strong> 个模型价格</span>
-    </div>
-
-    <!-- 搜索 -->
-    <div class="search-wrap">
-      <input type="text" class="search-input" id="main-search" placeholder="搜索模型 / 渠道（如 Claude Fable / 硅基流动 / DeepSeek）">
-      <span class="search-icon">🔍</span>
-      <div class="search-results" id="search-results"></div>
+    <!-- 价值社会证明 -->
+    <div style="margin-top:32px;display:grid;grid-template-columns:repeat(4, 1fr);gap:24px;max-width:680px;margin-left:auto;margin-right:auto;">
+      <div style="text-align:center;">
+        <div style="font-family:var(--font-mono);font-size:32px;font-weight:800;background:var(--grad-primary);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1;" id="proof-tests">—</div>
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;">24h 检测</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-family:var(--font-mono);font-size:32px;font-weight:800;background:var(--grad-primary);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1;">13</div>
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;">检测项</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-family:var(--font-mono);font-size:32px;font-weight:800;background:var(--grad-primary);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1;">100%</div>
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;">浏览器内</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-family:var(--font-mono);font-size:32px;font-weight:800;background:var(--grad-primary);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1;">¥0</div>
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;">永久免费</div>
+      </div>
     </div>
   </section>
 
@@ -175,6 +183,13 @@
       </a>
     </div>
   </section>
+
+  <!-- 搜索 -->
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="main-search" placeholder="搜索模型 / 渠道（如 Claude Fable / 硅基流动 / DeepSeek）">
+    <span class="search-icon">🔍</span>
+    <div class="search-results" id="search-results"></div>
+  </div>
 
   <!-- 实时数据 -->
   <section class="stats-bar fade-in">
