@@ -37,6 +37,7 @@
 <script src="ads.js"></script>
 <script src="app.js"></script>
 <script>
+function escapeHtml(s) { return String(s || "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"})[c]); }
 (function() {
   if (typeof renderTopbar === 'function') renderTopbar('providers');
   const D = API_RADAR_DATA;
@@ -53,12 +54,12 @@
   document.getElementById('provider-content').innerHTML = `
     <div class="page-hero fade-in" style="text-align:left;padding:32px 0 16px;">
     <div class="page-hero-tagline" style="margin-bottom:8px;"><span class="page-hero-tagline-dot"></span><span>${typeMap[provider.type]||provider.type} · ${provider.region||''}</span></div>
-    <h1 style="font-size:36px;text-align:left;"><span class="gradient-text">${provider.name}</span></h1>
-    <p class="subtitle" style="text-align:left;margin:8px 0 0;">${provider.website ? '<a href="' + provider.website + '" target="_blank">官网 →</a>' : ''} <a href="providers.html" style="color:var(--accent);">← 返回列表</a></p>
+    <h1 style="font-size:36px;text-align:left;"><span class="gradient-text">${escapeHtml(provider.name)}</span></h1>
+    <p class="subtitle" style="text-align:left;margin:8px 0 0;">${encodeURIComponent(provider.website ? '<a href="' + provider.website + '" target="_blank">官网 →</a>' : '')} <a href="providers.html" style="color:var(--accent);">← 返回列表</a></p>
   </div>
 
     <p class="muted" style="line-height:1.7;padding:18px;background:var(--bg-card);border-radius:12px;border:1px solid var(--border);">
-      ${provider.notes || '—'}
+      ${escapeHtml(provider.notes || '—')}
     </p>
 
     <div class="tri-grid">
@@ -108,7 +109,7 @@
           if (!m) return '';
           return `<a href="model.html?id=${m.id}" class="model-mini-row" style="text-decoration:none;color:inherit;padding:14px 20px;">
             <div>
-              <div style="font-weight:600;">${m.display_name}</div>
+              <div style="font-weight:600;">${escapeHtml(m.display_name)}</div>
               <div class="muted text-xs">${(D.vendors.find(v => v.id === m.vendor_id)||{}).name || ''} · ${o.multiplier === 1.0 ? '官方价' : '×' + o.multiplier}</div>
             </div>
             <div style="text-align:right;">

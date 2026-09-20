@@ -192,7 +192,7 @@ async function runTest() {
       '响应时间': { val: `${result.latency}ms`, ok: true },
       '模型存在': { val: modelName, ok: true },
       '返回字段': { val: result.hasContent ? 'content ✓' : '(无 content)', ok: result.hasContent },
-      '测试消息': { val: `"${result.reply || '(空)'}"`, ok: true },
+      '测试消息': { val: `"${escapeHtml(result.reply || '(空)')}"`, ok: true },
       '耗时': { val: `${duration}ms`, ok: true }
     };
     showResult('success', '✅ 测试通过！这个渠道可用', detail);
@@ -382,7 +382,7 @@ function showStatus(type, msg) {
   out.innerHTML = `
     <div class="test-status ${type}">
       ${type === 'testing' ? '<div class="spinner"></div>' : ''}
-      <span>${msg}</span>
+      <span>${escapeHtml(msg)}</span>
     </div>
   `;
 }
@@ -399,7 +399,7 @@ function showResult(type, headline, detail) {
   
   out.innerHTML = `
     <div class="test-status ${type}">
-      <span>${headline}</span>
+      <span>${escapeHtml(headline)}</span>
     </div>
     <div class="test-detail">${rows}</div>
     <div id="suggestion-area"></div>

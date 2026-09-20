@@ -38,6 +38,7 @@
 <script src="data.js"></script>
 <script src="app.js"></script>
 <script>
+function escapeHtml(s) { return String(s || "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"})[c]); }
 (function() {
   if (typeof renderTopbar === 'function') renderTopbar('models');
   const D = API_RADAR_DATA;
@@ -84,8 +85,8 @@
         <div class="model-card-head">
           <div class="model-card-logo">${vendor?.logo || '🤖'}</div>
           <div style="flex:1;min-width:0;">
-            <div class="model-card-title">${m.display_name}</div>
-            <div class="model-card-vendor">${vendor?.name || ''} · ${m.release_date}</div>
+            <div class="model-card-title">${escapeHtml(m.display_name)}</div>
+            <div class="model-card-vendor">${escapeHtml(vendor?.name || '')} · ${m.release_date}</div>
           </div>
         </div>
         <div class="flex between items-center" style="margin-top:8px;">

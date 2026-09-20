@@ -59,7 +59,7 @@ select.filter-sel { padding: 8px 12px; border-radius: 8px; border: 1px solid var
   if (typeof renderTopbar === 'function') renderTopbar('events');
   
 function escapeHtml(s) {
-  return String(s || "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", """: "&quot;", "'": "&#39;"})[c]);
+  return String(s || '').replace(/[&<>"\']/g, function(c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; });
 }
 
   const EVENTS = API_RADAR_DATA.events;
@@ -92,7 +92,7 @@ function escapeHtml(s) {
             <div class="event-meta">
               ${(e.tags || []).map(t => '<span class="tag" style="background:rgba(120,160,255,0.1);">' + (typeMap[t] || t) + '</span>').join('')}
               ${targetTag}
-              ${(e.source_urls && e.source_urls[0]) ? '<a href="' + encodeURIComponent(e.source_urls[0]) + '" target="_blank" style="margin-left:auto;color:var(--accent);font-size:11px;">🔗 来源</a>' : ''}
+              ${(e.source_urls && e.source_urls[0]) ? '<a href="' + e.source_urls[0] + '" target="_blank" style="margin-left:auto;color:var(--accent);font-size:11px;">🔗 来源</a>' : ''}
             </div>
           </div>
           <div class="event-date">${date}</div>

@@ -189,6 +189,7 @@
 <script src="data.js"></script>
 <script src="app.js"></script>
 <script>
+function escapeHtml(s) { return String(s || "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"})[c]); }
 if (typeof renderTopbar === "function") renderTopbar("playground");
 
 const $ = (id) => document.getElementById(id);
@@ -219,7 +220,7 @@ function addStep(id) {
   wrap.id = "step-" + id;
   wrap.innerHTML = `
     <div class="ap-step-icon pending" id="step-icon-${id}">⏳</div>
-    <div class="ap-step-name">${STEPS[id].icon} ${STEPS[id].name}</div>
+    <div class="ap-step-name">${STEPS[id].icon} ${escapeHtml(STEPS[id].name)}</div>
     <div class="ap-step-result" id="step-result-${id}">等待</div>
   `;
   $("steps-container").appendChild(wrap);
@@ -252,7 +253,7 @@ function renderRow(parentId, rows) {
 function addWarning(type, msg) {
   const wrap = document.createElement("div");
   wrap.className = type === "danger" ? "ap-danger" : "ap-warning";
-  wrap.innerHTML = type === "danger" ? `<strong>🚨 高风险：</strong>${msg}` : `<strong>⚠️ 注意：</strong>${msg}`;
+  wrap.innerHTML = type === "danger" ? `<strong>🚨 高风险：</strong>${escapeHtml(msg)}` : `<strong>⚠️ 注意：</strong>${escapeHtml(msg)}`;
   $("warnings-container").appendChild(wrap);
 }
 
@@ -411,7 +412,7 @@ async function checkModel() {
     else if (latency > 10000) { status = "warn"; label = "响应过慢，疑似中转"; }
 
     state.results.model = { status, latency, content, rawResponse: data };
-    setStep("model", status, `${latency}ms · "${content.slice(0, 20)}"`);
+    setStep("model", status, `${latency}ms · "${escapeHtml(content.slice(0, 20))}"`);
 
     renderRow("r-model", [
       { key: "Probe 响应", val: '"' + content.slice(0, 30) + '"', status: saysFour ? "ok" : "fail" },

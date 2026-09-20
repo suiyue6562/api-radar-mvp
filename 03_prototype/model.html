@@ -48,6 +48,7 @@
 <script src="ads.js"></script>
 <script src="app.js"></script>
 <script>
+function escapeHtml(s) { return String(s || "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"})[c]); }
 (function() {
   if (typeof renderTopbar === 'function') renderTopbar('models');
   const D = API_RADAR_DATA;
@@ -63,11 +64,11 @@
 
   document.getElementById('model-content').innerHTML = `
   <div class="page-hero fade-in" style="text-align:left;padding:32px 0 16px;">
-    <div class="page-hero-tagline" style="margin-bottom:8px;"><span class="page-hero-tagline-dot"></span><span>${vendor?.name || ''} · ${model.family || ''}</span></div>
-    <h1 style="font-size:36px;text-align:left;"><span class="gradient-text">${model.display_name || model.name || model.id}</span></h1>
+    <div class="page-hero-tagline" style="margin-bottom:8px;"><span class="page-hero-tagline-dot"></span><span>${escapeHtml(vendor?.name || '')} · ${model.family || ''}</span></div>
+    <h1 style="font-size:36px;text-align:left;"><span class="gradient-text">${escapeHtml(model.display_name || model.name || model.id)}</span></h1>
     <p class="subtitle" style="text-align:left;margin:8px 0 0;">${model.release_date || ''} 发布 · ${model.license || ''} · ${model.context_window ? fmtCtx(model.context_window) + ' context' : ''}</p>
   </div>
-  <p class="muted" style="margin:0 0 32px;line-height:1.7;">${model.description || model.notes || ''}</p>
+  <p class="muted" style="margin:0 0 32px;line-height:1.7;">${escapeHtml(model.description || model.notes || '')}</p>
 
     <div class="detail-grid">
       <!-- 左：能力 -->
@@ -139,7 +140,7 @@
         if (!p) return '';
         const cost = calcCost(model, o, 100, 20, 0);
         return `<a href="provider.html?id=${p.id}" class="channel-card">
-          <div class="ch-name">${p.name} ${o.multiplier === 1.0 ? '<span style="color:var(--accent);font-size:9px;">官方</span>' : '<span style="color:var(--muted);font-size:9px;">×' + o.multiplier + '</span>'}</div>
+          <div class="ch-name">${escapeHtml(p.name)} ${o.multiplier === 1.0 ? '<span style="color:var(--accent);font-size:9px;">官方</span>' : '<span style="color:var(--muted);font-size:9px;">×' + o.multiplier + '</span>'}</div>
           <div class="ch-price">${fmtCNY(cost.total)}</div>
           <div class="ch-meta">月 1.2亿tok · ${p.type === 'official' ? '官方' : p.type === 'aggregator' ? '中转' : p.type === 'gateway' ? '网关' : p.type === 'self_host' ? '自托管' : '云厂商'}</div>
         </a>`;

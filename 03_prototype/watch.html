@@ -48,6 +48,7 @@
 <script src="data.js"></script>
 <script src="app.js"></script>
 <script>
+function escapeHtml(s) { return String(s || "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"})[c]); }
 (function() {
   if (typeof renderTopbar === 'function') renderTopbar('watch');
   const D = API_RADAR_DATA;
@@ -103,8 +104,8 @@
         return `<div class="card watch-item">
           <div class="watch-icon">${vendor?.logo || '🤖'}</div>
           <div class="watch-body">
-            <div class="watch-name">${m.display_name}</div>
-            <div class="watch-meta">${vendor?.name || ''} · ${m.release_date} · ${fmtCtx(m.context_window)} ctx</div>
+            <div class="watch-name">${escapeHtml(m.display_name)}</div>
+            <div class="watch-meta">${escapeHtml(vendor?.name || '')} · ${m.release_date} · ${fmtCtx(m.context_window)} ctx</div>
           </div>
           <div class="watch-price">${fmtUSD(m.official_input_usd_m)} <span class="muted text-xs">in</span></div>
           <button class="watch-remove" data-id="${item.id}" data-type="model">✕</button>
@@ -116,7 +117,7 @@
         return `<div class="card watch-item">
           <div class="watch-icon">📡</div>
           <div class="watch-body">
-            <div class="watch-name">${p.name}</div>
+            <div class="watch-name">${escapeHtml(p.name)}</div>
             <div class="watch-meta">${p.type} · ${offerings} SKU · ${(p.payment_currency || []).join('/')}</div>
           </div>
           <div class="muted text-sm">起充 ¥${p.min_charge || 0}</div>

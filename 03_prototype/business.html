@@ -115,6 +115,7 @@
 <script src="data.js"></script>
 <script src="app.js"></script>
 <script>
+function escapeHtml(s) { return String(s || "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"})[c]); }
 if (typeof renderTopbar === "function") renderTopbar("business");
 
 // 状态
@@ -227,11 +228,11 @@ function renderBiz() {
     <div class="card glass-strong biz-card">
       <div class="biz-logo">${logo}</div>
       <div class="biz-info">
-        <h3>${p.name_zh || p.id}</h3>
-        <div class="biz-vendor">${p.name_en || ""} · ${tag} · ${region}</div>
-        <div class="biz-desc">${p.notes || "—"}</div>
+        <h3>${escapeHtml(p.name_zh || p.id)}</h3>
+        <div class="biz-vendor">${escapeHtml(p.name_en || "")} · ${tag} · ${region}</div>
+        <div class="biz-desc">${escapeHtml(p.notes || "—")}</div>
         <div class="biz-tags">
-          ${protocols ? `<span class="tag" style="background:rgba(0,217,255,0.1);color:#00d9ff;">${protocols}</span>` : ""}
+          ${protocols ? `<span class="tag" style="background:rgba(0,217,255,0.1);color:#00d9ff;">${escapeHtml(protocols)}</span>` : ""}
           <span class="tag">${(p.payment_currency || []).join(" / ")}</span>
           <span class="tag">${invoices}</span>
         </div>
@@ -239,7 +240,7 @@ function renderBiz() {
       <div class="biz-meta">
         <div class="biz-price">${p.min_charge ? "$" + p.min_charge : "免费"}</div>
         <div class="biz-region">最低充值</div>
-        ${p.website ? `<a href="${p.website}" target="_blank" rel="noopener">官网 →</a>` : ""}
+        <a href="${encodeURIComponent(p.website || '#')}" target="_blank" rel="noopener">官网 →</a>
       </div>
     </div>
     ${adMarker}`;
@@ -258,10 +259,10 @@ async function loadAd(slot) {
       const ad = ads[0];
       const slot = document.getElementById("ad-" + slot);
       if (!slot) return;
-      slot.innerHTML = `<a href="${ad.link_url || "#"}" target="_blank" rel="noopener sponsored">
+      slot.innerHTML = `<a href="${encodeURIComponent(ad.link_url || "#")}" target="_blank" rel="noopener sponsored">
         <div style="padding: 20px; text-align: center;">
-          <strong style="color: var(--accent); font-size: 16px;">${ad.title || ad.advertiser || "广告"}</strong>
-          ${ad.content ? `<div style="color: var(--muted); margin-top: 8px;">${ad.content}</div>` : ""}
+          <strong style="color: var(--accent); font-size: 16px;">${escapeHtml(ad.title || ad.advertiser || "广告")}</strong>
+          ${escapeHtml(ad.content || "")}
         </div>
       </a>`;
       slot.addEventListener("click", () => {
