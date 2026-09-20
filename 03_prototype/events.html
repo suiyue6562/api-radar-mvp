@@ -52,8 +52,8 @@ select.filter-sel { padding: 8px 12px; border-radius: 8px; border: 1px solid var
   </div>
   <div class="event-list" id="event-list"></div>
 </main>
-<script src="data.js"></script>
-<script src="app.js"></script>
+<script src="data.js?v=20260921b"></script>
+<script src="app.js?v=20260921b"></script>
 <script>
 (function() {
   if (typeof renderTopbar === 'function') renderTopbar('events');
@@ -113,6 +113,13 @@ function escapeHtml(s) {
 
   render();
 })();
+</script>
+
+<script>
+// 触发本页初始化
+if (window.PAGE_INITIALIZERS && window.PAGE_INITIALIZERS["events"]) {
+  window.PAGE_INITIALIZERS["events"]();
+}
 </script>
 </body>
 </html>

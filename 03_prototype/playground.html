@@ -225,9 +225,9 @@
   </div>
 </main>
 
-<script src="data.js"></script>
-<script src="app.js"></script>
-<script src="probes.js"></script>
+<script src="data.js?v=20260921b"></script>
+<script src="app.js?v=20260921b"></script>
+<script src="probes.js?v=20260921b"></script>
 <script>
 if (typeof renderTopbar === "function") renderTopbar("playground");
 
@@ -782,6 +782,13 @@ document.getElementById("code-lang").addEventListener("change", updateCodeOutput
 document.getElementById("show-raw-btn").addEventListener("click", showRawModal);
 ["param-system","user-input"].forEach(id => document.getElementById(id).addEventListener("input", updateTokenCount));
 $("start-btn").addEventListener("click", start);
+</script>
+
+<script>
+// 触发本页初始化
+if (window.PAGE_INITIALIZERS && window.PAGE_INITIALIZERS["playground"]) {
+  window.PAGE_INITIALIZERS["playground"]();
+}
 </script>
 </body>
 </html>

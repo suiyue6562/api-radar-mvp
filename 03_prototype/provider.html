@@ -33,9 +33,9 @@
   <!-- 广告位 -->
   <div style="max-width:1100px;margin:24px auto;padding:0 24px;"><div class="ad-slot" data-slot="providers_top"></div></div>
 </main>
-<script src="data.js"></script>
-<script src="ads.js"></script>
-<script src="app.js"></script>
+<script src="data.js?v=20260921b"></script>
+<script src="ads.js?v=20260921b"></script>
+<script src="app.js?v=20260921b"></script>
 <script>
 function escapeHtml(s) { return String(s || "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"})[c]); }
 (function() {
@@ -122,6 +122,13 @@ function escapeHtml(s) { return String(s || "").replace(/[&<>"']/g, c => ({"&": 
     </div>
   `;
 })();
+</script>
+
+<script>
+// 触发本页初始化
+if (window.PAGE_INITIALIZERS && window.PAGE_INITIALIZERS["provider"]) {
+  window.PAGE_INITIALIZERS["provider"]();
+}
 </script>
 </body>
 </html>

@@ -359,5 +359,12 @@
 <script src="ads.js?v=20260921a"></script>
 <script src="ab.js?v=20260921a"></script>
 <script src="app.js?v=20260921a"></script>
+
+<script>
+// 触发本页初始化
+if (window.PAGE_INITIALIZERS && window.PAGE_INITIALIZERS["home"]) {
+  window.PAGE_INITIALIZERS["home"]();
+}
+</script>
 </body>
 </html>

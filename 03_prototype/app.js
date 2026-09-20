@@ -26,6 +26,9 @@ const NAV = [
   { href: 'events.html', label: '行情', id: 'events' },
   { href: 'playground.html', label: 'Playground', id: 'playground' },
   { href: 'business.html', label: '商家', id: 'business' },
+  { href: 'watch.html', label: '观察室', id: 'watch' },
+  { href: 'method.html', label: '方法', id: 'method' },
+  { href: 'test.html', label: '测 Key', id: 'test' },
 ];
 
 function renderTopbar(active = '') {
@@ -324,28 +327,25 @@ function setupHeroUrl() {
 }
 
 // ============ 主初始化 ============
-document.addEventListener('DOMContentLoaded', () => {
-  // 顶部导航
-  renderTopbar('home');
-  // 统计
-  initStats();
-  // 模型网格
-  renderModelGrid();
-  // 价格表
-  renderPriceTable();
-  // 性价比榜
-  renderValue();
-  // 行情事件
-  renderTrending();
-  // 计算器
-  setupCalculator();
-  // 搜索
-  setupSearch();
-  // Tab
-  setupTabs();
-  // 流量统计
-  loadTrafficStats();
-  // 上报浏览
+document.// 全局初始化 - 各页面会调自己的 initialize
+window.PAGE_INITIALIZERS = {
+  home: () => { renderTopbar('home'); initStats(); renderModelGrid(); renderPriceTable(); renderValue(); renderTrending(); setupCalculator(); setupSearch(); setupTabs(); loadTrafficStats(); autoReportView(); },
+  models: () => { renderTopbar('models'); },
+  model: () => { renderTopbar('models'); },
+  providers: () => { renderTopbar('providers'); },
+  provider: () => { renderTopbar('providers'); },
+  compare: () => { renderTopbar('compare'); },
+  events: () => { renderTopbar('events'); },
+  playground: () => { renderTopbar('playground'); },
+  business: () => { renderTopbar('business'); },
+  watch: () => { renderTopbar('watch'); },
+  method: () => { renderTopbar('method'); },
+  test: () => { renderTopbar('test'); }
+};
+
+addEventListener('DOMContentLoaded', () => {
+  // 顶部导航由各页面自己调用
+  // 上报浏览（每页都做）
   autoReportView();
 });
 

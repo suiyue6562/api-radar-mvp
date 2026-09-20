@@ -80,8 +80,8 @@
     </div>
   </div>
 </main>
-<script src="data.js"></script>
-<script src="app.js"></script>
+<script src="data.js?v=20260921b"></script>
+<script src="app.js?v=20260921b"></script>
 <script>
 (function() {
   if (typeof renderTopbar === 'function') renderTopbar('compare');
@@ -160,6 +160,13 @@
   sel.addEventListener('change', runCompare);
   runCompare();
 })();
+</script>
+
+<script>
+// 触发本页初始化
+if (window.PAGE_INITIALIZERS && window.PAGE_INITIALIZERS["compare"]) {
+  window.PAGE_INITIALIZERS["compare"]();
+}
 </script>
 </body>
 </html>

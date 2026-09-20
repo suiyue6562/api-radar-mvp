@@ -117,8 +117,15 @@ table.bordered th, table.bordered td { padding: 10px 14px; border: 1px solid var
     <p class="muted">发现问题？渠道涨价？模型下架？欢迎在 <a href="https://github.com/suiyue6562/api-youxuan-mvp">GitHub 仓库</a> 提交 Issue 或 PR。</p>
   </div>
 </main>
-<script src="data.js"></script>
-<script src="app.js"></script>
+<script src="data.js?v=20260921b"></script>
+<script src="app.js?v=20260921b"></script>
 <script>if (typeof renderTopbar === 'function') renderTopbar('method');</script>
+
+<script>
+// 触发本页初始化
+if (window.PAGE_INITIALIZERS && window.PAGE_INITIALIZERS["method"]) {
+  window.PAGE_INITIALIZERS["method"]();
+}
+</script>
 </body>
 </html>
