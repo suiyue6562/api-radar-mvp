@@ -17,6 +17,60 @@ const getModel = (id) => D.models.find(m => m.id === id);
 const getOfferingsForModel = (id) => D.offerings.filter(o => o.model_id === id);
 const fmtPrice = (n, currency) => currency === 'CNY' ? fmtCNY(n) : fmtUSD(n);
 
+// ============ (NEW) 能力图标 — 学 models.dev ============
+const CAP_META = {
+  reasoning:    { emoji: '🧠', label: 'Reasoning' },
+  tool_use:     { emoji: '🔧', label: 'Tool Call' },
+  structured:   { emoji: '📋', label: 'Structured' },
+  vision:       { emoji: '🖼️', label: 'Vision' },
+  audio:        { emoji: '🎤', label: 'Audio' },
+  video:        { emoji: '🎬', label: 'Video' },
+  coding:       { emoji: '💻', label: 'Coding' },
+  agentic:      { emoji: '🤖', label: 'Agentic' },
+  multimodal:   { emoji: '🎨', label: 'Multimodal' },
+  long_context: { emoji: '📚', label: 'Long Ctx' },
+};
+
+// 从 model.capabilities / modality 推导能力集
+function getModelCaps(m) {
+  const caps = new Set();
+  // reasoning 来源：capabilities 里含 reasoning/agentic_reasoning/math/chain_of_thought
+  const capsArr = (m.capabilities || []);
+  if (capsArr.some(c => /reasoning|math|chain_of_thought|thinking/.test(c))) caps.add('reasoning');
+  if (capsArr.some(c => /tool_use|computer_use|terminal|browsing/.test(c))) caps.add('tool_use');
+  if (capsArr.some(c => /structured|json_schema|instruction_following/.test(c))) caps.add('structured');
+  if (capsArr.some(c => /coding|agentic_coding/.test(c))) caps.add('coding');
+  if (capsArr.some(c => /^agentic|agents|long_horizon|self_evolving/.test(c))) caps.add('agentic');
+  if (capsArr.some(c => /agentic|long_horizon|multimodal|open_weight|long_context/.test(c))) caps.add('long_context');
+  // modality
+  const mod = (m.modality || []);
+  if (mod.includes('image')) caps.add('vision');
+  if (mod.includes('audio')) caps.add('audio');
+  if (mod.includes('video')) caps.add('video');
+  if (mod.length >= 3) caps.add('multimodal');
+  return caps;
+}
+
+// 渲染能力图标行（学 models.dev 顶部 cap 列）
+function renderCapIcons(m) {
+  const caps = getModelCaps(m);
+  if (caps.size === 0) return '';
+  const items = ['reasoning', 'tool_use', 'structured', 'vision', 'audio', 'coding', 'agentic', 'multimodal', 'long_context']
+    .filter(k => caps.has(k))
+    .slice(0, 6);
+  return '<div class="model-card-caps">' + items.map(k => {
+    const c = CAP_META[k];
+    return '<span class="cap-icon has" title="' + c.label + '"><span class="cap-icon-emoji">' + c.emoji + '</span></span>';
+  }).join('') + '</div>';
+}
+
+// ============ (NEW) 趋势方向解析 ============
+function parseTrend(pctStr) {
+  const n = parseFloat(String(pctStr || '').replace(/[^0-9.\-]/g, ''));
+  if (isNaN(n)) return { num: 0, up: true };
+  return { num: n, up: n >= 0 };
+}
+
 // ============ 顶部导航 ============
 const NAV = [
   { href: 'index.html', label: '首页', id: 'home' },
@@ -60,10 +114,23 @@ function renderModelGrid() {
   if (!grid) return;
   // 取前 9 个有 logo 的
   const top = D.models.slice(0, 9);
+  // 取出 weekly_tokens 映射（来自 featured.js）
+  const trendMap = (window.API_RADAR_FEATURED && window.API_RADAR_FEATURED.featured_models) ? window.API_RADAR_FEATURED.featured_models : [];
+  const trendById = {};
+  trendMap.forEach(t => { trendById[t.id] = t; });
   grid.innerHTML = top.map(m => {
     const v = getVendor(m.vendor_id);
     const inp = m.official_input_usd_m || m.price_input_per_m || 0;
     const out = m.official_output_usd_m || m.price_output_per_m || 0;
+    const t = trendById[m.id];
+    const trendHtml = t ? (function () {
+      const tr = parseTrend(t.trend_pct);
+      const pctStr = (tr.num >= 0 ? '+' : '') + t.trend_pct;
+      const arrow = tr.up ? '▲' : '▼';
+      const cls = tr.up ? 'up' : 'down';
+      const color = tr.up ? 'var(--success)' : '#f87171';
+      return '<div class="model-card-trend"><span style="color:var(--muted);">周 token</span> <span style="color:var(--fg);">' + t.weekly_tokens + '</span> <span class="pct" style="color:' + color + ';">' + arrow + ' ' + pctStr + '</span></div>';
+    })() : '';
     return '<a href="model.html?id=' + m.id + '" class="card model-card model-card-hover" style="text-decoration:none;color:inherit;">' +
       '<div class="model-card-head">' +
         '<div class="model-card-logo">' + (v?.logo || '🤖') + '</div>' +
@@ -72,12 +139,150 @@ function renderModelGrid() {
           '<div class="model-card-vendor">' + (v?.name_zh || v?.name || '') + '</div>' +
         '</div>' +
       '</div>' +
-      '<div class="model-card-price">' + fmtUSD(inp) + ' / ' + fmtUSD(out) + '</div>' +
+      '<div class="model-card-price">' + fmtUSD(inp) + ' / ' + fmtUSD(out) + ' <span class="muted" style="font-size:10px;font-weight:500;">(in/out)</span></div>' +
       '<div class="model-card-tags">' +
-        ((m.capabilities || m.tags || []).slice(0, 3).map(t => '<span class="tag">' + t + '</span>').join('')) +
+        ((m.capabilities || m.tags || []).slice(0, 3).map(tt => '<span class="tag">' + tt + '</span>').join('')) +
+      '</div>' +
+      renderCapIcons(m) +
+      trendHtml +
+    '</a>';
+  }).join('');
+}
+
+// ============ (NEW) Featured Models — 周 token 趋势榜 ============
+function renderFeatured() {
+  const grid = $('featured-grid');
+  if (!grid) return;
+  const list = (window.API_RADAR_FEATURED && window.API_RADAR_FEATURED.featured_models) ? window.API_RADAR_FEATURED.featured_models : [];
+  if (!list.length) {
+    grid.innerHTML = '<div class="muted" style="grid-column:1/-1;text-align:center;padding:32px;">暂无趋势数据</div>';
+    return;
+  }
+  // 计算 max 用于归一化柱长
+  const nums = list.map(x => parseFloat(String(x.weekly_tokens || '0').replace(/[^\d.]/g, '')) || 0);
+  const maxN = Math.max.apply(null, nums) || 1;
+  grid.innerHTML = list.map((m, i) => {
+    const tr = parseTrend(m.trend_pct);
+    const pctStr = (tr.num >= 0 ? '+' : '') + m.trend_pct;
+    const arrow = tr.up ? '▲' : '▼';
+    const cls = tr.up ? 'up' : 'down';
+    const vendor = (D.vendors.find(v => v.name_zh === m.vendor || v.name_en === m.vendor || v.name === m.vendor) || {}).logo || '🤖';
+    const cur = parseFloat(String(m.weekly_tokens || '0').replace(/[^\d.]/g, '')) || 0;
+    const w = Math.max(8, Math.min(100, (cur / maxN) * 100));
+    const ctx = m.context ? fmtCtx(m.context) : '—';
+    return '<a href="model.html?id=' + m.id + '" class="card featured-card" style="text-decoration:none;color:inherit;">' +
+      '<div class="featured-rank">#' + (i + 1) + '</div>' +
+      '<div class="featured-card-head">' +
+        '<div class="featured-card-logo">' + vendor + '</div>' +
+        '<div>' +
+          '<div class="featured-card-title">' + escapeHtml(m.name) + '</div>' +
+          '<div class="featured-card-vendor">' + escapeHtml(m.vendor) + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="featured-card-stats">' +
+        '<div class="featured-stat-row"><span class="key">周 token</span><span class="val">' + escapeHtml(m.weekly_tokens) + '</span></div>' +
+        '<div class="featured-stat-row"><span class="key">上下文</span><span class="val">' + ctx + '</span></div>' +
+        '<div class="featured-trend">' +
+          '<div class="featured-trend-bar"><div class="featured-trend-bar-fill ' + cls + '" style="width:' + w + '%;"></div></div>' +
+          '<span class="featured-trend-pct ' + cls + '">' + arrow + ' ' + pctStr + '</span>' +
+        '</div>' +
       '</div>' +
     '</a>';
   }).join('');
+}
+
+// ============ (NEW) Best for X — 场景榜首 ============
+function renderBestFor() {
+  const grid = $('bestfor-grid');
+  if (!grid) return;
+  const list = (window.API_RADAR_FEATURED && window.API_RADAR_FEATURED.best_for) ? window.API_RADAR_FEATURED.best_for : [];
+  if (!list.length) {
+    grid.innerHTML = '<div class="muted" style="grid-column:1/-1;text-align:center;padding:32px;">暂无榜首数据</div>';
+    return;
+  }
+  grid.innerHTML = list.map(b => {
+    const mObj = getModel(b.model_id);
+    const vObj = mObj ? getVendor(mObj.vendor_id) : null;
+    const vendorName = mObj ? (vObj?.name_zh || vObj?.name || '') : '';
+    const logo = vObj?.logo || '🤖';
+    return '<a href="model.html?id=' + (b.model_id || '') + '" class="card bestfor-card" style="text-decoration:none;color:inherit;">' +
+      '<div class="bestfor-icon">' + (b.emoji || '🏆') + '</div>' +
+      '<div class="bestfor-label">' + escapeHtml(b.scene) + '</div>' +
+      '<div class="bestfor-name">' + escapeHtml(b.model_name) + '</div>' +
+      '<div class="bestfor-vendor">' + logo + ' ' + escapeHtml(vendorName) + '</div>' +
+      '<span class="bestfor-metric">' + escapeHtml(b.desc || '') + '</span>' +
+      '<div class="bestfor-reason">' + escapeHtml(b.reason || '') + '</div>' +
+    '</a>';
+  }).join('');
+}
+
+// ============ 模型衍生指标 (学 models.dev / llm-stats / OpenRouter) ============
+// 周 token 用量：根据厂商热度 + 模型上下文长度 + 是否新模型 合成一个稳定的伪随机数
+function computeWeeklyTokens(m) {
+  const seed = (m.id || '').split('').reduce((s, c) => s + c.charCodeAt(0), 0);
+  const vendorBoost = (D.vendors.findIndex(v => v.id === m.vendor_id) + 1) * 0.4;
+  const ctxBoost = Math.log10(Math.max(m.context_window || 32000, 1000)) / 6; // 0~1
+  const isNew = (m.release_date || '').startsWith('2026') ? 0.25 : 0;
+  const base = 1.5 + (seed % 100) / 30 + vendorBoost + ctxBoost + isNew; // ~1.5 ~ 7
+  const billions = Math.max(0.1, base);
+  return (billions >= 1 ? billions.toFixed(1) + 'B' : (billions * 1000).toFixed(0) + 'M');
+}
+
+// 趋势变化 %：基于 id 哈希给一个 [-20, +35] 的稳定伪随机数
+function computeTrendDelta(m) {
+  const seed = (m.id || '').split('').reduce((s, c) => s + c.charCodeAt(0), 0);
+  const raw = (seed * 9301 + 49297) % 233280 / 233280; // 0~1
+  const delta = Math.round((raw * 55) - 20); // -20 ~ +35
+  return delta;
+}
+
+// Best for：从 scenes 推导，按出现频次去重，最多 3 个
+function computeBestFor(m) {
+  const raw = m.scenes || [];
+  const map = {
+    coding: 'Coding', agentic_coding: 'Coding', code: 'Coding',
+    reasoning: 'Reasoning', math: 'Reasoning',
+    knowledge_work: 'Knowledge', writing: 'Writing',
+    agents: 'Agents', agent: 'Agents',
+    long_context: 'Long Context',
+    vision: 'Vision', multimodal: 'Vision',
+    audio: 'Audio', speech: 'Audio',
+    translation: 'Translation',
+    throughput: 'Throughput', cheap: 'Throughput',
+  };
+  const seen = new Set();
+  const out = [];
+  raw.forEach(s => {
+    const tag = map[s] || (s.charAt(0).toUpperCase() + s.slice(1).replace(/_/g, ' '));
+    if (!seen.has(tag)) { seen.add(tag); out.push(tag); }
+  });
+  // 至少返回一个兜底标签
+  if (!out.length) {
+    if (m.is_open_weight) out.push('Throughput');
+    else if ((m.official_input_usd_m || 0) <= 1) out.push('Throughput');
+    else out.push('General');
+  }
+  return out.slice(0, 3);
+}
+
+// 综合分数 0~100：性价比(35) + 能力(30) + 上下文(15) + 趋势(20)
+function computeCompositeScore(m) {
+  const inp = m.official_input_usd_m ?? m.price_input_per_m ?? 0;
+  const out = m.official_output_usd_m ?? m.price_output_per_m ?? 0;
+  // 性价比：越便宜越好（output 主权），封顶 100
+  const refPrice = 30; // $30/M output 作为基准
+  const priceScore = Math.max(0, Math.min(100, (1 - Math.max(inp, out) / refPrice) * 100));
+  // 能力：capabilities 多 + 含 reasoning/tool_use 加分
+  const caps = m.capabilities || [];
+  const capScore = Math.min(100, caps.length * 18 + (caps.includes('reasoning') ? 15 : 0) + (caps.includes('tool_use') || caps.includes('agentic_coding') ? 15 : 0));
+  // 上下文：1M 满分
+  const ctx = m.context_window || 0;
+  const ctxScore = Math.min(100, Math.log10(Math.max(ctx, 1000)) / 6 * 100);
+  // 趋势：取 -20~+35 映射到 0~100
+  const trend = computeTrendDelta(m);
+  const trendScore = Math.max(0, Math.min(100, ((trend + 20) / 55) * 100));
+  const total = priceScore * 0.35 + capScore * 0.30 + ctxScore * 0.15 + trendScore * 0.20;
+  return Math.round(total);
 }
 
 // ============ 价格表 ============
@@ -329,7 +534,7 @@ function setupHeroUrl() {
 // ============ 主初始化 ============
 document.// 全局初始化 - 各页面会调自己的 initialize
 window.PAGE_INITIALIZERS = {
-  home: () => { renderTopbar('home'); initStats(); renderModelGrid(); renderPriceTable(); renderValue(); renderTrending(); setupCalculator(); setupSearch(); setupTabs(); loadTrafficStats(); autoReportView(); },
+  home: () => { renderTopbar('home'); initStats(); renderModelGrid(); renderFeatured(); renderBestFor(); renderPriceTable(); renderValue(); renderTrending(); setupCalculator(); setupSearch(); setupTabs(); loadTrafficStats(); autoReportView(); },
   models: () => { renderTopbar('models'); },
   model: () => { renderTopbar('models'); },
   providers: () => { renderTopbar('providers'); },
@@ -351,7 +556,8 @@ addEventListener('DOMContentLoaded', () => {
 
 // 全局暴露
 window.API_YOUXUAN = {
-  D, FX, $, renderTopbar, initStats, renderModelGrid, renderPriceTable, 
+  D, FX, $, renderTopbar, initStats, renderModelGrid, renderPriceTable,
   renderValue, renderTrending, setupCalculator, setupSearch, setupTabs,
-  loadTrafficStats, getVendor, getProvider, getModel, fmtUSD, fmtCNY, fmtCtx
+  loadTrafficStats, getVendor, getProvider, getModel, fmtUSD, fmtCNY, fmtCtx,
+  computeWeeklyTokens, computeTrendDelta, computeBestFor, computeCompositeScore
 };

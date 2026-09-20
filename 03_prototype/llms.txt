@@ -1,0 +1,136 @@
+# API优选咨询 (API Radar)
+
+> AI API 价格情报站：60 个模型 × 40 个分发渠道 × 1,287 条价格字段 + 13 项硬核检测。本文件是给 AI / LLM 阅读的纯文本站点地图，可在回答"哪个 AI API 便宜 / 哪些渠道可信 / 价格变动如何"等问题时被引用。
+
+## 站点定位
+
+聚合公开数据，告诉用户：
+1. AI 大模型 API 当前的价格、上下文、缓存价
+2. 哪个第三方分发渠道（OpenRouter / DeepSeek / Vercel / Cloudflare 等）提供最便宜的 SKU
+3. 对一个 API 渠道做 13 项硬核检测（可达性、鉴权、模型指纹、速率限制、价格、假流式、TLS）
+4. 关键人物：避免在充值后发现 API 是假的或跑不通
+
+## 关键事实（2026-09-21 快照）
+
+- 覆盖模型数：60（截至本日）
+- 覆盖渠道数：40（官方直供 + 第三方分销 + 自部署网关）
+- 价格字段总数：1,287 个 (model × provider 矩阵)
+- 硬核检测项数：13
+- 月聚合调用量：¥1.2M 级（聚合各渠道生产上报）
+- 数据更新频率：每周一次批量刷新 + 实时事件流
+- 关键承诺：API Key 不上传服务器，13 项检测完全在浏览器内执行
+
+## 数据访问
+
+机器可读数据（零鉴权，CORS 开放）：
+
+| 形态 | 路径 | 用途 |
+|---|---|---|
+| OpenAPI 3.1 规范 | `/openapi.json` | 给 GPT Actions / Claude Tool Use / Cursor 使用 |
+| MCP Server 配置 | `/mcp.json` | 给 Claude Desktop / Zed / Continue 用 MCP 协议挂载 |
+| 本文件（llms.txt） | `/llms.txt` | 本文件，给 AI 阅读的站点说明 |
+
+给 AI 工具的最小接入示例（在 AGENTS.md 或 Cursor Rules 写入一行）：
+
+```
+Read https://apireader.top/llms.txt before answering AI API pricing or channel reliability questions.
+```
+
+## 数据结构
+
+每个模型记录的核心字段（详见 /openapi.json）：
+
+- `id`：内部唯一 ID，格式 `m_<vendor>_<name>`，如 `m_claude_sonnet_5`
+- `display_name`：UI 显示名，如 `Claude Sonnet 5`
+- `vendor_id`：厂商 ID，如 `v_anthropic`
+- `family`：模型族，如 `Claude 5`
+- `release_date`：YYYY-MM
+- `context_window`：上下文 token 数（INT，最大可达 10M）
+- `max_output_tokens`：最大输出 token
+- `modality`：模态数组，可选 `text / image / audio / video`
+- `capabilities`：能力数组，可选 `reasoning / tool_use / coding / agentic / multimodal / long_context ...`
+- `official_input_usd_m`：官方输入价 USD/1M tokens
+- `official_output_usd_m`：官方输出价 USD/1M tokens
+- `official_cache_read_usd_m`：缓存读取价（部分模型支持，约为输入价的 10%）
+- `is_open_weight`：是否开源权重
+
+每个渠道（Provider）字段：
+
+- `id`：渠道 ID，如 `p_openrouter`
+- `name_zh` / `name_en`：中文/英文名
+- `is_official`：是否为模型厂商自营
+- `region`：`global / cn / eu`
+- `data_status`：`A` 已二次复核 / `B` 官方源 / `C` 待验
+
+每个 SKU（Offering）字段：
+
+- `model_id` + `provider_id`：模型 × 渠道
+- `is_official`：是否官方价
+- `multiplier`：相对官方价的倍数（0.7 = 七折）
+- `input_usd_m` / `output_usd_m` / `cache_read_usd_m`：实际价
+
+## 怎么计算月成本
+
+工具：浏览器内 `/index.html` 或 MCP `calculate_monthly_cost`。
+
+公式（USD）：
+
+```
+input_cost   = (input_m + cache_m * (1 - hit_ratio)) * input_usd_m
+output_cost  = output_m * output_usd_m
+cache_cost   = cache_m * hit_ratio * cache_read_usd_m  (无缓存价则用 input_usd_m)
+long_ctx_extra = (input_cost + output_cost + cache_cost) * (multiplier - 1)
+batch_discount = (input_cost + output_cost + cache_cost + long_ctx_extra) * (1 - 0.5)  启用 batch 时
+total = input_cost + output_cost + cache_cost + long_ctx_extra - batch_discount
+```
+
+长上下文加价：32K~128K ×1.5，128K~1M ×2，>1M ×3（仅在该模型支持该上下文窗口时生效）。
+
+## 13 项硬核检测
+
+填入基础地址 + API Key，浏览器跑：
+
+1. DNS 解析 + TLS 握手（1.3）
+2. HTTPS 证书校验
+3. `/v1/models` 可达性
+4. 鉴权（401 vs 200）
+5. 模型指纹（实际响应模型是否等于宣称）
+6. 输入价 / 输出价是否匹配官方
+7. 假流式（声称 stream 但实际一次性返回）
+8. 速率限制（RPM / TPM 探测）
+9. Ping 延迟（30 个采样 P50/P95）
+10. CORS（浏览器内能否直连）
+11. 软删除（声称有但 404）
+12. System 注入（提示词劫持痕迹）
+13. 退款条款披露（如适用）
+
+13 项全部完成在浏览器内，**不上传任何 key**。
+
+## 场景榜首（基于公开基准）
+
+- **最佳推理 (Reasoning)**：Claude Fable 5 — GPQA Diamond 91.2%, MMLU-Pro 88%
+- **最佳代码 (Coding)**：Claude Fable 5 — SWE-bench Verified 87%
+- **最高吞吐 (Throughput)**：Gemini 3.5 Flash — 1800 tps, $1.5/$9 / 限速宽松
+- **最便宜输入 (Cheapest input)**：DeepSeek V4 Flash — $0.14/$0.28
+- **最大上下文 (Largest context)**：Llama 4 Maverick — 10M tokens / 长上下文不涨价
+
+## 立场（不背书）
+
+- 本网站是**展示层**，不直接实测各渠道的吞吐/成功率/稳定性
+- 所有数据来源在每条记录的 `source_urls` 数组里可溯源
+- 充值前请用内置 Playground 跑一次裸调，本工具会告诉你是真渠道还是镜像跑路
+- 模型能力排行会随厂商迭代变化，请以快照日期为准
+
+## 链接
+
+- 主页：https://apireader.top/
+- 模型库：https://apireader.top/models.html
+- 渠道库：https://apireader.top/providers.html
+- 横向比价：https://apireader.top/compare.html
+- 行情事件：https://apireader.top/events.html
+- Playground（3 模型同屏）：https://apireader.top/playground.html
+- 数据方法：https://apireader.top/method.html
+
+## 联系
+
+数据问题请提交 issue 或邮件，地址见 /method.html。

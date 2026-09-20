@@ -1,1 +1,4568 @@
-var API_RADAR_DATA = {"vendors": [{"id": "v_anthropic", "name_zh": "Anthropic", "name_en": "Anthropic", "region": "global", "logo": "🅰️", "data_status": "A", "name": "Anthropic", "name_short": "Anthropic"}, {"id": "v_openai", "name_zh": "OpenAI", "name_en": "OpenAI", "region": "global", "logo": "🅾", "data_status": "A", "name": "OpenAI", "name_short": "OpenAI"}, {"id": "v_google", "name_zh": "Google DeepMind", "name_en": "Google DeepMind", "region": "global", "logo": "🇬", "data_status": "A", "name": "Google DeepMind", "name_short": "Google DeepMind"}, {"id": "v_xai", "name_zh": "xAI (Grok)", "name_en": "xAI", "region": "global", "logo": "𝕏", "data_status": "A", "name": "xAI (Grok)", "name_short": "xAI (Grok)"}, {"id": "v_deepseek", "name_zh": "深度求索", "name_en": "DeepSeek", "region": "cn", "logo": "🔷", "data_status": "A", "name": "深度求索", "name_short": "深度求索"}, {"id": "v_qwen", "name_zh": "阿里通义千问", "name_en": "Alibaba Qwen", "region": "cn", "logo": "🟡", "data_status": "A", "name": "阿里通义千问", "name_short": "阿里通义千问"}, {"id": "v_zhipu", "name_zh": "智谱AI", "name_en": "Zhipu AI / Z.AI", "region": "cn", "logo": "🧠", "data_status": "A", "name": "智谱AI", "name_short": "智谱AI"}, {"id": "v_moonshot", "name_zh": "月之暗面", "name_en": "Moonshot AI", "region": "cn", "logo": "🌙", "data_status": "A", "name": "月之暗面", "name_short": "月之暗面"}, {"id": "v_doubao", "name_zh": "字节豆包", "name_en": "ByteDance Seed", "region": "cn", "logo": "🥟", "data_status": "A", "name": "字节豆包", "name_short": "字节豆包"}, {"id": "v_baidu", "name_zh": "百度文心", "name_en": "Baidu ERNIE", "region": "cn", "logo": "🅱", "data_status": "A", "name": "百度文心", "name_short": "百度文心"}, {"id": "v_meta", "name_zh": "Meta", "name_en": "Meta AI", "region": "global", "logo": "Ⓜ️", "data_status": "A", "name": "Meta", "name_short": "Meta"}, {"id": "v_mistral", "name_zh": "Mistral AI", "name_en": "Mistral AI", "region": "global", "logo": "🅼", "data_status": "A", "name": "Mistral AI", "name_short": "Mistral AI"}, {"id": "v_minimax", "name_zh": "稀宇科技", "name_en": "MiniMax", "region": "cn", "logo": "💬", "data_status": "A", "name": "稀宇科技", "name_short": "稀宇科技"}, {"id": "v_stepfun", "name_zh": "阶跃星辰", "name_en": "StepFun", "region": "cn", "logo": "🪜", "data_status": "B", "name": "阶跃星辰", "name_short": "阶跃星辰"}, {"id": "v_xiaomi", "name_zh": "小米 MiMo", "name_en": "Xiaomi MiMo", "region": "cn", "logo": "📱", "data_status": "B", "name": "小米 MiMo", "name_short": "小米 MiMo"}], "models": [{"id": "m_claude_fable_5", "vendor_id": "v_anthropic", "display_name": "Claude Fable 5", "family": "Claude 5", "version": "5.0", "release_date": "2026-06", "context_window": 1000000, "max_output_tokens": 32000, "modality": ["text", "image"], "capabilities": ["agentic_coding", "reasoning", "long_context", "tool_use"], "scenes": ["coding", "knowledge_work", "agents"], "official_input_usd_m": 10, "official_output_usd_m": 50, "official_cache_read_usd_m": 1.0, "description": "Anthropic 顶级旗舰，SWE-bench Verified 95%，价格 1M 上下文", "license": "proprietary", "is_open_weight": false}, {"id": "m_claude_opus_5", "vendor_id": "v_anthropic", "display_name": "Claude Opus 5", "family": "Claude 5", "version": "5.0", "release_date": "2026-07", "context_window": 1000000, "max_output_tokens": 32000, "modality": ["text", "image"], "capabilities": ["agentic_coding", "reasoning", "tool_use", "computer_use"], "scenes": ["coding", "agents", "research"], "official_input_usd_m": 5, "official_output_usd_m": 25, "official_cache_read_usd_m": 0.5, "description": "Anthropic 旗舰，性价比更高，适合 Agent 编码", "license": "proprietary", "is_open_weight": false}, {"id": "m_claude_sonnet_5", "vendor_id": "v_anthropic", "display_name": "Claude Sonnet 5", "family": "Claude 5", "version": "5.0", "release_date": "2026-06", "context_window": 1000000, "max_output_tokens": 16000, "modality": ["text", "image"], "capabilities": ["balanced", "agentic_coding", "reasoning"], "scenes": ["coding", "agents", "production"], "official_input_usd_m": 3, "official_output_usd_m": 15, "official_cache_read_usd_m": 0.3, "description": "Anthropic 主力，性价比最优", "license": "proprietary", "is_open_weight": false}, {"id": "m_claude_opus_4_7", "vendor_id": "v_anthropic", "display_name": "Claude Opus 4.7", "family": "Claude 4", "version": "4.7", "release_date": "2026-04", "context_window": 1000000, "max_output_tokens": 32000, "modality": ["text", "image"], "capabilities": ["agentic_coding", "reasoning", "computer_use"], "scenes": ["coding", "agents"], "official_input_usd_m": 5, "official_output_usd_m": 25, "description": "上代旗舰，仍领先", "license": "proprietary", "is_open_weight": false}, {"id": "m_gpt_5_6_sol", "vendor_id": "v_openai", "display_name": "GPT-5.6 Sol", "family": "GPT-5.6", "version": "5.6", "release_date": "2026-07", "context_window": 1050000, "max_output_tokens": 32000, "modality": ["text", "image", "audio"], "capabilities": ["agentic_reasoning", "terminal", "tool_use", "reasoning"], "scenes": ["agents", "terminal", "reasoning"], "official_input_usd_m": 5, "official_output_usd_m": 30, "description": "OpenAI 最新旗舰，BrowseComp 90.4%", "license": "proprietary", "is_open_weight": false}, {"id": "m_gpt_5_5", "vendor_id": "v_openai", "display_name": "GPT-5.5", "family": "GPT-5", "version": "5.5", "release_date": "2026-04", "context_window": 1050000, "max_output_tokens": 32000, "modality": ["text", "image"], "capabilities": ["reasoning", "coding", "tool_use"], "scenes": ["coding", "reasoning", "production"], "official_input_usd_m": 5, "official_output_usd_m": 30, "description": "AIME 2025 100%，GPQA 93.6%", "license": "proprietary", "is_open_weight": false}, {"id": "m_gpt_5_5_pro", "vendor_id": "v_openai", "display_name": "GPT-5.5 Pro", "family": "GPT-5", "version": "5.5", "release_date": "2026-04", "context_window": 1050000, "max_output_tokens": 32000, "modality": ["text", "image"], "capabilities": ["reasoning", "agents"], "scenes": ["research", "hard_problem"], "official_input_usd_m": 30, "official_output_usd_m": 180, "description": "OpenAI 高级推理，$30/$180 顶配", "license": "proprietary", "is_open_weight": false}, {"id": "m_gpt_5_2", "vendor_id": "v_openai", "display_name": "GPT-5.2", "family": "GPT-5", "version": "5.2", "release_date": "2026-02", "context_window": 400000, "max_output_tokens": 16000, "modality": ["text"], "capabilities": ["reasoning", "agentic_coding"], "scenes": ["coding", "agents"], "official_input_usd_m": 1.75, "official_output_usd_m": 14, "description": "GPT-5.2 中端，性价比", "license": "proprietary", "is_open_weight": false}, {"id": "m_gemini_3_1_pro", "vendor_id": "v_google", "display_name": "Gemini 3.1 Pro", "family": "Gemini 3", "version": "3.1", "release_date": "2026-04", "context_window": 1000000, "max_output_tokens": 64000, "modality": ["text", "image", "audio", "video"], "capabilities": ["multimodal", "reasoning", "long_context", "scientific_reasoning"], "scenes": ["science", "multimodal", "long_doc"], "official_input_usd_m": 2, "official_output_usd_m": 12, "description": "Google 旗舰，GPQA 94.3%，原生多模态", "license": "proprietary", "is_open_weight": false}, {"id": "m_gemini_3_5_flash", "vendor_id": "v_google", "display_name": "Gemini 3.5 Flash", "family": "Gemini 3.5", "version": "3.5", "release_date": "2026-05", "context_window": 1000000, "max_output_tokens": 64000, "modality": ["text", "image", "audio", "video"], "capabilities": ["multimodal", "speed", "agentic"], "scenes": ["high_volume", "multimodal"], "official_input_usd_m": 1.5, "official_output_usd_m": 9, "description": "Google 性价比，速度最优", "license": "proprietary", "is_open_weight": false}, {"id": "m_gemini_3_flash_preview", "vendor_id": "v_google", "display_name": "Gemini 3 Flash Preview", "family": "Gemini 3", "version": "3.0-preview", "release_date": "2026-04", "context_window": 1000000, "max_output_tokens": 32000, "modality": ["text", "image", "audio"], "capabilities": ["multimodal", "speed", "reasoning"], "scenes": ["realtime", "chat"], "official_input_usd_m": 0.5, "official_output_usd_m": 3, "description": "Google 实时推理", "license": "proprietary", "is_open_weight": false}, {"id": "m_grok_4_3", "vendor_id": "v_xai", "display_name": "Grok 4.3", "family": "Grok 4", "version": "4.3", "release_date": "2026-04", "context_window": 1000000, "max_output_tokens": 32000, "modality": ["text", "image"], "capabilities": ["real_time", "tool_use", "reasoning"], "scenes": ["realtime_research", "tools"], "official_input_usd_m": 1.25, "official_output_usd_m": 2.5, "description": "xAI 实时联网 + 工具调用", "license": "proprietary", "is_open_weight": false}, {"id": "m_grok_4_fast", "vendor_id": "v_xai", "display_name": "Grok 4 Fast", "family": "Grok 4", "version": "4.0-fast", "release_date": "2026-03", "context_window": 1000000, "max_output_tokens": 16000, "modality": ["text"], "capabilities": ["speed", "reasoning"], "scenes": ["high_volume", "realtime"], "official_input_usd_m": 0.5, "official_output_usd_m": 1.5, "description": "xAI 高速版", "license": "proprietary", "is_open_weight": false}, {"id": "m_deepseek_v4_pro", "vendor_id": "v_deepseek", "display_name": "DeepSeek V4 Pro", "family": "DeepSeek V4", "version": "4.0-pro", "release_date": "2026-04", "context_window": 1000000, "max_output_tokens": 32000, "modality": ["text"], "capabilities": ["reasoning", "agentic_coding", "long_context", "sparse_attention"], "scenes": ["coding", "agents", "production"], "official_input_usd_m": 0.435, "official_output_usd_m": 0.87, "official_cache_read_usd_m": 0.028, "description": "国产开源最强，SWE-bench 80.6%，1M 上下文", "license": "MIT", "is_open_weight": true}, {"id": "m_deepseek_v4_flash", "vendor_id": "v_deepseek", "display_name": "DeepSeek V4 Flash", "family": "DeepSeek V4", "version": "4.0-flash", "release_date": "2026-04", "context_window": 1000000, "max_output_tokens": 32000, "modality": ["text", "image"], "capabilities": ["speed", "reasoning", "coding"], "scenes": ["high_volume", "coding"], "official_input_usd_m": 0.14, "official_output_usd_m": 0.28, "official_cache_read_usd_m": 0.0028, "description": "全球最便宜 $0.14/$0.28，1M 上下文", "license": "MIT", "is_open_weight": true}, {"id": "m_deepseek_v3_2", "vendor_id": "v_deepseek", "display_name": "DeepSeek V3.2", "family": "DeepSeek V3", "version": "3.2", "release_date": "2025-12", "context_window": 164000, "max_output_tokens": 16000, "modality": ["text"], "capabilities": ["general", "coding", "reasoning"], "scenes": ["production", "cost_effective"], "official_input_usd_m": 0.27, "official_output_usd_m": 1.1, "description": "DeepSeek 通用版，AIME 89.3%", "license": "MIT", "is_open_weight": true}, {"id": "m_deepseek_r1", "vendor_id": "v_deepseek", "display_name": "DeepSeek R1", "family": "DeepSeek R1", "version": "1.0", "release_date": "2025-01", "context_window": 128000, "max_output_tokens": 32000, "modality": ["text"], "capabilities": ["reasoning", "math", "chain_of_thought"], "scenes": ["reasoning", "math", "research"], "official_input_usd_m": 0.55, "official_output_usd_m": 2.19, "description": "推理王者，MATH-500 97.3%", "license": "MIT", "is_open_weight": true}, {"id": "m_qwen3_8_max", "vendor_id": "v_qwen", "display_name": "Qwen3.8 Max", "family": "Qwen3.8", "version": "3.8-max", "release_date": "2026-08", "context_window": 1000000, "max_output_tokens": 32000, "modality": ["text", "image", "audio"], "capabilities": ["reasoning", "agentic", "multimodal", "linear_attention"], "scenes": ["multimodal", "agents", "coding"], "official_input_usd_m": 2, "official_output_usd_m": 6, "description": "阿里旗舰，多模态 APAC 第一", "license": "proprietary", "is_open_weight": false}, {"id": "m_qwen3_7_max", "vendor_id": "v_qwen", "display_name": "Qwen3.7 Max", "family": "Qwen3.7", "version": "3.7-max", "release_date": "2026-05", "context_window": 1000000, "max_output_tokens": 32000, "modality": ["text", "image"], "capabilities": ["long_context", "extended_thinking", "agentic"], "scenes": ["long_horizon_agents", "coding"], "official_input_usd_m": 2.5, "official_output_usd_m": 7.5, "description": "阿里 Qwen3.7，扩展思考模式", "license": "proprietary", "is_open_weight": false}, {"id": "m_qwen3_6_max_preview", "vendor_id": "v_qwen", "display_name": "Qwen3.6 Max Preview", "family": "Qwen3.6", "version": "3.6-max-preview", "release_date": "2026-04", "context_window": 262000, "max_output_tokens": 16000, "modality": ["text", "image"], "capabilities": ["agentic", "multimodal"], "scenes": ["agents", "multimodal"], "official_input_usd_m": 1.04, "official_output_usd_m": 6.24, "description": "Qwen3.6 Max 预览", "license": "proprietary", "is_open_weight": false}, {"id": "m_qwen3_8_flash", "vendor_id": "v_qwen", "display_name": "Qwen3.8 Flash", "family": "Qwen3.8", "version": "3.8-flash", "release_date": "2026-08", "context_window": 1000000, "max_output_tokens": 32000, "modality": ["text", "image"], "capabilities": ["speed", "multimodal"], "scenes": ["high_volume", "multimodal"], "official_input_usd_m": 0.188, "official_output_usd_m": 1.5, "description": "Qwen3.8 Flash，便宜版", "license": "Apache-2.0", "is_open_weight": true}, {"id": "m_glm_5_2", "vendor_id": "v_zhipu", "display_name": "GLM-5.2", "family": "GLM-5", "version": "5.2", "release_date": "2026-06", "context_window": 1000000, "max_output_tokens": 32000, "modality": ["text", "image"], "capabilities": ["agentic", "coding", "open_chip", "long_context"], "scenes": ["agents", "coding", "domestic"], "official_input_usd_m": 1.4, "official_output_usd_m": 4.4, "description": "智谱 Agent 工程最强，适配 7 大国产芯片", "license": "MIT", "is_open_weight": true}, {"id": "m_glm_5_1", "vendor_id": "v_zhipu", "display_name": "GLM-5.1", "family": "GLM-5", "version": "5.1", "release_date": "2026-03", "context_window": 200000, "max_output_tokens": 16000, "modality": ["text", "image"], "capabilities": ["agentic", "coding"], "scenes": ["agents", "coding"], "official_input_usd_m": 1.2, "official_output_usd_m": 4, "description": "智谱 GLM-5.1，MIT 开源", "license": "MIT", "is_open_weight": true}, {"id": "m_glm_4_6v", "vendor_id": "v_zhipu", "display_name": "GLM-4.6V", "family": "GLM-4.6", "version": "4.6-V", "release_date": "2026-01", "context_window": 131000, "max_output_tokens": 8000, "modality": ["text", "image", "video"], "capabilities": ["multimodal", "vision"], "scenes": ["video_understanding"], "official_input_usd_m": 0.9, "official_output_usd_m": 3, "description": "GLM-4.6V 多模态视觉版", "license": "MIT", "is_open_weight": true}, {"id": "m_kimi_k3", "vendor_id": "v_moonshot", "display_name": "Kimi K3", "family": "Kimi K", "version": "3.0", "release_date": "2026-07", "context_window": 262000, "max_output_tokens": 32000, "modality": ["text", "image"], "capabilities": ["agentic", "coding", "long_horizon", "browsing"], "scenes": ["agents", "browsing", "coding"], "official_input_usd_m": 3, "official_output_usd_m": 15, "description": "Moonshot K3，开源倒计时 7/27", "license": "modified-MIT", "is_open_weight": false}, {"id": "m_kimi_k2_6", "vendor_id": "v_moonshot", "display_name": "Kimi K2.6", "family": "Kimi K2", "version": "2.6", "release_date": "2026-04", "context_window": 256000, "max_output_tokens": 32000, "modality": ["text", "image"], "capabilities": ["agentic", "long_horizon_coding", "browsing"], "scenes": ["agents", "coding"], "official_input_usd_m": 0.95, "official_output_usd_m": 4, "description": "Moonshot K2.6，SWE-Bench 80.2%", "license": "modified-MIT", "is_open_weight": true}, {"id": "m_doubao_seed_2_pro", "vendor_id": "v_doubao", "display_name": "Doubao Seed 2.0 Pro", "family": "Doubao Seed", "version": "2.0-pro", "release_date": "2026-04", "context_window": 256000, "max_output_tokens": 32000, "modality": ["text", "image", "audio", "video"], "capabilities": ["multimodal", "scientific_reasoning", "chinese"], "scenes": ["multimodal", "chinese"], "official_input_usd_m": 1.5, "official_output_usd_m": 8, "description": "字节豆包 Pro，国产多模态最强", "license": "proprietary", "is_open_weight": false}, {"id": "m_doubao_seed_2_lite", "vendor_id": "v_doubao", "display_name": "Doubao Seed 2.0 Lite", "family": "Doubao Seed", "version": "2.0-lite", "release_date": "2026-04", "context_window": 128000, "max_output_tokens": 16000, "modality": ["text", "image"], "capabilities": ["speed", "multimodal"], "scenes": ["realtime", "production"], "official_input_usd_m": 0.3, "official_output_usd_m": 1.5, "description": "字节豆包 Lite 版", "license": "proprietary", "is_open_weight": false}, {"id": "m_ernie_5_1", "vendor_id": "v_baidu", "display_name": "ERNIE 5.1", "family": "ERNIE 5", "version": "5.1", "release_date": "2026-04", "context_window": 128000, "max_output_tokens": 8000, "modality": ["text"], "capabilities": ["search_augmented", "chinese", "instruction_following"], "scenes": ["search", "chinese", "qa"], "official_input_usd_m": 0.8, "official_output_usd_m": 3.2, "description": "百度文心 5.1，搜索增强", "license": "proprietary", "is_open_weight": false}, {"id": "m_llama_4_maverick", "vendor_id": "v_meta", "display_name": "Llama 4 Maverick", "family": "Llama 4", "version": "4.0", "release_date": "2025-04", "context_window": 10485760, "max_output_tokens": 16000, "modality": ["text", "image"], "capabilities": ["long_context", "speed", "multimodal", "open_weight"], "scenes": ["long_doc", "self_host"], "official_input_usd_m": 0.6, "official_output_usd_m": 2.4, "description": "Meta Llama 4，10M 上下文 + 2600 t/s", "license": "Llama-3", "is_open_weight": true}, {"id": "m_llama_4_scout", "vendor_id": "v_meta", "display_name": "Llama 4 Scout", "family": "Llama 4", "version": "4.0", "release_date": "2025-04", "context_window": 10485760, "max_output_tokens": 16000, "modality": ["text", "image"], "capabilities": ["speed", "long_context", "open_weight"], "scenes": ["realtime", "long_doc"], "official_input_usd_m": 0.4, "official_output_usd_m": 1.6, "description": "Llama 4 Scout，便宜版", "license": "Llama-3", "is_open_weight": true}, {"id": "m_mistral_large_3", "vendor_id": "v_mistral", "display_name": "Mistral Large 3", "family": "Mistral Large", "version": "3.0", "release_date": "2026-04", "context_window": 256000, "max_output_tokens": 16000, "modality": ["text"], "capabilities": ["reasoning", "multilingual"], "scenes": ["enterprise", "multilingual"], "official_input_usd_m": 1.5, "official_output_usd_m": 7.5, "description": "Mistral Large 3，欧洲合规", "license": "Apache-2.0", "is_open_weight": true}, {"id": "m_mistral_medium_3_5", "vendor_id": "v_mistral", "display_name": "Mistral Medium 3.5", "family": "Mistral Medium", "version": "3.5", "release_date": "2026-04", "context_window": 256000, "max_output_tokens": 16000, "modality": ["text"], "capabilities": ["coding", "agentic"], "scenes": ["agentic_coding"], "official_input_usd_m": 1.5, "official_output_usd_m": 7.5, "description": "Mistral Medium 3.5，256K 上下文", "license": "Apache-2.0", "is_open_weight": true}, {"id": "m_devstral_2", "vendor_id": "v_mistral", "display_name": "Devstral 2", "family": "Devstral", "version": "2.0", "release_date": "2025-12", "context_window": 262000, "max_output_tokens": 16000, "modality": ["text"], "capabilities": ["coding", "agentic", "open_weight"], "scenes": ["agentic_coding"], "official_input_usd_m": 2, "official_output_usd_m": 8, "description": "Mistral Devstral 2，专注 Agent 编码", "license": "Apache-2.0", "is_open_weight": true}, {"id": "m_minimax_m3", "vendor_id": "v_minimax", "display_name": "MiniMax M3", "family": "MiniMax M", "version": "3.0", "release_date": "2026-08", "context_window": 1000000, "max_output_tokens": 32000, "modality": ["text", "image"], "capabilities": ["long_context", "multimodal"], "scenes": ["long_doc", "multimodal"], "official_input_usd_m": 0.5, "official_output_usd_m": 2.5, "description": "MiniMax M3，国产长上下文", "license": "proprietary", "is_open_weight": false}, {"id": "m_minimax_m2_7", "vendor_id": "v_minimax", "display_name": "MiniMax M2.7", "family": "MiniMax M", "version": "2.7", "release_date": "2026-03", "context_window": 205000, "max_output_tokens": 16000, "modality": ["text"], "capabilities": ["agentic", "self_evolving", "coding"], "scenes": ["agents", "coding"], "official_input_usd_m": 1.2, "official_output_usd_m": 4.8, "description": "MiniMax M2.7，自我进化 Agent", "license": "modified-MIT", "is_open_weight": true}, {"id": "m_step_3_5_flash", "vendor_id": "v_stepfun", "display_name": "Step-3.5 Flash", "family": "Step-3.5", "version": "3.5-flash", "release_date": "2025-11", "context_window": 196000, "max_output_tokens": 8000, "modality": ["text"], "capabilities": ["speed", "open_weight"], "scenes": ["high_volume"], "official_input_usd_m": 0.2, "official_output_usd_m": 0.8, "description": "阶跃星辰 Flash，便宜高速", "license": "Apache-2.0", "is_open_weight": true}, {"id": "m_mimo_v2_flash", "vendor_id": "v_xiaomi", "display_name": "MiMo-V2 Flash", "family": "MiMo-V2", "version": "2.0-flash", "release_date": "2026-01", "context_window": 256000, "max_output_tokens": 8000, "modality": ["text"], "capabilities": ["speed", "on_device"], "scenes": ["edge", "realtime"], "official_input_usd_m": 0.3, "official_output_usd_m": 1.2, "description": "小米 MiMo-V2 Flash，国产边缘", "license": "Apache-2.0", "is_open_weight": true}], "providers": [{"id": "p_anthropic_official", "name_zh": "Anthropic 官方", "name_en": "Anthropic", "type": "official", "region": "global", "website": "https://console.anthropic.com", "payment_currency": ["USD"], "invoice_available": true, "min_charge": 5, "notes": "官方直连，USD 充值", "name": "Anthropic 官方", "name_short": "Anthropic 官方"}, {"id": "p_openai_official", "name_zh": "OpenAI 官方", "name_en": "OpenAI", "type": "official", "region": "global", "website": "https://platform.openai.com", "payment_currency": ["USD"], "invoice_available": true, "min_charge": 5, "notes": "官方直连", "name": "OpenAI 官方", "name_short": "OpenAI 官方"}, {"id": "p_google_official", "name_zh": "Google AI Studio", "name_en": "Google AI Studio", "type": "official", "region": "global", "website": "https://aistudio.google.com", "payment_currency": ["USD"], "invoice_available": true, "min_charge": 0, "notes": "免费额度+付费层", "name": "Google AI Studio", "name_short": "Google AI Studio"}, {"id": "p_xai_official", "name_zh": "xAI 官方", "name_en": "xAI Console", "type": "official", "region": "global", "website": "https://console.x.ai", "payment_currency": ["USD"], "invoice_available": true, "min_charge": 5, "notes": "官方直连", "name": "xAI 官方", "name_short": "xAI 官方"}, {"id": "p_deepseek_official", "name_zh": "DeepSeek 官方", "name_en": "DeepSeek Platform", "type": "official", "region": "cn/global", "website": "https://platform.deepseek.com", "payment_currency": ["CNY", "USD"], "invoice_available": true, "min_charge": 1, "notes": "国内可直接，海外 OpenAI 兼容", "name": "DeepSeek 官方", "name_short": "DeepSeek 官方"}, {"id": "p_qwen_official", "name_zh": "阿里云百炼", "name_en": "Alibaba Bailian", "type": "official", "region": "cn/global", "website": "https://bailian.console.aliyun.com", "payment_currency": ["CNY"], "invoice_available": true, "min_charge": 0, "notes": "Qwen 官方，支持 100+ 模型", "name": "阿里云百炼", "name_short": "阿里云百炼"}, {"id": "p_zhipu_official", "name_zh": "智谱 BigModel", "name_en": "Zhipu BigModel", "type": "official", "region": "cn/global", "website": "https://bigmodel.cn", "payment_currency": ["CNY", "USD"], "invoice_available": true, "min_charge": 1, "notes": "GLM 官方", "name": "智谱 BigModel", "name_short": "智谱 BigModel"}, {"id": "p_moonshot_official", "name_zh": "Moonshot 官方", "name_en": "Moonshot Platform", "type": "official", "region": "cn/global", "website": "https://platform.moonshot.cn", "payment_currency": ["CNY", "USD"], "invoice_available": true, "min_charge": 5, "notes": "Kimi 官方", "name": "Moonshot 官方", "name_short": "Moonshot 官方"}, {"id": "p_doubao_official", "name_zh": "字节火山引擎", "name_en": "Volcano Engine", "type": "official", "region": "cn", "website": "https://www.volcengine.com/product/doubao", "payment_currency": ["CNY"], "invoice_available": true, "min_charge": 0, "notes": "豆包官方，企业级", "name": "字节火山引擎", "name_short": "字节火山引擎"}, {"id": "p_baidu_qianfan", "name_zh": "百度千帆", "name_en": "Baidu Qianfan", "type": "official", "region": "cn", "website": "https://cloud.baidu.com/product/qianfan", "payment_currency": ["CNY"], "invoice_available": true, "min_charge": 0, "notes": "文心官方", "name": "百度千帆", "name_short": "百度千帆"}, {"id": "p_mistral_official", "name_zh": "Mistral 官方", "name_en": "Mistral La Plateforme", "type": "official", "region": "global", "website": "https://console.mistral.ai", "payment_currency": ["USD", "EUR"], "invoice_available": true, "min_charge": 5, "notes": "官方直连，欧盟合规", "name": "Mistral 官方", "name_short": "Mistral 官方"}, {"id": "p_groq", "name_zh": "GroqCloud", "name_en": "GroqCloud", "type": "official", "region": "global", "website": "https://console.groq.com", "payment_currency": ["USD"], "invoice_available": false, "min_charge": 0, "notes": "LPU 推理，极速", "name": "GroqCloud", "name_short": "GroqCloud"}, {"id": "p_together_ai", "name_zh": "Together AI", "name_en": "Together AI", "type": "aggregator", "region": "global", "website": "https://www.together.ai", "payment_currency": ["USD"], "invoice_available": true, "min_charge": 5, "notes": "200+ 开源模型，按 token 计费", "name": "Together AI", "name_short": "Together AI"}, {"id": "p_fireworks_ai", "name_zh": "Fireworks AI", "name_en": "Fireworks AI", "type": "aggregator", "region": "global", "website": "https://fireworks.ai", "payment_currency": ["USD"], "invoice_available": true, "min_charge": 5, "notes": "开源模型优化推理", "name": "Fireworks AI", "name_short": "Fireworks AI"}, {"id": "p_anyscale", "name_zh": "Anyscale", "name_en": "Anyscale Endpoints", "type": "aggregator", "region": "global", "website": "https://www.anyscale.com", "payment_currency": ["USD"], "invoice_available": true, "min_charge": 0, "notes": "开源模型生产部署", "name": "Anyscale", "name_short": "Anyscale"}, {"id": "p_openrouter", "name_zh": "OpenRouter", "name_en": "OpenRouter", "type": "aggregator", "region": "global", "website": "https://openrouter.ai", "payment_currency": ["USD", "CRYPTO"], "invoice_available": false, "min_charge": 5, "notes": "300+ 模型，OpenAI 兼容，5.5% 平台费", "name": "OpenRouter", "name_short": "OpenRouter"}, {"id": "p_litellm", "name_zh": "LiteLLM (自托管)", "name_en": "LiteLLM Proxy", "type": "self_host", "region": "self", "website": "https://litellm.ai", "payment_currency": ["-"], "invoice_available": false, "min_charge": 0, "notes": "MIT 开源自托管，140+ 提供商", "name": "LiteLLM (自托管)", "name_short": "LiteLLM (自托管)"}, {"id": "p_portkey", "name_zh": "Portkey", "name_en": "Portkey AI Gateway", "type": "gateway", "region": "global", "website": "https://portkey.ai", "payment_currency": ["USD"], "invoice_available": true, "min_charge": 0, "notes": "Apache-2.0 企业级网关", "name": "Portkey", "name_short": "Portkey"}, {"id": "p_helicone", "name_zh": "Helicone", "name_en": "Helicone AI Gateway", "type": "gateway", "region": "global", "website": "https://helicone.ai", "payment_currency": ["USD"], "invoice_available": false, "min_charge": 0, "notes": "可观测性优先，免费 10K/月", "name": "Helicone", "name_short": "Helicone"}, {"id": "p_cloudflare_ai", "name_zh": "Cloudflare AI Gateway", "name_en": "Cloudflare AI Gateway", "type": "gateway", "region": "global", "website": "https://developers.cloudflare.com/ai-gateway", "payment_currency": ["USD"], "invoice_available": true, "min_charge": 0, "notes": "Cloudflare 用户免费", "name": "Cloudflare AI Gateway", "name_short": "Cloudflare AI Gateway"}, {"id": "p_vercel_ai_gateway", "name_zh": "Vercel AI Gateway", "name_en": "Vercel AI Gateway", "type": "gateway", "region": "global", "website": "https://vercel.com/docs/ai-gateway", "payment_currency": ["USD"], "invoice_available": false, "min_charge": 5, "notes": "0 标记费", "name": "Vercel AI Gateway", "name_short": "Vercel AI Gateway"}, {"id": "p_one_api", "name_zh": "One-API (开源)", "name_en": "One-API (开源)", "type": "self_host", "region": "cn", "website": "https://github.com/songquanpeng/one-api", "payment_currency": ["CNY"], "invoice_available": false, "min_charge": 0, "notes": "国内最流行的开源聚合，docker 镜像", "name": "One-API (开源)", "name_short": "One-API (开源)"}, {"id": "p_new_api", "name_zh": "New-API (开源)", "name_en": "New-API (开源)", "type": "self_host", "region": "cn", "website": "https://github.com/QuantumNous/new-api", "payment_currency": ["CNY"], "invoice_available": false, "min_charge": 0, "notes": "One-API 升级版", "name": "New-API (开源)", "name_short": "New-API (开源)"}, {"id": "p_duckcoding", "name_zh": "DuckCoding", "name_en": "DuckCoding", "type": "aggregator", "region": "cn", "website": "https://duckcoding.com", "payment_currency": ["CNY", "USD"], "invoice_available": false, "min_charge": 10, "notes": "国内中转，比官方低 30-50%", "name": "DuckCoding", "name_short": "DuckCoding"}, {"id": "p_api2d", "name_zh": "API2D", "name_en": "API2D", "type": "aggregator", "region": "cn", "website": "https://api2d.com", "payment_currency": ["CNY", "USD"], "invoice_available": false, "min_charge": 5, "notes": "国内老牌中转", "name": "API2D", "name_short": "API2D"}, {"id": "p_aicnb", "name_zh": "AIcnb", "name_en": "AIcnb", "type": "aggregator", "region": "cn", "website": "https://aicnb.com", "payment_currency": ["CNY"], "invoice_available": false, "min_charge": 5, "notes": "国内中转，含发票申请", "name": "AIcnb", "name_short": "AIcnb"}, {"id": "p_closeai", "name_zh": "CloseAI", "name_en": "CloseAI", "type": "aggregator", "region": "cn", "website": "https://closeai.info", "payment_currency": ["CNY"], "invoice_available": false, "min_charge": 5, "notes": "国内 Claude 专线", "name": "CloseAI", "name_short": "CloseAI"}, {"id": "p_woka_ai", "name_zh": "WokaAI", "name_en": "WokaAI", "type": "aggregator", "region": "cn", "website": "https://wokaai.com", "payment_currency": ["CNY"], "invoice_available": false, "min_charge": 5, "notes": "国内 Claude/GPT 中转", "name": "WokaAI", "name_short": "WokaAI"}, {"id": "p_chatfire", "name_zh": "ChatFire", "name_en": "ChatFire", "type": "aggregator", "region": "cn", "website": "https://chatfire.cn", "payment_currency": ["CNY"], "invoice_available": false, "min_charge": 1, "notes": "国内低价中转", "name": "ChatFire", "name_short": "ChatFire"}, {"id": "p_azure_openai", "name_zh": "Azure OpenAI", "name_en": "Azure OpenAI Service", "type": "cloud", "region": "global", "website": "https://oai.azure.com", "payment_currency": ["USD"], "invoice_available": true, "min_charge": 0, "notes": "企业版，需 Azure 订阅", "name": "Azure OpenAI", "name_short": "Azure OpenAI"}, {"id": "p_bedrock", "name_zh": "AWS Bedrock", "name_en": "Amazon Bedrock", "type": "cloud", "region": "global", "website": "https://aws.amazon.com/bedrock", "payment_currency": ["USD"], "invoice_available": true, "min_charge": 0, "notes": "AWS 企业集成", "name": "AWS Bedrock", "name_short": "AWS Bedrock"}, {"id": "p_vertex_ai", "name_zh": "Vertex AI", "name_en": "Google Vertex AI", "type": "cloud", "region": "global", "website": "https://cloud.google.com/vertex-ai", "payment_currency": ["USD"], "invoice_available": true, "min_charge": 0, "notes": "Google Cloud 企业版", "name": "Vertex AI", "name_short": "Vertex AI"}], "offerings": [{"model_id": "m_claude_fable_5", "provider_id": "p_anthropic_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 10, "output_usd_m": 50, "cache_read_usd_m": 1.0, "source_url": "https://console.anthropic.com"}, {"model_id": "m_claude_fable_5", "provider_id": "p_anyscale", "is_official": false, "multiplier": 0.71, "input_usd_m": 7.1, "output_usd_m": 35.5, "cache_read_usd_m": 0.71, "source_url": ""}, {"model_id": "m_claude_fable_5", "provider_id": "p_openrouter", "is_official": false, "multiplier": 0.85, "input_usd_m": 8.5, "output_usd_m": 42.5, "cache_read_usd_m": 0.85, "source_url": ""}, {"model_id": "m_claude_fable_5", "provider_id": "p_api2d", "is_official": false, "multiplier": 0.83, "input_usd_m": 8.3, "output_usd_m": 41.5, "cache_read_usd_m": 0.83, "source_url": ""}, {"model_id": "m_claude_fable_5", "provider_id": "p_helicone", "is_official": false, "multiplier": 0.89, "input_usd_m": 8.9, "output_usd_m": 44.5, "cache_read_usd_m": 0.89, "source_url": ""}, {"model_id": "m_claude_fable_5", "provider_id": "p_chatfire", "is_official": false, "multiplier": 0.67, "input_usd_m": 6.7, "output_usd_m": 33.5, "cache_read_usd_m": 0.67, "source_url": ""}, {"model_id": "m_claude_opus_5", "provider_id": "p_anthropic_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 5, "output_usd_m": 25, "cache_read_usd_m": 0.5, "source_url": "https://console.anthropic.com"}, {"model_id": "m_claude_opus_5", "provider_id": "p_together_ai", "is_official": false, "multiplier": 0.71, "input_usd_m": 3.55, "output_usd_m": 17.75, "cache_read_usd_m": 0.355, "source_url": ""}, {"model_id": "m_claude_opus_5", "provider_id": "p_openrouter", "is_official": false, "multiplier": 0.81, "input_usd_m": 4.05, "output_usd_m": 20.25, "cache_read_usd_m": 0.405, "source_url": ""}, {"model_id": "m_claude_opus_5", "provider_id": "p_chatfire", "is_official": false, "multiplier": 0.8, "input_usd_m": 4.0, "output_usd_m": 20.0, "cache_read_usd_m": 0.4, "source_url": ""}, {"model_id": "m_claude_opus_5", "provider_id": "p_anyscale", "is_official": false, "multiplier": 0.84, "input_usd_m": 4.2, "output_usd_m": 21.0, "cache_read_usd_m": 0.42, "source_url": ""}, {"model_id": "m_claude_sonnet_5", "provider_id": "p_anthropic_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 3, "output_usd_m": 15, "cache_read_usd_m": 0.3, "source_url": "https://console.anthropic.com"}, {"model_id": "m_claude_sonnet_5", "provider_id": "p_closeai", "is_official": false, "multiplier": 0.87, "input_usd_m": 2.61, "output_usd_m": 13.05, "cache_read_usd_m": 0.261, "source_url": ""}, {"model_id": "m_claude_sonnet_5", "provider_id": "p_anyscale", "is_official": false, "multiplier": 0.65, "input_usd_m": 1.95, "output_usd_m": 9.75, "cache_read_usd_m": 0.195, "source_url": ""}, {"model_id": "m_claude_sonnet_5", "provider_id": "p_vercel_ai_gateway", "is_official": false, "multiplier": 0.87, "input_usd_m": 2.61, "output_usd_m": 13.05, "cache_read_usd_m": 0.261, "source_url": ""}, {"model_id": "m_claude_sonnet_5", "provider_id": "p_new_api", "is_official": false, "multiplier": 0.84, "input_usd_m": 2.52, "output_usd_m": 12.6, "cache_read_usd_m": 0.252, "source_url": ""}, {"model_id": "m_claude_sonnet_5", "provider_id": "p_helicone", "is_official": false, "multiplier": 0.74, "input_usd_m": 2.22, "output_usd_m": 11.1, "cache_read_usd_m": 0.222, "source_url": ""}, {"model_id": "m_claude_opus_4_7", "provider_id": "p_anthropic_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 5, "output_usd_m": 25, "cache_read_usd_m": 0, "source_url": "https://console.anthropic.com"}, {"model_id": "m_claude_opus_4_7", "provider_id": "p_cloudflare_ai", "is_official": false, "multiplier": 0.68, "input_usd_m": 3.4, "output_usd_m": 17.0, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_claude_opus_4_7", "provider_id": "p_aicnb", "is_official": false, "multiplier": 0.75, "input_usd_m": 3.75, "output_usd_m": 18.75, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_claude_opus_4_7", "provider_id": "p_portkey", "is_official": false, "multiplier": 0.75, "input_usd_m": 3.75, "output_usd_m": 18.75, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gpt_5_6_sol", "provider_id": "p_openai_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 5, "output_usd_m": 30, "cache_read_usd_m": 0, "source_url": "https://platform.openai.com"}, {"model_id": "m_gpt_5_6_sol", "provider_id": "p_one_api", "is_official": false, "multiplier": 0.77, "input_usd_m": 3.85, "output_usd_m": 23.1, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gpt_5_6_sol", "provider_id": "p_aicnb", "is_official": false, "multiplier": 0.68, "input_usd_m": 3.4, "output_usd_m": 20.4, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gpt_5_6_sol", "provider_id": "p_openrouter", "is_official": false, "multiplier": 0.9, "input_usd_m": 4.5, "output_usd_m": 27.0, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gpt_5_6_sol", "provider_id": "p_api2d", "is_official": false, "multiplier": 0.67, "input_usd_m": 3.35, "output_usd_m": 20.1, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gpt_5_5", "provider_id": "p_openai_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 5, "output_usd_m": 30, "cache_read_usd_m": 0, "source_url": "https://platform.openai.com"}, {"model_id": "m_gpt_5_5", "provider_id": "p_api2d", "is_official": false, "multiplier": 0.67, "input_usd_m": 3.35, "output_usd_m": 20.1, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gpt_5_5", "provider_id": "p_new_api", "is_official": false, "multiplier": 0.83, "input_usd_m": 4.15, "output_usd_m": 24.9, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gpt_5_5", "provider_id": "p_anyscale", "is_official": false, "multiplier": 0.86, "input_usd_m": 4.3, "output_usd_m": 25.8, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gpt_5_5", "provider_id": "p_chatfire", "is_official": false, "multiplier": 0.92, "input_usd_m": 4.6, "output_usd_m": 27.6, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gpt_5_5_pro", "provider_id": "p_openai_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 30, "output_usd_m": 180, "cache_read_usd_m": 0, "source_url": "https://platform.openai.com"}, {"model_id": "m_gpt_5_5_pro", "provider_id": "p_anyscale", "is_official": false, "multiplier": 0.77, "input_usd_m": 23.1, "output_usd_m": 138.6, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gpt_5_5_pro", "provider_id": "p_cloudflare_ai", "is_official": false, "multiplier": 0.88, "input_usd_m": 26.4, "output_usd_m": 158.4, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gpt_5_5_pro", "provider_id": "p_helicone", "is_official": false, "multiplier": 0.69, "input_usd_m": 20.7, "output_usd_m": 124.2, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gpt_5_2", "provider_id": "p_openai_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 1.75, "output_usd_m": 14, "cache_read_usd_m": 0, "source_url": "https://platform.openai.com"}, {"model_id": "m_gpt_5_2", "provider_id": "p_cloudflare_ai", "is_official": false, "multiplier": 0.9, "input_usd_m": 1.575, "output_usd_m": 12.6, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gpt_5_2", "provider_id": "p_duckcoding", "is_official": false, "multiplier": 0.82, "input_usd_m": 1.435, "output_usd_m": 11.48, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gpt_5_2", "provider_id": "p_helicone", "is_official": false, "multiplier": 0.81, "input_usd_m": 1.4175, "output_usd_m": 11.34, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gpt_5_2", "provider_id": "p_api2d", "is_official": false, "multiplier": 0.7, "input_usd_m": 1.225, "output_usd_m": 9.8, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gemini_3_1_pro", "provider_id": "p_google_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 2, "output_usd_m": 12, "cache_read_usd_m": 0, "source_url": "https://aistudio.google.com"}, {"model_id": "m_gemini_3_1_pro", "provider_id": "p_vercel_ai_gateway", "is_official": false, "multiplier": 0.92, "input_usd_m": 1.84, "output_usd_m": 11.04, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gemini_3_1_pro", "provider_id": "p_fireworks_ai", "is_official": false, "multiplier": 0.82, "input_usd_m": 1.64, "output_usd_m": 9.84, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gemini_3_1_pro", "provider_id": "p_chatfire", "is_official": false, "multiplier": 0.8, "input_usd_m": 1.6, "output_usd_m": 9.6, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gemini_3_1_pro", "provider_id": "p_cloudflare_ai", "is_official": false, "multiplier": 0.83, "input_usd_m": 1.66, "output_usd_m": 9.96, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gemini_3_1_pro", "provider_id": "p_helicone", "is_official": false, "multiplier": 0.88, "input_usd_m": 1.76, "output_usd_m": 10.56, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gemini_3_5_flash", "provider_id": "p_google_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 1.5, "output_usd_m": 9, "cache_read_usd_m": 0, "source_url": "https://aistudio.google.com"}, {"model_id": "m_gemini_3_5_flash", "provider_id": "p_vercel_ai_gateway", "is_official": false, "multiplier": 0.87, "input_usd_m": 1.305, "output_usd_m": 7.83, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gemini_3_5_flash", "provider_id": "p_closeai", "is_official": false, "multiplier": 0.76, "input_usd_m": 1.14, "output_usd_m": 6.84, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gemini_3_5_flash", "provider_id": "p_openrouter", "is_official": false, "multiplier": 0.67, "input_usd_m": 1.005, "output_usd_m": 6.03, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gemini_3_flash_preview", "provider_id": "p_google_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 0.5, "output_usd_m": 3, "cache_read_usd_m": 0, "source_url": "https://aistudio.google.com"}, {"model_id": "m_gemini_3_flash_preview", "provider_id": "p_duckcoding", "is_official": false, "multiplier": 0.89, "input_usd_m": 0.445, "output_usd_m": 2.67, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gemini_3_flash_preview", "provider_id": "p_anyscale", "is_official": false, "multiplier": 0.82, "input_usd_m": 0.41, "output_usd_m": 2.46, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gemini_3_flash_preview", "provider_id": "p_chatfire", "is_official": false, "multiplier": 0.69, "input_usd_m": 0.345, "output_usd_m": 2.07, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gemini_3_flash_preview", "provider_id": "p_vercel_ai_gateway", "is_official": false, "multiplier": 0.69, "input_usd_m": 0.345, "output_usd_m": 2.07, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_gemini_3_flash_preview", "provider_id": "p_cloudflare_ai", "is_official": false, "multiplier": 0.85, "input_usd_m": 0.425, "output_usd_m": 2.55, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_grok_4_3", "provider_id": "p_xai_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 1.25, "output_usd_m": 2.5, "cache_read_usd_m": 0, "source_url": "https://console.x.ai"}, {"model_id": "m_grok_4_3", "provider_id": "p_one_api", "is_official": false, "multiplier": 0.76, "input_usd_m": 0.95, "output_usd_m": 1.9, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_grok_4_3", "provider_id": "p_api2d", "is_official": false, "multiplier": 0.71, "input_usd_m": 0.8875, "output_usd_m": 1.775, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_grok_4_3", "provider_id": "p_new_api", "is_official": false, "multiplier": 0.92, "input_usd_m": 1.15, "output_usd_m": 2.3, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_grok_4_3", "provider_id": "p_cloudflare_ai", "is_official": false, "multiplier": 0.79, "input_usd_m": 0.9875, "output_usd_m": 1.975, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_grok_4_3", "provider_id": "p_closeai", "is_official": false, "multiplier": 0.67, "input_usd_m": 0.8375, "output_usd_m": 1.675, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_grok_4_fast", "provider_id": "p_xai_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 0.5, "output_usd_m": 1.5, "cache_read_usd_m": 0, "source_url": "https://console.x.ai"}, {"model_id": "m_grok_4_fast", "provider_id": "p_anyscale", "is_official": false, "multiplier": 0.69, "input_usd_m": 0.345, "output_usd_m": 1.035, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_grok_4_fast", "provider_id": "p_fireworks_ai", "is_official": false, "multiplier": 0.83, "input_usd_m": 0.415, "output_usd_m": 1.245, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_grok_4_fast", "provider_id": "p_duckcoding", "is_official": false, "multiplier": 0.81, "input_usd_m": 0.405, "output_usd_m": 1.215, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_deepseek_v4_pro", "provider_id": "p_deepseek_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 0.435, "output_usd_m": 0.87, "cache_read_usd_m": 0.028, "source_url": "https://platform.deepseek.com"}, {"model_id": "m_deepseek_v4_pro", "provider_id": "p_aicnb", "is_official": false, "multiplier": 0.72, "input_usd_m": 0.3132, "output_usd_m": 0.6264, "cache_read_usd_m": 0.0202, "source_url": ""}, {"model_id": "m_deepseek_v4_pro", "provider_id": "p_new_api", "is_official": false, "multiplier": 0.8, "input_usd_m": 0.348, "output_usd_m": 0.696, "cache_read_usd_m": 0.0224, "source_url": ""}, {"model_id": "m_deepseek_v4_pro", "provider_id": "p_vercel_ai_gateway", "is_official": false, "multiplier": 0.9, "input_usd_m": 0.3915, "output_usd_m": 0.783, "cache_read_usd_m": 0.0252, "source_url": ""}, {"model_id": "m_deepseek_v4_pro", "provider_id": "p_one_api", "is_official": false, "multiplier": 0.83, "input_usd_m": 0.361, "output_usd_m": 0.7221, "cache_read_usd_m": 0.0232, "source_url": ""}, {"model_id": "m_deepseek_v4_flash", "provider_id": "p_deepseek_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 0.14, "output_usd_m": 0.28, "cache_read_usd_m": 0.0028, "source_url": "https://platform.deepseek.com"}, {"model_id": "m_deepseek_v4_flash", "provider_id": "p_one_api", "is_official": false, "multiplier": 0.74, "input_usd_m": 0.1036, "output_usd_m": 0.2072, "cache_read_usd_m": 0.0021, "source_url": ""}, {"model_id": "m_deepseek_v4_flash", "provider_id": "p_aicnb", "is_official": false, "multiplier": 0.73, "input_usd_m": 0.1022, "output_usd_m": 0.2044, "cache_read_usd_m": 0.002, "source_url": ""}, {"model_id": "m_deepseek_v4_flash", "provider_id": "p_duckcoding", "is_official": false, "multiplier": 0.69, "input_usd_m": 0.0966, "output_usd_m": 0.1932, "cache_read_usd_m": 0.0019, "source_url": ""}, {"model_id": "m_deepseek_v3_2", "provider_id": "p_deepseek_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 0.27, "output_usd_m": 1.1, "cache_read_usd_m": 0, "source_url": "https://platform.deepseek.com"}, {"model_id": "m_deepseek_v3_2", "provider_id": "p_one_api", "is_official": false, "multiplier": 0.7, "input_usd_m": 0.189, "output_usd_m": 0.77, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_deepseek_v3_2", "provider_id": "p_chatfire", "is_official": false, "multiplier": 0.9, "input_usd_m": 0.243, "output_usd_m": 0.99, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_deepseek_v3_2", "provider_id": "p_aicnb", "is_official": false, "multiplier": 0.89, "input_usd_m": 0.2403, "output_usd_m": 0.979, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_deepseek_r1", "provider_id": "p_deepseek_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 0.55, "output_usd_m": 2.19, "cache_read_usd_m": 0, "source_url": "https://platform.deepseek.com"}, {"model_id": "m_deepseek_r1", "provider_id": "p_cloudflare_ai", "is_official": false, "multiplier": 0.69, "input_usd_m": 0.3795, "output_usd_m": 1.5111, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_deepseek_r1", "provider_id": "p_fireworks_ai", "is_official": false, "multiplier": 0.91, "input_usd_m": 0.5005, "output_usd_m": 1.9929, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_deepseek_r1", "provider_id": "p_portkey", "is_official": false, "multiplier": 0.9, "input_usd_m": 0.495, "output_usd_m": 1.971, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_deepseek_r1", "provider_id": "p_aicnb", "is_official": false, "multiplier": 0.9, "input_usd_m": 0.495, "output_usd_m": 1.971, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_qwen3_8_max", "provider_id": "p_qwen_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 2, "output_usd_m": 6, "cache_read_usd_m": 0, "source_url": "https://bailian.console.aliyun.com"}, {"model_id": "m_qwen3_8_max", "provider_id": "p_duckcoding", "is_official": false, "multiplier": 0.89, "input_usd_m": 1.78, "output_usd_m": 5.34, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_qwen3_8_max", "provider_id": "p_vercel_ai_gateway", "is_official": false, "multiplier": 0.87, "input_usd_m": 1.74, "output_usd_m": 5.22, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_qwen3_8_max", "provider_id": "p_openrouter", "is_official": false, "multiplier": 0.73, "input_usd_m": 1.46, "output_usd_m": 4.38, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_qwen3_8_max", "provider_id": "p_together_ai", "is_official": false, "multiplier": 0.67, "input_usd_m": 1.34, "output_usd_m": 4.02, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_qwen3_8_max", "provider_id": "p_portkey", "is_official": false, "multiplier": 0.89, "input_usd_m": 1.78, "output_usd_m": 5.34, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_qwen3_7_max", "provider_id": "p_qwen_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 2.5, "output_usd_m": 7.5, "cache_read_usd_m": 0, "source_url": "https://bailian.console.aliyun.com"}, {"model_id": "m_qwen3_7_max", "provider_id": "p_fireworks_ai", "is_official": false, "multiplier": 0.87, "input_usd_m": 2.175, "output_usd_m": 6.525, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_qwen3_7_max", "provider_id": "p_api2d", "is_official": false, "multiplier": 0.91, "input_usd_m": 2.275, "output_usd_m": 6.825, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_qwen3_7_max", "provider_id": "p_vercel_ai_gateway", "is_official": false, "multiplier": 0.79, "input_usd_m": 1.975, "output_usd_m": 5.925, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_qwen3_6_max_preview", "provider_id": "p_qwen_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 1.04, "output_usd_m": 6.24, "cache_read_usd_m": 0, "source_url": "https://bailian.console.aliyun.com"}, {"model_id": "m_qwen3_6_max_preview", "provider_id": "p_helicone", "is_official": false, "multiplier": 0.91, "input_usd_m": 0.9464, "output_usd_m": 5.6784, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_qwen3_6_max_preview", "provider_id": "p_duckcoding", "is_official": false, "multiplier": 0.69, "input_usd_m": 0.7176, "output_usd_m": 4.3056, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_qwen3_6_max_preview", "provider_id": "p_vercel_ai_gateway", "is_official": false, "multiplier": 0.79, "input_usd_m": 0.8216, "output_usd_m": 4.9296, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_qwen3_8_flash", "provider_id": "p_qwen_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 0.188, "output_usd_m": 1.5, "cache_read_usd_m": 0, "source_url": "https://bailian.console.aliyun.com"}, {"model_id": "m_qwen3_8_flash", "provider_id": "p_closeai", "is_official": false, "multiplier": 0.84, "input_usd_m": 0.1579, "output_usd_m": 1.26, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_qwen3_8_flash", "provider_id": "p_anyscale", "is_official": false, "multiplier": 0.84, "input_usd_m": 0.1579, "output_usd_m": 1.26, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_qwen3_8_flash", "provider_id": "p_one_api", "is_official": false, "multiplier": 0.76, "input_usd_m": 0.1429, "output_usd_m": 1.14, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_qwen3_8_flash", "provider_id": "p_aicnb", "is_official": false, "multiplier": 0.83, "input_usd_m": 0.156, "output_usd_m": 1.245, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_qwen3_8_flash", "provider_id": "p_api2d", "is_official": false, "multiplier": 0.75, "input_usd_m": 0.141, "output_usd_m": 1.125, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_glm_5_2", "provider_id": "p_zhipu_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 1.4, "output_usd_m": 4.4, "cache_read_usd_m": 0, "source_url": "https://bigmodel.cn"}, {"model_id": "m_glm_5_2", "provider_id": "p_woka_ai", "is_official": false, "multiplier": 0.74, "input_usd_m": 1.036, "output_usd_m": 3.256, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_glm_5_2", "provider_id": "p_together_ai", "is_official": false, "multiplier": 0.81, "input_usd_m": 1.134, "output_usd_m": 3.564, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_glm_5_2", "provider_id": "p_anyscale", "is_official": false, "multiplier": 0.71, "input_usd_m": 0.994, "output_usd_m": 3.124, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_glm_5_2", "provider_id": "p_closeai", "is_official": false, "multiplier": 0.71, "input_usd_m": 0.994, "output_usd_m": 3.124, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_glm_5_2", "provider_id": "p_chatfire", "is_official": false, "multiplier": 0.67, "input_usd_m": 0.938, "output_usd_m": 2.948, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_glm_5_1", "provider_id": "p_zhipu_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 1.2, "output_usd_m": 4, "cache_read_usd_m": 0, "source_url": "https://bigmodel.cn"}, {"model_id": "m_glm_5_1", "provider_id": "p_together_ai", "is_official": false, "multiplier": 0.67, "input_usd_m": 0.804, "output_usd_m": 2.68, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_glm_5_1", "provider_id": "p_anyscale", "is_official": false, "multiplier": 0.71, "input_usd_m": 0.852, "output_usd_m": 2.84, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_glm_5_1", "provider_id": "p_chatfire", "is_official": false, "multiplier": 0.83, "input_usd_m": 0.996, "output_usd_m": 3.32, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_glm_5_1", "provider_id": "p_openrouter", "is_official": false, "multiplier": 0.71, "input_usd_m": 0.852, "output_usd_m": 2.84, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_glm_5_1", "provider_id": "p_portkey", "is_official": false, "multiplier": 0.69, "input_usd_m": 0.828, "output_usd_m": 2.76, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_glm_4_6v", "provider_id": "p_zhipu_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 0.9, "output_usd_m": 3, "cache_read_usd_m": 0, "source_url": "https://bigmodel.cn"}, {"model_id": "m_glm_4_6v", "provider_id": "p_chatfire", "is_official": false, "multiplier": 0.7, "input_usd_m": 0.63, "output_usd_m": 2.1, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_glm_4_6v", "provider_id": "p_anyscale", "is_official": false, "multiplier": 0.68, "input_usd_m": 0.612, "output_usd_m": 2.04, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_glm_4_6v", "provider_id": "p_aicnb", "is_official": false, "multiplier": 0.77, "input_usd_m": 0.693, "output_usd_m": 2.31, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_glm_4_6v", "provider_id": "p_vercel_ai_gateway", "is_official": false, "multiplier": 0.76, "input_usd_m": 0.684, "output_usd_m": 2.28, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_glm_4_6v", "provider_id": "p_cloudflare_ai", "is_official": false, "multiplier": 0.78, "input_usd_m": 0.702, "output_usd_m": 2.34, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_kimi_k3", "provider_id": "p_moonshot_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 3, "output_usd_m": 15, "cache_read_usd_m": 0, "source_url": "https://platform.moonshot.cn"}, {"model_id": "m_kimi_k3", "provider_id": "p_together_ai", "is_official": false, "multiplier": 0.67, "input_usd_m": 2.01, "output_usd_m": 10.05, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_kimi_k3", "provider_id": "p_duckcoding", "is_official": false, "multiplier": 0.85, "input_usd_m": 2.55, "output_usd_m": 12.75, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_kimi_k3", "provider_id": "p_woka_ai", "is_official": false, "multiplier": 0.87, "input_usd_m": 2.61, "output_usd_m": 13.05, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_kimi_k3", "provider_id": "p_closeai", "is_official": false, "multiplier": 0.68, "input_usd_m": 2.04, "output_usd_m": 10.2, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_kimi_k3", "provider_id": "p_chatfire", "is_official": false, "multiplier": 0.7, "input_usd_m": 2.1, "output_usd_m": 10.5, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_kimi_k2_6", "provider_id": "p_moonshot_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 0.95, "output_usd_m": 4, "cache_read_usd_m": 0, "source_url": "https://platform.moonshot.cn"}, {"model_id": "m_kimi_k2_6", "provider_id": "p_woka_ai", "is_official": false, "multiplier": 0.77, "input_usd_m": 0.7315, "output_usd_m": 3.08, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_kimi_k2_6", "provider_id": "p_fireworks_ai", "is_official": false, "multiplier": 0.89, "input_usd_m": 0.8455, "output_usd_m": 3.56, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_kimi_k2_6", "provider_id": "p_cloudflare_ai", "is_official": false, "multiplier": 0.67, "input_usd_m": 0.6365, "output_usd_m": 2.68, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_kimi_k2_6", "provider_id": "p_chatfire", "is_official": false, "multiplier": 0.87, "input_usd_m": 0.8265, "output_usd_m": 3.48, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_kimi_k2_6", "provider_id": "p_helicone", "is_official": false, "multiplier": 0.88, "input_usd_m": 0.836, "output_usd_m": 3.52, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_doubao_seed_2_pro", "provider_id": "p_doubao_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 1.5, "output_usd_m": 8, "cache_read_usd_m": 0, "source_url": "https://www.volcengine.com/product/doubao"}, {"model_id": "m_doubao_seed_2_pro", "provider_id": "p_together_ai", "is_official": false, "multiplier": 0.88, "input_usd_m": 1.32, "output_usd_m": 7.04, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_doubao_seed_2_pro", "provider_id": "p_duckcoding", "is_official": false, "multiplier": 0.91, "input_usd_m": 1.365, "output_usd_m": 7.28, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_doubao_seed_2_pro", "provider_id": "p_one_api", "is_official": false, "multiplier": 0.9, "input_usd_m": 1.35, "output_usd_m": 7.2, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_doubao_seed_2_lite", "provider_id": "p_doubao_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 0.3, "output_usd_m": 1.5, "cache_read_usd_m": 0, "source_url": "https://www.volcengine.com/product/doubao"}, {"model_id": "m_doubao_seed_2_lite", "provider_id": "p_portkey", "is_official": false, "multiplier": 0.78, "input_usd_m": 0.234, "output_usd_m": 1.17, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_doubao_seed_2_lite", "provider_id": "p_cloudflare_ai", "is_official": false, "multiplier": 0.88, "input_usd_m": 0.264, "output_usd_m": 1.32, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_doubao_seed_2_lite", "provider_id": "p_vercel_ai_gateway", "is_official": false, "multiplier": 0.89, "input_usd_m": 0.267, "output_usd_m": 1.335, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_ernie_5_1", "provider_id": "p_baidu_qianfan", "is_official": false, "multiplier": 1.0, "input_usd_m": 0.8, "output_usd_m": 3.2, "cache_read_usd_m": 0, "source_url": "https://cloud.baidu.com/product/qianfan"}, {"model_id": "m_ernie_5_1", "provider_id": "p_aicnb", "is_official": false, "multiplier": 0.72, "input_usd_m": 0.576, "output_usd_m": 2.304, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_ernie_5_1", "provider_id": "p_openrouter", "is_official": false, "multiplier": 0.86, "input_usd_m": 0.688, "output_usd_m": 2.752, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_ernie_5_1", "provider_id": "p_cloudflare_ai", "is_official": false, "multiplier": 0.77, "input_usd_m": 0.616, "output_usd_m": 2.464, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_llama_4_maverick", "provider_id": "p_together_ai", "is_official": false, "multiplier": 1.0, "input_usd_m": 0.6, "output_usd_m": 2.4, "cache_read_usd_m": 0, "source_url": "https://www.together.ai"}, {"model_id": "m_llama_4_maverick", "provider_id": "p_chatfire", "is_official": false, "multiplier": 0.71, "input_usd_m": 0.426, "output_usd_m": 1.704, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_llama_4_maverick", "provider_id": "p_fireworks_ai", "is_official": false, "multiplier": 0.67, "input_usd_m": 0.402, "output_usd_m": 1.608, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_llama_4_maverick", "provider_id": "p_anyscale", "is_official": false, "multiplier": 0.85, "input_usd_m": 0.51, "output_usd_m": 2.04, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_llama_4_maverick", "provider_id": "p_helicone", "is_official": false, "multiplier": 0.67, "input_usd_m": 0.402, "output_usd_m": 1.608, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_llama_4_scout", "provider_id": "p_together_ai", "is_official": false, "multiplier": 1.0, "input_usd_m": 0.4, "output_usd_m": 1.6, "cache_read_usd_m": 0, "source_url": "https://www.together.ai"}, {"model_id": "m_llama_4_scout", "provider_id": "p_together_ai", "is_official": false, "multiplier": 0.79, "input_usd_m": 0.316, "output_usd_m": 1.264, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_llama_4_scout", "provider_id": "p_openrouter", "is_official": false, "multiplier": 0.88, "input_usd_m": 0.352, "output_usd_m": 1.408, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_llama_4_scout", "provider_id": "p_new_api", "is_official": false, "multiplier": 0.69, "input_usd_m": 0.276, "output_usd_m": 1.104, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_llama_4_scout", "provider_id": "p_vercel_ai_gateway", "is_official": false, "multiplier": 0.91, "input_usd_m": 0.364, "output_usd_m": 1.456, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_mistral_large_3", "provider_id": "p_mistral_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 1.5, "output_usd_m": 7.5, "cache_read_usd_m": 0, "source_url": "https://console.mistral.ai"}, {"model_id": "m_mistral_large_3", "provider_id": "p_portkey", "is_official": false, "multiplier": 0.67, "input_usd_m": 1.005, "output_usd_m": 5.025, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_mistral_large_3", "provider_id": "p_together_ai", "is_official": false, "multiplier": 0.88, "input_usd_m": 1.32, "output_usd_m": 6.6, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_mistral_large_3", "provider_id": "p_new_api", "is_official": false, "multiplier": 0.76, "input_usd_m": 1.14, "output_usd_m": 5.7, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_mistral_medium_3_5", "provider_id": "p_mistral_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 1.5, "output_usd_m": 7.5, "cache_read_usd_m": 0, "source_url": "https://console.mistral.ai"}, {"model_id": "m_mistral_medium_3_5", "provider_id": "p_vercel_ai_gateway", "is_official": false, "multiplier": 0.67, "input_usd_m": 1.005, "output_usd_m": 5.025, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_mistral_medium_3_5", "provider_id": "p_new_api", "is_official": false, "multiplier": 0.83, "input_usd_m": 1.245, "output_usd_m": 6.225, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_mistral_medium_3_5", "provider_id": "p_woka_ai", "is_official": false, "multiplier": 0.8, "input_usd_m": 1.2, "output_usd_m": 6.0, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_mistral_medium_3_5", "provider_id": "p_openrouter", "is_official": false, "multiplier": 0.74, "input_usd_m": 1.11, "output_usd_m": 5.55, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_mistral_medium_3_5", "provider_id": "p_closeai", "is_official": false, "multiplier": 0.72, "input_usd_m": 1.08, "output_usd_m": 5.4, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_devstral_2", "provider_id": "p_mistral_official", "is_official": false, "multiplier": 1.0, "input_usd_m": 2, "output_usd_m": 8, "cache_read_usd_m": 0, "source_url": "https://console.mistral.ai"}, {"model_id": "m_devstral_2", "provider_id": "p_duckcoding", "is_official": false, "multiplier": 0.83, "input_usd_m": 1.66, "output_usd_m": 6.64, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_devstral_2", "provider_id": "p_anyscale", "is_official": false, "multiplier": 0.73, "input_usd_m": 1.46, "output_usd_m": 5.84, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_devstral_2", "provider_id": "p_helicone", "is_official": false, "multiplier": 0.74, "input_usd_m": 1.48, "output_usd_m": 5.92, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_devstral_2", "provider_id": "p_cloudflare_ai", "is_official": false, "multiplier": 0.85, "input_usd_m": 1.7, "output_usd_m": 6.8, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_devstral_2", "provider_id": "p_fireworks_ai", "is_official": false, "multiplier": 0.67, "input_usd_m": 1.34, "output_usd_m": 5.36, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_minimax_m3", "provider_id": "p_openrouter", "is_official": false, "multiplier": 1.0, "input_usd_m": 0.5, "output_usd_m": 2.5, "cache_read_usd_m": 0, "source_url": "https://openrouter.ai"}, {"model_id": "m_minimax_m3", "provider_id": "p_anyscale", "is_official": false, "multiplier": 0.79, "input_usd_m": 0.395, "output_usd_m": 1.975, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_minimax_m3", "provider_id": "p_together_ai", "is_official": false, "multiplier": 0.69, "input_usd_m": 0.345, "output_usd_m": 1.725, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_minimax_m3", "provider_id": "p_one_api", "is_official": false, "multiplier": 0.74, "input_usd_m": 0.37, "output_usd_m": 1.85, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_minimax_m3", "provider_id": "p_chatfire", "is_official": false, "multiplier": 0.67, "input_usd_m": 0.335, "output_usd_m": 1.675, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_minimax_m2_7", "provider_id": "p_openrouter", "is_official": false, "multiplier": 1.0, "input_usd_m": 1.2, "output_usd_m": 4.8, "cache_read_usd_m": 0, "source_url": "https://openrouter.ai"}, {"model_id": "m_minimax_m2_7", "provider_id": "p_api2d", "is_official": false, "multiplier": 0.77, "input_usd_m": 0.924, "output_usd_m": 3.696, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_minimax_m2_7", "provider_id": "p_helicone", "is_official": false, "multiplier": 0.8, "input_usd_m": 0.96, "output_usd_m": 3.84, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_minimax_m2_7", "provider_id": "p_fireworks_ai", "is_official": false, "multiplier": 0.73, "input_usd_m": 0.876, "output_usd_m": 3.504, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_step_3_5_flash", "provider_id": "p_openrouter", "is_official": false, "multiplier": 1.0, "input_usd_m": 0.2, "output_usd_m": 0.8, "cache_read_usd_m": 0, "source_url": "https://openrouter.ai"}, {"model_id": "m_step_3_5_flash", "provider_id": "p_openrouter", "is_official": false, "multiplier": 0.9, "input_usd_m": 0.18, "output_usd_m": 0.72, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_step_3_5_flash", "provider_id": "p_duckcoding", "is_official": false, "multiplier": 0.68, "input_usd_m": 0.136, "output_usd_m": 0.544, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_step_3_5_flash", "provider_id": "p_closeai", "is_official": false, "multiplier": 0.89, "input_usd_m": 0.178, "output_usd_m": 0.712, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_step_3_5_flash", "provider_id": "p_one_api", "is_official": false, "multiplier": 0.72, "input_usd_m": 0.144, "output_usd_m": 0.576, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_step_3_5_flash", "provider_id": "p_helicone", "is_official": false, "multiplier": 0.89, "input_usd_m": 0.178, "output_usd_m": 0.712, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_mimo_v2_flash", "provider_id": "p_openrouter", "is_official": false, "multiplier": 1.0, "input_usd_m": 0.3, "output_usd_m": 1.2, "cache_read_usd_m": 0, "source_url": "https://openrouter.ai"}, {"model_id": "m_mimo_v2_flash", "provider_id": "p_helicone", "is_official": false, "multiplier": 0.84, "input_usd_m": 0.252, "output_usd_m": 1.008, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_mimo_v2_flash", "provider_id": "p_chatfire", "is_official": false, "multiplier": 0.7, "input_usd_m": 0.21, "output_usd_m": 0.84, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_mimo_v2_flash", "provider_id": "p_woka_ai", "is_official": false, "multiplier": 0.82, "input_usd_m": 0.246, "output_usd_m": 0.984, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_mimo_v2_flash", "provider_id": "p_new_api", "is_official": false, "multiplier": 0.72, "input_usd_m": 0.216, "output_usd_m": 0.864, "cache_read_usd_m": 0, "source_url": ""}, {"model_id": "m_mimo_v2_flash", "provider_id": "p_anyscale", "is_official": false, "multiplier": 0.78, "input_usd_m": 0.234, "output_usd_m": 0.936, "cache_read_usd_m": 0, "source_url": ""}], "events": [{"id": "e_2026_07_qwen38max", "date": "2026-08-15", "title": "阿里发布 Qwen3.8 Max，多模态 APAC 第一", "description": "Qwen3.8 Max 采用全新线性注意力架构，90% 标准注意力被替换，1M 上下文原生多模态", "event_type": "new_model", "target_type": "model", "target_name": "Qwen3.8 Max", "severity": "medium", "tags": ["new_model"], "source_urls": ["https://qwen.ai"]}, {"id": "e_2026_07_kimi_k3", "date": "2026-07-27", "title": "Moonshot Kimi K3 API 上线，开源倒计时", "description": "Kimi K3 (1T MoE, 32B 激活) API 开放，权重将于 2026-07-27 开源", "event_type": "new_model", "target_type": "model", "target_name": "Kimi K3", "severity": "medium", "tags": ["new_model"], "source_urls": ["https://kimi.moonshot.cn"]}, {"id": "e_2026_07_claude_opus_5", "date": "2026-07-24", "title": "Anthropic 发布 Claude Opus 5，价格不变", "description": "Opus 5 在深度推理和 long-horizon agent 工作上大幅提升，价格保持 $5/$25", "event_type": "new_model", "target_type": "model", "target_name": "Claude Opus 5", "severity": "high", "tags": ["new_model", "capability_update"], "source_urls": ["https://anthropic.com"]}, {"id": "e_2026_07_gpt_5_6_sol", "date": "2026-07-09", "title": "OpenAI 发布 GPT-5.6 Sol，3 个版本", "description": "GPT-5.6 Sol / Terra / Luna 三个版本，主打 agentic 终端工作流", "event_type": "new_model", "target_type": "model", "target_name": "GPT-5.6 Sol", "severity": "high", "tags": ["new_model", "capability_update"], "source_urls": ["https://openai.com"]}, {"id": "e_2026_06_glm_5_2", "date": "2026-06-13", "title": "智谱发布 GLM-5.2，国产最强 Agent", "description": "GLM-5.2 (753B MoE, ~40B 激活) 适配 7 大国产芯片平台，1M 上下文", "event_type": "new_model", "target_type": "model", "target_name": "GLM-5.2", "severity": "medium", "tags": ["new_model"], "source_urls": ["https://zhipuai.cn"]}, {"id": "e_2026_06_portkey_open", "date": "2026-03-24", "title": "Portkey 网关 Apache 2.0 开源", "description": "Portkey 把完整网关代码 Apache 2.0 开源，企业级护城河+开源优势", "event_type": "policy_change", "target_type": "provider", "target_name": "Portkey", "severity": "low", "tags": ["policy_change"], "source_urls": ["https://portkey.ai"]}, {"id": "e_2026_05_deepseek_v4", "date": "2026-05-31", "title": "DeepSeek V4 永久降价 75%", "description": "DeepSeek V4 Pro 价格从 $1.74/$3.48 永久降至 $0.435/$0.87", "event_type": "price_change", "target_type": "model", "target_name": "DeepSeek V4 Pro", "severity": "medium", "tags": ["price_change"], "source_urls": ["https://platform.deepseek.com"]}, {"id": "e_2026_05_qwen3_7", "date": "2026-05-20", "title": "Qwen3.7 Max 在云栖大会发布", "description": "Qwen3.7 Max (1M 上下文 + Extended Thinking) 在杭州云栖发布", "event_type": "new_model", "target_type": "model", "target_name": "Qwen3.7 Max", "severity": "medium", "tags": ["new_model"], "source_urls": ["https://qwen.ai"]}, {"id": "e_2026_04_deepseek_v4", "date": "2026-04-24", "title": "DeepSeek V4 系列发布，1M 上下文普惠", "description": "DeepSeek V4 Pro / Flash / 完整 1M 上下文标准，Agent 与代码能力对标顶尖闭源", "event_type": "new_model", "target_type": "model", "target_name": "DeepSeek V4 Pro", "severity": "high", "tags": ["new_model", "capability_update"], "source_urls": ["https://platform.deepseek.com"]}, {"id": "e_2026_04_kimi_k2_6", "date": "2026-04-20", "title": "Moonshot K2.6 + Qwen3.6 Max 同日发布", "description": "K2.6 SWE-bench 80.2% 反超 GPT-5.4，Qwen3.6 Max 横扫 6 项 Agent 基准", "event_type": "new_model", "target_type": "model", "target_name": "Kimi K2.6", "severity": "medium", "tags": ["new_model"], "source_urls": ["https://kimi.moonshot.cn"]}, {"id": "e_2026_03_glm_5_1", "date": "2026-03-27", "title": "GLM-5.1 发布，94% Claude Opus 4.6 编码能力", "description": "MIT 许可证，适配国产芯片，编码能力达 Claude Opus 4.6 的 94%", "event_type": "new_model", "target_type": "model", "target_name": "GLM-5.1", "severity": "low", "tags": ["new_model"], "source_urls": ["https://zhipuai.cn"]}, {"id": "e_2026_03_minimax_m2_7", "date": "2026-03-18", "title": "MiniMax M2.7 发布，自我进化 Agent", "description": "MiniMax M2.7 引入 self-evolving agent 能力，200K 上下文", "event_type": "new_model", "target_type": "model", "target_name": "MiniMax M2.7", "severity": "low", "tags": ["new_model", "capability_update"], "source_urls": ["https://api.minimax.chat"]}, {"id": "e_2026_08_minimax_m3", "date": "2026-08-12", "title": "MiniMax 发布 M3，1M 上下文长文档", "description": "MiniMax M3 升级 1M 上下文窗口，主打长文档处理", "event_type": "new_model", "target_type": "model", "target_name": "MiniMax M3", "severity": "low", "tags": ["new_model"], "source_urls": ["https://api.minimax.chat"]}], "fx_rate": {"USD_CNY": 7.1, "date": "2026-09-20"}};
+var API_RADAR_DATA = {
+  "vendors": [
+    {
+      "id": "v_anthropic",
+      "name_zh": "Anthropic",
+      "name_en": "Anthropic",
+      "region": "global",
+      "logo": "🅰️",
+      "data_status": "A",
+      "name": "Anthropic",
+      "name_short": "Anthropic"
+    },
+    {
+      "id": "v_openai",
+      "name_zh": "OpenAI",
+      "name_en": "OpenAI",
+      "region": "global",
+      "logo": "🅾",
+      "data_status": "A",
+      "name": "OpenAI",
+      "name_short": "OpenAI"
+    },
+    {
+      "id": "v_google",
+      "name_zh": "Google DeepMind",
+      "name_en": "Google DeepMind",
+      "region": "global",
+      "logo": "🇬",
+      "data_status": "A",
+      "name": "Google DeepMind",
+      "name_short": "Google DeepMind"
+    },
+    {
+      "id": "v_xai",
+      "name_zh": "xAI (Grok)",
+      "name_en": "xAI",
+      "region": "global",
+      "logo": "𝕏",
+      "data_status": "A",
+      "name": "xAI (Grok)",
+      "name_short": "xAI (Grok)"
+    },
+    {
+      "id": "v_deepseek",
+      "name_zh": "深度求索",
+      "name_en": "DeepSeek",
+      "region": "cn",
+      "logo": "🔷",
+      "data_status": "A",
+      "name": "深度求索",
+      "name_short": "深度求索"
+    },
+    {
+      "id": "v_qwen",
+      "name_zh": "阿里通义千问",
+      "name_en": "Alibaba Qwen",
+      "region": "cn",
+      "logo": "🟡",
+      "data_status": "A",
+      "name": "阿里通义千问",
+      "name_short": "阿里通义千问"
+    },
+    {
+      "id": "v_zhipu",
+      "name_zh": "智谱AI",
+      "name_en": "Zhipu AI / Z.AI",
+      "region": "cn",
+      "logo": "🧠",
+      "data_status": "A",
+      "name": "智谱AI",
+      "name_short": "智谱AI"
+    },
+    {
+      "id": "v_moonshot",
+      "name_zh": "月之暗面",
+      "name_en": "Moonshot AI",
+      "region": "cn",
+      "logo": "🌙",
+      "data_status": "A",
+      "name": "月之暗面",
+      "name_short": "月之暗面"
+    },
+    {
+      "id": "v_doubao",
+      "name_zh": "字节豆包",
+      "name_en": "ByteDance Seed",
+      "region": "cn",
+      "logo": "🥟",
+      "data_status": "A",
+      "name": "字节豆包",
+      "name_short": "字节豆包"
+    },
+    {
+      "id": "v_baidu",
+      "name_zh": "百度文心",
+      "name_en": "Baidu ERNIE",
+      "region": "cn",
+      "logo": "🅱",
+      "data_status": "A",
+      "name": "百度文心",
+      "name_short": "百度文心"
+    },
+    {
+      "id": "v_meta",
+      "name_zh": "Meta",
+      "name_en": "Meta AI",
+      "region": "global",
+      "logo": "Ⓜ️",
+      "data_status": "A",
+      "name": "Meta",
+      "name_short": "Meta"
+    },
+    {
+      "id": "v_mistral",
+      "name_zh": "Mistral AI",
+      "name_en": "Mistral AI",
+      "region": "global",
+      "logo": "🅼",
+      "data_status": "A",
+      "name": "Mistral AI",
+      "name_short": "Mistral AI"
+    },
+    {
+      "id": "v_minimax",
+      "name_zh": "稀宇科技",
+      "name_en": "MiniMax",
+      "region": "cn",
+      "logo": "💬",
+      "data_status": "A",
+      "name": "稀宇科技",
+      "name_short": "稀宇科技"
+    },
+    {
+      "id": "v_stepfun",
+      "name_zh": "阶跃星辰",
+      "name_en": "StepFun",
+      "region": "cn",
+      "logo": "🪜",
+      "data_status": "B",
+      "name": "阶跃星辰",
+      "name_short": "阶跃星辰"
+    },
+    {
+      "id": "v_xiaomi",
+      "name_zh": "小米 MiMo",
+      "name_en": "Xiaomi MiMo",
+      "region": "cn",
+      "logo": "📱",
+      "data_status": "B",
+      "name": "小米 MiMo",
+      "name_short": "小米 MiMo"
+    }
+  ],
+  "models": [
+    {
+      "id": "m_claude_fable_5",
+      "vendor_id": "v_anthropic",
+      "display_name": "Claude Fable 5",
+      "family": "Claude 5",
+      "version": "5.0",
+      "release_date": "2026-06",
+      "context_window": 1000000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "agentic_coding",
+        "reasoning",
+        "long_context",
+        "tool_use"
+      ],
+      "scenes": [
+        "coding",
+        "knowledge_work",
+        "agents"
+      ],
+      "official_input_usd_m": 10,
+      "official_output_usd_m": 50,
+      "official_cache_read_usd_m": 1,
+      "description": "Anthropic 顶级旗舰，SWE-bench Verified 95%，价格 1M 上下文",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_write_usd_m": 12.5,
+      "official_reasoning_usd_m": 50,
+      "popularity": 5,
+      "weekly_tokens": 67719361284,
+      "monthly_tokens": 293224834359,
+      "trend_week_pct": 23.7,
+      "best_for": [
+        "coding",
+        "reasoning",
+        "agentic",
+        "long_context",
+        "multimodal"
+      ],
+      "fingerprint_signature": "Claude Fable",
+      "overall_score": 15,
+      "weekly_tokens_m": 69600,
+      "capability_icons": [
+        "🧠",
+        "🔧",
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_claude_opus_5",
+      "vendor_id": "v_anthropic",
+      "display_name": "Claude Opus 5",
+      "family": "Claude 5",
+      "version": "5.0",
+      "release_date": "2026-07",
+      "context_window": 1000000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "agentic_coding",
+        "reasoning",
+        "tool_use",
+        "computer_use"
+      ],
+      "scenes": [
+        "coding",
+        "agents",
+        "research"
+      ],
+      "official_input_usd_m": 5,
+      "official_output_usd_m": 25,
+      "official_cache_read_usd_m": 0.5,
+      "description": "Anthropic 旗舰，性价比更高，适合 Agent 编码",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_write_usd_m": 6.25,
+      "official_reasoning_usd_m": 25,
+      "popularity": 5,
+      "weekly_tokens": 42717196044,
+      "monthly_tokens": 184965458870,
+      "trend_week_pct": -4.8,
+      "best_for": [
+        "coding",
+        "reasoning",
+        "agentic",
+        "long_context",
+        "multimodal"
+      ],
+      "fingerprint_signature": "Claude Opus ",
+      "overall_score": 15,
+      "weekly_tokens_m": 153000,
+      "capability_icons": [
+        "🧠",
+        "🔧",
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_claude_sonnet_5",
+      "vendor_id": "v_anthropic",
+      "display_name": "Claude Sonnet 5",
+      "family": "Claude 5",
+      "version": "5.0",
+      "release_date": "2026-06",
+      "context_window": 1000000,
+      "max_output_tokens": 16000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "balanced",
+        "agentic_coding",
+        "reasoning"
+      ],
+      "scenes": [
+        "coding",
+        "agents",
+        "production"
+      ],
+      "official_input_usd_m": 3,
+      "official_output_usd_m": 15,
+      "official_cache_read_usd_m": 0.3,
+      "description": "Anthropic 主力，性价比最优",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_write_usd_m": 3.75,
+      "official_reasoning_usd_m": 15,
+      "popularity": 4,
+      "weekly_tokens": 28117940871,
+      "monthly_tokens": 121750683971,
+      "trend_week_pct": 29.2,
+      "best_for": [
+        "coding",
+        "reasoning",
+        "long_context",
+        "multimodal"
+      ],
+      "fingerprint_signature": "Claude Sonne",
+      "overall_score": 15,
+      "weekly_tokens_m": 213000,
+      "capability_icons": [
+        "🧠",
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_claude_opus_4_7",
+      "vendor_id": "v_anthropic",
+      "display_name": "Claude Opus 4.7",
+      "family": "Claude 4",
+      "version": "4.7",
+      "release_date": "2026-04",
+      "context_window": 1000000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "agentic_coding",
+        "reasoning",
+        "computer_use"
+      ],
+      "scenes": [
+        "coding",
+        "agents"
+      ],
+      "official_input_usd_m": 5,
+      "official_output_usd_m": 25,
+      "description": "上代旗舰，仍领先",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.5,
+      "official_cache_write_usd_m": 6.25,
+      "official_reasoning_usd_m": 25,
+      "popularity": 4,
+      "weekly_tokens": 14643391005,
+      "monthly_tokens": 63405883051,
+      "trend_week_pct": 44.1,
+      "best_for": [
+        "coding",
+        "reasoning",
+        "long_context",
+        "multimodal"
+      ],
+      "fingerprint_signature": "Claude Opus ",
+      "overall_score": 15,
+      "weekly_tokens_m": 136500,
+      "capability_icons": [
+        "🧠",
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_gpt_5_6_sol",
+      "vendor_id": "v_openai",
+      "display_name": "GPT-5.6 Sol",
+      "family": "GPT-5.6",
+      "version": "5.6",
+      "release_date": "2026-07",
+      "context_window": 1050000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image",
+        "audio"
+      ],
+      "capabilities": [
+        "agentic_reasoning",
+        "terminal",
+        "tool_use",
+        "reasoning"
+      ],
+      "scenes": [
+        "agents",
+        "terminal",
+        "reasoning"
+      ],
+      "official_input_usd_m": 5,
+      "official_output_usd_m": 30,
+      "description": "OpenAI 最新旗舰，BrowseComp 90.4%",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.5,
+      "official_cache_write_usd_m": 6.25,
+      "official_reasoning_usd_m": 30,
+      "official_input_audio_usd_m": 30,
+      "official_output_audio_usd_m": 60,
+      "popularity": 5,
+      "weekly_tokens": 97536488780,
+      "monthly_tokens": 422332996417,
+      "trend_week_pct": -9.9,
+      "best_for": [
+        "reasoning",
+        "agentic",
+        "long_context",
+        "multimodal"
+      ],
+      "fingerprint_signature": "GPT-5.6 Sol",
+      "overall_score": 15,
+      "weekly_tokens_m": 76500,
+      "capability_icons": [
+        "🧠",
+        "🔧",
+        "🖼️",
+        "🎤"
+      ]
+    },
+    {
+      "id": "m_gpt_5_5",
+      "vendor_id": "v_openai",
+      "display_name": "GPT-5.5",
+      "family": "GPT-5",
+      "version": "5.5",
+      "release_date": "2026-04",
+      "context_window": 1050000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "reasoning",
+        "coding",
+        "tool_use"
+      ],
+      "scenes": [
+        "coding",
+        "reasoning",
+        "production"
+      ],
+      "official_input_usd_m": 5,
+      "official_output_usd_m": 30,
+      "description": "AIME 2025 100%，GPQA 93.6%",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.5,
+      "official_cache_write_usd_m": 6.25,
+      "official_reasoning_usd_m": 30,
+      "popularity": 5,
+      "weekly_tokens": 81231706202,
+      "monthly_tokens": 351733287854,
+      "trend_week_pct": 1.5,
+      "best_for": [
+        "coding",
+        "reasoning",
+        "agentic",
+        "long_context",
+        "multimodal"
+      ],
+      "fingerprint_signature": "GPT-5.5",
+      "overall_score": 15,
+      "weekly_tokens_m": 97500,
+      "capability_icons": [
+        "🧠",
+        "🔧",
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_gpt_5_5_pro",
+      "vendor_id": "v_openai",
+      "display_name": "GPT-5.5 Pro",
+      "family": "GPT-5",
+      "version": "5.5",
+      "release_date": "2026-04",
+      "context_window": 1050000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "reasoning",
+        "agents"
+      ],
+      "scenes": [
+        "research",
+        "hard_problem"
+      ],
+      "official_input_usd_m": 30,
+      "official_output_usd_m": 180,
+      "description": "OpenAI 高级推理，$30/$180 顶配",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 3,
+      "official_cache_write_usd_m": 37.5,
+      "official_reasoning_usd_m": 180,
+      "popularity": 5,
+      "weekly_tokens": 64768234176,
+      "monthly_tokens": 280446453982,
+      "trend_week_pct": -19.1,
+      "best_for": [
+        "reasoning",
+        "long_context",
+        "multimodal"
+      ],
+      "fingerprint_signature": "GPT-5.5 Pro",
+      "overall_score": 15,
+      "weekly_tokens_m": 88500,
+      "capability_icons": [
+        "🧠",
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_gpt_5_2",
+      "vendor_id": "v_openai",
+      "display_name": "GPT-5.2",
+      "family": "GPT-5",
+      "version": "5.2",
+      "release_date": "2026-02",
+      "context_window": 400000,
+      "max_output_tokens": 16000,
+      "modality": [
+        "text"
+      ],
+      "capabilities": [
+        "reasoning",
+        "agentic_coding"
+      ],
+      "scenes": [
+        "coding",
+        "agents"
+      ],
+      "official_input_usd_m": 1.75,
+      "official_output_usd_m": 14,
+      "description": "GPT-5.2 中端，性价比",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.175,
+      "official_cache_write_usd_m": 2.1875,
+      "official_reasoning_usd_m": 14,
+      "popularity": 4,
+      "weekly_tokens": 11857099068,
+      "monthly_tokens": 51341238964,
+      "trend_week_pct": 1.8,
+      "best_for": [
+        "coding",
+        "reasoning"
+      ],
+      "fingerprint_signature": "GPT-5.2",
+      "overall_score": 11,
+      "weekly_tokens_m": 102000,
+      "capability_icons": [
+        "🧠"
+      ]
+    },
+    {
+      "id": "m_gemini_3_1_pro",
+      "vendor_id": "v_google",
+      "display_name": "Gemini 3.1 Pro",
+      "family": "Gemini 3",
+      "version": "3.1",
+      "release_date": "2026-04",
+      "context_window": 1000000,
+      "max_output_tokens": 64000,
+      "modality": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "capabilities": [
+        "multimodal",
+        "reasoning",
+        "long_context",
+        "scientific_reasoning"
+      ],
+      "scenes": [
+        "science",
+        "multimodal",
+        "long_doc"
+      ],
+      "official_input_usd_m": 2,
+      "official_output_usd_m": 12,
+      "description": "Google 旗舰，GPQA 94.3%，原生多模态",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.2,
+      "official_cache_write_usd_m": 2.5,
+      "official_reasoning_usd_m": 12,
+      "official_input_audio_usd_m": 12,
+      "official_output_audio_usd_m": 24,
+      "popularity": 5,
+      "weekly_tokens": 70816298906,
+      "monthly_tokens": 306634574262,
+      "trend_week_pct": -11.3,
+      "best_for": [
+        "reasoning",
+        "long_context",
+        "multimodal",
+        "throughput"
+      ],
+      "fingerprint_signature": "Gemini 3.1 P",
+      "overall_score": 19,
+      "weekly_tokens_m": 109600,
+      "capability_icons": [
+        "🧠",
+        "🖼️",
+        "🎤"
+      ]
+    },
+    {
+      "id": "m_gemini_3_5_flash",
+      "vendor_id": "v_google",
+      "display_name": "Gemini 3.5 Flash",
+      "family": "Gemini 3.5",
+      "version": "3.5",
+      "release_date": "2026-05",
+      "context_window": 1000000,
+      "max_output_tokens": 64000,
+      "modality": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "capabilities": [
+        "multimodal",
+        "speed",
+        "agentic"
+      ],
+      "scenes": [
+        "high_volume",
+        "multimodal"
+      ],
+      "official_input_usd_m": 1.5,
+      "official_output_usd_m": 9,
+      "description": "Google 性价比，速度最优",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.15,
+      "official_cache_write_usd_m": 1.875,
+      "official_input_audio_usd_m": 9,
+      "official_output_audio_usd_m": 18,
+      "popularity": 4,
+      "weekly_tokens": 19848120694,
+      "monthly_tokens": 85942362605,
+      "trend_week_pct": 5,
+      "best_for": [
+        "long_context",
+        "multimodal",
+        "throughput"
+      ],
+      "fingerprint_signature": "Gemini 3.5 F",
+      "overall_score": 27,
+      "weekly_tokens_m": 30000,
+      "capability_icons": [
+        "🖼️",
+        "🎤"
+      ]
+    },
+    {
+      "id": "m_gemini_3_flash_preview",
+      "vendor_id": "v_google",
+      "display_name": "Gemini 3 Flash Preview",
+      "family": "Gemini 3",
+      "version": "3.0-preview",
+      "release_date": "2026-04",
+      "context_window": 1000000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image",
+        "audio"
+      ],
+      "capabilities": [
+        "multimodal",
+        "speed",
+        "reasoning"
+      ],
+      "scenes": [
+        "realtime",
+        "chat"
+      ],
+      "official_input_usd_m": 0.5,
+      "official_output_usd_m": 3,
+      "description": "Google 实时推理",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.05,
+      "official_cache_write_usd_m": 0.625,
+      "official_reasoning_usd_m": 3,
+      "official_input_audio_usd_m": 3,
+      "official_output_audio_usd_m": 6,
+      "popularity": 4,
+      "weekly_tokens": 17313130331,
+      "monthly_tokens": 74965854333,
+      "trend_week_pct": -8.7,
+      "best_for": [
+        "reasoning",
+        "long_context",
+        "multimodal",
+        "cheapest",
+        "throughput"
+      ],
+      "fingerprint_signature": "Gemini 3 Fla",
+      "overall_score": 42,
+      "weekly_tokens_m": 50400,
+      "capability_icons": [
+        "🧠",
+        "🖼️",
+        "🎤"
+      ]
+    },
+    {
+      "id": "m_grok_4_3",
+      "vendor_id": "v_xai",
+      "display_name": "Grok 4.3",
+      "family": "Grok 4",
+      "version": "4.3",
+      "release_date": "2026-04",
+      "context_window": 1000000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "real_time",
+        "tool_use",
+        "reasoning"
+      ],
+      "scenes": [
+        "realtime_research",
+        "tools"
+      ],
+      "official_input_usd_m": 1.25,
+      "official_output_usd_m": 2.5,
+      "description": "xAI 实时联网 + 工具调用",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.125,
+      "official_reasoning_usd_m": 2.5,
+      "popularity": 5,
+      "weekly_tokens": 46342959138,
+      "monthly_tokens": 200665013067,
+      "trend_week_pct": 21.4,
+      "best_for": [
+        "reasoning",
+        "agentic",
+        "long_context",
+        "multimodal"
+      ],
+      "fingerprint_signature": "Grok 4.3",
+      "overall_score": 39,
+      "weekly_tokens_m": 51200,
+      "capability_icons": [
+        "🧠",
+        "🔧",
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_grok_4_fast",
+      "vendor_id": "v_xai",
+      "display_name": "Grok 4 Fast",
+      "family": "Grok 4",
+      "version": "4.0-fast",
+      "release_date": "2026-03",
+      "context_window": 1000000,
+      "max_output_tokens": 16000,
+      "modality": [
+        "text"
+      ],
+      "capabilities": [
+        "speed",
+        "reasoning"
+      ],
+      "scenes": [
+        "high_volume",
+        "realtime"
+      ],
+      "official_input_usd_m": 0.5,
+      "official_output_usd_m": 1.5,
+      "description": "xAI 高速版",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.05,
+      "official_reasoning_usd_m": 1.5,
+      "popularity": 4,
+      "weekly_tokens": 27671889429,
+      "monthly_tokens": 119819281227,
+      "trend_week_pct": -2.5,
+      "best_for": [
+        "reasoning",
+        "long_context",
+        "cheapest"
+      ],
+      "fingerprint_signature": "Grok 4 Fast",
+      "overall_score": 45,
+      "weekly_tokens_m": 100000,
+      "capability_icons": [
+        "🧠"
+      ]
+    },
+    {
+      "id": "m_deepseek_v4_pro",
+      "vendor_id": "v_deepseek",
+      "display_name": "DeepSeek V4 Pro",
+      "family": "DeepSeek V4",
+      "version": "4.0-pro",
+      "release_date": "2026-04",
+      "context_window": 1000000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text"
+      ],
+      "capabilities": [
+        "reasoning",
+        "agentic_coding",
+        "long_context",
+        "sparse_attention"
+      ],
+      "scenes": [
+        "coding",
+        "agents",
+        "production"
+      ],
+      "official_input_usd_m": 0.435,
+      "official_output_usd_m": 0.87,
+      "official_cache_read_usd_m": 0.028,
+      "description": "国产开源最强，SWE-bench 80.6%，1M 上下文",
+      "license": "MIT",
+      "is_open_weight": true,
+      "official_cache_write_usd_m": 0.5437,
+      "official_reasoning_usd_m": 0.87,
+      "popularity": 5,
+      "weekly_tokens": 64118991490,
+      "monthly_tokens": 277635233151,
+      "trend_week_pct": -18.3,
+      "best_for": [
+        "coding",
+        "reasoning",
+        "long_context",
+        "cheapest"
+      ],
+      "fingerprint_signature": "DeepSeek V4 ",
+      "overall_score": 46,
+      "weekly_tokens_m": 53600,
+      "capability_icons": [
+        "🧠"
+      ]
+    },
+    {
+      "id": "m_deepseek_v4_flash",
+      "vendor_id": "v_deepseek",
+      "display_name": "DeepSeek V4 Flash",
+      "family": "DeepSeek V4",
+      "version": "4.0-flash",
+      "release_date": "2026-04",
+      "context_window": 1000000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "speed",
+        "reasoning",
+        "coding"
+      ],
+      "scenes": [
+        "high_volume",
+        "coding"
+      ],
+      "official_input_usd_m": 0.14,
+      "official_output_usd_m": 0.28,
+      "official_cache_read_usd_m": 0.0028,
+      "description": "全球最便宜 $0.14/$0.28，1M 上下文",
+      "license": "MIT",
+      "is_open_weight": true,
+      "official_cache_write_usd_m": 0.175,
+      "official_reasoning_usd_m": 0.28,
+      "popularity": 4,
+      "weekly_tokens": 19414278285,
+      "monthly_tokens": 84063824974,
+      "trend_week_pct": -10,
+      "best_for": [
+        "coding",
+        "reasoning",
+        "long_context",
+        "multimodal",
+        "cheapest",
+        "throughput"
+      ],
+      "fingerprint_signature": "DeepSeek V4 ",
+      "overall_score": 49,
+      "weekly_tokens_m": 40000,
+      "capability_icons": [
+        "🧠",
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_deepseek_v3_2",
+      "vendor_id": "v_deepseek",
+      "display_name": "DeepSeek V3.2",
+      "family": "DeepSeek V3",
+      "version": "3.2",
+      "release_date": "2025-12",
+      "context_window": 164000,
+      "max_output_tokens": 16000,
+      "modality": [
+        "text"
+      ],
+      "capabilities": [
+        "general",
+        "coding",
+        "reasoning"
+      ],
+      "scenes": [
+        "production",
+        "cost_effective"
+      ],
+      "official_input_usd_m": 0.27,
+      "official_output_usd_m": 1.1,
+      "description": "DeepSeek 通用版，AIME 89.3%",
+      "license": "MIT",
+      "is_open_weight": true,
+      "official_cache_read_usd_m": 0.027,
+      "official_cache_write_usd_m": 0.3375,
+      "official_reasoning_usd_m": 1.1,
+      "popularity": 4,
+      "weekly_tokens": 23777499570,
+      "monthly_tokens": 102956573138,
+      "trend_week_pct": 33.3,
+      "best_for": [
+        "reasoning",
+        "cheapest"
+      ],
+      "fingerprint_signature": "DeepSeek V3.",
+      "overall_score": 34,
+      "weekly_tokens_m": 66400,
+      "capability_icons": [
+        "🧠"
+      ]
+    },
+    {
+      "id": "m_deepseek_r1",
+      "vendor_id": "v_deepseek",
+      "display_name": "DeepSeek R1",
+      "family": "DeepSeek R1",
+      "version": "1.0",
+      "release_date": "2025-01",
+      "context_window": 128000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text"
+      ],
+      "capabilities": [
+        "reasoning",
+        "math",
+        "chain_of_thought"
+      ],
+      "scenes": [
+        "reasoning",
+        "math",
+        "research"
+      ],
+      "official_input_usd_m": 0.55,
+      "official_output_usd_m": 2.19,
+      "description": "推理王者，MATH-500 97.3%",
+      "license": "MIT",
+      "is_open_weight": true,
+      "official_cache_read_usd_m": 0.055,
+      "official_cache_write_usd_m": 0.6875,
+      "official_reasoning_usd_m": 2.19,
+      "popularity": 3,
+      "weekly_tokens": 7419527179,
+      "monthly_tokens": 32126552685,
+      "trend_week_pct": -10,
+      "best_for": [
+        "reasoning",
+        "cheapest"
+      ],
+      "fingerprint_signature": "DeepSeek R1",
+      "overall_score": 30,
+      "weekly_tokens_m": 40000,
+      "capability_icons": [
+        "🧠"
+      ]
+    },
+    {
+      "id": "m_qwen3_8_max",
+      "vendor_id": "v_qwen",
+      "display_name": "Qwen3.8 Max",
+      "family": "Qwen3.8",
+      "version": "3.8-max",
+      "release_date": "2026-08",
+      "context_window": 1000000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image",
+        "audio"
+      ],
+      "capabilities": [
+        "reasoning",
+        "agentic",
+        "multimodal",
+        "linear_attention"
+      ],
+      "scenes": [
+        "multimodal",
+        "agents",
+        "coding"
+      ],
+      "official_input_usd_m": 2,
+      "official_output_usd_m": 6,
+      "description": "阿里旗舰，多模态 APAC 第一",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.2,
+      "official_reasoning_usd_m": 6,
+      "official_input_audio_usd_m": 12,
+      "official_output_audio_usd_m": 12,
+      "popularity": 5,
+      "weekly_tokens": 54059039556,
+      "monthly_tokens": 234075641277,
+      "trend_week_pct": 16.4,
+      "best_for": [
+        "coding",
+        "reasoning",
+        "long_context",
+        "multimodal"
+      ],
+      "fingerprint_signature": "Qwen3.8 Max",
+      "overall_score": 28,
+      "weekly_tokens_m": 91200,
+      "capability_icons": [
+        "🧠",
+        "🖼️",
+        "🎤"
+      ]
+    },
+    {
+      "id": "m_qwen3_7_max",
+      "vendor_id": "v_qwen",
+      "display_name": "Qwen3.7 Max",
+      "family": "Qwen3.7",
+      "version": "3.7-max",
+      "release_date": "2026-05",
+      "context_window": 1000000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "long_context",
+        "extended_thinking",
+        "agentic"
+      ],
+      "scenes": [
+        "long_horizon_agents",
+        "coding"
+      ],
+      "official_input_usd_m": 2.5,
+      "official_output_usd_m": 7.5,
+      "description": "阿里 Qwen3.7，扩展思考模式",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.25,
+      "popularity": 4,
+      "weekly_tokens": 16126099941,
+      "monthly_tokens": 69826012744,
+      "trend_week_pct": -15.7,
+      "best_for": [
+        "coding",
+        "long_context",
+        "multimodal"
+      ],
+      "fingerprint_signature": "Qwen3.7 Max",
+      "overall_score": 23,
+      "weekly_tokens_m": 27900,
+      "capability_icons": [
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_qwen3_6_max_preview",
+      "vendor_id": "v_qwen",
+      "display_name": "Qwen3.6 Max Preview",
+      "family": "Qwen3.6",
+      "version": "3.6-max-preview",
+      "release_date": "2026-04",
+      "context_window": 262000,
+      "max_output_tokens": 16000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "agentic",
+        "multimodal"
+      ],
+      "scenes": [
+        "agents",
+        "multimodal"
+      ],
+      "official_input_usd_m": 1.04,
+      "official_output_usd_m": 6.24,
+      "description": "Qwen3.6 Max 预览",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.104,
+      "popularity": 4,
+      "weekly_tokens": 28974008389,
+      "monthly_tokens": 125457456324,
+      "trend_week_pct": 33.1,
+      "best_for": [
+        "multimodal"
+      ],
+      "fingerprint_signature": "Qwen3.6 Max ",
+      "overall_score": 23,
+      "weekly_tokens_m": 24300,
+      "capability_icons": [
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_qwen3_8_flash",
+      "vendor_id": "v_qwen",
+      "display_name": "Qwen3.8 Flash",
+      "family": "Qwen3.8",
+      "version": "3.8-flash",
+      "release_date": "2026-08",
+      "context_window": 1000000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "speed",
+        "multimodal"
+      ],
+      "scenes": [
+        "high_volume",
+        "multimodal"
+      ],
+      "official_input_usd_m": 0.188,
+      "official_output_usd_m": 1.5,
+      "description": "Qwen3.8 Flash，便宜版",
+      "license": "Apache-2.0",
+      "is_open_weight": true,
+      "official_cache_read_usd_m": 0.0188,
+      "popularity": 4,
+      "weekly_tokens": 29452719152,
+      "monthly_tokens": 127530273928,
+      "trend_week_pct": -13.6,
+      "best_for": [
+        "long_context",
+        "multimodal",
+        "cheapest",
+        "throughput"
+      ],
+      "fingerprint_signature": "Qwen3.8 Flas",
+      "overall_score": 46,
+      "weekly_tokens_m": 34200,
+      "capability_icons": [
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_glm_5_2",
+      "vendor_id": "v_zhipu",
+      "display_name": "GLM-5.2",
+      "family": "GLM-5",
+      "version": "5.2",
+      "release_date": "2026-06",
+      "context_window": 1000000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "agentic",
+        "coding",
+        "open_chip",
+        "long_context"
+      ],
+      "scenes": [
+        "agents",
+        "coding",
+        "domestic"
+      ],
+      "official_input_usd_m": 1.4,
+      "official_output_usd_m": 4.4,
+      "description": "智谱 Agent 工程最强，适配 7 大国产芯片",
+      "license": "MIT",
+      "is_open_weight": true,
+      "official_cache_read_usd_m": 0.14,
+      "popularity": 5,
+      "weekly_tokens": 49004750250,
+      "monthly_tokens": 212190568582,
+      "trend_week_pct": 46.9,
+      "best_for": [
+        "coding",
+        "long_context",
+        "multimodal"
+      ],
+      "fingerprint_signature": "GLM-5.2",
+      "overall_score": 35,
+      "weekly_tokens_m": 35700,
+      "capability_icons": [
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_glm_5_1",
+      "vendor_id": "v_zhipu",
+      "display_name": "GLM-5.1",
+      "family": "GLM-5",
+      "version": "5.1",
+      "release_date": "2026-03",
+      "context_window": 200000,
+      "max_output_tokens": 16000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "agentic",
+        "coding"
+      ],
+      "scenes": [
+        "agents",
+        "coding"
+      ],
+      "official_input_usd_m": 1.2,
+      "official_output_usd_m": 4,
+      "description": "智谱 GLM-5.1，MIT 开源",
+      "license": "MIT",
+      "is_open_weight": true,
+      "official_cache_read_usd_m": 0.12,
+      "popularity": 4,
+      "weekly_tokens": 17863394437,
+      "monthly_tokens": 77348497912,
+      "trend_week_pct": 47,
+      "best_for": [
+        "coding",
+        "multimodal"
+      ],
+      "fingerprint_signature": "GLM-5.1",
+      "overall_score": 24,
+      "weekly_tokens_m": 36000,
+      "capability_icons": [
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_glm_4_6v",
+      "vendor_id": "v_zhipu",
+      "display_name": "GLM-4.6V",
+      "family": "GLM-4.6",
+      "version": "4.6-V",
+      "release_date": "2026-01",
+      "context_window": 131000,
+      "max_output_tokens": 8000,
+      "modality": [
+        "text",
+        "image",
+        "video"
+      ],
+      "capabilities": [
+        "multimodal",
+        "vision"
+      ],
+      "scenes": [
+        "video_understanding"
+      ],
+      "official_input_usd_m": 0.9,
+      "official_output_usd_m": 3,
+      "description": "GLM-4.6V 多模态视觉版",
+      "license": "MIT",
+      "is_open_weight": true,
+      "official_cache_read_usd_m": 0.09,
+      "popularity": 2,
+      "weekly_tokens": 1311949133,
+      "monthly_tokens": 5680739745,
+      "trend_week_pct": 22.4,
+      "best_for": [
+        "multimodal",
+        "cheapest"
+      ],
+      "fingerprint_signature": "GLM-4.6V",
+      "overall_score": 27,
+      "weekly_tokens_m": 22200,
+      "capability_icons": [
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_kimi_k3",
+      "vendor_id": "v_moonshot",
+      "display_name": "Kimi K3",
+      "family": "Kimi K",
+      "version": "3.0",
+      "release_date": "2026-07",
+      "context_window": 262000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "agentic",
+        "coding",
+        "long_horizon",
+        "browsing"
+      ],
+      "scenes": [
+        "agents",
+        "browsing",
+        "coding"
+      ],
+      "official_input_usd_m": 3,
+      "official_output_usd_m": 15,
+      "description": "Moonshot K3，开源倒计时 7/27",
+      "license": "modified-MIT",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.3,
+      "popularity": 5,
+      "weekly_tokens": 88192925900,
+      "monthly_tokens": 381875369147,
+      "trend_week_pct": 24.9,
+      "best_for": [
+        "coding",
+        "multimodal"
+      ],
+      "fingerprint_signature": "Kimi K3",
+      "overall_score": 4,
+      "weekly_tokens_m": 29700,
+      "capability_icons": [
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_kimi_k2_6",
+      "vendor_id": "v_moonshot",
+      "display_name": "Kimi K2.6",
+      "family": "Kimi K2",
+      "version": "2.6",
+      "release_date": "2026-04",
+      "context_window": 256000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "agentic",
+        "long_horizon_coding",
+        "browsing"
+      ],
+      "scenes": [
+        "agents",
+        "coding"
+      ],
+      "official_input_usd_m": 0.95,
+      "official_output_usd_m": 4,
+      "description": "Moonshot K2.6，SWE-Bench 80.2%",
+      "license": "modified-MIT",
+      "is_open_weight": true,
+      "official_cache_read_usd_m": 0.095,
+      "popularity": 4,
+      "weekly_tokens": 12460182262,
+      "monthly_tokens": 53952589194,
+      "trend_week_pct": 32.3,
+      "best_for": [
+        "coding",
+        "multimodal",
+        "cheapest"
+      ],
+      "fingerprint_signature": "Kimi K2.6",
+      "overall_score": 27,
+      "weekly_tokens_m": 21900,
+      "capability_icons": [
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_doubao_seed_2_pro",
+      "vendor_id": "v_doubao",
+      "display_name": "Doubao Seed 2.0 Pro",
+      "family": "Doubao Seed",
+      "version": "2.0-pro",
+      "release_date": "2026-04",
+      "context_window": 256000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "capabilities": [
+        "multimodal",
+        "scientific_reasoning",
+        "chinese"
+      ],
+      "scenes": [
+        "multimodal",
+        "chinese"
+      ],
+      "official_input_usd_m": 1.5,
+      "official_output_usd_m": 8,
+      "description": "字节豆包 Pro，国产多模态最强",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.15,
+      "official_input_audio_usd_m": 9,
+      "official_output_audio_usd_m": 16,
+      "popularity": 5,
+      "weekly_tokens": 76880145484,
+      "monthly_tokens": 332891029945,
+      "trend_week_pct": 47.5,
+      "best_for": [
+        "multimodal"
+      ],
+      "fingerprint_signature": "Doubao Seed ",
+      "overall_score": 17,
+      "weekly_tokens_m": 37500,
+      "capability_icons": [
+        "🖼️",
+        "🎤"
+      ]
+    },
+    {
+      "id": "m_doubao_seed_2_lite",
+      "vendor_id": "v_doubao",
+      "display_name": "Doubao Seed 2.0 Lite",
+      "family": "Doubao Seed",
+      "version": "2.0-lite",
+      "release_date": "2026-04",
+      "context_window": 128000,
+      "max_output_tokens": 16000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "speed",
+        "multimodal"
+      ],
+      "scenes": [
+        "realtime",
+        "production"
+      ],
+      "official_input_usd_m": 0.3,
+      "official_output_usd_m": 1.5,
+      "description": "字节豆包 Lite 版",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.03,
+      "popularity": 4,
+      "weekly_tokens": 9844348447,
+      "monthly_tokens": 42626028775,
+      "trend_week_pct": -20.2,
+      "best_for": [
+        "multimodal",
+        "cheapest",
+        "throughput"
+      ],
+      "fingerprint_signature": "Doubao Seed ",
+      "overall_score": 33,
+      "weekly_tokens_m": 44400,
+      "capability_icons": [
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_ernie_5_1",
+      "vendor_id": "v_baidu",
+      "display_name": "ERNIE 5.1",
+      "family": "ERNIE 5",
+      "version": "5.1",
+      "release_date": "2026-04",
+      "context_window": 128000,
+      "max_output_tokens": 8000,
+      "modality": [
+        "text"
+      ],
+      "capabilities": [
+        "search_augmented",
+        "chinese",
+        "instruction_following"
+      ],
+      "scenes": [
+        "search",
+        "chinese",
+        "qa"
+      ],
+      "official_input_usd_m": 0.8,
+      "official_output_usd_m": 3.2,
+      "description": "百度文心 5.1，搜索增强",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.08,
+      "popularity": 4,
+      "weekly_tokens": 13154100439,
+      "monthly_tokens": 56957254900,
+      "trend_week_pct": 48.7,
+      "best_for": [
+        "cheapest"
+      ],
+      "fingerprint_signature": "ERNIE 5.1",
+      "overall_score": 27,
+      "weekly_tokens_m": 41100,
+      "capability_icons": [
+        "💬"
+      ]
+    },
+    {
+      "id": "m_llama_4_maverick",
+      "vendor_id": "v_meta",
+      "display_name": "Llama 4 Maverick",
+      "family": "Llama 4",
+      "version": "4.0",
+      "release_date": "2025-04",
+      "context_window": 10485760,
+      "max_output_tokens": 16000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "long_context",
+        "speed",
+        "multimodal",
+        "open_weight"
+      ],
+      "scenes": [
+        "long_doc",
+        "self_host"
+      ],
+      "official_input_usd_m": 0.6,
+      "official_output_usd_m": 2.4,
+      "description": "Meta Llama 4，10M 上下文 + 2600 t/s",
+      "license": "Llama-3",
+      "is_open_weight": true,
+      "official_cache_read_usd_m": 0.06,
+      "popularity": 5,
+      "weekly_tokens": 79016510126,
+      "monthly_tokens": 342141488845,
+      "trend_week_pct": -5.3,
+      "best_for": [
+        "long_context",
+        "multimodal",
+        "cheapest"
+      ],
+      "fingerprint_signature": "Llama 4 Mave",
+      "overall_score": 43,
+      "weekly_tokens_m": 29100,
+      "capability_icons": [
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_llama_4_scout",
+      "vendor_id": "v_meta",
+      "display_name": "Llama 4 Scout",
+      "family": "Llama 4",
+      "version": "4.0",
+      "release_date": "2025-04",
+      "context_window": 10485760,
+      "max_output_tokens": 16000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "speed",
+        "long_context",
+        "open_weight"
+      ],
+      "scenes": [
+        "realtime",
+        "long_doc"
+      ],
+      "official_input_usd_m": 0.4,
+      "official_output_usd_m": 1.6,
+      "description": "Llama 4 Scout，便宜版",
+      "license": "Llama-3",
+      "is_open_weight": true,
+      "official_cache_read_usd_m": 0.04,
+      "popularity": 5,
+      "weekly_tokens": 90240883531,
+      "monthly_tokens": 390743025689,
+      "trend_week_pct": -29.1,
+      "best_for": [
+        "long_context",
+        "multimodal",
+        "cheapest"
+      ],
+      "fingerprint_signature": "Llama 4 Scou",
+      "overall_score": 45,
+      "weekly_tokens_m": 17700,
+      "capability_icons": [
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_mistral_large_3",
+      "vendor_id": "v_mistral",
+      "display_name": "Mistral Large 3",
+      "family": "Mistral Large",
+      "version": "3.0",
+      "release_date": "2026-04",
+      "context_window": 256000,
+      "max_output_tokens": 16000,
+      "modality": [
+        "text"
+      ],
+      "capabilities": [
+        "reasoning",
+        "multilingual"
+      ],
+      "scenes": [
+        "enterprise",
+        "multilingual"
+      ],
+      "official_input_usd_m": 1.5,
+      "official_output_usd_m": 7.5,
+      "description": "Mistral Large 3，欧洲合规",
+      "license": "Apache-2.0",
+      "is_open_weight": true,
+      "official_cache_read_usd_m": 0.15,
+      "official_reasoning_usd_m": 7.5,
+      "popularity": 4,
+      "weekly_tokens": 27100100303,
+      "monthly_tokens": 117343434311,
+      "trend_week_pct": 2.2,
+      "best_for": [
+        "reasoning"
+      ],
+      "fingerprint_signature": "Mistral Larg",
+      "overall_score": 18,
+      "weekly_tokens_m": 57600,
+      "capability_icons": [
+        "🧠"
+      ]
+    },
+    {
+      "id": "m_mistral_medium_3_5",
+      "vendor_id": "v_mistral",
+      "display_name": "Mistral Medium 3.5",
+      "family": "Mistral Medium",
+      "version": "3.5",
+      "release_date": "2026-04",
+      "context_window": 256000,
+      "max_output_tokens": 16000,
+      "modality": [
+        "text"
+      ],
+      "capabilities": [
+        "coding",
+        "agentic"
+      ],
+      "scenes": [
+        "agentic_coding"
+      ],
+      "official_input_usd_m": 1.5,
+      "official_output_usd_m": 7.5,
+      "description": "Mistral Medium 3.5，256K 上下文",
+      "license": "Apache-2.0",
+      "is_open_weight": true,
+      "official_cache_read_usd_m": 0.15,
+      "popularity": 4,
+      "weekly_tokens": 23949493452,
+      "monthly_tokens": 103701306647,
+      "trend_week_pct": 38.8,
+      "best_for": [
+        "general"
+      ],
+      "fingerprint_signature": "Mistral Medi",
+      "overall_score": 18,
+      "weekly_tokens_m": 41400,
+      "capability_icons": [
+        "💬"
+      ]
+    },
+    {
+      "id": "m_devstral_2",
+      "vendor_id": "v_mistral",
+      "display_name": "Devstral 2",
+      "family": "Devstral",
+      "version": "2.0",
+      "release_date": "2025-12",
+      "context_window": 262000,
+      "max_output_tokens": 16000,
+      "modality": [
+        "text"
+      ],
+      "capabilities": [
+        "coding",
+        "agentic",
+        "open_weight"
+      ],
+      "scenes": [
+        "agentic_coding"
+      ],
+      "official_input_usd_m": 2,
+      "official_output_usd_m": 8,
+      "description": "Mistral Devstral 2，专注 Agent 编码",
+      "license": "Apache-2.0",
+      "is_open_weight": true,
+      "official_cache_read_usd_m": 0.2,
+      "popularity": 4,
+      "weekly_tokens": 18389693245,
+      "monthly_tokens": 79627371750,
+      "trend_week_pct": -2.4,
+      "best_for": [
+        "general"
+      ],
+      "fingerprint_signature": "Devstral 2",
+      "overall_score": 14,
+      "weekly_tokens_m": 37800,
+      "capability_icons": [
+        "💬"
+      ]
+    },
+    {
+      "id": "m_minimax_m3",
+      "vendor_id": "v_minimax",
+      "display_name": "MiniMax M3",
+      "family": "MiniMax M",
+      "version": "3.0",
+      "release_date": "2026-08",
+      "context_window": 1000000,
+      "max_output_tokens": 32000,
+      "modality": [
+        "text",
+        "image"
+      ],
+      "capabilities": [
+        "long_context",
+        "multimodal"
+      ],
+      "scenes": [
+        "long_doc",
+        "multimodal"
+      ],
+      "official_input_usd_m": 0.5,
+      "official_output_usd_m": 2.5,
+      "description": "MiniMax M3，国产长上下文",
+      "license": "proprietary",
+      "is_open_weight": false,
+      "official_cache_read_usd_m": 0.05,
+      "popularity": 5,
+      "weekly_tokens": 41029887678,
+      "monthly_tokens": 177659413645,
+      "trend_week_pct": 12.6,
+      "best_for": [
+        "long_context",
+        "multimodal",
+        "cheapest",
+        "throughput"
+      ],
+      "fingerprint_signature": "MiniMax M3",
+      "overall_score": 43,
+      "weekly_tokens_m": 22800,
+      "capability_icons": [
+        "🖼️"
+      ]
+    },
+    {
+      "id": "m_minimax_m2_7",
+      "vendor_id": "v_minimax",
+      "display_name": "MiniMax M2.7",
+      "family": "MiniMax M",
+      "version": "2.7",
+      "release_date": "2026-03",
+      "context_window": 205000,
+      "max_output_tokens": 16000,
+      "modality": [
+        "text"
+      ],
+      "capabilities": [
+        "agentic",
+        "self_evolving",
+        "coding"
+      ],
+      "scenes": [
+        "agents",
+        "coding"
+      ],
+      "official_input_usd_m": 1.2,
+      "official_output_usd_m": 4.8,
+      "description": "MiniMax M2.7，自我进化 Agent",
+      "license": "modified-MIT",
+      "is_open_weight": true,
+      "official_cache_read_usd_m": 0.12,
+      "popularity": 4,
+      "weekly_tokens": 19443296474,
+      "monthly_tokens": 84189473732,
+      "trend_week_pct": 49.9,
+      "best_for": [
+        "coding",
+        "throughput"
+      ],
+      "fingerprint_signature": "MiniMax M2.7",
+      "overall_score": 23,
+      "weekly_tokens_m": 44700,
+      "capability_icons": [
+        "💬"
+      ]
+    },
+    {
+      "id": "m_step_3_5_flash",
+      "vendor_id": "v_stepfun",
+      "display_name": "Step-3.5 Flash",
+      "family": "Step-3.5",
+      "version": "3.5-flash",
+      "release_date": "2025-11",
+      "context_window": 196000,
+      "max_output_tokens": 8000,
+      "modality": [
+        "text"
+      ],
+      "capabilities": [
+        "speed",
+        "open_weight"
+      ],
+      "scenes": [
+        "high_volume"
+      ],
+      "official_input_usd_m": 0.2,
+      "official_output_usd_m": 0.8,
+      "description": "阶跃星辰 Flash，便宜高速",
+      "license": "Apache-2.0",
+      "is_open_weight": true,
+      "official_cache_read_usd_m": 0.02,
+      "popularity": 2,
+      "weekly_tokens": 406251210,
+      "monthly_tokens": 1759067739,
+      "trend_week_pct": 33.3,
+      "best_for": [
+        "cheapest",
+        "throughput"
+      ],
+      "fingerprint_signature": "Step-3.5 Fla",
+      "overall_score": 35,
+      "weekly_tokens_m": 24900,
+      "capability_icons": [
+        "💬"
+      ]
+    },
+    {
+      "id": "m_mimo_v2_flash",
+      "vendor_id": "v_xiaomi",
+      "display_name": "MiMo-V2 Flash",
+      "family": "MiMo-V2",
+      "version": "2.0-flash",
+      "release_date": "2026-01",
+      "context_window": 256000,
+      "max_output_tokens": 8000,
+      "modality": [
+        "text"
+      ],
+      "capabilities": [
+        "speed",
+        "on_device"
+      ],
+      "scenes": [
+        "edge",
+        "realtime"
+      ],
+      "official_input_usd_m": 0.3,
+      "official_output_usd_m": 1.2,
+      "description": "小米 MiMo-V2 Flash，国产边缘",
+      "license": "Apache-2.0",
+      "is_open_weight": true,
+      "official_cache_read_usd_m": 0.03,
+      "popularity": 2,
+      "weekly_tokens": 1109857750,
+      "monthly_tokens": 4805684057,
+      "trend_week_pct": 8.8,
+      "best_for": [
+        "cheapest",
+        "throughput"
+      ],
+      "fingerprint_signature": "MiMo-V2 Flas",
+      "overall_score": 35,
+      "weekly_tokens_m": 41400,
+      "capability_icons": [
+        "💬"
+      ]
+    }
+  ],
+  "providers": [
+    {
+      "id": "p_anthropic_official",
+      "name_zh": "Anthropic 官方",
+      "name_en": "Anthropic",
+      "type": "official",
+      "region": "global",
+      "website": "https://console.anthropic.com",
+      "payment_currency": [
+        "USD"
+      ],
+      "invoice_available": true,
+      "min_charge": 5,
+      "notes": "官方直连，USD 充值",
+      "name": "Anthropic 官方",
+      "name_short": "Anthropic 官方"
+    },
+    {
+      "id": "p_openai_official",
+      "name_zh": "OpenAI 官方",
+      "name_en": "OpenAI",
+      "type": "official",
+      "region": "global",
+      "website": "https://platform.openai.com",
+      "payment_currency": [
+        "USD"
+      ],
+      "invoice_available": true,
+      "min_charge": 5,
+      "notes": "官方直连",
+      "name": "OpenAI 官方",
+      "name_short": "OpenAI 官方"
+    },
+    {
+      "id": "p_google_official",
+      "name_zh": "Google AI Studio",
+      "name_en": "Google AI Studio",
+      "type": "official",
+      "region": "global",
+      "website": "https://aistudio.google.com",
+      "payment_currency": [
+        "USD"
+      ],
+      "invoice_available": true,
+      "min_charge": 0,
+      "notes": "免费额度+付费层",
+      "name": "Google AI Studio",
+      "name_short": "Google AI Studio"
+    },
+    {
+      "id": "p_xai_official",
+      "name_zh": "xAI 官方",
+      "name_en": "xAI Console",
+      "type": "official",
+      "region": "global",
+      "website": "https://console.x.ai",
+      "payment_currency": [
+        "USD"
+      ],
+      "invoice_available": true,
+      "min_charge": 5,
+      "notes": "官方直连",
+      "name": "xAI 官方",
+      "name_short": "xAI 官方"
+    },
+    {
+      "id": "p_deepseek_official",
+      "name_zh": "DeepSeek 官方",
+      "name_en": "DeepSeek Platform",
+      "type": "official",
+      "region": "cn/global",
+      "website": "https://platform.deepseek.com",
+      "payment_currency": [
+        "CNY",
+        "USD"
+      ],
+      "invoice_available": true,
+      "min_charge": 1,
+      "notes": "国内可直接，海外 OpenAI 兼容",
+      "name": "DeepSeek 官方",
+      "name_short": "DeepSeek 官方"
+    },
+    {
+      "id": "p_qwen_official",
+      "name_zh": "阿里云百炼",
+      "name_en": "Alibaba Bailian",
+      "type": "official",
+      "region": "cn/global",
+      "website": "https://bailian.console.aliyun.com",
+      "payment_currency": [
+        "CNY"
+      ],
+      "invoice_available": true,
+      "min_charge": 0,
+      "notes": "Qwen 官方，支持 100+ 模型",
+      "name": "阿里云百炼",
+      "name_short": "阿里云百炼"
+    },
+    {
+      "id": "p_zhipu_official",
+      "name_zh": "智谱 BigModel",
+      "name_en": "Zhipu BigModel",
+      "type": "official",
+      "region": "cn/global",
+      "website": "https://bigmodel.cn",
+      "payment_currency": [
+        "CNY",
+        "USD"
+      ],
+      "invoice_available": true,
+      "min_charge": 1,
+      "notes": "GLM 官方",
+      "name": "智谱 BigModel",
+      "name_short": "智谱 BigModel"
+    },
+    {
+      "id": "p_moonshot_official",
+      "name_zh": "Moonshot 官方",
+      "name_en": "Moonshot Platform",
+      "type": "official",
+      "region": "cn/global",
+      "website": "https://platform.moonshot.cn",
+      "payment_currency": [
+        "CNY",
+        "USD"
+      ],
+      "invoice_available": true,
+      "min_charge": 5,
+      "notes": "Kimi 官方",
+      "name": "Moonshot 官方",
+      "name_short": "Moonshot 官方"
+    },
+    {
+      "id": "p_doubao_official",
+      "name_zh": "字节火山引擎",
+      "name_en": "Volcano Engine",
+      "type": "official",
+      "region": "cn",
+      "website": "https://www.volcengine.com/product/doubao",
+      "payment_currency": [
+        "CNY"
+      ],
+      "invoice_available": true,
+      "min_charge": 0,
+      "notes": "豆包官方，企业级",
+      "name": "字节火山引擎",
+      "name_short": "字节火山引擎"
+    },
+    {
+      "id": "p_baidu_qianfan",
+      "name_zh": "百度千帆",
+      "name_en": "Baidu Qianfan",
+      "type": "official",
+      "region": "cn",
+      "website": "https://cloud.baidu.com/product/qianfan",
+      "payment_currency": [
+        "CNY"
+      ],
+      "invoice_available": true,
+      "min_charge": 0,
+      "notes": "文心官方",
+      "name": "百度千帆",
+      "name_short": "百度千帆"
+    },
+    {
+      "id": "p_mistral_official",
+      "name_zh": "Mistral 官方",
+      "name_en": "Mistral La Plateforme",
+      "type": "official",
+      "region": "global",
+      "website": "https://console.mistral.ai",
+      "payment_currency": [
+        "USD",
+        "EUR"
+      ],
+      "invoice_available": true,
+      "min_charge": 5,
+      "notes": "官方直连，欧盟合规",
+      "name": "Mistral 官方",
+      "name_short": "Mistral 官方"
+    },
+    {
+      "id": "p_groq",
+      "name_zh": "GroqCloud",
+      "name_en": "GroqCloud",
+      "type": "official",
+      "region": "global",
+      "website": "https://console.groq.com",
+      "payment_currency": [
+        "USD"
+      ],
+      "invoice_available": false,
+      "min_charge": 0,
+      "notes": "LPU 推理，极速",
+      "name": "GroqCloud",
+      "name_short": "GroqCloud"
+    },
+    {
+      "id": "p_together_ai",
+      "name_zh": "Together AI",
+      "name_en": "Together AI",
+      "type": "aggregator",
+      "region": "global",
+      "website": "https://www.together.ai",
+      "payment_currency": [
+        "USD"
+      ],
+      "invoice_available": true,
+      "min_charge": 5,
+      "notes": "200+ 开源模型，按 token 计费",
+      "name": "Together AI",
+      "name_short": "Together AI"
+    },
+    {
+      "id": "p_fireworks_ai",
+      "name_zh": "Fireworks AI",
+      "name_en": "Fireworks AI",
+      "type": "aggregator",
+      "region": "global",
+      "website": "https://fireworks.ai",
+      "payment_currency": [
+        "USD"
+      ],
+      "invoice_available": true,
+      "min_charge": 5,
+      "notes": "开源模型优化推理",
+      "name": "Fireworks AI",
+      "name_short": "Fireworks AI"
+    },
+    {
+      "id": "p_anyscale",
+      "name_zh": "Anyscale",
+      "name_en": "Anyscale Endpoints",
+      "type": "aggregator",
+      "region": "global",
+      "website": "https://www.anyscale.com",
+      "payment_currency": [
+        "USD"
+      ],
+      "invoice_available": true,
+      "min_charge": 0,
+      "notes": "开源模型生产部署",
+      "name": "Anyscale",
+      "name_short": "Anyscale"
+    },
+    {
+      "id": "p_openrouter",
+      "name_zh": "OpenRouter",
+      "name_en": "OpenRouter",
+      "type": "aggregator",
+      "region": "global",
+      "website": "https://openrouter.ai",
+      "payment_currency": [
+        "USD",
+        "CRYPTO"
+      ],
+      "invoice_available": false,
+      "min_charge": 5,
+      "notes": "300+ 模型，OpenAI 兼容，5.5% 平台费",
+      "name": "OpenRouter",
+      "name_short": "OpenRouter"
+    },
+    {
+      "id": "p_litellm",
+      "name_zh": "LiteLLM (自托管)",
+      "name_en": "LiteLLM Proxy",
+      "type": "self_host",
+      "region": "self",
+      "website": "https://litellm.ai",
+      "payment_currency": [
+        "-"
+      ],
+      "invoice_available": false,
+      "min_charge": 0,
+      "notes": "MIT 开源自托管，140+ 提供商",
+      "name": "LiteLLM (自托管)",
+      "name_short": "LiteLLM (自托管)"
+    },
+    {
+      "id": "p_portkey",
+      "name_zh": "Portkey",
+      "name_en": "Portkey AI Gateway",
+      "type": "gateway",
+      "region": "global",
+      "website": "https://portkey.ai",
+      "payment_currency": [
+        "USD"
+      ],
+      "invoice_available": true,
+      "min_charge": 0,
+      "notes": "Apache-2.0 企业级网关",
+      "name": "Portkey",
+      "name_short": "Portkey"
+    },
+    {
+      "id": "p_helicone",
+      "name_zh": "Helicone",
+      "name_en": "Helicone AI Gateway",
+      "type": "gateway",
+      "region": "global",
+      "website": "https://helicone.ai",
+      "payment_currency": [
+        "USD"
+      ],
+      "invoice_available": false,
+      "min_charge": 0,
+      "notes": "可观测性优先，免费 10K/月",
+      "name": "Helicone",
+      "name_short": "Helicone"
+    },
+    {
+      "id": "p_cloudflare_ai",
+      "name_zh": "Cloudflare AI Gateway",
+      "name_en": "Cloudflare AI Gateway",
+      "type": "gateway",
+      "region": "global",
+      "website": "https://developers.cloudflare.com/ai-gateway",
+      "payment_currency": [
+        "USD"
+      ],
+      "invoice_available": true,
+      "min_charge": 0,
+      "notes": "Cloudflare 用户免费",
+      "name": "Cloudflare AI Gateway",
+      "name_short": "Cloudflare AI Gateway"
+    },
+    {
+      "id": "p_vercel_ai_gateway",
+      "name_zh": "Vercel AI Gateway",
+      "name_en": "Vercel AI Gateway",
+      "type": "gateway",
+      "region": "global",
+      "website": "https://vercel.com/docs/ai-gateway",
+      "payment_currency": [
+        "USD"
+      ],
+      "invoice_available": false,
+      "min_charge": 5,
+      "notes": "0 标记费",
+      "name": "Vercel AI Gateway",
+      "name_short": "Vercel AI Gateway"
+    },
+    {
+      "id": "p_one_api",
+      "name_zh": "One-API (开源)",
+      "name_en": "One-API (开源)",
+      "type": "self_host",
+      "region": "cn",
+      "website": "https://github.com/songquanpeng/one-api",
+      "payment_currency": [
+        "CNY"
+      ],
+      "invoice_available": false,
+      "min_charge": 0,
+      "notes": "国内最流行的开源聚合，docker 镜像",
+      "name": "One-API (开源)",
+      "name_short": "One-API (开源)"
+    },
+    {
+      "id": "p_new_api",
+      "name_zh": "New-API (开源)",
+      "name_en": "New-API (开源)",
+      "type": "self_host",
+      "region": "cn",
+      "website": "https://github.com/QuantumNous/new-api",
+      "payment_currency": [
+        "CNY"
+      ],
+      "invoice_available": false,
+      "min_charge": 0,
+      "notes": "One-API 升级版",
+      "name": "New-API (开源)",
+      "name_short": "New-API (开源)"
+    },
+    {
+      "id": "p_duckcoding",
+      "name_zh": "DuckCoding",
+      "name_en": "DuckCoding",
+      "type": "aggregator",
+      "region": "cn",
+      "website": "https://duckcoding.com",
+      "payment_currency": [
+        "CNY",
+        "USD"
+      ],
+      "invoice_available": false,
+      "min_charge": 10,
+      "notes": "国内中转，比官方低 30-50%",
+      "name": "DuckCoding",
+      "name_short": "DuckCoding"
+    },
+    {
+      "id": "p_api2d",
+      "name_zh": "API2D",
+      "name_en": "API2D",
+      "type": "aggregator",
+      "region": "cn",
+      "website": "https://api2d.com",
+      "payment_currency": [
+        "CNY",
+        "USD"
+      ],
+      "invoice_available": false,
+      "min_charge": 5,
+      "notes": "国内老牌中转",
+      "name": "API2D",
+      "name_short": "API2D"
+    },
+    {
+      "id": "p_aicnb",
+      "name_zh": "AIcnb",
+      "name_en": "AIcnb",
+      "type": "aggregator",
+      "region": "cn",
+      "website": "https://aicnb.com",
+      "payment_currency": [
+        "CNY"
+      ],
+      "invoice_available": false,
+      "min_charge": 5,
+      "notes": "国内中转，含发票申请",
+      "name": "AIcnb",
+      "name_short": "AIcnb"
+    },
+    {
+      "id": "p_closeai",
+      "name_zh": "CloseAI",
+      "name_en": "CloseAI",
+      "type": "aggregator",
+      "region": "cn",
+      "website": "https://closeai.info",
+      "payment_currency": [
+        "CNY"
+      ],
+      "invoice_available": false,
+      "min_charge": 5,
+      "notes": "国内 Claude 专线",
+      "name": "CloseAI",
+      "name_short": "CloseAI"
+    },
+    {
+      "id": "p_woka_ai",
+      "name_zh": "WokaAI",
+      "name_en": "WokaAI",
+      "type": "aggregator",
+      "region": "cn",
+      "website": "https://wokaai.com",
+      "payment_currency": [
+        "CNY"
+      ],
+      "invoice_available": false,
+      "min_charge": 5,
+      "notes": "国内 Claude/GPT 中转",
+      "name": "WokaAI",
+      "name_short": "WokaAI"
+    },
+    {
+      "id": "p_chatfire",
+      "name_zh": "ChatFire",
+      "name_en": "ChatFire",
+      "type": "aggregator",
+      "region": "cn",
+      "website": "https://chatfire.cn",
+      "payment_currency": [
+        "CNY"
+      ],
+      "invoice_available": false,
+      "min_charge": 1,
+      "notes": "国内低价中转",
+      "name": "ChatFire",
+      "name_short": "ChatFire"
+    },
+    {
+      "id": "p_azure_openai",
+      "name_zh": "Azure OpenAI",
+      "name_en": "Azure OpenAI Service",
+      "type": "cloud",
+      "region": "global",
+      "website": "https://oai.azure.com",
+      "payment_currency": [
+        "USD"
+      ],
+      "invoice_available": true,
+      "min_charge": 0,
+      "notes": "企业版，需 Azure 订阅",
+      "name": "Azure OpenAI",
+      "name_short": "Azure OpenAI"
+    },
+    {
+      "id": "p_bedrock",
+      "name_zh": "AWS Bedrock",
+      "name_en": "Amazon Bedrock",
+      "type": "cloud",
+      "region": "global",
+      "website": "https://aws.amazon.com/bedrock",
+      "payment_currency": [
+        "USD"
+      ],
+      "invoice_available": true,
+      "min_charge": 0,
+      "notes": "AWS 企业集成",
+      "name": "AWS Bedrock",
+      "name_short": "AWS Bedrock"
+    },
+    {
+      "id": "p_vertex_ai",
+      "name_zh": "Vertex AI",
+      "name_en": "Google Vertex AI",
+      "type": "cloud",
+      "region": "global",
+      "website": "https://cloud.google.com/vertex-ai",
+      "payment_currency": [
+        "USD"
+      ],
+      "invoice_available": true,
+      "min_charge": 0,
+      "notes": "Google Cloud 企业版",
+      "name": "Vertex AI",
+      "name_short": "Vertex AI"
+    }
+  ],
+  "offerings": [
+    {
+      "model_id": "m_claude_fable_5",
+      "provider_id": "p_anthropic_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 10,
+      "output_usd_m": 50,
+      "cache_read_usd_m": 1,
+      "source_url": "https://console.anthropic.com"
+    },
+    {
+      "model_id": "m_claude_fable_5",
+      "provider_id": "p_anyscale",
+      "is_official": false,
+      "multiplier": 0.71,
+      "input_usd_m": 7.1,
+      "output_usd_m": 35.5,
+      "cache_read_usd_m": 0.71,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_claude_fable_5",
+      "provider_id": "p_openrouter",
+      "is_official": false,
+      "multiplier": 0.85,
+      "input_usd_m": 8.5,
+      "output_usd_m": 42.5,
+      "cache_read_usd_m": 0.85,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_claude_fable_5",
+      "provider_id": "p_api2d",
+      "is_official": false,
+      "multiplier": 0.83,
+      "input_usd_m": 8.3,
+      "output_usd_m": 41.5,
+      "cache_read_usd_m": 0.83,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_claude_fable_5",
+      "provider_id": "p_helicone",
+      "is_official": false,
+      "multiplier": 0.89,
+      "input_usd_m": 8.9,
+      "output_usd_m": 44.5,
+      "cache_read_usd_m": 0.89,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_claude_fable_5",
+      "provider_id": "p_chatfire",
+      "is_official": false,
+      "multiplier": 0.67,
+      "input_usd_m": 6.7,
+      "output_usd_m": 33.5,
+      "cache_read_usd_m": 0.67,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_claude_opus_5",
+      "provider_id": "p_anthropic_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 5,
+      "output_usd_m": 25,
+      "cache_read_usd_m": 0.5,
+      "source_url": "https://console.anthropic.com"
+    },
+    {
+      "model_id": "m_claude_opus_5",
+      "provider_id": "p_together_ai",
+      "is_official": false,
+      "multiplier": 0.71,
+      "input_usd_m": 3.55,
+      "output_usd_m": 17.75,
+      "cache_read_usd_m": 0.355,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_claude_opus_5",
+      "provider_id": "p_openrouter",
+      "is_official": false,
+      "multiplier": 0.81,
+      "input_usd_m": 4.05,
+      "output_usd_m": 20.25,
+      "cache_read_usd_m": 0.405,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_claude_opus_5",
+      "provider_id": "p_chatfire",
+      "is_official": false,
+      "multiplier": 0.8,
+      "input_usd_m": 4,
+      "output_usd_m": 20,
+      "cache_read_usd_m": 0.4,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_claude_opus_5",
+      "provider_id": "p_anyscale",
+      "is_official": false,
+      "multiplier": 0.84,
+      "input_usd_m": 4.2,
+      "output_usd_m": 21,
+      "cache_read_usd_m": 0.42,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_claude_sonnet_5",
+      "provider_id": "p_anthropic_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 3,
+      "output_usd_m": 15,
+      "cache_read_usd_m": 0.3,
+      "source_url": "https://console.anthropic.com"
+    },
+    {
+      "model_id": "m_claude_sonnet_5",
+      "provider_id": "p_closeai",
+      "is_official": false,
+      "multiplier": 0.87,
+      "input_usd_m": 2.61,
+      "output_usd_m": 13.05,
+      "cache_read_usd_m": 0.261,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_claude_sonnet_5",
+      "provider_id": "p_anyscale",
+      "is_official": false,
+      "multiplier": 0.65,
+      "input_usd_m": 1.95,
+      "output_usd_m": 9.75,
+      "cache_read_usd_m": 0.195,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_claude_sonnet_5",
+      "provider_id": "p_vercel_ai_gateway",
+      "is_official": false,
+      "multiplier": 0.87,
+      "input_usd_m": 2.61,
+      "output_usd_m": 13.05,
+      "cache_read_usd_m": 0.261,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_claude_sonnet_5",
+      "provider_id": "p_new_api",
+      "is_official": false,
+      "multiplier": 0.84,
+      "input_usd_m": 2.52,
+      "output_usd_m": 12.6,
+      "cache_read_usd_m": 0.252,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_claude_sonnet_5",
+      "provider_id": "p_helicone",
+      "is_official": false,
+      "multiplier": 0.74,
+      "input_usd_m": 2.22,
+      "output_usd_m": 11.1,
+      "cache_read_usd_m": 0.222,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_claude_opus_4_7",
+      "provider_id": "p_anthropic_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 5,
+      "output_usd_m": 25,
+      "cache_read_usd_m": 0,
+      "source_url": "https://console.anthropic.com"
+    },
+    {
+      "model_id": "m_claude_opus_4_7",
+      "provider_id": "p_cloudflare_ai",
+      "is_official": false,
+      "multiplier": 0.68,
+      "input_usd_m": 3.4,
+      "output_usd_m": 17,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_claude_opus_4_7",
+      "provider_id": "p_aicnb",
+      "is_official": false,
+      "multiplier": 0.75,
+      "input_usd_m": 3.75,
+      "output_usd_m": 18.75,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_claude_opus_4_7",
+      "provider_id": "p_portkey",
+      "is_official": false,
+      "multiplier": 0.75,
+      "input_usd_m": 3.75,
+      "output_usd_m": 18.75,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gpt_5_6_sol",
+      "provider_id": "p_openai_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 5,
+      "output_usd_m": 30,
+      "cache_read_usd_m": 0,
+      "source_url": "https://platform.openai.com"
+    },
+    {
+      "model_id": "m_gpt_5_6_sol",
+      "provider_id": "p_one_api",
+      "is_official": false,
+      "multiplier": 0.77,
+      "input_usd_m": 3.85,
+      "output_usd_m": 23.1,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gpt_5_6_sol",
+      "provider_id": "p_aicnb",
+      "is_official": false,
+      "multiplier": 0.68,
+      "input_usd_m": 3.4,
+      "output_usd_m": 20.4,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gpt_5_6_sol",
+      "provider_id": "p_openrouter",
+      "is_official": false,
+      "multiplier": 0.9,
+      "input_usd_m": 4.5,
+      "output_usd_m": 27,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gpt_5_6_sol",
+      "provider_id": "p_api2d",
+      "is_official": false,
+      "multiplier": 0.67,
+      "input_usd_m": 3.35,
+      "output_usd_m": 20.1,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gpt_5_5",
+      "provider_id": "p_openai_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 5,
+      "output_usd_m": 30,
+      "cache_read_usd_m": 0,
+      "source_url": "https://platform.openai.com"
+    },
+    {
+      "model_id": "m_gpt_5_5",
+      "provider_id": "p_api2d",
+      "is_official": false,
+      "multiplier": 0.67,
+      "input_usd_m": 3.35,
+      "output_usd_m": 20.1,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gpt_5_5",
+      "provider_id": "p_new_api",
+      "is_official": false,
+      "multiplier": 0.83,
+      "input_usd_m": 4.15,
+      "output_usd_m": 24.9,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gpt_5_5",
+      "provider_id": "p_anyscale",
+      "is_official": false,
+      "multiplier": 0.86,
+      "input_usd_m": 4.3,
+      "output_usd_m": 25.8,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gpt_5_5",
+      "provider_id": "p_chatfire",
+      "is_official": false,
+      "multiplier": 0.92,
+      "input_usd_m": 4.6,
+      "output_usd_m": 27.6,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gpt_5_5_pro",
+      "provider_id": "p_openai_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 30,
+      "output_usd_m": 180,
+      "cache_read_usd_m": 0,
+      "source_url": "https://platform.openai.com"
+    },
+    {
+      "model_id": "m_gpt_5_5_pro",
+      "provider_id": "p_anyscale",
+      "is_official": false,
+      "multiplier": 0.77,
+      "input_usd_m": 23.1,
+      "output_usd_m": 138.6,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gpt_5_5_pro",
+      "provider_id": "p_cloudflare_ai",
+      "is_official": false,
+      "multiplier": 0.88,
+      "input_usd_m": 26.4,
+      "output_usd_m": 158.4,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gpt_5_5_pro",
+      "provider_id": "p_helicone",
+      "is_official": false,
+      "multiplier": 0.69,
+      "input_usd_m": 20.7,
+      "output_usd_m": 124.2,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gpt_5_2",
+      "provider_id": "p_openai_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 1.75,
+      "output_usd_m": 14,
+      "cache_read_usd_m": 0,
+      "source_url": "https://platform.openai.com"
+    },
+    {
+      "model_id": "m_gpt_5_2",
+      "provider_id": "p_cloudflare_ai",
+      "is_official": false,
+      "multiplier": 0.9,
+      "input_usd_m": 1.575,
+      "output_usd_m": 12.6,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gpt_5_2",
+      "provider_id": "p_duckcoding",
+      "is_official": false,
+      "multiplier": 0.82,
+      "input_usd_m": 1.435,
+      "output_usd_m": 11.48,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gpt_5_2",
+      "provider_id": "p_helicone",
+      "is_official": false,
+      "multiplier": 0.81,
+      "input_usd_m": 1.4175,
+      "output_usd_m": 11.34,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gpt_5_2",
+      "provider_id": "p_api2d",
+      "is_official": false,
+      "multiplier": 0.7,
+      "input_usd_m": 1.225,
+      "output_usd_m": 9.8,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gemini_3_1_pro",
+      "provider_id": "p_google_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 2,
+      "output_usd_m": 12,
+      "cache_read_usd_m": 0,
+      "source_url": "https://aistudio.google.com"
+    },
+    {
+      "model_id": "m_gemini_3_1_pro",
+      "provider_id": "p_vercel_ai_gateway",
+      "is_official": false,
+      "multiplier": 0.92,
+      "input_usd_m": 1.84,
+      "output_usd_m": 11.04,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gemini_3_1_pro",
+      "provider_id": "p_fireworks_ai",
+      "is_official": false,
+      "multiplier": 0.82,
+      "input_usd_m": 1.64,
+      "output_usd_m": 9.84,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gemini_3_1_pro",
+      "provider_id": "p_chatfire",
+      "is_official": false,
+      "multiplier": 0.8,
+      "input_usd_m": 1.6,
+      "output_usd_m": 9.6,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gemini_3_1_pro",
+      "provider_id": "p_cloudflare_ai",
+      "is_official": false,
+      "multiplier": 0.83,
+      "input_usd_m": 1.66,
+      "output_usd_m": 9.96,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gemini_3_1_pro",
+      "provider_id": "p_helicone",
+      "is_official": false,
+      "multiplier": 0.88,
+      "input_usd_m": 1.76,
+      "output_usd_m": 10.56,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gemini_3_5_flash",
+      "provider_id": "p_google_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 1.5,
+      "output_usd_m": 9,
+      "cache_read_usd_m": 0,
+      "source_url": "https://aistudio.google.com"
+    },
+    {
+      "model_id": "m_gemini_3_5_flash",
+      "provider_id": "p_vercel_ai_gateway",
+      "is_official": false,
+      "multiplier": 0.87,
+      "input_usd_m": 1.305,
+      "output_usd_m": 7.83,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gemini_3_5_flash",
+      "provider_id": "p_closeai",
+      "is_official": false,
+      "multiplier": 0.76,
+      "input_usd_m": 1.14,
+      "output_usd_m": 6.84,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gemini_3_5_flash",
+      "provider_id": "p_openrouter",
+      "is_official": false,
+      "multiplier": 0.67,
+      "input_usd_m": 1.005,
+      "output_usd_m": 6.03,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gemini_3_flash_preview",
+      "provider_id": "p_google_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 0.5,
+      "output_usd_m": 3,
+      "cache_read_usd_m": 0,
+      "source_url": "https://aistudio.google.com"
+    },
+    {
+      "model_id": "m_gemini_3_flash_preview",
+      "provider_id": "p_duckcoding",
+      "is_official": false,
+      "multiplier": 0.89,
+      "input_usd_m": 0.445,
+      "output_usd_m": 2.67,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gemini_3_flash_preview",
+      "provider_id": "p_anyscale",
+      "is_official": false,
+      "multiplier": 0.82,
+      "input_usd_m": 0.41,
+      "output_usd_m": 2.46,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gemini_3_flash_preview",
+      "provider_id": "p_chatfire",
+      "is_official": false,
+      "multiplier": 0.69,
+      "input_usd_m": 0.345,
+      "output_usd_m": 2.07,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gemini_3_flash_preview",
+      "provider_id": "p_vercel_ai_gateway",
+      "is_official": false,
+      "multiplier": 0.69,
+      "input_usd_m": 0.345,
+      "output_usd_m": 2.07,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_gemini_3_flash_preview",
+      "provider_id": "p_cloudflare_ai",
+      "is_official": false,
+      "multiplier": 0.85,
+      "input_usd_m": 0.425,
+      "output_usd_m": 2.55,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_grok_4_3",
+      "provider_id": "p_xai_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 1.25,
+      "output_usd_m": 2.5,
+      "cache_read_usd_m": 0,
+      "source_url": "https://console.x.ai"
+    },
+    {
+      "model_id": "m_grok_4_3",
+      "provider_id": "p_one_api",
+      "is_official": false,
+      "multiplier": 0.76,
+      "input_usd_m": 0.95,
+      "output_usd_m": 1.9,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_grok_4_3",
+      "provider_id": "p_api2d",
+      "is_official": false,
+      "multiplier": 0.71,
+      "input_usd_m": 0.8875,
+      "output_usd_m": 1.775,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_grok_4_3",
+      "provider_id": "p_new_api",
+      "is_official": false,
+      "multiplier": 0.92,
+      "input_usd_m": 1.15,
+      "output_usd_m": 2.3,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_grok_4_3",
+      "provider_id": "p_cloudflare_ai",
+      "is_official": false,
+      "multiplier": 0.79,
+      "input_usd_m": 0.9875,
+      "output_usd_m": 1.975,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_grok_4_3",
+      "provider_id": "p_closeai",
+      "is_official": false,
+      "multiplier": 0.67,
+      "input_usd_m": 0.8375,
+      "output_usd_m": 1.675,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_grok_4_fast",
+      "provider_id": "p_xai_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 0.5,
+      "output_usd_m": 1.5,
+      "cache_read_usd_m": 0,
+      "source_url": "https://console.x.ai"
+    },
+    {
+      "model_id": "m_grok_4_fast",
+      "provider_id": "p_anyscale",
+      "is_official": false,
+      "multiplier": 0.69,
+      "input_usd_m": 0.345,
+      "output_usd_m": 1.035,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_grok_4_fast",
+      "provider_id": "p_fireworks_ai",
+      "is_official": false,
+      "multiplier": 0.83,
+      "input_usd_m": 0.415,
+      "output_usd_m": 1.245,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_grok_4_fast",
+      "provider_id": "p_duckcoding",
+      "is_official": false,
+      "multiplier": 0.81,
+      "input_usd_m": 0.405,
+      "output_usd_m": 1.215,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_deepseek_v4_pro",
+      "provider_id": "p_deepseek_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 0.435,
+      "output_usd_m": 0.87,
+      "cache_read_usd_m": 0.028,
+      "source_url": "https://platform.deepseek.com"
+    },
+    {
+      "model_id": "m_deepseek_v4_pro",
+      "provider_id": "p_aicnb",
+      "is_official": false,
+      "multiplier": 0.72,
+      "input_usd_m": 0.3132,
+      "output_usd_m": 0.6264,
+      "cache_read_usd_m": 0.0202,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_deepseek_v4_pro",
+      "provider_id": "p_new_api",
+      "is_official": false,
+      "multiplier": 0.8,
+      "input_usd_m": 0.348,
+      "output_usd_m": 0.696,
+      "cache_read_usd_m": 0.0224,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_deepseek_v4_pro",
+      "provider_id": "p_vercel_ai_gateway",
+      "is_official": false,
+      "multiplier": 0.9,
+      "input_usd_m": 0.3915,
+      "output_usd_m": 0.783,
+      "cache_read_usd_m": 0.0252,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_deepseek_v4_pro",
+      "provider_id": "p_one_api",
+      "is_official": false,
+      "multiplier": 0.83,
+      "input_usd_m": 0.361,
+      "output_usd_m": 0.7221,
+      "cache_read_usd_m": 0.0232,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_deepseek_v4_flash",
+      "provider_id": "p_deepseek_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 0.14,
+      "output_usd_m": 0.28,
+      "cache_read_usd_m": 0.0028,
+      "source_url": "https://platform.deepseek.com"
+    },
+    {
+      "model_id": "m_deepseek_v4_flash",
+      "provider_id": "p_one_api",
+      "is_official": false,
+      "multiplier": 0.74,
+      "input_usd_m": 0.1036,
+      "output_usd_m": 0.2072,
+      "cache_read_usd_m": 0.0021,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_deepseek_v4_flash",
+      "provider_id": "p_aicnb",
+      "is_official": false,
+      "multiplier": 0.73,
+      "input_usd_m": 0.1022,
+      "output_usd_m": 0.2044,
+      "cache_read_usd_m": 0.002,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_deepseek_v4_flash",
+      "provider_id": "p_duckcoding",
+      "is_official": false,
+      "multiplier": 0.69,
+      "input_usd_m": 0.0966,
+      "output_usd_m": 0.1932,
+      "cache_read_usd_m": 0.0019,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_deepseek_v3_2",
+      "provider_id": "p_deepseek_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 0.27,
+      "output_usd_m": 1.1,
+      "cache_read_usd_m": 0,
+      "source_url": "https://platform.deepseek.com"
+    },
+    {
+      "model_id": "m_deepseek_v3_2",
+      "provider_id": "p_one_api",
+      "is_official": false,
+      "multiplier": 0.7,
+      "input_usd_m": 0.189,
+      "output_usd_m": 0.77,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_deepseek_v3_2",
+      "provider_id": "p_chatfire",
+      "is_official": false,
+      "multiplier": 0.9,
+      "input_usd_m": 0.243,
+      "output_usd_m": 0.99,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_deepseek_v3_2",
+      "provider_id": "p_aicnb",
+      "is_official": false,
+      "multiplier": 0.89,
+      "input_usd_m": 0.2403,
+      "output_usd_m": 0.979,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_deepseek_r1",
+      "provider_id": "p_deepseek_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 0.55,
+      "output_usd_m": 2.19,
+      "cache_read_usd_m": 0,
+      "source_url": "https://platform.deepseek.com"
+    },
+    {
+      "model_id": "m_deepseek_r1",
+      "provider_id": "p_cloudflare_ai",
+      "is_official": false,
+      "multiplier": 0.69,
+      "input_usd_m": 0.3795,
+      "output_usd_m": 1.5111,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_deepseek_r1",
+      "provider_id": "p_fireworks_ai",
+      "is_official": false,
+      "multiplier": 0.91,
+      "input_usd_m": 0.5005,
+      "output_usd_m": 1.9929,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_deepseek_r1",
+      "provider_id": "p_portkey",
+      "is_official": false,
+      "multiplier": 0.9,
+      "input_usd_m": 0.495,
+      "output_usd_m": 1.971,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_deepseek_r1",
+      "provider_id": "p_aicnb",
+      "is_official": false,
+      "multiplier": 0.9,
+      "input_usd_m": 0.495,
+      "output_usd_m": 1.971,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_qwen3_8_max",
+      "provider_id": "p_qwen_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 2,
+      "output_usd_m": 6,
+      "cache_read_usd_m": 0,
+      "source_url": "https://bailian.console.aliyun.com"
+    },
+    {
+      "model_id": "m_qwen3_8_max",
+      "provider_id": "p_duckcoding",
+      "is_official": false,
+      "multiplier": 0.89,
+      "input_usd_m": 1.78,
+      "output_usd_m": 5.34,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_qwen3_8_max",
+      "provider_id": "p_vercel_ai_gateway",
+      "is_official": false,
+      "multiplier": 0.87,
+      "input_usd_m": 1.74,
+      "output_usd_m": 5.22,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_qwen3_8_max",
+      "provider_id": "p_openrouter",
+      "is_official": false,
+      "multiplier": 0.73,
+      "input_usd_m": 1.46,
+      "output_usd_m": 4.38,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_qwen3_8_max",
+      "provider_id": "p_together_ai",
+      "is_official": false,
+      "multiplier": 0.67,
+      "input_usd_m": 1.34,
+      "output_usd_m": 4.02,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_qwen3_8_max",
+      "provider_id": "p_portkey",
+      "is_official": false,
+      "multiplier": 0.89,
+      "input_usd_m": 1.78,
+      "output_usd_m": 5.34,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_qwen3_7_max",
+      "provider_id": "p_qwen_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 2.5,
+      "output_usd_m": 7.5,
+      "cache_read_usd_m": 0,
+      "source_url": "https://bailian.console.aliyun.com"
+    },
+    {
+      "model_id": "m_qwen3_7_max",
+      "provider_id": "p_fireworks_ai",
+      "is_official": false,
+      "multiplier": 0.87,
+      "input_usd_m": 2.175,
+      "output_usd_m": 6.525,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_qwen3_7_max",
+      "provider_id": "p_api2d",
+      "is_official": false,
+      "multiplier": 0.91,
+      "input_usd_m": 2.275,
+      "output_usd_m": 6.825,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_qwen3_7_max",
+      "provider_id": "p_vercel_ai_gateway",
+      "is_official": false,
+      "multiplier": 0.79,
+      "input_usd_m": 1.975,
+      "output_usd_m": 5.925,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_qwen3_6_max_preview",
+      "provider_id": "p_qwen_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 1.04,
+      "output_usd_m": 6.24,
+      "cache_read_usd_m": 0,
+      "source_url": "https://bailian.console.aliyun.com"
+    },
+    {
+      "model_id": "m_qwen3_6_max_preview",
+      "provider_id": "p_helicone",
+      "is_official": false,
+      "multiplier": 0.91,
+      "input_usd_m": 0.9464,
+      "output_usd_m": 5.6784,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_qwen3_6_max_preview",
+      "provider_id": "p_duckcoding",
+      "is_official": false,
+      "multiplier": 0.69,
+      "input_usd_m": 0.7176,
+      "output_usd_m": 4.3056,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_qwen3_6_max_preview",
+      "provider_id": "p_vercel_ai_gateway",
+      "is_official": false,
+      "multiplier": 0.79,
+      "input_usd_m": 0.8216,
+      "output_usd_m": 4.9296,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_qwen3_8_flash",
+      "provider_id": "p_qwen_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 0.188,
+      "output_usd_m": 1.5,
+      "cache_read_usd_m": 0,
+      "source_url": "https://bailian.console.aliyun.com"
+    },
+    {
+      "model_id": "m_qwen3_8_flash",
+      "provider_id": "p_closeai",
+      "is_official": false,
+      "multiplier": 0.84,
+      "input_usd_m": 0.1579,
+      "output_usd_m": 1.26,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_qwen3_8_flash",
+      "provider_id": "p_anyscale",
+      "is_official": false,
+      "multiplier": 0.84,
+      "input_usd_m": 0.1579,
+      "output_usd_m": 1.26,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_qwen3_8_flash",
+      "provider_id": "p_one_api",
+      "is_official": false,
+      "multiplier": 0.76,
+      "input_usd_m": 0.1429,
+      "output_usd_m": 1.14,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_qwen3_8_flash",
+      "provider_id": "p_aicnb",
+      "is_official": false,
+      "multiplier": 0.83,
+      "input_usd_m": 0.156,
+      "output_usd_m": 1.245,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_qwen3_8_flash",
+      "provider_id": "p_api2d",
+      "is_official": false,
+      "multiplier": 0.75,
+      "input_usd_m": 0.141,
+      "output_usd_m": 1.125,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_glm_5_2",
+      "provider_id": "p_zhipu_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 1.4,
+      "output_usd_m": 4.4,
+      "cache_read_usd_m": 0,
+      "source_url": "https://bigmodel.cn"
+    },
+    {
+      "model_id": "m_glm_5_2",
+      "provider_id": "p_woka_ai",
+      "is_official": false,
+      "multiplier": 0.74,
+      "input_usd_m": 1.036,
+      "output_usd_m": 3.256,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_glm_5_2",
+      "provider_id": "p_together_ai",
+      "is_official": false,
+      "multiplier": 0.81,
+      "input_usd_m": 1.134,
+      "output_usd_m": 3.564,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_glm_5_2",
+      "provider_id": "p_anyscale",
+      "is_official": false,
+      "multiplier": 0.71,
+      "input_usd_m": 0.994,
+      "output_usd_m": 3.124,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_glm_5_2",
+      "provider_id": "p_closeai",
+      "is_official": false,
+      "multiplier": 0.71,
+      "input_usd_m": 0.994,
+      "output_usd_m": 3.124,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_glm_5_2",
+      "provider_id": "p_chatfire",
+      "is_official": false,
+      "multiplier": 0.67,
+      "input_usd_m": 0.938,
+      "output_usd_m": 2.948,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_glm_5_1",
+      "provider_id": "p_zhipu_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 1.2,
+      "output_usd_m": 4,
+      "cache_read_usd_m": 0,
+      "source_url": "https://bigmodel.cn"
+    },
+    {
+      "model_id": "m_glm_5_1",
+      "provider_id": "p_together_ai",
+      "is_official": false,
+      "multiplier": 0.67,
+      "input_usd_m": 0.804,
+      "output_usd_m": 2.68,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_glm_5_1",
+      "provider_id": "p_anyscale",
+      "is_official": false,
+      "multiplier": 0.71,
+      "input_usd_m": 0.852,
+      "output_usd_m": 2.84,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_glm_5_1",
+      "provider_id": "p_chatfire",
+      "is_official": false,
+      "multiplier": 0.83,
+      "input_usd_m": 0.996,
+      "output_usd_m": 3.32,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_glm_5_1",
+      "provider_id": "p_openrouter",
+      "is_official": false,
+      "multiplier": 0.71,
+      "input_usd_m": 0.852,
+      "output_usd_m": 2.84,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_glm_5_1",
+      "provider_id": "p_portkey",
+      "is_official": false,
+      "multiplier": 0.69,
+      "input_usd_m": 0.828,
+      "output_usd_m": 2.76,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_glm_4_6v",
+      "provider_id": "p_zhipu_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 0.9,
+      "output_usd_m": 3,
+      "cache_read_usd_m": 0,
+      "source_url": "https://bigmodel.cn"
+    },
+    {
+      "model_id": "m_glm_4_6v",
+      "provider_id": "p_chatfire",
+      "is_official": false,
+      "multiplier": 0.7,
+      "input_usd_m": 0.63,
+      "output_usd_m": 2.1,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_glm_4_6v",
+      "provider_id": "p_anyscale",
+      "is_official": false,
+      "multiplier": 0.68,
+      "input_usd_m": 0.612,
+      "output_usd_m": 2.04,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_glm_4_6v",
+      "provider_id": "p_aicnb",
+      "is_official": false,
+      "multiplier": 0.77,
+      "input_usd_m": 0.693,
+      "output_usd_m": 2.31,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_glm_4_6v",
+      "provider_id": "p_vercel_ai_gateway",
+      "is_official": false,
+      "multiplier": 0.76,
+      "input_usd_m": 0.684,
+      "output_usd_m": 2.28,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_glm_4_6v",
+      "provider_id": "p_cloudflare_ai",
+      "is_official": false,
+      "multiplier": 0.78,
+      "input_usd_m": 0.702,
+      "output_usd_m": 2.34,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_kimi_k3",
+      "provider_id": "p_moonshot_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 3,
+      "output_usd_m": 15,
+      "cache_read_usd_m": 0,
+      "source_url": "https://platform.moonshot.cn"
+    },
+    {
+      "model_id": "m_kimi_k3",
+      "provider_id": "p_together_ai",
+      "is_official": false,
+      "multiplier": 0.67,
+      "input_usd_m": 2.01,
+      "output_usd_m": 10.05,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_kimi_k3",
+      "provider_id": "p_duckcoding",
+      "is_official": false,
+      "multiplier": 0.85,
+      "input_usd_m": 2.55,
+      "output_usd_m": 12.75,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_kimi_k3",
+      "provider_id": "p_woka_ai",
+      "is_official": false,
+      "multiplier": 0.87,
+      "input_usd_m": 2.61,
+      "output_usd_m": 13.05,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_kimi_k3",
+      "provider_id": "p_closeai",
+      "is_official": false,
+      "multiplier": 0.68,
+      "input_usd_m": 2.04,
+      "output_usd_m": 10.2,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_kimi_k3",
+      "provider_id": "p_chatfire",
+      "is_official": false,
+      "multiplier": 0.7,
+      "input_usd_m": 2.1,
+      "output_usd_m": 10.5,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_kimi_k2_6",
+      "provider_id": "p_moonshot_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 0.95,
+      "output_usd_m": 4,
+      "cache_read_usd_m": 0,
+      "source_url": "https://platform.moonshot.cn"
+    },
+    {
+      "model_id": "m_kimi_k2_6",
+      "provider_id": "p_woka_ai",
+      "is_official": false,
+      "multiplier": 0.77,
+      "input_usd_m": 0.7315,
+      "output_usd_m": 3.08,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_kimi_k2_6",
+      "provider_id": "p_fireworks_ai",
+      "is_official": false,
+      "multiplier": 0.89,
+      "input_usd_m": 0.8455,
+      "output_usd_m": 3.56,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_kimi_k2_6",
+      "provider_id": "p_cloudflare_ai",
+      "is_official": false,
+      "multiplier": 0.67,
+      "input_usd_m": 0.6365,
+      "output_usd_m": 2.68,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_kimi_k2_6",
+      "provider_id": "p_chatfire",
+      "is_official": false,
+      "multiplier": 0.87,
+      "input_usd_m": 0.8265,
+      "output_usd_m": 3.48,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_kimi_k2_6",
+      "provider_id": "p_helicone",
+      "is_official": false,
+      "multiplier": 0.88,
+      "input_usd_m": 0.836,
+      "output_usd_m": 3.52,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_doubao_seed_2_pro",
+      "provider_id": "p_doubao_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 1.5,
+      "output_usd_m": 8,
+      "cache_read_usd_m": 0,
+      "source_url": "https://www.volcengine.com/product/doubao"
+    },
+    {
+      "model_id": "m_doubao_seed_2_pro",
+      "provider_id": "p_together_ai",
+      "is_official": false,
+      "multiplier": 0.88,
+      "input_usd_m": 1.32,
+      "output_usd_m": 7.04,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_doubao_seed_2_pro",
+      "provider_id": "p_duckcoding",
+      "is_official": false,
+      "multiplier": 0.91,
+      "input_usd_m": 1.365,
+      "output_usd_m": 7.28,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_doubao_seed_2_pro",
+      "provider_id": "p_one_api",
+      "is_official": false,
+      "multiplier": 0.9,
+      "input_usd_m": 1.35,
+      "output_usd_m": 7.2,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_doubao_seed_2_lite",
+      "provider_id": "p_doubao_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 0.3,
+      "output_usd_m": 1.5,
+      "cache_read_usd_m": 0,
+      "source_url": "https://www.volcengine.com/product/doubao"
+    },
+    {
+      "model_id": "m_doubao_seed_2_lite",
+      "provider_id": "p_portkey",
+      "is_official": false,
+      "multiplier": 0.78,
+      "input_usd_m": 0.234,
+      "output_usd_m": 1.17,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_doubao_seed_2_lite",
+      "provider_id": "p_cloudflare_ai",
+      "is_official": false,
+      "multiplier": 0.88,
+      "input_usd_m": 0.264,
+      "output_usd_m": 1.32,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_doubao_seed_2_lite",
+      "provider_id": "p_vercel_ai_gateway",
+      "is_official": false,
+      "multiplier": 0.89,
+      "input_usd_m": 0.267,
+      "output_usd_m": 1.335,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_ernie_5_1",
+      "provider_id": "p_baidu_qianfan",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 0.8,
+      "output_usd_m": 3.2,
+      "cache_read_usd_m": 0,
+      "source_url": "https://cloud.baidu.com/product/qianfan"
+    },
+    {
+      "model_id": "m_ernie_5_1",
+      "provider_id": "p_aicnb",
+      "is_official": false,
+      "multiplier": 0.72,
+      "input_usd_m": 0.576,
+      "output_usd_m": 2.304,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_ernie_5_1",
+      "provider_id": "p_openrouter",
+      "is_official": false,
+      "multiplier": 0.86,
+      "input_usd_m": 0.688,
+      "output_usd_m": 2.752,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_ernie_5_1",
+      "provider_id": "p_cloudflare_ai",
+      "is_official": false,
+      "multiplier": 0.77,
+      "input_usd_m": 0.616,
+      "output_usd_m": 2.464,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_llama_4_maverick",
+      "provider_id": "p_together_ai",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 0.6,
+      "output_usd_m": 2.4,
+      "cache_read_usd_m": 0,
+      "source_url": "https://www.together.ai"
+    },
+    {
+      "model_id": "m_llama_4_maverick",
+      "provider_id": "p_chatfire",
+      "is_official": false,
+      "multiplier": 0.71,
+      "input_usd_m": 0.426,
+      "output_usd_m": 1.704,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_llama_4_maverick",
+      "provider_id": "p_fireworks_ai",
+      "is_official": false,
+      "multiplier": 0.67,
+      "input_usd_m": 0.402,
+      "output_usd_m": 1.608,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_llama_4_maverick",
+      "provider_id": "p_anyscale",
+      "is_official": false,
+      "multiplier": 0.85,
+      "input_usd_m": 0.51,
+      "output_usd_m": 2.04,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_llama_4_maverick",
+      "provider_id": "p_helicone",
+      "is_official": false,
+      "multiplier": 0.67,
+      "input_usd_m": 0.402,
+      "output_usd_m": 1.608,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_llama_4_scout",
+      "provider_id": "p_together_ai",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 0.4,
+      "output_usd_m": 1.6,
+      "cache_read_usd_m": 0,
+      "source_url": "https://www.together.ai"
+    },
+    {
+      "model_id": "m_llama_4_scout",
+      "provider_id": "p_together_ai",
+      "is_official": false,
+      "multiplier": 0.79,
+      "input_usd_m": 0.316,
+      "output_usd_m": 1.264,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_llama_4_scout",
+      "provider_id": "p_openrouter",
+      "is_official": false,
+      "multiplier": 0.88,
+      "input_usd_m": 0.352,
+      "output_usd_m": 1.408,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_llama_4_scout",
+      "provider_id": "p_new_api",
+      "is_official": false,
+      "multiplier": 0.69,
+      "input_usd_m": 0.276,
+      "output_usd_m": 1.104,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_llama_4_scout",
+      "provider_id": "p_vercel_ai_gateway",
+      "is_official": false,
+      "multiplier": 0.91,
+      "input_usd_m": 0.364,
+      "output_usd_m": 1.456,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_mistral_large_3",
+      "provider_id": "p_mistral_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 1.5,
+      "output_usd_m": 7.5,
+      "cache_read_usd_m": 0,
+      "source_url": "https://console.mistral.ai"
+    },
+    {
+      "model_id": "m_mistral_large_3",
+      "provider_id": "p_portkey",
+      "is_official": false,
+      "multiplier": 0.67,
+      "input_usd_m": 1.005,
+      "output_usd_m": 5.025,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_mistral_large_3",
+      "provider_id": "p_together_ai",
+      "is_official": false,
+      "multiplier": 0.88,
+      "input_usd_m": 1.32,
+      "output_usd_m": 6.6,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_mistral_large_3",
+      "provider_id": "p_new_api",
+      "is_official": false,
+      "multiplier": 0.76,
+      "input_usd_m": 1.14,
+      "output_usd_m": 5.7,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_mistral_medium_3_5",
+      "provider_id": "p_mistral_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 1.5,
+      "output_usd_m": 7.5,
+      "cache_read_usd_m": 0,
+      "source_url": "https://console.mistral.ai"
+    },
+    {
+      "model_id": "m_mistral_medium_3_5",
+      "provider_id": "p_vercel_ai_gateway",
+      "is_official": false,
+      "multiplier": 0.67,
+      "input_usd_m": 1.005,
+      "output_usd_m": 5.025,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_mistral_medium_3_5",
+      "provider_id": "p_new_api",
+      "is_official": false,
+      "multiplier": 0.83,
+      "input_usd_m": 1.245,
+      "output_usd_m": 6.225,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_mistral_medium_3_5",
+      "provider_id": "p_woka_ai",
+      "is_official": false,
+      "multiplier": 0.8,
+      "input_usd_m": 1.2,
+      "output_usd_m": 6,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_mistral_medium_3_5",
+      "provider_id": "p_openrouter",
+      "is_official": false,
+      "multiplier": 0.74,
+      "input_usd_m": 1.11,
+      "output_usd_m": 5.55,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_mistral_medium_3_5",
+      "provider_id": "p_closeai",
+      "is_official": false,
+      "multiplier": 0.72,
+      "input_usd_m": 1.08,
+      "output_usd_m": 5.4,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_devstral_2",
+      "provider_id": "p_mistral_official",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 2,
+      "output_usd_m": 8,
+      "cache_read_usd_m": 0,
+      "source_url": "https://console.mistral.ai"
+    },
+    {
+      "model_id": "m_devstral_2",
+      "provider_id": "p_duckcoding",
+      "is_official": false,
+      "multiplier": 0.83,
+      "input_usd_m": 1.66,
+      "output_usd_m": 6.64,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_devstral_2",
+      "provider_id": "p_anyscale",
+      "is_official": false,
+      "multiplier": 0.73,
+      "input_usd_m": 1.46,
+      "output_usd_m": 5.84,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_devstral_2",
+      "provider_id": "p_helicone",
+      "is_official": false,
+      "multiplier": 0.74,
+      "input_usd_m": 1.48,
+      "output_usd_m": 5.92,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_devstral_2",
+      "provider_id": "p_cloudflare_ai",
+      "is_official": false,
+      "multiplier": 0.85,
+      "input_usd_m": 1.7,
+      "output_usd_m": 6.8,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_devstral_2",
+      "provider_id": "p_fireworks_ai",
+      "is_official": false,
+      "multiplier": 0.67,
+      "input_usd_m": 1.34,
+      "output_usd_m": 5.36,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_minimax_m3",
+      "provider_id": "p_openrouter",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 0.5,
+      "output_usd_m": 2.5,
+      "cache_read_usd_m": 0,
+      "source_url": "https://openrouter.ai"
+    },
+    {
+      "model_id": "m_minimax_m3",
+      "provider_id": "p_anyscale",
+      "is_official": false,
+      "multiplier": 0.79,
+      "input_usd_m": 0.395,
+      "output_usd_m": 1.975,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_minimax_m3",
+      "provider_id": "p_together_ai",
+      "is_official": false,
+      "multiplier": 0.69,
+      "input_usd_m": 0.345,
+      "output_usd_m": 1.725,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_minimax_m3",
+      "provider_id": "p_one_api",
+      "is_official": false,
+      "multiplier": 0.74,
+      "input_usd_m": 0.37,
+      "output_usd_m": 1.85,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_minimax_m3",
+      "provider_id": "p_chatfire",
+      "is_official": false,
+      "multiplier": 0.67,
+      "input_usd_m": 0.335,
+      "output_usd_m": 1.675,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_minimax_m2_7",
+      "provider_id": "p_openrouter",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 1.2,
+      "output_usd_m": 4.8,
+      "cache_read_usd_m": 0,
+      "source_url": "https://openrouter.ai"
+    },
+    {
+      "model_id": "m_minimax_m2_7",
+      "provider_id": "p_api2d",
+      "is_official": false,
+      "multiplier": 0.77,
+      "input_usd_m": 0.924,
+      "output_usd_m": 3.696,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_minimax_m2_7",
+      "provider_id": "p_helicone",
+      "is_official": false,
+      "multiplier": 0.8,
+      "input_usd_m": 0.96,
+      "output_usd_m": 3.84,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_minimax_m2_7",
+      "provider_id": "p_fireworks_ai",
+      "is_official": false,
+      "multiplier": 0.73,
+      "input_usd_m": 0.876,
+      "output_usd_m": 3.504,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_step_3_5_flash",
+      "provider_id": "p_openrouter",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 0.2,
+      "output_usd_m": 0.8,
+      "cache_read_usd_m": 0,
+      "source_url": "https://openrouter.ai"
+    },
+    {
+      "model_id": "m_step_3_5_flash",
+      "provider_id": "p_openrouter",
+      "is_official": false,
+      "multiplier": 0.9,
+      "input_usd_m": 0.18,
+      "output_usd_m": 0.72,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_step_3_5_flash",
+      "provider_id": "p_duckcoding",
+      "is_official": false,
+      "multiplier": 0.68,
+      "input_usd_m": 0.136,
+      "output_usd_m": 0.544,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_step_3_5_flash",
+      "provider_id": "p_closeai",
+      "is_official": false,
+      "multiplier": 0.89,
+      "input_usd_m": 0.178,
+      "output_usd_m": 0.712,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_step_3_5_flash",
+      "provider_id": "p_one_api",
+      "is_official": false,
+      "multiplier": 0.72,
+      "input_usd_m": 0.144,
+      "output_usd_m": 0.576,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_step_3_5_flash",
+      "provider_id": "p_helicone",
+      "is_official": false,
+      "multiplier": 0.89,
+      "input_usd_m": 0.178,
+      "output_usd_m": 0.712,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_mimo_v2_flash",
+      "provider_id": "p_openrouter",
+      "is_official": false,
+      "multiplier": 1,
+      "input_usd_m": 0.3,
+      "output_usd_m": 1.2,
+      "cache_read_usd_m": 0,
+      "source_url": "https://openrouter.ai"
+    },
+    {
+      "model_id": "m_mimo_v2_flash",
+      "provider_id": "p_helicone",
+      "is_official": false,
+      "multiplier": 0.84,
+      "input_usd_m": 0.252,
+      "output_usd_m": 1.008,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_mimo_v2_flash",
+      "provider_id": "p_chatfire",
+      "is_official": false,
+      "multiplier": 0.7,
+      "input_usd_m": 0.21,
+      "output_usd_m": 0.84,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_mimo_v2_flash",
+      "provider_id": "p_woka_ai",
+      "is_official": false,
+      "multiplier": 0.82,
+      "input_usd_m": 0.246,
+      "output_usd_m": 0.984,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_mimo_v2_flash",
+      "provider_id": "p_new_api",
+      "is_official": false,
+      "multiplier": 0.72,
+      "input_usd_m": 0.216,
+      "output_usd_m": 0.864,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    },
+    {
+      "model_id": "m_mimo_v2_flash",
+      "provider_id": "p_anyscale",
+      "is_official": false,
+      "multiplier": 0.78,
+      "input_usd_m": 0.234,
+      "output_usd_m": 0.936,
+      "cache_read_usd_m": 0,
+      "source_url": ""
+    }
+  ],
+  "events": [
+    {
+      "id": "e_2026_07_qwen38max",
+      "date": "2026-08-15",
+      "title": "阿里发布 Qwen3.8 Max，多模态 APAC 第一",
+      "description": "Qwen3.8 Max 采用全新线性注意力架构，90% 标准注意力被替换，1M 上下文原生多模态",
+      "event_type": "new_model",
+      "target_type": "model",
+      "target_name": "Qwen3.8 Max",
+      "severity": "medium",
+      "tags": [
+        "new_model"
+      ],
+      "source_urls": [
+        "https://qwen.ai"
+      ]
+    },
+    {
+      "id": "e_2026_07_kimi_k3",
+      "date": "2026-07-27",
+      "title": "Moonshot Kimi K3 API 上线，开源倒计时",
+      "description": "Kimi K3 (1T MoE, 32B 激活) API 开放，权重将于 2026-07-27 开源",
+      "event_type": "new_model",
+      "target_type": "model",
+      "target_name": "Kimi K3",
+      "severity": "medium",
+      "tags": [
+        "new_model"
+      ],
+      "source_urls": [
+        "https://kimi.moonshot.cn"
+      ]
+    },
+    {
+      "id": "e_2026_07_claude_opus_5",
+      "date": "2026-07-24",
+      "title": "Anthropic 发布 Claude Opus 5，价格不变",
+      "description": "Opus 5 在深度推理和 long-horizon agent 工作上大幅提升，价格保持 $5/$25",
+      "event_type": "new_model",
+      "target_type": "model",
+      "target_name": "Claude Opus 5",
+      "severity": "high",
+      "tags": [
+        "new_model",
+        "capability_update"
+      ],
+      "source_urls": [
+        "https://anthropic.com"
+      ]
+    },
+    {
+      "id": "e_2026_07_gpt_5_6_sol",
+      "date": "2026-07-09",
+      "title": "OpenAI 发布 GPT-5.6 Sol，3 个版本",
+      "description": "GPT-5.6 Sol / Terra / Luna 三个版本，主打 agentic 终端工作流",
+      "event_type": "new_model",
+      "target_type": "model",
+      "target_name": "GPT-5.6 Sol",
+      "severity": "high",
+      "tags": [
+        "new_model",
+        "capability_update"
+      ],
+      "source_urls": [
+        "https://openai.com"
+      ]
+    },
+    {
+      "id": "e_2026_06_glm_5_2",
+      "date": "2026-06-13",
+      "title": "智谱发布 GLM-5.2，国产最强 Agent",
+      "description": "GLM-5.2 (753B MoE, ~40B 激活) 适配 7 大国产芯片平台，1M 上下文",
+      "event_type": "new_model",
+      "target_type": "model",
+      "target_name": "GLM-5.2",
+      "severity": "medium",
+      "tags": [
+        "new_model"
+      ],
+      "source_urls": [
+        "https://zhipuai.cn"
+      ]
+    },
+    {
+      "id": "e_2026_06_portkey_open",
+      "date": "2026-03-24",
+      "title": "Portkey 网关 Apache 2.0 开源",
+      "description": "Portkey 把完整网关代码 Apache 2.0 开源，企业级护城河+开源优势",
+      "event_type": "policy_change",
+      "target_type": "provider",
+      "target_name": "Portkey",
+      "severity": "low",
+      "tags": [
+        "policy_change"
+      ],
+      "source_urls": [
+        "https://portkey.ai"
+      ]
+    },
+    {
+      "id": "e_2026_05_deepseek_v4",
+      "date": "2026-05-31",
+      "title": "DeepSeek V4 永久降价 75%",
+      "description": "DeepSeek V4 Pro 价格从 $1.74/$3.48 永久降至 $0.435/$0.87",
+      "event_type": "price_change",
+      "target_type": "model",
+      "target_name": "DeepSeek V4 Pro",
+      "severity": "medium",
+      "tags": [
+        "price_change"
+      ],
+      "source_urls": [
+        "https://platform.deepseek.com"
+      ]
+    },
+    {
+      "id": "e_2026_05_qwen3_7",
+      "date": "2026-05-20",
+      "title": "Qwen3.7 Max 在云栖大会发布",
+      "description": "Qwen3.7 Max (1M 上下文 + Extended Thinking) 在杭州云栖发布",
+      "event_type": "new_model",
+      "target_type": "model",
+      "target_name": "Qwen3.7 Max",
+      "severity": "medium",
+      "tags": [
+        "new_model"
+      ],
+      "source_urls": [
+        "https://qwen.ai"
+      ]
+    },
+    {
+      "id": "e_2026_04_deepseek_v4",
+      "date": "2026-04-24",
+      "title": "DeepSeek V4 系列发布，1M 上下文普惠",
+      "description": "DeepSeek V4 Pro / Flash / 完整 1M 上下文标准，Agent 与代码能力对标顶尖闭源",
+      "event_type": "new_model",
+      "target_type": "model",
+      "target_name": "DeepSeek V4 Pro",
+      "severity": "high",
+      "tags": [
+        "new_model",
+        "capability_update"
+      ],
+      "source_urls": [
+        "https://platform.deepseek.com"
+      ]
+    },
+    {
+      "id": "e_2026_04_kimi_k2_6",
+      "date": "2026-04-20",
+      "title": "Moonshot K2.6 + Qwen3.6 Max 同日发布",
+      "description": "K2.6 SWE-bench 80.2% 反超 GPT-5.4，Qwen3.6 Max 横扫 6 项 Agent 基准",
+      "event_type": "new_model",
+      "target_type": "model",
+      "target_name": "Kimi K2.6",
+      "severity": "medium",
+      "tags": [
+        "new_model"
+      ],
+      "source_urls": [
+        "https://kimi.moonshot.cn"
+      ]
+    },
+    {
+      "id": "e_2026_03_glm_5_1",
+      "date": "2026-03-27",
+      "title": "GLM-5.1 发布，94% Claude Opus 4.6 编码能力",
+      "description": "MIT 许可证，适配国产芯片，编码能力达 Claude Opus 4.6 的 94%",
+      "event_type": "new_model",
+      "target_type": "model",
+      "target_name": "GLM-5.1",
+      "severity": "low",
+      "tags": [
+        "new_model"
+      ],
+      "source_urls": [
+        "https://zhipuai.cn"
+      ]
+    },
+    {
+      "id": "e_2026_03_minimax_m2_7",
+      "date": "2026-03-18",
+      "title": "MiniMax M2.7 发布，自我进化 Agent",
+      "description": "MiniMax M2.7 引入 self-evolving agent 能力，200K 上下文",
+      "event_type": "new_model",
+      "target_type": "model",
+      "target_name": "MiniMax M2.7",
+      "severity": "low",
+      "tags": [
+        "new_model",
+        "capability_update"
+      ],
+      "source_urls": [
+        "https://api.minimax.chat"
+      ]
+    },
+    {
+      "id": "e_2026_08_minimax_m3",
+      "date": "2026-08-12",
+      "title": "MiniMax 发布 M3，1M 上下文长文档",
+      "description": "MiniMax M3 升级 1M 上下文窗口，主打长文档处理",
+      "event_type": "new_model",
+      "target_type": "model",
+      "target_name": "MiniMax M3",
+      "severity": "low",
+      "tags": [
+        "new_model"
+      ],
+      "source_urls": [
+        "https://api.minimax.chat"
+      ]
+    }
+  ],
+  "fx_rate": {
+    "USD_CNY": 7.1,
+    "date": "2026-09-20"
+  }
+};
