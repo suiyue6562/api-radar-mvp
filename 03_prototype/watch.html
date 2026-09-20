@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的关注 - API Radar</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">API<span class="dot">Radar</span><small>AI API 决策工具</small></div>
+  <nav class="mainnav">
+    <a href="index.html">首页</a>
+    <a href="models.html">模型库</a>
+    <a href="providers.html">渠道库</a>
+    <a href="compare.html">比价</a>
+    <a href="events.html">行情</a>
+    <a href="watch.html" class="active">关注</a>
+  </nav>
+  <div class="topbar-search">
+    <input type="text" id="topbar-search-input" placeholder="搜索...">
+  </div>
+</header>
+
+<main>
+  <h1 style="margin-bottom:8px;">我的关注</h1>
+  <p style="color:var(--muted);margin-bottom:24px;">订阅的模型和渠道有变化时，一站掌握。<br>数据本地存储，不上传服务器（演示版）。</p>
+
+  <div class="filter-bar" style="margin-bottom:20px;">
+    <label>类型：</label>
+    <div class="event-filters" style="margin:0;">
+      <button class="filter-chip active" data-watch-type="">全部</button>
+      <button class="filter-chip" data-watch-type="model">模型</button>
+      <button class="filter-chip" data-watch-type="provider">渠道</button>
+      <button class="filter-chip" data-watch-type="vendor">厂商</button>
+    </div>
+    <button class="btn-secondary" onclick="clearAllWatch()" style="margin-left:auto;">🗑 清空全部</button>
+  </div>
+
+  <div id="watch-list"></div>
+
+  <div class="detail-section" style="margin-top:40px;">
+    <h3>📋 关注项的近期事件</h3>
+    <div class="event-list" id="watched-events"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span>API Radar v0.1</span>
+    <div class="footer-links">
+      <a href="method.html">数据方法</a>
+    </div>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+let currentWatchFilter = '';
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-watch-type]').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('[data-watch-type]').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentWatchFilter = chip.dataset.watchType;
+      renderWatch();
+    });
+  });
+  renderWatch();
+});
+
+function renderWatch() {
+  const list = document.getElementById('watch-list');
+  let items = getWatchList();
+
+  if (currentWatchFilter) items = items.filter(w => w.targetType === currentWatchFilter);
+
+  if (items.length === 0) {
+    list.innerHTML = '<div class="empty-state"><div style="font-size:48px;margin-bottom:12px;">📡</div><div>暂无关注项</div><div style="margin-top:8px;font-size:13px;">去 <a href="index.html">首页</a> 或 <a href="models.html">模型库</a> / <a href="providers.html">渠道库</a> 关注你关心的对象</div></div>';
+  } else {
+    list.innerHTML = '<div class="watch-list">' + items.map(w => {
+      let url = '';
+      if (w.targetType === 'model') url = 'model.html?id=' + w.targetId;
+      else if (w.targetType === 'provider') url = 'provider.html?id=' + w.targetId;
+      const typeLabel = w.targetType === 'model' ? '模型' : w.targetType === 'provider' ? '渠道' : '厂商';
+      return '<div class="watch-item">' +
+        '<div class="watch-item-left">' +
+          '<a href="' + url + '" class="watch-item-name" style="color:var(--fg);text-decoration:none;">' + w.targetName + '</a>' +
+          '<div class="watch-item-meta">📋 ' + typeLabel + ' · 添加于 ' + timeAgo(w.addedAt) + '</div>' +
+        '</div>' +
+        '<div class="watch-item-actions">' +
+          '<a href="' + url + '"><button>查看</button></a>' +
+          '<button onclick="removeWatch(\'' + w.targetType + '\', \'' + w.targetId + '\')">取消</button>' +
+        '</div>' +
+      '</div>';
+    }).join('') + '</div>';
+  }
+
+  // 渲染关注项的事件
+  const eventsEl = document.getElementById('watched-events');
+  const allEvents = [];
+  items.forEach(w => {
+    const events = getEventsForTarget(w.targetType, w.targetId);
+    events.forEach(e => allEvents.push({ ...e, _watchedName: w.targetName, _watchedType: w.targetType }));
+  });
+  allEvents.sort((a, b) => new Date(b.effective_date) - new Date(a.effective_date));
+
+  if (allEvents.length === 0) {
+    eventsEl.innerHTML = '<div class="empty-state">关注项暂无近期事件</div>';
+  } else {
+    eventsEl.innerHTML = allEvents.map(e => {
+      const dotClass = e.severity === 'high' ? 'dot-high' : e.severity === 'medium' ? 'dot-medium' : 'dot-low';
+      return '<div class="event-item">' +
+        '<div class="event-dot ' + dotClass + '"></div>' +
+        '<div class="event-content">' +
+          '<div class="event-title"><span class="event-target">' + e._watchedName + '</span> · ' + e.headline + '</div>' +
+          '<div class="event-summary">' + (e.summary || '') + '</div>' +
+          '<div class="event-meta">' +
+            '<span>⏱ ' + timeAgo(e.effective_date) + '</span>' +
+            '<span>📋 ' + e.event_type + '</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+}
+
+function removeWatch(type, id) {
+  if (!confirm('确定取消关注？')) return;
+  let list = getWatchList();
+  list = list.filter(w => !(w.targetType === type && w.targetId === id));
+  setWatchList(list);
+  renderWatch();
+}
+
+function clearAllWatch() {
+  if (!confirm('确定清空所有关注？此操作不可恢复')) return;
+  setWatchList([]);
+  renderWatch();
+}
+</script>
+</body>
+</html>

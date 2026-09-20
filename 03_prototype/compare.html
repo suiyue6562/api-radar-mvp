@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>横向比价 - API Radar</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">API<span class="dot">Radar</span><small>AI API 决策工具</small></div>
+  <nav class="mainnav">
+    <a href="index.html">首页</a>
+    <a href="models.html">模型库</a>
+    <a href="providers.html">渠道库</a>
+    <a href="compare.html" class="active">比价</a>
+    <a href="events.html">行情</a>
+    <a href="watch.html">关注</a>
+  </nav>
+  <div class="topbar-search">
+    <input type="text" id="topbar-search-input" placeholder="搜索...">
+  </div>
+</header>
+
+<main>
+  <h1 style="margin-bottom:8px;">横向比价</h1>
+  <p style="color:var(--muted);margin-bottom:24px;">选模型 → 填用量 → 看 5 渠道月成本对比</p>
+
+  <div class="calc-wrap">
+    <div class="calc-grid">
+      <div class="calc-section">
+        <h4>① 用量</h4>
+        <div class="calc-row">
+          <span class="calc-label">模型</span>
+          <select class="calc-select" id="cmp-model"></select>
+        </div>
+        <div class="calc-row">
+          <span class="calc-label">输入 Token</span>
+          <input type="number" class="calc-input" id="cmp-input" value="100000000">
+        </div>
+        <div class="calc-row">
+          <span class="calc-label">输出 Token</span>
+          <input type="number" class="calc-input" id="cmp-output" value="20000000">
+        </div>
+        <div class="calc-row">
+          <span class="calc-label">缓存读取</span>
+          <input type="number" class="calc-input" id="cmp-cache" value="0">
+        </div>
+      </div>
+
+      <div class="calc-section">
+        <h4>② 显示选项</h4>
+        <div class="calc-row">
+          <span class="calc-label">币种</span>
+          <select class="calc-select" id="cmp-currency">
+            <option value="CNY">人民币（¥）</option>
+            <option value="USD">美元（$）</option>
+          </select>
+        </div>
+        <div class="calc-row">
+          <span class="calc-label">排序</span>
+          <select class="calc-select" id="cmp-sort">
+            <option value="total">总价升序</option>
+            <option value="provider">按渠道名</option>
+            <option value="official">官方优先</option>
+          </select>
+        </div>
+        <div class="calc-actions" style="margin-top:20px;">
+          <button class="btn-primary" onclick="runCompare()">生成对比</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-result show" id="compare-result" style="margin-top:24px;">
+      <div class="calc-result-header">
+        <div>
+          <div class="calc-result-label">最低月成本</div>
+          <div class="calc-result-total" id="cmp-best-total">¥ 0</div>
+        </div>
+        <div style="text-align:right;font-size:12px;color:var(--muted);">
+          <div id="cmp-best-info">—</div>
+          <div id="cmp-fx">汇率 2026-09-20</div>
+        </div>
+      </div>
+
+      <table class="price-table" style="margin-top:16px;">
+        <thead>
+          <tr>
+            <th>渠道</th>
+            <th>类型</th>
+            <th>输入成本</th>
+            <th>输出成本</th>
+            <th>缓存成本</th>
+            <th>月成本</th>
+            <th>差异</th>
+            <th>付款</th>
+            <th>发票</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="cmp-table-body"></tbody>
+      </table>
+
+      <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border-light);font-size:11px;color:var(--muted);">
+        💡 "中转"渠道价格可能更低但数据政策因渠道而异；建议结合"三栏分列"评估。差异 = (当前渠道 - 最低渠道) / 最低渠道 × 100%。
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span>API Radar v0.1</span>
+    <div class="footer-links">
+      <a href="method.html">数据方法</a>
+      <a href="#">免责声明</a>
+    </div>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+// Compare page standalone — runCompare defined inline
+function runCompare() {
+  const modelId = document.getElementById('cmp-model').value;
+  const input = parseFloat(document.getElementById('cmp-input').value) || 0;
+  const output = parseFloat(document.getElementById('cmp-output').value) || 0;
+  const cache = parseFloat(document.getElementById('cmp-cache').value) || 0;
+  const currency = document.getElementById('cmp-currency').value;
+  const sortBy = document.getElementById('cmp-sort').value;
+
+  const model = getModel(modelId);
+  if (!model) return;
+
+  const offerings = getOfferingsForModel(modelId);
+  if (offerings.length === 0) {
+    document.getElementById('cmp-table-body').innerHTML = '<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--muted);">该模型暂无渠道</td></tr>';
+    return;
+  }
+
+  const results = offerings.map(o => {
+    const provider = getProvider(o.provider_id);
+    const cost = calcCost(model, o, input, output, cache);
+    return { offering: o, provider, cost };
+  });
+
+  if (sortBy === 'total') results.sort((a, b) => a.cost.total - b.cost.total);
+  else if (sortBy === 'provider') results.sort((a, b) => a.provider.name.localeCompare(b.provider.name));
+  else if (sortBy === 'official') results.sort((a, b) => (b.offering.is_official ? 1 : 0) - (a.offering.is_official ? 1 : 0));
+
+  const fx = API_RADAR_DATA.fx_rate.USD_CNY;
+  const best = results[0];
+  const disp = (n) => currency === 'CNY' ? fmtCNY(n) : fmtUSD(n / fx);
+
+  document.getElementById('cmp-best-total').textContent = disp(best.cost.total);
+  document.getElementById('cmp-best-info').textContent = '最优：' + best.provider.name + ' · ' + model.display_name;
+  document.getElementById('cmp-fx').textContent = currency + ' · 汇率 2026-09-20';
+
+  const tbody = document.getElementById('cmp-table-body');
+  tbody.innerHTML = '';
+  results.forEach((r, i) => {
+    const diff = best.cost.total > 0 ? ((r.cost.total - best.cost.total) / best.cost.total * 100) : 0;
+    const isBest = i === 0;
+    const tr = document.createElement('tr');
+    if (isBest) tr.style.background = 'rgba(63,185,80,0.06)';
+    tr.innerHTML =
+      '<td><a href="provider.html?id=' + r.provider.id + '" style="color:var(--fg);text-decoration:none;">' +
+        '<strong>' + r.provider.name + '</strong>' +
+        (r.offering.is_official ? ' <span style="color:var(--accent2);font-size:10px;">官方</span>' : ' <span style="color:var(--warning);font-size:10px;">中转</span>') +
+      '</a></td>' +
+      '<td><span style="font-size:11px;color:var(--muted);">' + (r.provider.type === 'official' ? '官方' : r.provider.type === 'aggregator' ? '聚合' : '云厂商') + '</span></td>' +
+      '<td class="price-cell">' + disp(r.cost.inputCost) + '</td>' +
+      '<td class="price-cell">' + disp(r.cost.outputCost) + '</td>' +
+      '<td class="price-cell">' + disp(r.cost.cacheCost) + '</td>' +
+      '<td class="price-cell" style="font-weight:700;color:var(--accent);">' + disp(r.cost.total) + (isBest ? ' <span class="badge-best">最省</span>' : '') + '</td>' +
+      '<td style="color:' + (diff === 0 ? 'var(--accent2)' : 'var(--muted)') + ';">' + (diff === 0 ? '基线' : '+' + diff.toFixed(0) + '%') + '</td>' +
+      '<td style="font-size:11px;">' + (r.provider.payment_currency || []).join('/') + '</td>' +
+      '<td>' + (r.provider.invoice_available ? '<span style="color:var(--accent2);">✓</span>' : '<span style="color:var(--muted);">×</span>') + '</td>' +
+      '<td><a href="provider.html?id=' + r.provider.id + '" style="font-size:12px;">详情</a></td>';
+    tbody.appendChild(tr);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const sel = document.getElementById('cmp-model');
+  API_RADAR_DATA.models.forEach(m => {
+    const v = getVendor(m.vendor_id);
+    const opt = document.createElement('option');
+    opt.value = m.id;
+    opt.textContent = m.display_name + ' (' + v.name_zh + ')';
+    sel.appendChild(opt);
+  });
+
+  const params = new URLSearchParams(location.search);
+  const presetModel = params.get('model');
+  if (presetModel && API_RADAR_DATA.models.find(m => m.id === presetModel)) sel.value = presetModel;
+
+  runCompare();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>渠道库 - API Radar</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">API<span class="dot">Radar</span><small>AI API 决策工具</small></div>
+  <nav class="mainnav">
+    <a href="index.html">首页</a>
+    <a href="models.html">模型库</a>
+    <a href="providers.html" class="active">渠道库</a>
+    <a href="compare.html">比价</a>
+    <a href="events.html">行情</a>
+    <a href="watch.html">关注</a>
+  </nav>
+  <div class="topbar-search">
+    <input type="text" id="topbar-search-input" placeholder="搜索...">
+  </div>
+</header>
+
+<main>
+  <h1 style="margin-bottom:8px;">渠道库 <span style="color:var(--muted);font-weight:400;font-size:14px;">· <span id="provider-count">0</span> 家</span></h1>
+  <p style="color:var(--muted);margin-bottom:24px;">所有收录的 API 渠道，含主体、付款、政策三栏信息</p>
+
+  <div class="filter-bar" style="margin-bottom:20px;">
+    <label>类型：</label>
+    <select id="provider-filter-type">
+      <option value="">全部</option>
+      <option value="official">官方</option>
+      <option value="aggregator">聚合</option>
+      <option value="cloud">云厂商</option>
+    </select>
+    <label>地区：</label>
+    <select id="provider-filter-region">
+      <option value="">全部</option>
+      <option value="china">国内可用</option>
+      <option value="global">全球</option>
+    </select>
+    <label>付款：</label>
+    <select id="provider-filter-pay">
+      <option value="">全部</option>
+      <option value="CNY">人民币</option>
+      <option value="USD">美元</option>
+    </select>
+    <label>发票：</label>
+    <select id="provider-filter-invoice">
+      <option value="">全部</option>
+      <option value="true">可开票</option>
+    </select>
+  </div>
+
+  <div class="provider-grid" id="provider-grid"></div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span>API Radar v0.1</span>
+    <div class="footer-links">
+      <a href="method.html">数据方法</a>
+    </div>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  setupProviderFilters();
+  renderProviderGrid();
+});
+
+// 重写 renderProviderGrid 以更新计数
+function renderProviderGrid() {
+  const grid = document.getElementById('provider-grid');
+  if (!grid) return;
+
+  const typeFilter = document.getElementById('provider-filter-type')?.value || '';
+  const regionFilter = document.getElementById('provider-filter-region')?.value || '';
+  const payFilter = document.getElementById('provider-filter-pay')?.value || '';
+  const invoiceFilter = document.getElementById('provider-filter-invoice')?.value || '';
+
+  let providers = API_RADAR_DATA.providers.slice();
+
+  if (typeFilter) providers = providers.filter(p => p.type === typeFilter);
+  if (regionFilter === 'china') providers = providers.filter(p => (p.service_regions || []).some(r => r.includes('中国')));
+  if (regionFilter === 'global') providers = providers.filter(p => (p.service_regions || []).some(r => r.includes('全球')));
+  if (payFilter) providers = providers.filter(p => (p.payment_currency || []).includes(payFilter));
+  if (invoiceFilter === 'true') providers = providers.filter(p => p.invoice_available);
+
+  grid.innerHTML = '';
+  providers.forEach(p => {
+    const offerings = getOfferingsForProvider(p.id);
+    const typeLabel = p.type === 'official' ? '官方' : p.type === 'aggregator' ? '聚合' : '云厂商';
+    const typeClass = 't-' + p.type;
+
+    const card = document.createElement('div');
+    card.className = 'provider-card';
+    card.onclick = () => location.href = 'provider.html?id=' + p.id;
+    card.innerHTML =
+      '<div class="provider-card-header">' +
+        '<div class="provider-card-name">' + p.name + '</div>' +
+        '<span class="provider-card-type ' + typeClass + '">' + typeLabel + '</span>' +
+      '</div>' +
+      '<div class="provider-card-region">📍 ' + (p.entity_region || '—') + ' · 💳 ' + (p.payment_currency || []).join('/') + '</div>' +
+      '<div style="font-size:12px;color:var(--muted);margin-bottom:8px;">' + (p.description || '').slice(0, 60) + '</div>' +
+      '<div class="provider-card-models">' +
+        offerings.slice(0, 4).map(o => {
+          const m = getModel(o.model_id);
+          return m ? '<span class="tag">' + m.display_name + '</span>' : '';
+        }).join('') +
+        (offerings.length > 4 ? '<span class="tag">+' + (offerings.length - 4) + '</span>' : '') +
+      '</div>' +
+      '<div style="margin-top:10px;font-size:11px;color:var(--muted);display:flex;justify-content:space-between;">' +
+        '<span class="provider-card-status"><span class="dot"></span> ' + (p.status === 'active' ? '活跃' : '受限') + '</span>' +
+        '<span>' + (p.invoice_available ? '✓ 可开票' : '× 无发票') + '</span>' +
+      '</div>';
+    grid.appendChild(card);
+  });
+
+  if (providers.length === 0) {
+    grid.innerHTML = '<div class="empty-state">无匹配渠道</div>';
+  }
+
+  document.getElementById('provider-count').textContent = providers.length;
+}
+</script>
+</body>
+</html>

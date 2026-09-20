@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模型详情 - API Radar</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">API<span class="dot">Radar</span><small>AI API 决策工具</small></div>
+  <nav class="mainnav">
+    <a href="index.html">首页</a>
+    <a href="models.html">模型库</a>
+    <a href="providers.html">渠道库</a>
+    <a href="compare.html">比价</a>
+    <a href="events.html">行情</a>
+    <a href="watch.html">关注</a>
+  </nav>
+  <div class="topbar-search">
+    <input type="text" id="topbar-search-input" placeholder="搜索模型或渠道...">
+  </div>
+</header>
+
+<main id="model-detail-main">
+  <div style="text-align:center;padding:80px;color:var(--muted);">加载中...</div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span>API Radar v0.1 · W1 内测版</span>
+    <div class="footer-links">
+      <a href="method.html">数据方法</a>
+      <a href="#">免责声明</a>
+      <a href="#">纠错入口</a>
+    </div>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+// 模型详情页
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  if (!id) { location.href = 'models.html'; return; }
+  const model = getModel(id);
+  if (!model) { document.getElementById('model-detail-main').innerHTML = '<div style="text-align:center;padding:80px;color:var(--muted);">模型不存在</div>'; return; }
+  const vendor = getVendor(model.vendor_id);
+  const fx = API_RADAR_DATA.fx_rate.USD_CNY;
+  const inputCny = model.official_input_cny_m || (model.official_input_usd_m ? model.official_input_usd_m * fx : 0);
+  const outputCny = model.official_output_cny_m || (model.official_output_usd_m ? model.official_output_usd_m * fx : 0);
+  const cacheCny = model.official_cache_read_cny_m || (model.official_cache_read_usd_m ? model.official_cache_read_usd_m * fx : null);
+  const offerings = getOfferingsForModel(id);
+  const events = getEventsForTarget('model', id);
+  const watching = isWatching('model', id);
+
+  document.title = model.display_name + ' - API Radar';
+
+  const main = document.getElementById('model-detail-main');
+  main.innerHTML = `
+    <nav class="breadcrumb">
+      <a href="index.html">首页</a> · <a href="models.html">模型库</a> · <span>${model.display_name}</span>
+    </nav>
+
+    <section class="detail-header">
+      <div>
+        <h1>${model.display_name}</h1>
+        <div class="detail-subtitle">
+          <a href="provider.html?id=${vendor.id}">${vendor.name_zh}</a> ·
+          <span class="status-dot ${model.status === 'available' ? 'available' : 'limited'}"></span>
+          ${model.status === 'available' ? '可用' : '受限'}
+          · 发布 ${model.release_date || '未知'}
+        </div>
+        <div class="detail-tags">
+          ${model.alias.map(a => `<span class="tag">${a}</span>`).join('')}
+        </div>
+      </div>
+      <button class="btn-watch" onclick="watchThisModel('${model.id}', '${model.display_name}')">
+    ${watching ? '★ 已关注' : '☆ 关注'}
+  </button>
+    </section>
+
+    <section class="detail-grid">
+      <!-- 左：能力 -->
+      <div class="detail-card">
+        <h3>能力参数</h3>
+        <table class="info-table">
+          <tr><td>上下文窗口</td><td><strong>${fmtCtx(model.context_window)}</strong> tokens</td></tr>
+          <tr><td>最大输出</td><td>${model.max_output_tokens ? fmtCtx(model.max_output_tokens) + ' tokens' : '未公布'}</td></tr>
+          <tr><td>模态</td><td>${(model.modality || []).join(' / ')}</td></tr>
+          <tr><td>能力</td><td>${(model.capabilities || []).map(c => '<span class="tag tag-cap">' + c + '</span>').join(' ') || '—'}</td></tr>
+          <tr><td>典型场景</td><td>${(model.scenes || []).map(s => '<span class="tag tag-scene">' + s + '</span>').join(' ') || '—'}</td></tr>
+        </table>
+      </div>
+
+      <!-- 中：官方价格 -->
+      <div class="detail-card">
+        <h3>官方价格</h3>
+        <div class="price-display">
+          <div class="price-row">
+            <span class="price-label">输入</span>
+            <span class="price-value">${fmtCNY(inputCny)} <span class="price-unit">/ M tokens</span></span>
+          </div>
+          <div class="price-row">
+            <span class="price-label">输出</span>
+            <span class="price-value">${fmtCNY(outputCny)} <span class="price-unit">/ M tokens</span></span>
+          </div>
+          ${cacheCny !== null ? `
+          <div class="price-row">
+            <span class="price-label">缓存读取</span>
+            <span class="price-value">${fmtCNY(cacheCny)} <span class="price-unit">/ M tokens</span></span>
+          </div>` : ''}
+        </div>
+        <div class="price-note">
+          ${model.official_input_usd_m ? 'USD 原始价：$' + model.official_input_usd_m + ' / $' + model.official_output_usd_m + ' 输入/输出' : 'CNY 直接计价'}
+          · 汇率日期 ${API_RADAR_DATA.fx_rate.date}
+        </div>
+        <a href="compare.html?model=${model.id}" class="btn-primary" style="display:block;text-align:center;margin-top:12px;">📊 横向比价（含 5 渠道）</a>
+      </div>
+
+      <!-- 中-右：可用渠道三栏简览 -->
+      <div class="detail-card" style="grid-column: span 2;">
+        <h3>支持渠道 · ${offerings.length} 家</h3>
+        <div class="model-channels-tri" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px;">
+          ${offerings.slice(0,9).map(o => {
+            const p = getProvider(o.provider_id);
+            const cost = calcCost(model, o, 1e6, 0.2e6, 0);
+            return `<a href="provider.html?id=${p.id}" style="text-decoration:none;color:inherit;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;display:block;">
+              <div style="font-weight:600;font-size:12px;margin-bottom:4px;">${p.name} ${o.is_official ? '<span style="color:var(--accent2);font-size:10px;">官方</span>' : '<span style="color:var(--warning);font-size:10px;">中转</span>'}</div>
+              <div style="font-family:monospace;color:var(--accent);font-size:13px;">${fmtCNY(cost.total)}</div>
+              <div style="font-size:10px;color:var(--muted);">/月 1.2亿tok · ${o.multiplier}×</div>
+            </a>`;
+          }).join('')}
+        </div>
+      </div>
+      <div class="detail-card">
+        <h3>支持渠道 <span style="color:var(--muted);font-weight:400;font-size:13px;">· ${offerings.length} 家</span></h3>
+        <div class="provider-mini-list">
+          ${offerings.length === 0 ? '<div class="empty-state">暂无渠道收录</div>' :
+            offerings.slice(0, 8).map(o => {
+              const p = getProvider(o.provider_id);
+              const cost = calcCost(model, o, 1e6, 0.2e6, 0);
+              return `<a href="provider.html?id=${p.id}" class="provider-mini-item">
+                <div>
+                  <div style="font-weight:600;">${p.name} ${o.is_official ? '<span style="color:var(--accent2);font-size:10px;">官方</span>' : ''}</div>
+                  <div style="font-size:11px;color:var(--muted);">${p.payment_currency.join('/')}</div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-family:monospace;font-size:13px;color:var(--accent);">${fmtCNY(cost.total)}</div>
+                  <div style="font-size:11px;color:var(--muted);">/ 月 1.2 亿 tok</div>
+                </div>
+              </a>`;
+            }).join('')
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 历史事件 -->
+    <section class="detail-section">
+      <h3>📊 近期变化</h3>
+      ${events.length === 0 ? '<div class="empty-state">暂无近期变化</div>' :
+        events.sort((a, b) => new Date(b.effective_date) - new Date(a.effective_date)).map(e => {
+          const dotClass = e.severity === 'high' ? 'dot-high' : e.severity === 'medium' ? 'dot-medium' : 'dot-low';
+          return `<div class="event-item">
+            <div class="event-dot ${dotClass}"></div>
+            <div class="event-content">
+              <div class="event-title">${e.headline}</div>
+              <div class="event-summary">${e.summary || ''}</div>
+              <div class="event-meta">
+                <span>⏱ ${timeAgo(e.effective_date)}</span>
+                <span>📋 ${e.event_type}</span>
+                ${e.source_urls && e.source_urls[0] ? `<a href="${e.source_urls[0]}" target="_blank">🔗 来源</a>` : ''}
+              </div>
+            </div>
+          </div>`;
+        }).join('')
+      }
+    </section>
+  `;
+});
+
+function watchThisModel(id, name) {
+  const added = toggleWatch('model', id, name);
+  alert(added ? '已添加到关注列表' : '已从关注列表移除');
+  location.reload();
+}
+</script>
+</body>
+</html>

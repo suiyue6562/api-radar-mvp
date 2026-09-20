@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>渠道详情 - API Radar</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">API<span class="dot">Radar</span><small>AI API 决策工具</small></div>
+  <nav class="mainnav">
+    <a href="index.html">首页</a>
+    <a href="models.html">模型库</a>
+    <a href="providers.html">渠道库</a>
+    <a href="compare.html">比价</a>
+    <a href="events.html">行情</a>
+    <a href="watch.html">关注</a>
+  </nav>
+  <div class="topbar-search">
+    <input type="text" id="topbar-search-input" placeholder="搜索模型或渠道...">
+  </div>
+</header>
+
+<main id="provider-detail-main">
+  <div style="text-align:center;padding:80px;color:var(--muted);">加载中...</div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span>API Radar v0.1 · W1 内测版</span>
+    <div class="footer-links">
+      <a href="method.html">数据方法</a>
+      <a href="#">免责声明</a>
+    </div>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  if (!id) { location.href = 'providers.html'; return; }
+  const p = getProvider(id);
+  if (!p) { document.getElementById('provider-detail-main').innerHTML = '<div style="text-align:center;padding:80px;color:var(--muted);">渠道不存在</div>'; return; }
+  const offerings = getOfferingsForProvider(id);
+  const events = getEventsForTarget('provider', id);
+  const watching = isWatching('provider', id);
+  const typeLabel = p.type === 'official' ? '官方直连' : p.type === 'aggregator' ? '聚合平台' : '云厂商';
+  const typeClass = p.type === 'official' ? 't-official' : p.type === 'aggregator' ? 't-aggregator' : 't-cloud';
+
+  document.title = p.name + ' - API Radar';
+
+  const main = document.getElementById('provider-detail-main');
+  main.innerHTML = `
+    <nav class="breadcrumb">
+      <a href="index.html">首页</a> · <a href="providers.html">渠道库</a> · <span>${p.name}</span>
+    </nav>
+
+    <section class="detail-header">
+      <div>
+        <h1>${p.name}</h1>
+        <div class="detail-subtitle">
+          <span class="provider-card-type ${typeClass}">${typeLabel}</span>
+          · ${p.entity_name || '—'} · ${p.entity_region || '—'}
+          · <span class="status-dot ${p.status === 'active' ? 'available' : 'limited'}"></span>${p.status === 'active' ? '活跃' : '受限'}
+        </div>
+        <div class="detail-tags">
+          ${(p.service_regions || []).map(r => '<span class="tag">📍 ' + r + '</span>').join('')}
+          ${p.api_format.map(f => '<span class="tag tag-cap">' + f + '</span>').join('')}
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-watch" onclick="watchThis('${p.id}', '${p.name}')">${watching ? '★ 已关注' : '☆ 关注'}</button>
+        <a href="${p.website}" target="_blank" class="btn-primary" style="text-decoration:none;">访问官网 →</a>
+      </div>
+    </section>
+
+    <!-- 三栏分列：技术 / 商业 / 政策（PRD v1.1 强制要求） -->
+    <section class="tri-column">
+      <div class="tri-card">
+        <div class="tri-header"><span class="tri-icon">⚙️</span>技术表现</div>
+        <table class="info-table">
+          <tr><td>API 格式</td><td>${(p.api_format || []).join(' / ')}</td></tr>
+          <tr><td>SLA</td><td>${p.sla_available ? '<span style="color:var(--accent2);">✓ 提供</span>' : '<span style="color:var(--muted);">× 无</span>'}</td></tr>
+          <tr><td>支持模型数</td><td>${offerings.length}</td></tr>
+          <tr><td>数据状态</td><td><span class="data-status data-${p.data_status}">${p.data_status}</span></td></tr>
+        </table>
+        <div class="tri-note">⚠️ 实测可用率、首Token延迟等指标需 P1 后才有</div>
+      </div>
+
+      <div class="tri-card">
+        <div class="tri-header"><span class="tri-icon">💼</span>商业条件</div>
+        <table class="info-table">
+          <tr><td>付款方式</td><td>${(p.payment_methods || []).join(' / ')}</td></tr>
+          <tr><td>币种</td><td>${(p.payment_currency || []).join(' / ')}</td></tr>
+          <tr><td>最低充值</td><td>${p.min_recharge_cny ? '¥' + p.min_recharge_cny : (p.min_recharge_usd ? '$' + p.min_recharge_usd : '无')}</td></tr>
+          <tr><td>发票</td><td>${p.invoice_available ? '<span style="color:var(--accent2);">✓ 可开</span>' : '<span style="color:var(--muted);">× 无</span>'}</td></tr>
+          <tr><td>合同</td><td>${p.sla_available ? '<span style="color:var(--accent2);">✓ 可签</span>' : '<span style="color:var(--muted);">× 无</span>'}</td></tr>
+          <tr><td>客服</td><td>${(p.customer_service || []).join(' / ')}</td></tr>
+        </table>
+      </div>
+
+      <div class="tri-card">
+        <div class="tri-header"><span class="tri-icon">🔒</span>政策证据</div>
+        <table class="info-table">
+          <tr><td>数据区域</td><td>${p.data_region || '—'}</td></tr>
+          <tr><td>日志保留</td><td>${p.data_retention_days ? p.data_retention_days + ' 天' : '未知'}</td></tr>
+          <tr><td>用于训练</td><td>${p.used_for_training === 'no' ? '<span style="color:var(--accent2);">✓ 不用</span>' : p.used_for_training === 'opt_out' ? '可选退出' : p.used_for_training}</td></tr>
+        </table>
+        <div class="tri-note tri-warn">⚠️ ${p.risk_note || '无特别风险'}</div>
+      </div>
+    </section>
+
+    <!-- 描述 -->
+    <section class="detail-section">
+      <h3>关于</h3>
+      <p style="color:var(--muted);line-height:1.7;">${p.description || '—'}</p>
+    </section>
+
+    <!-- 提供模型 -->
+    <section class="detail-section">
+      <h3>📦 提供模型 <span style="color:var(--muted);font-weight:400;font-size:13px;">· ${offerings.length} 个</span></h3>
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th>模型</th>
+            <th>厂商</th>
+            <th>输入价（CNY/M）</th>
+            <th>输出价（CNY/M）</th>
+            <th>倍率</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${offerings.map(o => {
+            const m = getModel(o.model_id);
+            const v = getVendor(m.vendor_id);
+            const fx = API_RADAR_DATA.fx_rate.USD_CNY;
+            const ic = m.official_input_cny_m || (m.official_input_usd_m ? m.official_input_usd_m * fx : 0);
+            const oc = m.official_output_cny_m || (m.official_output_usd_m ? m.official_output_usd_m * fx : 0);
+            return `<tr>
+              <td><a href="model.html?id=${m.id}"><div class="model-cell"><span class="model-name">${m.display_name}</span><span class="model-vendor">${v.name_zh}</span></div></a></td>
+              <td>${v.name_zh}</td>
+              <td class="price-cell">${fmtCNY(ic * o.multiplier)}<span class="unit">/M</span></td>
+              <td class="price-cell">${fmtCNY(oc * o.multiplier)}<span class="unit">/M</span></td>
+              <td>${o.multiplier}× ${o.is_official ? '<span style="color:var(--accent2);font-size:10px;">官方</span>' : '<span style="color:var(--warning);font-size:10px;">中转</span>'}</td>
+              <td><a href="model.html?id=${m.id}" style="font-size:12px;">查看 →</a></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 近期事件 -->
+    <section class="detail-section">
+      <h3>📊 近期变化</h3>
+      ${events.length === 0 ? '<div class="empty-state">暂无近期变化</div>' :
+        events.sort((a, b) => new Date(b.effective_date) - new Date(a.effective_date)).map(e => {
+          const dotClass = e.severity === 'high' ? 'dot-high' : e.severity === 'medium' ? 'dot-medium' : 'dot-low';
+          return `<div class="event-item">
+            <div class="event-dot ${dotClass}"></div>
+            <div class="event-content">
+              <div class="event-title">${e.headline}</div>
+              <div class="event-summary">${e.summary || ''}</div>
+              <div class="event-meta">
+                <span>⏱ ${timeAgo(e.effective_date)}</span>
+                <span>📋 ${e.event_type}</span>
+              </div>
+            </div>
+          </div>`;
+        }).join('')
+      }
+    </section>
+  `;
+});
+
+function watchThis(id, name) {
+  const added = toggleWatch('provider', id, name);
+  alert(added ? '已添加到关注列表' : '已从关注列表移除');
+  location.reload();
+}
+</script>
+</body>
+</html>

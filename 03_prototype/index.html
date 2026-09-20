@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Radar — AI API 决策工具</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">API<span class="dot">Radar</span><small>AI API 决策工具</small></div>
+  <nav class="mainnav">
+    <a href="index.html" class="active">首页</a>
+    <a href="models.html">模型库</a>
+    <a href="providers.html">渠道库</a>
+    <a href="compare.html">比价</a>
+    <a href="events.html">行情</a>
+    <a href="watch.html">关注</a>
+  </nav>
+  <div class="topbar-search">
+    <input type="text" id="topbar-search-input" placeholder="搜索模型或渠道...">
+  </div>
+  <button class="topbar-cta" onclick="location.href='#calc'">计算成本</button>
+</header>
+
+<main>
+  <!-- Hero -->
+  <section class="hero">
+    <h1>比较你要用的 <span class="accent">AI API</span><br>看清费用、表现和最近变化</h1>
+    <p>面向付费开发者与小团队的决策工具。在一个页面内比较模型 × 渠道 × 价格 × 变化，找到适合自己的方案。</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong id="stat-models">0</strong> 模型</div>
+      <div class="hero-stat"><strong id="stat-providers">0</strong> 渠道</div>
+      <div class="hero-stat"><strong id="stat-offerings">0</strong> 渠道×模型组合</div>
+      <div class="hero-stat"><strong id="stat-events">0</strong> 近期行情事件</div>
+    </div>
+  </section>
+
+  <!-- 搜索 -->
+  <section class="search-block">
+    <div class="search-input">
+      <span class="icon">🔍</span>
+      <input type="text" id="main-search" placeholder="搜索模型、渠道或品牌…例如 Claude、GPT-4o、硅基流动">
+      <span class="hint">⌘ K</span>
+    </div>
+    <div class="search-results" id="search-results"></div>
+    <div class="search-tags">
+      <span class="search-tag">Claude Sonnet 4</span>
+      <span class="search-tag">GPT-4o</span>
+      <span class="search-tag">DeepSeek V3</span>
+      <span class="search-tag">Gemini 2.0 Flash</span>
+      <span class="search-tag">GLM-5</span>
+      <span class="search-tag">硅基流动</span>
+      <span class="search-tag">OpenRouter</span>
+    </div>
+  </section>
+
+  <!-- 三入口 -->
+  <section class="entry-section">
+    <div class="section-title">你在做什么？<span class="badge">3 个任务入口</span></div>
+    <div class="entry-cards">
+      <div class="entry-card" onclick="switchTabTo('tab-calc')">
+        <span class="tag-position tag-purchase">充值前</span>
+        <div class="entry-icon">💰</div>
+        <div class="entry-title">准备充值，比较方案</div>
+        <div class="entry-desc">输入用量和模型，对比 5 个渠道的月成本。含缓存计算和套餐条件。</div>
+        <div class="entry-meta">
+          <span class="meta-pill"><strong>3</strong> 步出结果</span>
+          <span class="meta-pill">最多 <strong>5</strong> 方案</span>
+          <span class="meta-pill">含缓存</span>
+        </div>
+      </div>
+
+      <div class="entry-card entry-b" onclick="location.href='providers.html'">
+        <span class="tag-position tag-troubleshoot">排障中</span>
+        <div class="entry-icon">⚠️</div>
+        <div class="entry-title">当前不好用，检查问题</div>
+        <div class="entry-desc">查看渠道近期事件、价格变化、风险记录，判断是否需要切换渠道。</div>
+        <div class="entry-meta">
+          <span class="meta-pill">近期事件</span>
+          <span class="meta-pill">变化时间线</span>
+          <span class="meta-pill">备用方案</span>
+        </div>
+      </div>
+
+      <div class="entry-card entry-c" onclick="location.href='watch.html'">
+        <span class="tag-position tag-watch">持续用</span>
+        <div class="entry-icon">📡</div>
+        <div class="entry-title">关注的渠道，查看变化</div>
+        <div class="entry-desc">订阅你关心的模型和渠道，价格变化、上下线、故障事件一站掌握。</div>
+        <div class="entry-meta">
+          <span class="meta-pill">价格变动</span>
+          <span class="meta-pill">模型上下线</span>
+          <span class="meta-pill">故障事件</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tab 面板 -->
+  <div class="panel-tabs">
+    <div class="panel-tab active" data-tab="tab-calc">🧮 1 亿 Token 计算器</div>
+    <div class="panel-tab" data-tab="tab-price">💰 今日价格榜</div>
+    <div class="panel-tab" data-tab="tab-event">📊 今日行情</div>
+    <div class="panel-tab" data-tab="tab-model">🔥 热门模型</div>
+    <div class="panel-tab" data-tab="tab-channel">📡 主流渠道</div>
+  </div>
+
+  <!-- 计算器 -->
+  <div id="tab-calc" class="panel-content active">
+    <div class="calc-wrap">
+      <div class="calc-title">🧮 估算你的月成本</div>
+      <div class="calc-grid">
+        <div class="calc-section">
+          <h4>① 用量</h4>
+          <div class="calc-row">
+            <span class="calc-label">输入 Token</span>
+            <input type="number" class="calc-input" id="calc-input" value="100000000">
+          </div>
+          <div class="calc-quick" style="margin: -8px 0 12px 102px;">
+            <a href="#" onclick="setTokens(100000000);return false">1 亿</a>
+            <a href="#" onclick="setTokens(10000000);return false">1000 万</a>
+            <a href="#" onclick="setTokens(1000000);return false">100 万</a>
+            <a href="#" onclick="setTokens(0);return false">清空</a>
+          </div>
+          <div class="calc-row">
+            <span class="calc-label">输出 Token</span>
+            <input type="number" class="calc-input" id="calc-output" value="20000000">
+          </div>
+          <div style="font-size: 11px; color: var(--muted); margin-left: 102px;">默认按输入的 20%，可调整</div>
+          <div class="calc-row" style="margin-top: 12px;">
+            <span class="calc-label">缓存读取</span>
+            <input type="number" class="calc-input" id="calc-cache" value="0" placeholder="0">
+          </div>
+          <div style="font-size: 11px; color: var(--muted); margin-left: 102px;">长会话场景填写，命中率高的对话必备</div>
+        </div>
+
+        <div class="calc-section">
+          <h4>② 模型与渠道</h4>
+          <div class="calc-row">
+            <span class="calc-label">模型</span>
+            <select class="calc-select" id="calc-model"></select>
+          </div>
+          <div class="calc-row">
+            <span class="calc-label">币种</span>
+            <select class="calc-select" id="calc-currency">
+              <option value="CNY">人民币（¥）</option>
+              <option value="USD">美元（$）</option>
+            </select>
+          </div>
+          <div class="calc-row">
+            <span class="calc-label">对比数量</span>
+            <select class="calc-select" id="calc-topn">
+              <option value="3">3 个</option>
+              <option value="5" selected>5 个</option>
+              <option value="8">8 个</option>
+            </select>
+          </div>
+          <div style="margin-top: 12px; padding: 10px; background: var(--card); border-radius: 6px; font-size: 11px; color: var(--muted);">
+            💡 仅显示支持该模型的渠道，按总价升序排列
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-actions">
+        <button class="btn-primary" onclick="runCalc()">计算月成本</button>
+        <button class="btn-secondary" onclick="document.getElementById('calc-result').classList.remove('show')">清空结果</button>
+        <button class="btn-secondary" onclick="copyCalcResult()">复制结果</button>
+      </div>
+
+      <div class="calc-result" id="calc-result">
+        <div class="calc-result-header">
+          <div>
+            <div class="calc-result-label">最低月成本</div>
+            <div class="calc-result-total" id="result-total">¥ 0</div>
+          </div>
+          <div style="text-align: right; font-size: 12px; color: var(--muted);">
+            <div id="result-best-provider">—</div>
+            <div id="result-best-time">—</div>
+          </div>
+        </div>
+        <div class="calc-breakdown">
+          <div class="calc-breakdown-item"><div class="label">输入成本</div><div class="value" id="res-input">¥ 0</div></div>
+          <div class="calc-breakdown-item"><div class="label">输出成本</div><div class="value" id="res-output">¥ 0</div></div>
+          <div class="calc-breakdown-item"><div class="label">缓存成本</div><div class="value" id="res-cache">¥ 0</div></div>
+          <div class="calc-breakdown-item"><div class="label">倍率</div><div class="value" id="res-multi">1.0×</div></div>
+        </div>
+        <div style="font-size: 12px; color: var(--muted); margin-bottom: 8px;">📊 横向对比（同条件）：</div>
+        <div class="calc-comparison" id="result-comparison"></div>
+        <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-light); font-size: 11px; color: var(--muted);" id="result-note">
+          此为估算，实际以渠道账单为准。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 价格榜 -->
+  <div id="tab-price" class="panel-content">
+    <div class="filter-bar">
+      <label>场景：</label>
+      <select id="filter-scene">
+        <option value="">全部</option>
+        <option value="编程">编程</option>
+        <option value="Agent">Agent</option>
+        <option value="推理">推理</option>
+        <option value="低成本">低成本</option>
+        <option value="中文">中文</option>
+        <option value="长上下文">长上下文</option>
+      </select>
+      <label>厂商：</label>
+      <select id="filter-vendor">
+        <option value="">全部</option>
+      </select>
+      <label>排序：</label>
+      <select id="filter-sort">
+        <option value="input">输入价升序</option>
+        <option value="output">输出价升序</option>
+        <option value="combo">综合（输入+输出）</option>
+        <option value="context">上下文长度</option>
+      </select>
+    </div>
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th>模型</th>
+          <th>厂商</th>
+          <th>官方输入</th>
+          <th>官方输出</th>
+          <th>缓存读</th>
+          <th>上下文</th>
+          <th>支持渠道</th>
+        </tr>
+      </thead>
+      <tbody id="price-table-body"></tbody>
+    </table>
+  </div>
+
+  <!-- 行情 -->
+  <div id="tab-event" class="panel-content">
+    <div class="event-filters">
+      <button class="filter-chip active" data-event-type="">全部</button>
+      <button class="filter-chip" data-event-type="price_change">价格变动</button>
+      <button class="filter-chip" data-event-type="model_release">新模型</button>
+      <button class="filter-chip" data-event-type="capability_change">能力变化</button>
+      <button class="filter-chip" data-event-type="policy_change">政策变化</button>
+      <button class="filter-chip" data-event-type="outage">故障事件</button>
+      <button class="filter-chip" data-event-type="deprecation">下线弃用</button>
+      <button class="filter-chip" data-event-type="provider_change">渠道变化</button>
+    </div>
+    <div class="event-list" id="event-list"></div>
+  </div>
+
+  <!-- 热门模型 -->
+  <div id="tab-model" class="panel-content">
+    <div class="filter-bar">
+      <label>厂商：</label>
+      <select id="model-filter-vendor"><option value="">全部</option></select>
+      <label>能力：</label>
+      <select id="model-filter-cap">
+        <option value="">全部</option>
+        <option value="tool_call">工具调用</option>
+        <option value="vision">视觉</option>
+        <option value="caching">缓存</option>
+        <option value="json_mode">JSON</option>
+      </select>
+      <label>上下文：</label>
+      <select id="model-filter-context">
+        <option value="">全部</option>
+        <option value="0-32000">≤32K</option>
+        <option value="32001-128000">32K-128K</option>
+        <option value="128001-1000000">128K-1M</option>
+        <option value="1000001-">1M+</option>
+      </select>
+    </div>
+    <div class="model-grid" id="model-grid"></div>
+  </div>
+
+  <!-- 渠道 -->
+  <div id="tab-channel" class="panel-content">
+    <div class="filter-bar">
+      <label>类型：</label>
+      <select id="provider-filter-type">
+        <option value="">全部</option>
+        <option value="official">官方</option>
+        <option value="aggregator">聚合</option>
+        <option value="cloud">云厂商</option>
+      </select>
+      <label>地区：</label>
+      <select id="provider-filter-region">
+        <option value="">全部</option>
+        <option value="china">国内可用</option>
+        <option value="global">全球</option>
+      </select>
+      <label>付款：</label>
+      <select id="provider-filter-pay">
+        <option value="">全部</option>
+        <option value="CNY">人民币</option>
+        <option value="USD">美元</option>
+      </select>
+      <label>发票：</label>
+      <select id="provider-filter-invoice">
+        <option value="">全部</option>
+        <option value="true">可开票</option>
+      </select>
+    </div>
+    <div class="provider-grid" id="provider-grid"></div>
+  </div>
+
+  <!-- 数据说明 -->
+  <div class="method-note">
+    <span class="icon">📋</span>
+    <div>
+      <strong>数据方法</strong>：价格来自官方公开页或渠道自有页面，来源链接附在每条数据后。
+      汇率每日更新，2026-09-20 1 USD = ¥7.10。
+      <strong>免责声明</strong>：信息用于选型参考，不构成对渠道的保证或采购承诺。
+      <a href="method.html">查看完整方法</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span>API Radar v0.1 · W1 内测版 · <span style="color:var(--warning);">●</span> 字段完整度 70%（广覆盖版）</span>
+    <div class="footer-links">
+      <a href="method.html">数据方法</a>
+      <a href="#">免责声明</a>
+      <a href="#">纠错入口</a>
+      <a href="#">隐私政策</a>
+      <a href="#">商务联系</a>
+    </div>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

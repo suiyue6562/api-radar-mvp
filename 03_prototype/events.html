@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>行情事件 - API Radar</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--fg); }
+.main { max-width: 1100px; margin: 0 auto; padding: 0 24px 60px; }
+.event-hero { padding: 48px 0 24px; }
+.event-hero h1 { font-size: 26px; font-weight: 700; margin: 0 0 8px; }
+.event-hero p { color: var(--muted); font-size: 14px; margin: 0; }
+.event-filters { display: flex; flex-wrap: wrap; gap: 10px; padding: 20px 0; border-bottom: 1px solid var(--border); margin-bottom: 24px; align-items: center; }
+.filter-label { font-size: 13px; color: var(--muted); }
+.filter-chip { padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--card); color: var(--muted-foreground); font-size: 13px; cursor: pointer; transition: all 0.15s; }
+.filter-chip:hover { border-color: var(--accent); color: var(--fg); }
+.filter-chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+select.filter-sel { padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--fg); font-size: 13px; }
+.event-list { display: flex; flex-direction: column; gap: 12px; }
+.event-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; display: flex; gap: 16px; transition: border-color 0.2s; }
+.event-item:hover { border-color: var(--accent); }
+.event-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.sev-high .event-icon { background: rgba(239,68,68,0.1); }
+.sev-medium .event-icon { background: rgba(234,179,8,0.1); }
+.sev-low .event-icon, .sev-positive .event-icon { background: rgba(34,197,94,0.1); }
+.sev-neutral .event-icon { background: rgba(139,92,246,0.1); }
+.event-body { flex: 1; min-width: 0; }
+.event-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.event-desc { font-size: 13px; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
+.event-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.tag { padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: 500; display: inline-block; }
+.tag-model { background: rgba(59,130,246,0.1); color: #3b82f6; }
+.tag-provider { background: rgba(168,85,247,0.1); color: #a855f7; }
+.tag-market { background: rgba(236,72,153,0.1); color: #ec4899; }
+.tag-regulatory { background: rgba(249,115,22,0.1); color: #f97316; }
+.tag-price_change { background: rgba(59,130,246,0.1); color: #3b82f6; }
+.tag-new_model { background: rgba(34,197,94,0.1); color: #22c55e; }
+.tag-outage { background: rgba(239,68,68,0.1); color: #ef4444; }
+.tag-capability_update { background: rgba(168,85,247,0.1); color: #a855f7; }
+.tag-policy_change { background: rgba(249,115,22,0.1); color: #f97316; }
+.tag-model_deprecate { background: rgba(107,114,128,0.1); color: #6b7280; }
+.event-date { font-size: 12px; color: var(--muted); white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.badge-sev { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.badge-sev.high { background: rgba(239,68,68,0.15); color: #ef4444; }
+.badge-sev.medium { background: rgba(234,179,8,0.15); color: #eab308; }
+.badge-sev.low, .badge-sev.positive { background: rgba(34,197,94,0.15); color: #22c55e; }
+.badge-sev.neutral { background: rgba(139,92,246,0.15); color: #8b5cf6; }
+.event-source a { color: var(--accent); text-decoration: none; }
+.no-events { text-align: center; padding: 60px; color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<div id="topbar"></div>
+<div class="main">
+  <div class="event-hero">
+    <h1>📊 行情事件</h1>
+    <p>价格变动 · 新模型发布 · 服务中断 · 政策调整 — 2024-09 至 2026-09</p>
+  </div>
+  <div class="event-filters" id="event-filters">
+    <span class="filter-label">类型：</span>
+    <button class="filter-chip active" data-type="">全部</button>
+    <button class="filter-chip" data-type="price_change">价格变动</button>
+    <button class="filter-chip" data-type="new_model">新模型发布</button>
+    <button class="filter-chip" data-type="outage">服务中断</button>
+    <button class="filter-chip" data-type="capability_update">能力更新</button>
+    <button class="filter-chip" data-type="policy_change">政策调整</button>
+    <button class="filter-chip" data-type="model_deprecate">模型停用</button>
+    <span class="filter-label">严重：</span>
+    <select class="filter-sel" id="filter-severity">
+      <option value="">全部</option>
+      <option value="high">高</option>
+      <option value="medium">中</option>
+      <option value="low">低</option>
+      <option value="positive">正面</option>
+      <option value="neutral">中性</option>
+    </select>
+    <span class="filter-label">对象：</span>
+    <select class="filter-sel" id="filter-target-type">
+      <option value="">全部</option>
+      <option value="model">模型</option>
+      <option value="provider">渠道</option>
+      <option value="market">市场</option>
+      <option value="regulatory">监管</option>
+    </select>
+    <span id="filter-count" style="margin-left:auto;font-size:13px;color:var(--muted);"></span>
+  </div>
+  <div class="event-list" id="event-list"></div>
+</div>
+<script src="data.js"></script>
+<script>
+(function() {
+  var EVENTS = API_RADAR_DATA.events;
+  var current = { type: '', severity: '', targetType: '' };
+
+  var typeMap = {
+    price_change: '价格变动', new_model: '新模型发布', outage: '服务中断',
+    capability_update: '能力更新', policy_change: '政策调整', model_deprecate: '模型停用'
+  };
+  var sevLabel = { high: '高', medium: '中', low: '低', positive: '正面', neutral: '中性' };
+  var iconMap = {
+    price_change: '💰', new_model: '🚀', outage: '⚠️', capability_update: '🧠',
+    policy_change: '📋', model_deprecate: '🗑️'
+  };
+
+  function matches(e) {
+    if (current.type && e.event_type !== current.type) return false;
+    if (current.severity && e.severity !== current.severity) return false;
+    if (current.targetType && e.target_type !== current.targetType) return false;
+    return true;
+  }
+
+  function render() {
+    var filtered = EVENTS.filter(matches);
+    var list = document.getElementById('event-list');
+    if (!list) return;
+    var countEl = document.getElementById('filter-count');
+    if (countEl) countEl.textContent = '显示 ' + filtered.length + ' / ' + EVENTS.length + ' 条';
+
+    if (filtered.length === 0) {
+      list.innerHTML = '<div class="no-events">没有符合条件的事件</div>';
+      return;
+    }
+
+    list.innerHTML = '';
+    filtered.forEach(function(e) {
+      var date = new Date(e.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' });
+      var tagHtml = (e.tags || []).map(function(t) {
+        return '<span class="tag tag-' + t + '">' + (typeMap[t] || t) + '</span>';
+      }).join('');
+      var targetTag = '';
+      if (e.target_type === 'model') targetTag = '<span class="tag tag-model">' + (e.target_name || '') + '</span>';
+      else if (e.target_type === 'provider') targetTag = '<span class="tag tag-provider">' + (e.target_name || '') + '</span>';
+      else if (e.target_type === 'market') targetTag = '<span class="tag tag-market">市场</span>';
+      else if (e.target_type === 'regulatory') targetTag = '<span class="tag tag-regulatory">监管</span>';
+      var sourceHtml = (e.source_urls && e.source_urls[0]) ? '<a href="' + e.source_urls[0] + '" target="_blank">🔗</a>' : '';
+      var icon = iconMap[e.event_type] || '📌';
+
+      var item = document.createElement('div');
+      item.className = 'event-item sev-' + (e.severity || 'neutral');
+      item.innerHTML =
+        '<div class="event-icon">' + icon + '</div>' +
+        '<div class="event-body">' +
+          '<div class="event-title">' + (e.title || '') + ' <span class="badge-sev ' + (e.severity || 'neutral') + '">' + (sevLabel[e.severity] || '') + '</span></div>' +
+          '<div class="event-desc">' + (e.description || '') + '</div>' +
+          '<div class="event-meta">' + tagHtml + targetTag + sourceHtml + '</div>' +
+        '</div>' +
+        '<div class="event-date">' + date + '</div>';
+      list.appendChild(item);
+    });
+  }
+
+  var chips = document.querySelectorAll('#event-filters .filter-chip[data-type]');
+  chips.forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      chips.forEach(function(c) { c.classList.remove('active'); });
+      chip.classList.add('active');
+      current.type = chip.dataset.type || '';
+      render();
+    });
+  });
+
+  var sevSel = document.getElementById('filter-severity');
+  if (sevSel) sevSel.addEventListener('change', function(e) {
+    current.severity = e.target.value;
+    render();
+  });
+
+  var tgtSel = document.getElementById('filter-target-type');
+  if (tgtSel) tgtSel.addEventListener('change', function(e) {
+    current.targetType = e.target.value;
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
