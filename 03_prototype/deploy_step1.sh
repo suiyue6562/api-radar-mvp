@@ -1,11 +1,11 @@
 #!/bin/bash
-# API Radar 一键部署脚本 - 在阿里云服务器终端里直接粘贴运行
+# API优选咨询 一键部署脚本 - 在阿里云服务器终端里直接粘贴运行
 # 生成时间: 2026-09-20
 
 set -e
 
 echo "=========================================="
-echo "  API Radar 部署脚本启动"
+echo "  API优选咨询 部署脚本启动"
 echo "=========================================="
 
 # 1. 检查基础环境
@@ -17,12 +17,12 @@ which nginx python3 curl tar base64 >/dev/null 2>&1 || {
 
 # 2. 创建站点目录
 echo "[2/7] 创建目录..."
-sudo mkdir -p /var/www/api-radar
-sudo chown -R $USER:$USER /var/www/api-radar
+sudo mkdir -p /var/www/api-youxuan
+sudo chown -R $USER:$USER /var/www/api-youxuan
 
 # 3. 写入 deploy payload (45KB base64)
 echo "[3/7] 准备部署包..."
-cat > /tmp/api_radar_payload.b64 <<'PAYLOAD_EOF'
+cat > /tmp/api_youxuan_payload.b64 <<'PAYLOAD_EOF'
 [BELOW_PASTED]
 PAYLOAD_EOF
 
@@ -38,10 +38,10 @@ echo ""
 echo "3. 回到这个终端，先按 Ctrl+C 中断脚本"
 echo ""
 echo "4. 运行这个命令粘贴部署包："
-echo "   cat > /tmp/api_radar_payload.b64 <<'EOF'"
+echo "   cat > /tmp/api_youxuan_payload.b64 <<'EOF'"
 echo "   [粘贴 base64 内容]"
 echo "   EOF"
 echo ""
 echo "5. 然后运行："
-echo "   bash /tmp/api_radar_deploy.sh"
+echo "   bash /tmp/api_youxuan_deploy.sh"
 echo "=========================================="

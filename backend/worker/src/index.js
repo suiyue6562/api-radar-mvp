@@ -1,5 +1,5 @@
-// API Radar Cloudflare Worker - Phase 2
-// hostname routing: api.apireader.top -> API, admin.apireader.top -> Admin
+// API优选咨询 Cloudflare Worker - Phase 2
+// hostname routing: api.apiyouxuan.top -> API, admin.apiyouxuan.top -> Admin
 
 export default {
   async fetch(request, env, ctx) {
@@ -46,7 +46,7 @@ const ADMIN_HTML = `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>API Radar Admin</title>
+<title>API优选咨询 Admin</title>
 <style>
 body { font-family: -apple-system, "PingFang SC", sans-serif; background: #050714; color: #e6edff; margin: 0; padding: 40px; }
 .container { max-width: 1000px; margin: 0 auto; }
@@ -84,7 +84,7 @@ label { display: block; font-size: 11px; color: #8896b8; margin-bottom: 4px; tex
 </head>
 <body>
 <div class="container">
-  <h1>API Radar Admin</h1>
+  <h1>API优选咨询 Admin</h1>
   <div id="login-view">
     <div class="card" style="max-width:480px;margin:60px auto;">
       <h3 style="margin-top:0;">登录</h3>
@@ -124,7 +124,7 @@ label { display: block; font-size: 11px; color: #8896b8; margin-bottom: 4px; tex
   <div class="modal-content" id="modal-content"></div>
 </div>
 <script>
-const TOKEN_KEY = "api_radar_admin_token";
+const TOKEN_KEY = "api_youxuan_admin_token";
 let currentTab = "models";
 let cache = {};
 

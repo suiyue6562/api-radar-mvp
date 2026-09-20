@@ -1,11 +1,11 @@
 #!/bin/bash
-# API Radar watchdog - 每分钟检查服务进程，死了就拉起
-# 用法：bash ~/api-radar/watchdog.sh
+# API优选咨询 watchdog - 每分钟检查服务进程，死了就拉起
+# 用法：bash ~/api-youxuan/watchdog.sh
 
-PY_PID_FILE="/tmp/api-radar-8080.pid"
-SOCAT_PID_FILE="/tmp/api-radar-socat.pid"
-LOG="/tmp/api-radar-watchdog.log"
-DEPLOY_DIR="$HOME/api-radar/03_prototype"
+PY_PID_FILE="/tmp/api-youxuan-8080.pid"
+SOCAT_PID_FILE="/tmp/api-youxuan-socat.pid"
+LOG="/tmp/api-youxuan-watchdog.log"
+DEPLOY_DIR="$HOME/api-youxuan/03_prototype"
 
 mkdir -p "$(dirname "$LOG")"
 

@@ -1,12 +1,12 @@
-// API Radar A/B 测试客户端
+// API优选咨询 A/B 测试客户端
 // 自动分桶 + 事件追踪 + 流量统计
 
 (function() {
   const API_BASE = location.hostname === "localhost" || location.hostname.endsWith("127.0.0.1")
     ? "http://127.0.0.1:8080"
-    : (location.hostname.includes("apireader.top") || location.hostname.endsWith("workers.dev")
+    : (location.hostname.includes("apiyouxuan.top") || location.hostname.endsWith("workers.dev")
         ? location.origin
-        : "https://api.apireader.top");
+        : "https://api.apiyouxuan.top");
 
   // 用户身份（匿名）
   function getUserToken() {

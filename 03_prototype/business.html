@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>API 服务商 - API Radar</title>
+<title>API 服务商 - API优选咨询</title>
 <meta name="description" content="国内外 AI API 服务商汇总：OpenAI、Anthropic、Google、DeepSeek、阿里云、字节、豆包、智谱等。官方渠道、中转聚合、自托管方案一站式对比。">
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -253,7 +253,7 @@ function renderBiz() {
 
 async function loadAd(slot) {
   try {
-    const resp = await fetch("https://api.apireader.top/api/ads?slot=" + slot);
+    const resp = await fetch("https://api.apiyouxuan.top/api/ads?slot=" + slot);
     const ads = await resp.json();
     if (ads && ads.length) {
       const ad = ads[0];
@@ -266,7 +266,7 @@ async function loadAd(slot) {
         </div>
       </a>`;
       slot.addEventListener("click", () => {
-        fetch("https://api.apireader.top/api/ads/" + ad.id + "/click", { method: "POST" });
+        fetch("https://api.apiyouxuan.top/api/ads/" + ad.id + "/click", { method: "POST" });
       });
       slot.style.display = "block";
     }

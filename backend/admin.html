@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>API Radar 后台管理</title>
+<title>API优选咨询 后台管理</title>
 <style>
 body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #050714; color: #e6edff; margin: 0; padding: 0; min-height: 100vh; }
 
@@ -94,7 +94,7 @@ pre { background: #050714; border: 1px solid rgba(120,160,255,0.12); border-radi
 <!-- 登录视图 -->
 <div id="login-view" class="login-page">
   <div class="login-card">
-    <h2>API Radar 后台</h2>
+    <h2>API优选咨询 后台</h2>
     <p class="subtitle">输入管理员令牌登录</p>
     <label style="display:block;font-size:11px;color:#8896b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;">管理员令牌 (ADMIN TOKEN)</label>
     <input type="password" id="login-token" placeholder="粘贴 ADMIN_TOKEN" />
@@ -106,8 +106,8 @@ pre { background: #050714; border: 1px solid rgba(120,160,255,0.12); border-radi
 <!-- 主视图 -->
 <div id="main-view" style="display:none;">
   <div class="topbar">
-    <h1>API Radar 后台管理</h1>
-    <div class="user-info">管理员 · <span id="user-id">admin</span> · <a href="https://api.apireader.top/api/admin/export" target="_blank" style="color:#00d9ff;">查看 API</a></div>
+    <h1>API优选咨询 后台管理</h1>
+    <div class="user-info">管理员 · <span id="user-id">admin</span> · <a href="https://api.apiyouxuan.top/api/admin/export" target="_blank" style="color:#00d9ff;">查看 API</a></div>
     <button onclick="logout()">退出登录</button>
   </div>
 
@@ -143,8 +143,8 @@ pre { background: #050714; border: 1px solid rgba(120,160,255,0.12); border-radi
 </div>
 
 <script>
-const TOKEN_KEY = "api_radar_admin_token_zh";
-const API_BASE = location.hostname.includes("admin.") || location.hostname.includes("api.") || location.hostname === "api-radar-api.suiyue6562.workers.dev" ? location.origin : "https://api.apireader.top";
+const TOKEN_KEY = "api_youxuan_admin_token_zh";
+const API_BASE = location.hostname.includes("admin.") || location.hostname.includes("api.") || location.hostname === "api-youxuan-api.suiyue6562.workers.dev" ? location.origin : "https://api.apiyouxuan.top";
 
 let currentTab = "models";
 let cache = {};

@@ -4,7 +4,7 @@
   1. 先在本地 wrangler dev 启动 Worker
   2. python3 scripts/import_seed.py http://localhost:8787 YOUR_ADMIN_TOKEN
   或：
-  2. python3 scripts/import_seed.py https://api.apireader.top YOUR_ADMIN_TOKEN
+  2. python3 scripts/import_seed.py https://api.apiyouxuan.top YOUR_ADMIN_TOKEN
 """
 import sys, json, urllib.request, urllib.error
 

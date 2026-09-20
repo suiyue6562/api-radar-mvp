@@ -1,13 +1,13 @@
-// API Radar 广告系统
+// API优选咨询 广告系统
 // 用法: <div class="ad-slot" data-slot="home_top"></div>
 // 自动拉广告 + 点击统计
 
 (function() {
   const API_BASE = location.hostname === "localhost" || location.protocol === "file:" || location.hostname.endsWith("127.0.0.1")
     ? "http://127.0.0.1:8080"
-    : (location.hostname.includes("apireader.top") || location.hostname.endsWith("workers.dev")
+    : (location.hostname.includes("apiyouxuan.top") || location.hostname.endsWith("workers.dev")
         ? location.origin
-        : "https://api.apireader.top");
+        : "https://api.apiyouxuan.top");
 
   async function loadAd(slot) {
     try {

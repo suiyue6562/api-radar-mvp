@@ -1,15 +1,15 @@
 #!/bin/bash
-# API Radar 自动更新脚本 v2 - 修复版
+# API优选咨询 自动更新脚本 v2 - 修复版
 # 修复：1) pkill 不再误杀 socat 和脚本本身  2) 加 restart_socat 确保 80 端口转发
 
 set -e
 
-REPO="https://github.com/suiyue6562/api-radar-mvp.git"
-DEPLOY_DIR="$HOME/api-radar"
-PY_PID_FILE="/tmp/api-radar-8080.pid"
-SOCAT_PID_FILE="/tmp/api-radar-socat.pid"
+REPO="https://github.com/suiyue6562/api-youxuan-mvp.git"
+DEPLOY_DIR="$HOME/api-youxuan"
+PY_PID_FILE="/tmp/api-youxuan-8080.pid"
+SOCAT_PID_FILE="/tmp/api-youxuan-socat.pid"
 
-echo "[$(date '+%F %T')] 开始更新 API Radar..."
+echo "[$(date '+%F %T')] 开始更新 API优选咨询..."
 
 # 1. 备份当前版本
 if [ -d "$DEPLOY_DIR" ]; then
@@ -56,7 +56,7 @@ HTTP_80=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:80/ || echo "0
 echo "[$(date '+%F %T')] ✅ 更新完成"
 echo "  - 8080 (Python): HTTP $HTTP_8080"
 echo "  - 80 (socat)  : HTTP $HTTP_80"
-echo "  - 域名 (Cloudflare): https://www.apireader.top/"
+echo "  - 域名 (Cloudflare): https://www.apiyouxuan.top/"
 
 # 7. 清理旧备份（保留最近 3 个）
 ls -dt ${DEPLOY_DIR}.bak.* 2>/dev/null | tail -n +4 | xargs -r rm -rf

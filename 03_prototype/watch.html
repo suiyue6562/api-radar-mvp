@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的关注 - API Radar</title>
+<title>我的关注 - API优选咨询</title>
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
@@ -52,7 +52,7 @@ function escapeHtml(s) { return String(s || "").replace(/[&<>"']/g, c => ({"&": 
 (function() {
   if (typeof renderTopbar === 'function') renderTopbar('watch');
   const D = API_RADAR_DATA;
-  const STORAGE_KEY = 'api_radar_watch_v2';
+  const STORAGE_KEY = 'api_youxuan_watch_v2';
 
   function getWatched() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
