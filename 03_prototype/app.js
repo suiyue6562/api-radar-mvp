@@ -589,18 +589,19 @@ window.PAGE_INITIALIZERS = {
     renderBestFor();
     setupTabs();
     autoReportView();
+    renderFooter();
   },
-  models: () => { renderTopbar('models'); },
-  model: () => { renderTopbar('models'); },
-  providers: () => { renderTopbar('providers'); },
-  provider: () => { renderTopbar('providers'); },
-  compare: () => { renderTopbar('compare'); },
-  events: () => { renderTopbar('events'); },
-  playground: () => { renderTopbar('playground'); },
-  business: () => { renderTopbar('business'); },
-  watch: () => { renderTopbar('watch'); },
-  method: () => { renderTopbar('method'); },
-  test: () => { renderTopbar('test'); }
+  models: () => { renderTopbar('models'); renderFooter(); },
+  model: () => { renderTopbar('models'); renderFooter(); },
+  providers: () => { renderTopbar('providers'); renderFooter(); },
+  provider: () => { renderTopbar('providers'); renderFooter(); },
+  compare: () => { renderTopbar('compare'); renderFooter(); },
+  events: () => { renderTopbar('events'); renderFooter(); },
+  playground: () => { renderTopbar('playground'); renderFooter(); },
+  business: () => { renderTopbar('business'); renderFooter(); },
+  watch: () => { renderTopbar('watch'); renderFooter(); },
+  method: () => { renderTopbar('method'); renderFooter(); },
+  test: () => { renderTopbar('test'); renderFooter(); }
 };
 
 addEventListener('DOMContentLoaded', () => {
