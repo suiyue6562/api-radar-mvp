@@ -469,6 +469,11 @@ function renderHeroTimestamp() {
   }
 }
 
+// ============ 页脚渲染 (兼容老调用，无内容不报错) ============
+function renderFooter() {
+  // 各页已自带 footer，保留空函数防止 PAGE_INITIALIZERS 报错
+}
+
 // ============ (保留旧) Featured Models — 周 token 趋势榜 ============
 function renderFeatured() {
   const grid = $('featured-grid');

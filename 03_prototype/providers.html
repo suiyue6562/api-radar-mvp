@@ -91,7 +91,7 @@
 <script src="data.js?v=20260921d"></script>
 <script src="app.js?v=20260921d"></script>
 <script>
-function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&","<":"<",">":">",'"':""","'":"&#39;"})[c]);}
+function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&lt;","<":"&lt;",">":"&gt;","\"":"&quot;","\'":"&#39;"})[c]);}
 const TYPE={official:{label:'官方',emoji:'🏛️',cls:'official'},aggregator:{label:'中转',emoji:'🔀',cls:'aggregator'},gateway:{label:'网关',emoji:'🌐',cls:'gateway'},self_host:{label:'自部署',emoji:'🛠️',cls:'self_host'},cloud:{label:'云厂商',emoji:'☁️',cls:'cloud'}};
 const ST={online:{label:'在线',cls:'online'},limited:{label:'限流',cls:'limited'},maintenance:{label:'维护中',cls:'maintenance'},offline:{label:'离线',cls:'offline'}};
 const CUR={USD:'usd',CNY:'cny',EUR:'eur',BTC:'crypt',USDT:'crypt'};

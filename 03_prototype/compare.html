@@ -170,11 +170,10 @@ function escapeHtml(s) { var d = document.createElement("div"); d.textContent = 
 
 if (typeof renderTopbar === "function") renderTopbar("compare");
 
-const D = API_RADAR_DATA;
 const params = new URLSearchParams(location.search);
 
 // 默认选 3 个旗舰模型
-const DEFAULTS = ['m_claude_fable_5', 'm_gpt_5_5', 'm_gemini_3_pro'];
+const DEFAULTS = ['m_claude_fable_5', 'm_gpt_5_5', 'm_gemini_3_1_pro'];
 const initialA = params.get('a') || DEFAULTS[0];
 const initialB = params.get('b') || DEFAULTS[1];
 const initialC = params.get('c') || DEFAULTS[2];
