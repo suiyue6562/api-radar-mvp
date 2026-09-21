@@ -117,6 +117,18 @@ if [ -f /etc/api-radar.env ]; then
     source /etc/api-radar.env
 fi
 
+# 7.1 部署 Cloudflare Worker（Phase 2.1 品牌降级等新逻辑都靠这一步生效）
+if [ -d "$DEPLOY_DIR/backend/worker" ] && [ -n "${CLOUDFLARE_API_TOKEN:-}" ]; then
+    log "正在部署 Cloudflare Worker (api-youxuan-api)..."
+    if ( cd "$DEPLOY_DIR/backend/worker" && npx wrangler deploy >> "$LOG" 2>&1 ); then
+        log "✅ Worker 已部署"
+    else
+        log "⚠️ Worker 部署失败（Python http.server 仍可用，下次 update 再补）"
+    fi
+else
+    log "ℹ️  未配置 CLOUDFLARE_API_TOKEN 或 worker 目录不存在，跳过 Worker 部署"
+fi
+
 if [ -n "${CLOUDFLARE_API_TOKEN:-}" ] && [ -n "${CLOUDFLARE_ZONE_ID:-}" ]; then
     log "正在 purge Cloudflare cache..."
     if curl -sf -X POST \
