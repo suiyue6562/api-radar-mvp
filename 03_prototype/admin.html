@@ -36,7 +36,7 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 
 /* ========= 布局 ========= */
 .app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
-.sidebar{background:rgba(8,12,28,0.95);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar{background:var(--bg-base);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:0;height:100vh;overflow-y:auto}
 .sidebar::-webkit-scrollbar{width:6px}
 .sidebar::-webkit-scrollbar-thumb{background:rgba(120,160,255,0.2);border-radius:3px}
 .brand{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:14px}
@@ -44,8 +44,8 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 .brand .ver{font-size:10px;color:var(--muted)}
 .nav{padding:0 12px}
 .nav-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;cursor:pointer;color:var(--muted);font-size:13px;transition:all .15s;user-select:none}
-.nav-item:hover{background:rgba(120,160,255,0.06);color:var(--text)}
-.nav-item.active{background:#000000,rgba(0, 0, 0, 0.1));color:var(--cyan);box-shadow:inset 2px 0 0 var(--cyan)}
+.nav-item:hover{background:#f9fafb;color:#1a1a1a}
+.nav-item.active{background:#f3f4f6;color:#1a1a1a;font-weight:700;border-left:2px solid #1a1a1a;padding-left:14px}
 .nav-item .icon{width:18px;text-align:center;font-size:15px}
 .nav-item .badge{margin-left:auto;background:rgba(255,71,87,0.15);color:var(--danger);padding:1px 6px;border-radius:8px;font-size:10px}
 .nav-divider{height:1px;background:var(--border);margin:10px 12px}

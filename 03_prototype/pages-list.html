@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI API 中转站目录 · 完整商家列表 - API优选咨询</title>
+<meta name="description" content="完整 AI API 中转站商家目录：类型 / 地区 / 状态 / 支付 / 特性 / 合规属性筛选 + 6 列主表 + 1/2/3 翻页。">
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* === pages-list 完整商家列表页（仿 okkmax /list） === */
+.pl-hero {
+  padding: 32px 0 12px;
+  text-align: center;
+}
+.pl-hero h1 { font-size: 36px; margin-bottom: 6px; font-weight: 800; }
+.pl-hero p { color: var(--muted); max-width: 720px; margin: 0 auto 8px; font-size: 14px; }
+.pl-hero .gradient-text { color: var(--fg-strong); }
+
+/* 主布局：左 sidebar + 右主区 */
+.pl-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+@media (max-width: 900px) {
+  .pl-layout { grid-template-columns: 1fr; }
+  .pl-sidebar { position: static !important; }
+}
+
+/* 左 sidebar */
+.pl-sidebar {
+  position: sticky;
+  top: 76px;
+  align-self: flex-start;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+.pl-sidebar h3 {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 10px;
+  font-weight: 700;
+}
+.pl-sidebar-group {
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.pl-sidebar-group:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
+
+.pl-side-opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--fg);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.pl-side-opt:hover { background: var(--bg-deep); }
+.pl-side-opt input { width: auto; padding: 0; margin: 0; cursor: pointer; accent-color: var(--fg-strong); }
+.pl-side-opt .count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* 右主区：顶部 chips + 主表 + pager */
+.pl-top-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 14px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.pl-top-chips .label {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-right: 4px;
+}
+.pl-top-chips .sep {
+  width: 1px;
+  height: 18px;
+  background: var(--border);
+  margin: 0 4px;
+}
+
+.pl-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.pl-toolbar h2 { margin: 0; font-size: 16px; font-weight: 700; }
+.pl-toolbar .badge { font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
+.pl-toolbar .sort {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.pl-toolbar select {
+  font-size: 12px;
+  padding: 5px 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--fg);
+  cursor: pointer;
+}
+
+.pl-status-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+.pl-status-cell .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.pl-status-online { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
+.pl-status-online .dot { background: #16a34a; }
+.pl-status-limited { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+.pl-status-limited .dot { background: #d97706; }
+.pl-status-offline { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
+.pl-status-offline .dot { background: #dc2626; }
+.pl-status-maintenance { background: #f3f4f6; color: #4b5563; border-color: #e5e7eb; }
+.pl-status-maintenance .dot { background: #6b7280; }
+
+.pl-latency {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+</style>
+</head>
+<body>
+
+<div id="topbar"></div>
+
+<main class="main">
+  <!-- ========== Hero ========== -->
+  <section class="pl-hero fade-in">
+    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span id="pl-count-tag">完整商家目录 · 实时</span></div>
+    <h1><span class="gradient-text">📋 AI API 中转站目录</span></h1>
+    <p>官方 · 中转 · 网关 · 自托管 · 云厂商 — 6 列主表同屏对比 · 13 项硬核检测独立验证</p>
+  </section>
+
+  <!-- ========== 顶部热门标签 chips ========== -->
+  <div class="pl-top-chips fade-in">
+    <span class="label">🔥 热门:</span>
+    <span class="chip active" data-quick="all">全部</span>
+    <span class="chip" data-quick="official">🏛️ 官方</span>
+    <span class="chip" data-quick="aggregator">🔀 中转</span>
+    <span class="chip" data-quick="top_uptime">🟢 高在线</span>
+    <span class="chip" data-quick="invoice">🧾 可开发票</span>
+    <span class="chip" data-quick="trial">🎁 免费试用</span>
+    <span class="chip" data-quick="domestic">🇨🇳 国内</span>
+    <span class="chip" data-quick="global">🌍 海外</span>
+    <span class="chip" data-quick="new">🆕 新加入</span>
+    <span class="chip" data-quick="top_rating">⭐ 高评分</span>
+  </div>
+
+  <!-- ========== Layout: sidebar + main ========== -->
+  <div class="pl-layout fade-in">
+    <!-- 左 sidebar -->
+    <aside class="pl-sidebar">
+      <div class="pl-sidebar-group">
+        <h3>类型</h3>
+        <label class="pl-side-opt"><input type="checkbox" data-f="type" value="official">🏛️ 官方</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="type" value="aggregator">🔀 中转</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="type" value="gateway">🌐 网关</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="type" value="self_host">🛠️ 自部署</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="type" value="cloud">☁️ 云厂商</label>
+      </div>
+      <div class="pl-sidebar-group">
+        <h3>地区</h3>
+        <label class="pl-side-opt"><input type="checkbox" data-f="region" value="cn">🇨🇳 国内</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="region" value="global">🌍 海外</label>
+      </div>
+      <div class="pl-sidebar-group">
+        <h3>状态</h3>
+        <label class="pl-side-opt"><input type="checkbox" data-f="status" value="online">🟢 在线</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="status" value="limited">🟡 限流</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="status" value="maintenance">⚙️ 维护</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="status" value="offline">⚫ 离线</label>
+      </div>
+      <div class="pl-sidebar-group">
+        <h3>支付</h3>
+        <label class="pl-side-opt"><input type="checkbox" data-f="pay" value="USD">💵 USD</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="pay" value="CNY">💴 CNY</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="pay" value="USDT">₮ USDT</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="pay" value="BTC">₿ BTC</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="pay" value="Alipay">支 支付宝</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="pay" value="WeChat">微 微信</label>
+      </div>
+      <div class="pl-sidebar-group">
+        <h3>特性</h3>
+        <label class="pl-side-opt"><input type="checkbox" data-f="feat" value="free_trial">🎁 免费试用</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="feat" value="cache">💾 缓存命中</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="feat" value="stream">🌊 真流式</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="feat" value="tools">🔧 Tool Use</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="feat" value="vision">🖼️ Vision</label>
+      </div>
+      <div class="pl-sidebar-group">
+        <h3>合规属性</h3>
+        <label class="pl-side-opt"><input type="checkbox" data-f="comp" value="GDPR">EU GDPR</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="comp" value="SOC2">SOC 2</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="comp" value="ISO27001">ISO 27001</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="comp" value="CCRC">CCRC</label>
+        <label class="pl-side-opt"><input type="checkbox" data-f="comp" value="invoice">🧾 可开发票</label>
+      </div>
+    </aside>
+
+    <!-- 右主区 -->
+    <div>
+      <!-- 工具栏：标题 + 排序 -->
+      <div class="pl-toolbar">
+        <h2>🏆 商家主表 <span class="badge" id="pl-result-count">— 家</span></h2>
+        <div class="sort">
+          <span>排序</span>
+          <select id="pl-sort">
+            <option value="uptime">🟢 Uptime 在线率</option>
+            <option value="latency">⏱️ Latency 延迟</option>
+            <option value="rating">⭐ 评分</option>
+            <option value="price">💵 价格</option>
+            <option value="models">📦 模型数</option>
+            <option value="listed">📅 Listed 日期</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 6 列主表 -->
+      <div class="rank-table-wrap">
+        <table class="rank-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>商家</th>
+              <th style="text-align:center;">性能</th>
+              <th style="text-align:center;">支付</th>
+              <th style="text-align:center;">政策</th>
+              <th style="text-align:center;">评价</th>
+              <th style="text-align:center;">模型</th>
+            </tr>
+          </thead>
+          <tbody id="pl-tbody"></tbody>
+        </table>
+        <!-- 翻页 -->
+        <nav class="pager" id="pl-pager"></nav>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer" id="footer"></footer>
+
+<script src="data.js?v=20260921f"></script>
+<script src="app.js?v=20260921f"></script>
+<script>
+function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
+const PL_TYPE_LABEL = { official: '官方', gateway: '网关', aggregator: '中转', self_host: '自部署', cloud: '云厂商' };
+const PL_CUR_LABEL = { USD: '$', CNY: '¥', EUR: '€', JPY: '¥', HKD: 'HK$', BTC: '₿', USDT: '₮', Alipay: '支', WeChat: '微' };
+const PL_COMPLIANCE_LABEL = { 发票: '🧾', GDPR: 'EU', SOC2: 'S2', ISO27001: 'ISO', CCRC: 'CC' };
+
+(function() {
+  if (typeof renderTopbar === 'function') renderTopbar('providers');
+  const D = API_RADAR_DATA;
+
+  // === 状态 ===
+  const S = {
+    type: new Set(),
+    region: new Set(),
+    status: new Set(),
+    pay: new Set(),
+    feat: new Set(),
+    comp: new Set(),
+    sort: 'uptime',
+    page: 1,
+    perPage: 20,
+    quick: 'all',
+  };
+
+  // === 装饰每个 provider（合成 performance/policy） ===
+  function enrich(p) {
+    const seed = (p.id || '').split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+    const raw = (seed * 9301 + 49297) % 233280 / 233280;
+    const perf = p.sla_uptime || Math.round(85 + raw * 14);
+    const rating = p.rating || (3.8 + raw * 1.0);
+    const reviewCount = p.review_count || Math.round(raw * 2000 + 50);
+    const coverage = p.models_count || Math.round(8 + raw * 60);
+    // 延迟：基于 perf 反推 (perf 越高延迟越低)
+    const latency = Math.max(40, Math.round(420 - (perf - 80) * 18 + (seed % 80)));
+    // 价格：根据 coverage 反推（多则便宜）
+    const avgPrice = Math.max(0.3, 5 - (coverage / 30) + raw * 1.2);
+    return Object.assign({}, p, {
+      _perf: perf, _rating: rating, _reviewCount: reviewCount,
+      _coverage: coverage, _latency: latency, _avgPrice: avgPrice,
+    });
+  }
+
+  const enrichedAll = D.providers.map(enrich);
+
+  // === 应用筛选 ===
+  function pass(p) {
+    if (S.quick === 'official' && p.type !== 'official') return false;
+    if (S.quick === 'aggregator' && p.type !== 'aggregator') return false;
+    if (S.quick === 'top_uptime' && (p._perf || 0) < 96) return false;
+    if (S.quick === 'invoice' && !p.invoice_available) return false;
+    if (S.quick === 'trial' && !(p.tags || []).includes('免费试用')) return false;
+    if (S.quick === 'domestic' && p.region !== 'cn' && p.region !== 'cn/global') return false;
+    if (S.quick === 'global' && p.region !== 'global' && p.region !== 'cn/global') return false;
+    if (S.quick === 'new') {
+      const days = (Date.now() - Date.parse(p.signup_date || '2025-01-01')) / 86400000;
+      if (days > 90) return false;
+    }
+    if (S.quick === 'top_rating' && (p._rating || 0) < 4.2) return false;
+
+    if (S.type.size && !S.type.has(p.type)) return false;
+    if (S.region.size) {
+      const r = p.region || '';
+      const ok = Array.from(S.region).some(x =>
+        x === 'cn' ? (r === 'cn' || r === 'cn/global') :
+        x === 'global' ? (r === 'global' || r === 'cn/global') : r === x);
+      if (!ok) return false;
+    }
+    if (S.status.size && !S.status.has(p.status || 'online')) return false;
+    if (S.pay.size && !(p.payment_currency || []).some(c => S.pay.has(c))) return false;
+    if (S.feat.size) {
+      const tags = p.tags || [];
+      for (const f of S.feat) {
+        if (f === 'free_trial' && !tags.includes('免费试用')) return false;
+        if (f === 'cache' && !tags.includes('缓存命中')) return false;
+        if (f === 'stream' && !tags.includes('真流式')) return false;
+        if (f === 'tools' && !tags.includes('Tool Use')) return false;
+        if (f === 'vision' && !tags.includes('Vision')) return false;
+      }
+    }
+    if (S.comp.size) {
+      const comp = p.compliance || [];
+      const tags = p.tags || [];
+      for (const c of S.comp) {
+        if (c === 'invoice' && !p.invoice_available) return false;
+        if (c !== 'invoice' && !comp.includes(c)) return false;
+        if (c === 'invoice' && !tags.includes('可开发票')) return false;
+      }
+    }
+    return true;
+  }
+
+  function sortBy(items) {
+    const v = items.slice();
+    switch (S.sort) {
+      case 'uptime': v.sort((a, b) => b._perf - a._perf); break;
+      case 'latency': v.sort((a, b) => a._latency - b._latency); break;
+      case 'rating': v.sort((a, b) => b._rating - a._rating); break;
+      case 'price': v.sort((a, b) => a._avgPrice - b._avgPrice); break;
+      case 'models': v.sort((a, b) => b._coverage - a._coverage); break;
+      case 'listed': v.sort((a, b) => (b.signup_date || '').localeCompare(a.signup_date || '')); break;
+    }
+    return v;
+  }
+
+  function renderRow(p, idx) {
+    const perfCls = p._perf >= 95 ? 'good' : p._perf >= 88 ? 'mid' : 'bad';
+    const stars = '★'.repeat(Math.round(p._rating)) + '☆'.repeat(5 - Math.round(p._rating));
+    const payIcons = (p.payment_currency || []).slice(0, 4).map(c => {
+      const cls = c === 'Alipay' ? 'alipay' : c === 'WeChat' ? 'wechat' : '';
+      return '<span class="pay-icon" title="' + c + '">' + (PL_CUR_LABEL[c] || c.slice(0, 1)) + '</span>';
+    }).join('');
+    const invoice = p.invoice_available
+      ? '<span class="pay-icon" title="可开发票">🧾</span>'
+      : '<span class="pay-icon no" title="无发票">—</span>';
+    const policyIcons = (p.compliance || []).slice(0, 3).map(c => {
+      const v = PL_COMPLIANCE_LABEL[c] || c.slice(0, 2);
+      return '<span class="pay-icon" title="' + c + '">' + v + '</span>';
+    }).join('') || '<span class="muted" style="font-size:10px;">—</span>';
+    const status = p.status || 'online';
+    const statusEmoji = { online: '🟢', limited: '🟡', maintenance: '⚙️', offline: '⚫' }[status] || '🟢';
+    const statusLabel = { online: '在线', limited: '限流', maintenance: '维护', offline: '离线' }[status] || '在线';
+    return '<tr onclick="location.href=\'provider.html?id=' + p.id + '\'">' +
+      '<td class="col-rank">#' + (idx + 1) + '</td>' +
+      '<td class="col-vendor">' +
+        '<div class="v-cell">' +
+          '<div class="v-logo">' + (p.logo || '🏢') + '</div>' +
+          '<div>' +
+            '<div class="v-name">' + escapeHtml(p.name_zh || p.name || '') + '</div>' +
+            '<div class="v-type">' + (PL_TYPE_LABEL[p.type] || p.type || '第三方') + ' · ' + escapeHtml(p.region || 'global') + '</div>' +
+          '</div>' +
+        '</div>' +
+      '</td>' +
+      '<td>' +
+        '<div class="score-cell ' + perfCls + '">' + p._perf + '%</div>' +
+        '<div class="score-bar"><div class="score-bar-fill" style="width:' + p._perf + '%;"></div></div>' +
+        '<div class="pl-latency">⏱ ' + p._latency + 'ms</div>' +
+      '</td>' +
+      '<td class="pay-cell">' + payIcons + invoice + '</td>' +
+      '<td class="policy-cell">' + policyIcons + '</td>' +
+      '<td>' +
+        '<div class="review-stars">' + stars + '</div>' +
+        '<div class="review-num">' + p._rating.toFixed(1) + ' · ' + (p._reviewCount >= 1000 ? (p._reviewCount / 1000).toFixed(1) + 'k' : p._reviewCount) + ' 条</div>' +
+      '</td>' +
+      '<td class="model-coverage"><span>' + p._coverage + '</span> 个</td>' +
+    '</tr>';
+  }
+
+  function renderPager(totalPages, currentPage) {
+    const pager = document.getElementById('pl-pager');
+    if (totalPages <= 1) { pager.innerHTML = '<span style="font-size:11px;color:var(--muted);">共 ' + (totalPages > 0 ? '1' : '0') + ' 页</span>'; return; }
+    let html = '';
+    html += '<a data-page="' + Math.max(1, currentPage - 1) + '">‹ 上一页</a>';
+    const maxButtons = 7;
+    let startP = Math.max(1, currentPage - 3);
+    let endP = Math.min(totalPages, startP + maxButtons - 1);
+    if (endP - startP < maxButtons - 1) startP = Math.max(1, endP - maxButtons + 1);
+    if (startP > 1) html += '<a data-page="1">1</a>' + (startP > 2 ? '<span>…</span>' : '');
+    for (let i = startP; i <= endP; i++) {
+      html += i === currentPage
+        ? '<span class="active">' + i + '</span>'
+        : '<a data-page="' + i + '">' + i + '</a>';
+    }
+    if (endP < totalPages) html += (endP < totalPages - 1 ? '<span>…</span>' : '') + '<a data-page="' + totalPages + '">' + totalPages + '</a>';
+    html += '<a data-page="' + Math.min(totalPages, currentPage + 1) + '">下一页 ›</a>';
+    pager.innerHTML = html;
+    pager.querySelectorAll('a[data-page]').forEach(a => {
+      a.addEventListener('click', () => {
+        S.page = parseInt(a.dataset.page, 10);
+        render();
+        document.getElementById('pl-tbody').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  }
+
+  function render() {
+    const filtered = sortBy(enrichedAll.filter(pass));
+    const totalPages = Math.max(1, Math.ceil(filtered.length / S.perPage));
+    if (S.page > totalPages) S.page = totalPages;
+    const start = (S.page - 1) * S.perPage;
+    const pageItems = filtered.slice(start, start + S.perPage);
+    document.getElementById('pl-count-tag').textContent = filtered.length + ' / ' + D.providers.length + ' 家 · 完整目录';
+    document.getElementById('pl-result-count').textContent = filtered.length + ' 家';
+    const tbody = document.getElementById('pl-tbody');
+    if (pageItems.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">没有匹配的渠道 · 试着放宽筛选</td></tr>';
+    } else {
+      tbody.innerHTML = pageItems.map(renderRow).join('');
+    }
+    renderPager(totalPages, S.page);
+  }
+
+  // 绑定事件
+  document.querySelectorAll('.pl-side-opt input').forEach(inp => {
+    inp.addEventListener('change', () => {
+      const k = inp.dataset.f;
+      const v = inp.value;
+      if (!S[k]) S[k] = new Set();
+      if (inp.checked) S[k].add(v); else S[k].delete(v);
+      S.page = 1;
+      render();
+    });
+  });
+  document.querySelectorAll('.pl-top-chips .chip').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.pl-top-chips .chip').forEach(x => x.classList.remove('active'));
+      c.classList.add('active');
+      S.quick = c.dataset.quick;
+      S.page = 1;
+      render();
+    });
+  });
+  document.getElementById('pl-sort').addEventListener('change', e => {
+    S.sort = e.target.value;
+    S.page = 1;
+    render();
+  });
+
+  render();
+  // 触发全局渲染（footer 等）
+  if (window.PAGE_INITIALIZERS && window.PAGE_INITIALIZERS['pages_list']) {
+    window.PAGE_INITIALIZERS['pages_list']();
+  }
+})();
+</script>
+</body>
+</html>

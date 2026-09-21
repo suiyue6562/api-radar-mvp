@@ -564,3 +564,322 @@ tbody tr:hover { background: var(--bg-deep); }
   font-family: var(--font-mono);
   font-size: 11px;
 }
+
+/* ============ 统一 Footer（所有页面仿 okkmax 4 列） ============ */
+.footer {
+  margin-top: 80px;
+  padding: 48px 0 32px;
+  border-top: 1px solid var(--border);
+  background: #ffffff;
+}
+.footer .footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+.footer-brand-col .brand-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 14px;
+}
+.footer-brand-col p {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 16px;
+  max-width: 380px;
+}
+.footer-machines { display: flex; gap: 8px; flex-wrap: wrap; }
+.footer-machines a {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg);
+  padding: 5px 10px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.footer-machines a:hover {
+  background: #ffffff;
+  border-color: var(--fg-strong);
+  color: var(--fg-strong);
+}
+.footer-col h4 {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 14px;
+  font-weight: 700;
+}
+.footer-col ul { list-style: none; padding: 0; margin: 0; }
+.footer-col li { margin-bottom: 8px; }
+.footer-col a {
+  color: var(--fg);
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.footer-col a:hover { color: var(--fg-strong); }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--muted);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-bottom .mono { font-family: var(--font-mono); }
+@media (max-width: 1100px) {
+  .footer .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 700px) {
+  .footer .footer-grid { grid-template-columns: 1fr; }
+}
+
+/* ============ 顶部右侧 actions (搜索/积分/设置/登录) ============ */
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  padding-left: 16px;
+  border-left: 1px solid var(--border);
+}
+.topbar .nav { margin-left: 0; }
+.topbar-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.topbar-icon-btn:hover {
+  background: var(--bg-deep);
+  border-color: var(--border);
+  color: var(--fg-strong);
+}
+.topbar-credit .topbar-credit-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fg);
+}
+.topbar-login {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  margin-left: 4px;
+  border-radius: var(--radius-sm);
+  background: var(--fg-strong);
+  color: #ffffff !important;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.topbar-login:hover { background: #000000; }
+@media (max-width: 1100px) {
+  .topbar-actions { padding-left: 8px; }
+  .topbar-icon-btn { padding: 0 6px; }
+}
+@media (max-width: 900px) {
+  .topbar-actions { display: none; }
+}
+
+/* ============ 通用 6 列主表（所有页面共享样式） ============ */
+.rank-table-wrap { padding: 0; overflow: hidden; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); }
+.rank-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-deep);
+}
+.rank-table-header h3 { margin: 0; font-size: 16px; }
+.rank-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.rank-table thead th {
+  text-align: left;
+  padding: 12px 14px;
+  background: var(--bg-deep);
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.rank-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+.rank-table tbody tr:hover { background: var(--bg-deep); }
+.rank-table tbody tr:last-child { border-bottom: 0; }
+.rank-table td { padding: 14px; vertical-align: middle; }
+.rank-table .col-rank {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--fg-strong);
+  width: 36px;
+}
+.rank-table .col-vendor { min-width: 180px; }
+.rank-table .v-cell { display: flex; align-items: center; gap: 10px; }
+.rank-table .v-logo {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--bg-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+.rank-table .v-name { font-weight: 700; font-size: 13px; line-height: 1.2; color: var(--fg-strong); }
+.rank-table .v-type {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.rank-table .score-cell {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 13px;
+  text-align: center;
+}
+.rank-table .score-cell.good { color: var(--success); }
+.rank-table .score-cell.mid { color: var(--warning); }
+.rank-table .score-cell.bad { color: var(--danger); }
+.rank-table .score-bar {
+  height: 4px;
+  background: var(--bg-deep);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 4px;
+  width: 80px;
+}
+.rank-table .score-bar-fill {
+  height: 100%;
+  background: var(--fg-strong);
+  border-radius: 2px;
+}
+.rank-table .pay-cell, .rank-table .policy-cell { font-size: 11px; text-align: center; }
+.rank-table .pay-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: 4px;
+  font-size: 11px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  color: var(--fg);
+  font-weight: 600;
+  margin: 0 1px;
+}
+.rank-table .pay-icon.no { opacity: 0.3; }
+.rank-table .review-stars {
+  color: #fbbf24;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+.rank-table .review-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  margin-left: 4px;
+}
+.rank-table .model-coverage {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--fg-strong);
+}
+.rank-table .model-coverage span { color: var(--fg-strong); font-size: 14px; }
+
+/* 翻页 */
+.pager {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 18px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-deep);
+}
+.pager a, .pager span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: transparent;
+}
+.pager a:hover { background: var(--bg-card); border-color: var(--border); color: var(--fg-strong); }
+.pager .active {
+  background: var(--fg-strong);
+  color: #ffffff;
+  border-color: var(--fg-strong);
+  font-weight: 700;
+}
+
+/* chips 通用 */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+  transition: all .15s ease;
+  white-space: nowrap;
+}
+.chip:hover { border-color: var(--fg-strong); color: var(--fg-strong); }
+.chip.active {
+  background: var(--fg-strong);
+  border-color: var(--fg-strong);
+  color: #ffffff;
+  font-weight: 600;
+}
+.chip-group { display: flex; gap: 6px; flex-wrap: wrap; }

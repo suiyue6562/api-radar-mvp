@@ -30,7 +30,7 @@ function escapeHtml(s) {
   }[c]));
 }
 
-// ============ 顶部导航 ============
+// ============ 顶部导航 — 仿 okkmax 风格：brand + 8 链接 + 右侧搜索/积分/设置/登录 ============
 const NAV = [
   { href: 'index.html', label: '首页', id: 'home' },
   { href: 'models.html', label: '模型库', id: 'models' },
@@ -38,10 +38,8 @@ const NAV = [
   { href: 'compare.html', label: '比价', id: 'compare' },
   { href: 'events.html', label: '行情', id: 'events' },
   { href: 'playground.html', label: 'Playground', id: 'playground' },
-  { href: 'business.html', label: '商家', id: 'business' },
   { href: 'watch.html', label: '观察室', id: 'watch' },
   { href: 'method.html', label: '方法', id: 'method' },
-  { href: 'test.html', label: '测 Key', id: 'test' },
 ];
 
 function renderTopbar(active = '') {
@@ -56,6 +54,12 @@ function renderTopbar(active = '') {
     '<nav class="nav">' + NAV.map(n =>
       '<a href="' + n.href + '" class="' + (active === n.id ? 'active' : '') + '">' + n.label + '</a>'
     ).join('') + '</nav>' +
+    '<div class="topbar-actions">' +
+      '<button class="topbar-icon-btn" title="搜索" aria-label="搜索"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></button>' +
+      '<button class="topbar-icon-btn topbar-credit" title="积分" aria-label="积分"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><span class="topbar-credit-num">128</span></button>' +
+      '<button class="topbar-icon-btn" title="设置" aria-label="设置"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>' +
+      '<a href="#" class="topbar-login">登录</a>' +
+    '</div>' +
   '</div>';
 }
 
@@ -290,63 +294,126 @@ function renderKPI() {
   if ($('rank-table-count')) $('rank-table-count').textContent = D.providers.length + ' 家商家';
 }
 
-// ============ 5. Site rankings 6 列主表 ============
+// ============ 5. Site rankings 主表 (7 列：收藏/站点/运行质量/支付/政策/口碑/覆盖) ============
 function renderSiteRankings() {
   const tbody = $('rank-table-body');
   if (!tbody) return;
   const providers = (D.providers || []).slice(0, 20);
 
+  // 加载收藏状态
+  const favKey = 'apiradar_favs';
+  let favs = {};
+  try { favs = JSON.parse(localStorage.getItem(favKey) || '{}'); } catch (e) {}
+
   // 为每个 provider 计算综合得分（合成）
   const ranked = providers.map(p => {
     const seed = (p.id || '').split('').reduce((s, c) => s + c.charCodeAt(0), 0);
     const raw = (seed * 9301 + 49297) % 233280 / 233280;
-    // 性能：基于 sla_uptime 或合成
     const perf = p.sla_uptime || Math.round(85 + raw * 14);
-    // 评分：基于 rating
+    const latency = p.avg_latency_ms || Math.round(280 + raw * 1200);
     const rating = p.rating || (3.8 + raw * 1.0);
     const reviewCount = p.review_count || Math.round(raw * 2000 + 50);
-    // 模型覆盖：基于 models_count 或合成
     const coverage = p.models_count || Math.round(8 + raw * 60);
-    // 支付：USD/CNY/发票
     const pay = p.payment_currency || ['USD'];
     const hasInvoice = !!p.invoice_available;
-    // 政策：合规 tags
-    const policy = p.compliance || [];
-    return Object.assign({}, p, { _perf: perf, _rating: rating, _reviewCount: reviewCount, _coverage: coverage, _pay: pay, _hasInvoice: hasInvoice, _policy: policy });
+    const hasRefund = p.refund_policy !== false; // 默认支持退款
+    const addedDate = p.added_date || '2026-09';
+    const typeLabel = p.type === 'official' ? '官方' : p.type === 'reseller' ? '代理' : p.type === 'cloud' ? '云厂商' : p.type === 'self_hosted' ? '自部署' : '第三方';
+    return Object.assign({}, p, {
+      _perf: perf, _latency: latency, _rating: rating, _reviewCount: reviewCount,
+      _coverage: coverage, _pay: pay, _hasInvoice: hasInvoice, _hasRefund: hasRefund,
+      _addedDate: addedDate, _typeLabel: typeLabel
+    });
   }).sort((a, b) => b._perf - a._perf);
 
-  if ($('rank-table-count')) $('rank-table-count').textContent = ranked.length + ' 家商家';
+  const meta = $('rank-table-meta');
+  if (meta) meta.textContent = ranked.length + ' 家 · 每 15 分钟刷新';
 
   tbody.innerHTML = ranked.map((p, i) => {
     const perfCls = p._perf >= 95 ? 'good' : p._perf >= 88 ? 'mid' : 'bad';
+    const latencyCls = p._latency < 500 ? 'good' : p._latency < 1000 ? 'mid' : 'bad';
     const ratingStars = '★'.repeat(Math.round(p._rating)) + '☆'.repeat(5 - Math.round(p._rating));
-    const payIcons = p._pay.slice(0, 3).map(c => '<span class="pay-icon" title="' + c + '">' + (c === 'CNY' ? '¥' : c === 'USD' ? '$' : c === 'EUR' ? '€' : c === 'JPY' ? '¥' : c === 'HKD' ? 'HK$' : c === 'BTC' ? '₿' : c === 'USDT' ? '₮' : c === 'Alipay' ? '支' : c === 'WeChat' ? '微' : c.slice(0, 1)) + '</span>').join('');
-    const invoice = p._hasInvoice ? '<span class="pay-icon" title="可开发票">🧾</span>' : '<span class="pay-icon no" title="无发票">—</span>';
-    const policyIcons = p._policy.slice(0, 3).map(c => '<span class="pay-icon" title="' + c + '">' + (c === '发票' ? '🧾' : c === 'GDPR' ? 'EU' : c === 'SOC2' ? 'S2' : c === 'ISO27001' ? 'ISO' : c === 'CCRC' ? 'CC' : c.slice(0, 2)) + '</span>').join('') || '<span class="muted" style="font-size:10px;">—</span>';
-    return '<tr onclick="location.href=\'provider.html?id=' + p.id + '\'">' +
-      '<td class="col-rank">#' + (i + 1) + '</td>' +
-      '<td class="col-vendor">' +
+
+    // 支付图标：alipay / wechat / usdt / paypal / card / bank / corp
+    const payMap = {
+      'CNY': { label: '¥', cls: '' },
+      'USD': { label: '$', cls: '' },
+      'Alipay': { label: '支', cls: '' },
+      'WeChat': { label: '微', cls: '' },
+      'USDT': { label: '₮', cls: 'usdt' },
+      'PayPal': { label: 'P', cls: '' },
+      'Card': { label: '💳', cls: '' },
+      'Bank': { label: '银', cls: 'bank' },
+      'Corp': { label: '企', cls: '' }
+    };
+    const payList = (p._pay.length ? p._pay : ['USD']);
+    const payIcons = payList.slice(0, 4).map(c => {
+      const m = payMap[c] || { label: c.slice(0, 1), cls: '' };
+      return '<span class="pay-icon ' + m.cls + '" title="' + escapeHtml(c) + '">' + m.label + '</span>';
+    }).join('');
+    const more = payList.length > 4 ? '<span class="pay-icon no">+' + (payList.length - 4) + '</span>' : '';
+
+    // 政策：✓ / — / ✗
+    const refund = p._hasRefund
+      ? '<span class="policy-icon ok"><span class="pi">✓</span>退款</span>'
+      : '<span class="policy-icon no"><span class="pi">✗</span>退款</span>';
+    const invoice = p._hasInvoice
+      ? '<span class="policy-icon ok"><span class="pi">✓</span>发票</span>'
+      : '<span class="policy-icon no"><span class="pi">—</span>发票</span>';
+
+    // 模型覆盖：图标堆
+    const iconSet = ['🅰️','🅾','🇬','𝕏','🌊','🎯','💎','⚡','🌐','🧠'];
+    const shown = Math.min(6, p._coverage);
+    const moreN = Math.max(0, p._coverage - shown);
+    const icons = iconSet.slice(0, shown).map(e => '<span class="coverage-icon">' + e + '</span>').join('');
+
+    return '<tr onclick="if(!event.target.closest(\'.star-btn\'))location.href=\'provider.html?id=' + p.id + '\'">' +
+      '<td class="td-star"><button class="star-btn ' + (favs[p.id] ? 'active' : '') + '" data-fav="' + p.id + '" title="收藏">★</button></td>' +
+      '<td>' +
         '<div class="v-cell">' +
           '<div class="v-logo">' + (p.logo || '🏢') + '</div>' +
           '<div>' +
             '<div class="v-name">' + escapeHtml(p.name_zh || p.name || '') + '</div>' +
-            '<div class="v-type">' + (p.type === 'official' ? '官方' : p.type === 'reseller' ? '代理' : p.type === 'cloud' ? '云厂商' : p.type === 'self_hosted' ? '自部署' : '第三方') + ' · ' + escapeHtml(p.region || 'global') + '</div>' +
+            '<div class="v-meta"><span class="badge-mini ' + (p.type || '') + '">' + p._typeLabel + '</span>收录于 ' + p._addedDate + '</div>' +
           '</div>' +
         '</div>' +
       '</td>' +
-      '<td>' +
-        '<div class="score-cell ' + perfCls + '">' + p._perf + '%</div>' +
-        '<div class="score-bar"><div class="score-bar-fill" style="width:' + p._perf + '%;"></div></div>' +
+      '<td class="perf-cell">' +
+        '<div class="perf-row">' +
+          '<span class="perf-dot ' + perfCls + '"></span>' +
+          '<span class="perf-val ' + perfCls + '">' + p._perf + '%</span>' +
+          '<span class="perf-label">在线</span>' +
+        '</div>' +
+        '<div class="perf-row" style="margin-top:4px;">' +
+          '<span class="perf-dot ' + latencyCls + '"></span>' +
+          '<span class="perf-val ' + latencyCls + '">' + p._latency + 'ms</span>' +
+          '<span class="perf-label">延迟</span>' +
+        '</div>' +
       '</td>' +
-      '<td class="pay-cell">' + payIcons + invoice + '</td>' +
-      '<td class="policy-cell">' + policyIcons + '</td>' +
-      '<td>' +
+      '<td><div class="pay-icons">' + payIcons + more + '</div></td>' +
+      '<td class="policy-cell"><div class="policy-row">' + refund + invoice + '</div></td>' +
+      '<td class="review-cell">' +
         '<div class="review-stars">' + ratingStars + '</div>' +
-        '<div class="review-num">' + p._rating.toFixed(1) + ' · ' + fmtNum(p._reviewCount) + ' 条</div>' +
+        '<div class="review-meta"><span class="review-score">' + p._rating.toFixed(1) + '</span> · ' + fmtNum(p._reviewCount) + ' 条</div>' +
       '</td>' +
-      '<td class="model-coverage"><span>' + p._coverage + '</span> 个模型</td>' +
+      '<td class="coverage-cell">' +
+        '<div class="coverage-num">' + p._coverage + (moreN ? '<span class="plus">+' + moreN + '</span>' : '') + ' <span style="color:var(--muted);font-weight:400;font-size:11px;">个模型</span></div>' +
+        '<div class="coverage-icons">' + icons + '</div>' +
+      '</td>' +
     '</tr>';
   }).join('');
+
+  // 收藏交互
+  tbody.querySelectorAll('.star-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.dataset.fav;
+      favs[id] = !favs[id];
+      if (!favs[id]) delete favs[id];
+      btn.classList.toggle('active', !!favs[id]);
+      try { localStorage.setItem(favKey, JSON.stringify(favs)); } catch (e) {}
+    });
+  });
 }
 
 // ============ 6. Top Picks 用户口碑精选 ============
@@ -357,6 +424,11 @@ const TOP_PICKS = [
     role: 'SaaS · 上海',
     avatar: '张',
     meta: 'DeepSeek 渠道',
+    rating: 5,
+    tags: [
+      { type: 'pro', label: '避坑' },
+      { type: 'pro', label: '13 项检测' }
+    ],
   },
   {
     quote: '我们做选型报告每周要给 CTO 看。IQ 榜 + 6 列主表直接截图发，比以前手画 Excel 省 4 小时。性价比榜也是真的准。',
@@ -364,6 +436,11 @@ const TOP_PICKS = [
     role: 'AI 产品经理',
     avatar: 'L',
     meta: 'Claude Sonnet',
+    rating: 5,
+    tags: [
+      { type: 'pro', label: '选型' },
+      { type: 'note', label: 'IQ 榜' }
+    ],
   },
   {
     quote: '作为小工作室，跑 30 万 token/天的代码补全。Radar 的成本计算器把缓存命中率调对，账单从 ¥4500 降到 ¥1100，省 75%。',
@@ -371,6 +448,11 @@ const TOP_PICKS = [
     role: '独立开发者',
     avatar: 'T',
     meta: 'GPT-5.6 Sol',
+    rating: 4,
+    tags: [
+      { type: 'pro', label: '省 75%' },
+      { type: 'note', label: '成本计算' }
+    ],
   },
   {
     quote: '13 项检测里假流式最坑 — 表面上流式返回，实际是 WebSocket 包一层假 SSE。Radar 一次测出来，再没被骗过。',
@@ -378,6 +460,11 @@ const TOP_PICKS = [
     role: '后端架构师',
     avatar: 'M',
     meta: '第三方渠道',
+    rating: 5,
+    tags: [
+      { type: 'pro', label: '假流式' },
+      { type: 'con', label: 'WS 套壳' }
+    ],
   },
   {
     quote: 'llms.txt 这个设计太对了。我们 Agent 集成直接读这个文件，不用写适配层，1 小时接进 Claude Desktop。',
@@ -385,6 +472,8 @@ const TOP_PICKS = [
     role: 'Agent 开发者',
     avatar: 'A',
     meta: 'MCP 集成',
+    rating: 5,
+    tags: [{ type: 'pro', label: 'AI Agent' }],
   },
   {
     quote: '商家库 40+ 渠道同屏对比，1M 上下文哪家不涨价、哪家假流式，全标好了。我做企业落地的同事都收藏了这个站。',
@@ -392,33 +481,44 @@ const TOP_PICKS = [
     role: 'AI 解决方案',
     avatar: 'D',
     meta: '1M 上下文',
+    rating: 4,
+    tags: [{ type: 'note', label: '对比' }],
   },
 ];
 
 function renderTopPicks() {
   const grid = $('picks-grid');
   if (!grid) return;
-  grid.innerHTML = TOP_PICKS.map(p =>
-    '<a href="providers.html" class="card pick-card" style="text-decoration:none;color:inherit;">' +
+  // 只显示前 3 条
+  const picks = TOP_PICKS.slice(0, 3);
+  grid.innerHTML = picks.map(p => {
+    const tagsHtml = (p.tags || []).map(t => {
+      const cls = t.type === 'pro' ? 'pro' : t.type === 'con' ? 'con' : 'note';
+      return '<span class="pick-tag ' + cls + '">' + escapeHtml(t.label) + '</span>';
+    }).join('');
+    const stars = (p.rating || 5) >= 1 ? '★'.repeat(Math.round(p.rating || 5)) : '';
+    return '<a href="' + (p.href || 'providers.html') + '" class="card pick-card">' +
       '<div class="pick-quote-mark">"</div>' +
       '<div class="pick-quote">' + escapeHtml(p.quote) + '</div>' +
-      '<div class="pick-quote-mark-end">"</div>' +
+      (tagsHtml ? '<div class="pick-tags">' + tagsHtml + '</div>' : '') +
       '<div class="pick-author">' +
-        '<div class="pick-author-avatar">' + escapeHtml(p.avatar) + '</div>' +
-        '<div>' +
+        '<div class="pick-avatar">' + escapeHtml(p.avatar) + '</div>' +
+        '<div class="pick-author-info">' +
           '<div class="pick-author-name">' + escapeHtml(p.author) + '</div>' +
           '<div class="pick-author-role">' + escapeHtml(p.role) + '</div>' +
+          (stars ? '<div class="pick-stars">' + stars + '</div>' : '') +
         '</div>' +
-        '<span class="pick-meta">' + escapeHtml(p.meta) + '</span>' +
+        '<span class="pick-redirect">→ ' + escapeHtml(p.meta) + '</span>' +
       '</div>' +
-    '</a>'
-  ).join('');
+    '</a>';
+  }).join('');
 }
 
 // ============ 7. Perks & Promotions ============
 const PERKS = [
   {
-    tag: '限时 · 新商家',
+    tag: '限时 · 9.30 截止',
+    tagCls: 'limited',
     title: 'DeepSeek V4 Flash 输入价 ¥0.28/M',
     desc: '原生 1M 上下文，中文增强，缓存读取 ¥0.04/M。国庆前注册额外 10% 额度赠送。',
     meta: '截止 2026-10-08',
@@ -427,6 +527,7 @@ const PERKS = [
   },
   {
     tag: '🎁 免费试用',
+    tagCls: 'free',
     title: 'Anthropic 官方 50 万 token 测试金',
     desc: '首次接入 Claude Sonnet 5 / Opus 4.7，凭邮箱申请。Playground 内一键调用，3 分钟到账。',
     meta: '限新用户 · 一次',
@@ -434,7 +535,8 @@ const PERKS = [
     href: 'playground.html',
   },
   {
-    tag: '📊 企业方案',
+    tag: '⭐ 编辑推荐',
+    tagCls: '',
     title: 'Radar 企业版 · 13 项检测 API',
     desc: '把 13 项硬核检测集成到你的采购流程。Webhook 推送 + 批量检测，月 ¥1999 起。',
     meta: '联系商务',
@@ -447,8 +549,8 @@ function renderPerks() {
   const grid = $('perks-grid');
   if (!grid) return;
   grid.innerHTML = PERKS.map(p =>
-    '<a href="' + p.href + '" class="card perk-card" style="text-decoration:none;color:inherit;">' +
-      '<span class="perk-tag">' + escapeHtml(p.tag) + '</span>' +
+    '<a href="' + p.href + '" class="card perk-card">' +
+      '<span class="perk-tag ' + (p.tagCls || '') + '">' + escapeHtml(p.tag) + '</span>' +
       '<div class="perk-title">' + escapeHtml(p.title) + '</div>' +
       '<div class="perk-desc">' + escapeHtml(p.desc) + '</div>' +
       '<div class="perk-meta">' +
@@ -469,9 +571,78 @@ function renderHeroTimestamp() {
   }
 }
 
-// ============ 页脚渲染 (兼容老调用，无内容不报错) ============
+// ============ 页脚（4 列 + 机器可读 + © + mono · 仿 okkmax） ============
 function renderFooter() {
-  // 各页已自带 footer，保留空函数防止 PAGE_INITIALIZERS 报错
+  // 找到 foot 的目标：可能是 <footer class="footer">、<footer class="site-footer">、<div id="footer">，或没有
+  let f = document.querySelector('footer.footer') || document.querySelector('footer.site-footer');
+  if (!f) {
+    // 兼容旧页面：找 id="footer"
+    f = $('footer');
+  }
+  if (!f) {
+    // 没有 footer 容器，附加到 main 之后
+    const m = document.querySelector('main.main') || document.querySelector('main');
+    if (!m) return;
+    f = document.createElement('footer');
+    m.parentNode.insertBefore(f, m.nextSibling);
+  }
+  // 确保它有 .footer class
+  if (f.tagName === 'FOOTER' && !f.classList.contains('footer')) {
+    f.classList.add('footer');
+  }
+  // 填充内容（包装在 .main 里对齐容器宽度）
+    f.innerHTML = '' +
+      '<div class="main">' +
+        '<div class="footer-grid">' +
+        '<div class="footer-brand-col">' +
+          '<div class="brand-mini">' +
+            '<div class="brand-logo">R</div>' +
+            '<span>API优选咨询</span>' +
+          '</div>' +
+          '<p>浏览器内 5 分钟验证 API 渠道真假：可达性、鉴权、模型指纹、速率限制、价格、假流式、TLS — 13 项硬核检测。Key 不上传服务器，数据每 15 分钟刷新。</p>' +
+          '<div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;font-weight:700;">机器可读 · Machine-Readable</div>' +
+          '<div class="footer-machines">' +
+            '<a href="llms.txt" target="_blank" rel="noopener">/llms.txt</a>' +
+            '<a href="openapi.json" target="_blank" rel="noopener">/openapi.json</a>' +
+            '<a href="mcp.json" target="_blank" rel="noopener">/mcp.json</a>' +
+          '</div>' +
+        '</div>' +
+        '<div class="footer-col">' +
+          '<h4>导航</h4>' +
+          '<ul>' +
+            '<li><a href="index.html">首页</a></li>' +
+            '<li><a href="models.html">模型库</a></li>' +
+            '<li><a href="providers.html">渠道库</a></li>' +
+            '<li><a href="compare.html">比价</a></li>' +
+            '<li><a href="events.html">行情</a></li>' +
+          '</ul>' +
+        '</div>' +
+        '<div class="footer-col">' +
+          '<h4>工具</h4>' +
+          '<ul>' +
+            '<li><a href="playground.html">Playground</a></li>' +
+            '<li><a href="test.html">测 Key</a></li>' +
+            '<li><a href="watch.html">观察室</a></li>' +
+            '<li><a href="business.html">商家入驻</a></li>' +
+            '<li><a href="method.html">数据方法</a></li>' +
+          '</ul>' +
+        '</div>' +
+        '<div class="footer-col">' +
+          '<h4>资源</h4>' +
+          '<ul>' +
+            '<li><a href="sitemap.xml">Sitemap</a></li>' +
+            '<li><a href="robots.txt">robots.txt</a></li>' +
+            '<li><a href="llms.txt" target="_blank">llms.txt</a></li>' +
+            '<li><a href="openapi.json" target="_blank">OpenAPI</a></li>' +
+            '<li><a href="mcp.json" target="_blank">MCP Server</a></li>' +
+          '</ul>' +
+        '</div>' +
+      '</div>' +
+      '<div class="footer-bottom">' +
+        '<span>© 2026 API优选咨询 · v2.1 · 数据基于公开来源聚合</span>' +
+        '<span class="mono">Built for AI Agents · CORS Open · Zero Auth</span>' +
+      '</div>' +
+    '</div>';
 }
 
 // ============ (保留旧) Featured Models — 周 token 趋势榜 ============
@@ -606,8 +777,9 @@ window.PAGE_INITIALIZERS = {
   business: () => { renderTopbar('business'); renderFooter(); },
   watch: () => { renderTopbar('watch'); renderFooter(); },
   method: () => { renderTopbar('method'); renderFooter(); },
-  test: () => { renderTopbar('test'); renderFooter(); }
-};
+  test: () => { renderTopbar('test'); renderFooter(); },
+    pages_list: () => { renderTopbar('providers'); renderFooter(); }
+  };
 
 addEventListener('DOMContentLoaded', () => {
   autoReportView();
