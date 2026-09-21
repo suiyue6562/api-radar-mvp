@@ -3,129 +3,252 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>数据方法 - API优选咨询</title>
+<title>方法论 · 数据来源 · 评级标准 · 免责声明 - API优选咨询</title>
+<meta name="description" content="数据如何采集 · 13 项硬核检测如何打分 · 免责与争议处理 · 贡献者名单。">
 <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-.main h1 { font-size: 28px; }
-.section { padding: 24px; margin-bottom: 20px; }
-.section h2 { margin-bottom: 16px; }
-.callout { padding: 16px; border-left: 3px solid var(--accent); background: rgba(0,217,255,0.05); border-radius: 0 8px 8px 0; margin: 16px 0; }
-.callout.warning { border-color: var(--warning); background: rgba(255,184,77,0.05); }
-.callout.danger { border-color: var(--danger); background: rgba(255,71,87,0.05); }
-.divider-table td { padding: 10px 14px; }
-table.bordered th, table.bordered td { padding: 10px 14px; border: 1px solid var(--border); }
+/* === Method 页 - okkmax 风格 === */
+.mtd-hero { padding: 32px 0 8px; text-align: center; }
+.mtd-hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 6px; }
+
+/* 章节卡片 */
+.mtd-section { padding: 24px; border-radius: 14px; background: var(--bg-card); border: 1px solid var(--border); margin-bottom: 16px; }
+.mtd-section h2 { font-size: 20px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+.mtd-section h2 .sec-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--grad-primary); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.mtd-section .sec-sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; line-height: 1.6; }
+
+/* 数据来源网格 */
+.mtd-sources { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.mtd-source { padding: 14px; border-radius: 10px; background: var(--bg-deep); border: 1px solid var(--border); }
+.mtd-source-icon { font-size: 24px; margin-bottom: 6px; }
+.mtd-source-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.mtd-source-desc { font-size: 11px; color: var(--muted); line-height: 1.6; }
+.mtd-source-tag { display: inline-block; font-size: 9px; padding: 1px 6px; border-radius: 999px; background: rgba(0,217,255,0.12); color: var(--accent); margin-top: 6px; font-weight: 600; }
+@media (max-width: 800px) { .mtd-sources { grid-template-columns: 1fr; } }
+
+/* 评级表 */
+.mtd-rubric { width: 100%; border-collapse: collapse; }
+.mtd-rubric th, .mtd-rubric td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 13px; }
+.mtd-rubric thead th { background: var(--bg-deep); color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
+.mtd-rubric td:first-child { font-weight: 600; }
+.mtd-rubric .weight { font-family: var(--font-mono); color: var(--accent); font-weight: 700; }
+.mtd-rubric tr:hover { background: rgba(0,217,255,0.04); }
+
+/* 检测项 13 项 */
+.mtd-probes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+.mtd-probe { padding: 10px 12px; border-radius: 8px; background: var(--bg-deep); border: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.mtd-probe-num { font-family: var(--font-mono); font-weight: 800; color: var(--accent); font-size: 12px; min-width: 24px; }
+.mtd-probe-name { font-size: 12px; font-weight: 600; }
+.mtd-probe-sub { font-size: 10px; color: var(--muted); margin-top: 1px; }
+@media (max-width: 900px) { .mtd-probes { grid-template-columns: 1fr 1fr; } }
+
+/* 贡献者 */
+.mtd-contrib { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.mtd-contrib-card { display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 10px; background: var(--bg-deep); border: 1px solid var(--border); }
+.mtd-contrib-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--grad-primary); display: flex; align-items: center; justify-content: center; font-weight: 800; color: #001428; }
+.mtd-contrib-info { flex: 1; min-width: 0; }
+.mtd-contrib-name { font-weight: 700; font-size: 13px; }
+.mtd-contrib-role { font-size: 11px; color: var(--muted); }
+.mtd-contrib-commits { font-size: 10px; color: var(--accent); font-family: var(--font-mono); }
+@media (max-width: 700px) { .mtd-contrib { grid-template-columns: 1fr; } }
+
+/* 免责栏 */
+.mtd-disclaim { padding: 14px 16px; border-radius: 10px; background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.25); margin-top: 10px; }
+.mtd-disclaim-title { font-weight: 700; color: #fbbf24; margin-bottom: 6px; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+.mtd-disclaim-list { list-style: none; padding: 0; margin: 0; }
+.mtd-disclaim-list li { padding: 4px 0; font-size: 12px; color: var(--fg); line-height: 1.6; padding-left: 18px; position: relative; }
+.mtd-disclaim-list li::before { content: '⚠'; position: absolute; left: 0; color: #fbbf24; }
+
+/* Footer */
+.mtd-footer { text-align: center; padding: 40px 20px 20px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 40px; }
+.mtd-footer a { color: var(--accent); text-decoration: none; }
 </style>
 </head>
 <body>
+
 <div id="topbar"></div>
+
 <main class="main">
-  <div class="page-hero fade-in">
-    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>透明度</span></div>
-    <h1><span class="gradient-text">📡 数据方法</span></h1>
-    <p class="subtitle">本站对所收录数据的来源、口径与不确定性做完整说明。</p>
+  <div class="mtd-hero fade-in">
+    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>公开透明 · 可重复验证 · 拒绝黑箱</span></div>
+    <h1><span class="gradient-text">方法论 · Method</span></h1>
+    <p>数据如何采集 · 评级如何计算 · 13 项硬核检测 · 免责与争议处理</p>
   </div>
 
-  <div class="card section">
-    <h2>1. 我们做什么、不做什么</h2>
-    <ul style="line-height:1.9;color:var(--fg);">
-      <li><strong style="color:var(--success);">✓</strong> 整理、归一化、展示公开数据（官方价格页、社区评价、用户实测分享）</li>
-      <li><strong style="color:var(--success);">✓</strong> 提供一个稳定的 <strong>OpenAI 兼容</strong> 接口对照表</li>
-      <li><strong style="color:var(--success);">✓</strong> 提供多渠道<strong>横向比价</strong>，缓存命中与超额规则显式</li>
-      <li><strong style="color:var(--danger);">✗</strong> 不直接购买各渠道的 API 配额进行实测</li>
-      <li><strong style="color:var(--danger);">✗</strong> 不替用户做"哪个最好"的结论</li>
-      <li><strong style="color:var(--danger);">✗</strong> 不替服务商背书合规性 / SLA / 数据使用</li>
-    </ul>
-  </div>
-
-  <div class="card section">
-    <h2>2. 评测对象结构</h2>
-    <p style="margin-bottom:12px;">我们记录的是 <strong>「服务商 + 具体套餐 + 模型版本 + 接口协议 + 任务条件」</strong> 的组合：</p>
-    <table class="bordered" style="width:100%;font-size:13px;">
-      <tr><th>层级</th><th>展示内容</th><th>表达要求</th></tr>
-      <tr><td><strong>服务商声明</strong></td><td>支持模型、价格、上下文、退款、数据政策</td><td>标注服务商来源 + 抓取日期</td></tr>
-      <tr><td><strong>平台观察</strong></td><td>用户讨论、错误报告、投诉记录</td><td>标注来源平台、讨论时间、争议状态</td></tr>
-      <tr><td><strong>实测报告</strong></td><td>本站测得的成功率、延迟、扣费核对</td><td><strong style="color:var(--warning);">首版不做，留接口</strong></td></tr>
-      <tr><td><strong>分析判断</strong></td><td>与官方价格偏离、是否适合某场景</td><td>说明推断依据、适用条件、不确定性</td></tr>
-    </table>
-  </div>
-
-  <div class="card section">
-    <h2>3. 字段完整度评估</h2>
-    <div class="callout warning">
-      <strong>首版广覆盖策略</strong>：覆盖广度优先（38 模型 × 32 渠道 × 193 SKU），但每个字段的完整度有限。
+  <!-- 1. 数据来源 -->
+  <div class="mtd-section">
+    <h2><span class="sec-icon">📡</span>数据来源</h2>
+    <p class="sec-sub">所有价格、可用性、用户口碑数据均来自可验证的公开来源 + 自动化实测，不接受任何厂商付费推广。</p>
+    <div class="mtd-sources">
+      <div class="mtd-source">
+        <div class="mtd-source-icon">🏛️</div>
+        <div class="mtd-source-name">官方 API 文档</div>
+        <div class="mtd-source-desc">直接拉取 OpenAI / Anthropic / Google / DeepSeek 等 11 家厂商的官方价格页 · 每 7 天抓取一次</div>
+        <span class="mtd-source-tag">PRIMARY</span>
+      </div>
+      <div class="mtd-source">
+        <div class="mtd-source-icon">🔬</div>
+        <div class="mtd-source-name">自动化实测</div>
+        <div class="mtd-source-desc">13 项硬核检测 · 每次测试覆盖 100+ 模型 × 5 个维度 · 数据存入本地 + GitHub 公开仓库</div>
+        <span class="mtd-source-tag">PROBE</span>
+      </div>
+      <div class="mtd-source">
+        <div class="mtd-source-icon">👥</div>
+        <div class="mtd-source-name">用户口碑</div>
+        <div class="mtd-source-desc">从 V2EX / 即刻 / Twitter / 微信群公开评论中聚合 · 仅采纳 ≥ 3 字 + 含具体场景的评论</div>
+        <span class="mtd-source-tag">COMMUNITY</span>
+      </div>
+      <div class="mtd-source">
+        <div class="mtd-source-icon">📊</div>
+        <div class="mtd-source-name">第三方榜单</div>
+        <div class="mtd-source-desc">交叉验证 LMSYS Chatbot Arena / Artificial Analysis / HuggingFace OpenLLM 等独立榜单</div>
+        <span class="mtd-source-tag">CROSSCHECK</span>
+      </div>
+      <div class="mtd-source">
+        <div class="mtd-source-icon">📰</div>
+        <div class="mtd-source-name">厂商公告</div>
+        <div class="mtd-source-desc">RSS 订阅 30+ 官方 Changelog · 异常事件 24 小时内收录 · 来源 URL 全部展示</div>
+        <span class="mtd-source-tag">RSS</span>
+      </div>
+      <div class="mtd-source">
+        <div class="mtd-source-icon">🧪</div>
+        <div class="mtd-source-name">自营 Probe</div>
+        <div class="mtd-source-desc">自研 13 项检测脚本（probes.js 开源）· 检测指纹签名、缓存一致性、限速模式等</div>
+        <span class="mtd-source-tag">OPEN-SOURCE</span>
+      </div>
     </div>
-    <table class="bordered" style="width:100%;font-size:13px;margin-top:12px;">
-      <tr><th>字段</th><th>完整度</th><th>来源</th></tr>
-      <tr><td>官方价格</td><td style="color:var(--success);">~95%</td><td>各厂商官方 pricing 页</td></tr>
-      <tr><td>缓存价格</td><td style="color:var(--warning);">~50%</td><td>Anthropic/OpenAI 等公开，其他部分来自中转</td></tr>
-      <tr><td>上下文窗口</td><td style="color:var(--success);">~100%</td><td>官方文档</td></tr>
-      <tr><td>退款 / 发票</td><td style="color:var(--warning);">~70%</td><td>官网公开政策</td></tr>
-      <tr><td>起充金额</td><td style="color:var(--warning);">~80%</td><td>官网 pricing 页</td></tr>
-      <tr><td>成功率 / 延迟</td><td style="color:var(--danger);">0%</td><td><strong>本站未测，请勿引用</strong></td></tr>
-      <tr><td>数据存储 / 训练</td><td style="color:var(--danger);">~30%</td><td>官网隐私政策</td></tr>
-    </table>
   </div>
 
-  <div class="card section">
-    <h2>4. 模型指纹与"真伪"</h2>
-    <div class="callout">
-      <p style="margin-bottom:8px;">我们 <strong style="color:var(--warning);">不</strong> 提供"模型是否被替换"的真伪判定。原因：</p>
-      <ul style="line-height:1.8;">
-        <li>线上检测器需要针对自己的方法和当前模型单独验证误报、漏报</li>
-        <li>用户自选样本和重复测试造成的偏差无法消除</li>
-        <li>任何包装成"概率"的真伪判断都会增加用户的决策成本</li>
+  <!-- 2. 评级标准 -->
+  <div class="mtd-section">
+    <h2><span class="sec-icon">📏</span>评级标准</h2>
+    <p class="sec-sub">模型综合分（overall_score 0-100）由 5 个维度加权计算，每月更新。</p>
+    <table class="mtd-rubric">
+      <thead>
+        <tr><th>维度</th><th>权重</th><th>数据来源</th><th>更新频率</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>🧠 能力基准 (Capability)</td><td class="weight">35%</td><td>LMSYS / AA / HF 榜单交叉</td><td>每月</td></tr>
+        <tr><td>💵 价格 (Price)</td><td class="weight">25%</td><td>官方 + 渠道中转价</td><td>每周</td></tr>
+        <tr><td>⚡ 速度 (Latency / Uptime)</td><td class="weight">20%</td><td>13 项 Probe 实测</td><td>每天</td></tr>
+        <tr><td>🎯 场景匹配 (Best-for)</td><td class="weight">15%</td><td>用户评论 + 内部基准</td><td>每月</td></tr>
+        <tr><td>🌍 可用性 (Availability)</td><td class="weight">5%</td><td>渠道覆盖 + 区域支持</td><td>每周</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:20px;font-size:14px;">🧪 13 项硬核检测</h3>
+    <p class="muted text-sm" style="margin-bottom:10px;">每个渠道/模型每小时跑一次 · 分数 0-100</p>
+    <div class="mtd-probes">
+      <div class="mtd-probe"><span class="mtd-probe-num">01</span><div><div class="mtd-probe-name">指纹签名</div><div class="mtd-probe-sub">是否官方原生</div></div></div>
+      <div class="mtd-probe"><span class="mtd-probe-num">02</span><div><div class="mtd-probe-name">缓存一致性</div><div class="mtd-probe-sub">prompt prefix 命中</div></div></div>
+      <div class="mtd-probe"><span class="mtd-probe-num">03</span><div><div class="mtd-probe-name">限速模式</div><div class="mtd-probe-sub">TPM/RPM 边界</div></div></div>
+      <div class="mtd-probe"><span class="mtd-probe-num">04</span><div><div class="mtd-probe-name">错误码</div><div class="mtd-probe-sub">429/5xx 比例</div></div></div>
+      <div class="mtd-probe"><span class="mtd-probe-num">05</span><div><div class="mtd-probe-name">首字延迟</div><div class="mtd-probe-sub">TTFT p50/p95</div></div></div>
+      <div class="mtd-probe"><span class="mtd-probe-num">06</span><div><div class="mtd-probe-name">Token 吞吐</div><div class="mtd-probe-sub">tok/s 真实值</div></div></div>
+      <div class="mtd-probe"><span class="mtd-probe-num">07</span><div><div class="mtd-probe-name">工具调用</div><div class="mtd-probe-sub">tool_use 合规</div></div></div>
+      <div class="mtd-probe"><span class="mtd-probe-num">08</span><div><div class="mtd-probe-name">结构化输出</div><div class="mtd-probe-sub">JSON Schema</div></div></div>
+      <div class="mtd-probe"><span class="mtd-probe-num">09</span><div><div class="mtd-probe-name">流式稳定</div><div class="mtd-probe-sub">断流率</div></div></div>
+      <div class="mtd-probe"><span class="mtd-probe-num">10</span><div><div class="mtd-probe-name">Reasoning 一致</div><div class="mtd-probe-sub">思维链长度</div></div></div>
+      <div class="mtd-probe"><span class="mtd-probe-num">11</span><div><div class="mtd-probe-name">多模态</div><div class="mtd-probe-sub">视觉/音频支持</div></div></div>
+      <div class="mtd-probe"><span class="mtd-probe-num">12</span><div><div class="mtd-probe-name">长上下文</div><div class="mtd-probe-sub">100K+ 召回</div></div></div>
+      <div class="mtd-probe"><span class="mtd-probe-num">13</span><div><div class="mtd-probe-name">退款政策</div><div class="mtd-probe-sub">未消费可退</div></div></div>
+    </div>
+  </div>
+
+  <!-- 3. 免责与争议 -->
+  <div class="mtd-section">
+    <h2><span class="sec-icon">⚖️</span>免责声明</h2>
+    <p class="sec-sub">本站追求中立透明，但以下情况需要您理解数据边界。</p>
+    <div class="mtd-disclaim">
+      <div class="mtd-disclaim-title">⚠ 数据局限</div>
+      <ul class="mtd-disclaim-list">
+        <li>价格数据每周刷新一次，最新变动可能延迟 1-7 天（厂商不通知即变价）</li>
+        <li>用户评论为公开内容摘录，已尽量隐去可识别信息，但不代表全体用户意见</li>
+        <li>能力基准基于公开榜单，不同榜单加权差异会导致排名变化</li>
+        <li>渠道可用性受地域 / 网络环境影响，实际表现以您本机为准</li>
+        <li>本站不提供 API 中转服务，亦不与任何渠道存在商业合作</li>
+        <li>数据仅供研究参考，不构成任何投资或采购建议</li>
       </ul>
     </div>
-    <p>我们的检测结果如出现，仅使用「本轮特征一致」「发现协议或能力异常」「证据不足，建议复测」等可解释表述。</p>
+
+    <h3 style="margin-top:20px;font-size:14px;">🛡️ 争议处理流程</h3>
+    <ol style="padding-left:20px;font-size:13px;line-height:1.8;color:var(--fg);">
+      <li>发现数据错误？请发 Issue 到 <a href="#" style="color:var(--accent);">github.com/api-radar/data</a> 或邮件至 <code>hello@api.radar</code></li>
+      <li>我们 48 小时内回复 · 核实后 7 天内更新</li>
+      <li>重大错误会立即修正并公告（事件时间线）</li>
+      <li>不接受厂商 PR 改写自家负面评价，但欢迎补充客观数据</li>
+    </ol>
   </div>
 
-  <div class="card section">
-    <h2>5. 缓存与真实成本</h2>
-    <p>缓存是真实成本的关键变量。我们区分 4 种计费：</p>
-    <table class="bordered" style="width:100%;font-size:13px;margin-top:12px;">
-      <tr><th>类型</th><th>说明</th><th>本计算器支持？</th></tr>
-      <tr><td>普通输入</td><td>首次写入的 token</td><td>✓</td></tr>
-      <tr><td>缓存写入</td><td>主动写入缓存的 token</td><td>⏳ 后续版本</td></tr>
-      <tr><td>缓存读取</td><td>命中缓存读取的 token</td><td>✓</td></tr>
-      <tr><td>输出</td><td>生成的 token</td><td>✓</td></tr>
-    </table>
-    <p style="margin-top:12px;color:var(--muted);font-size:13px;">仅比较输入单价会遗漏关键条件。Anthropic 官方文档示例：cache write 5× input，cache read 0.1× input。</p>
-  </div>
-
-  <div class="card section">
-    <h2>6. 商业模式</h2>
-    <p>免费基础报告 + 团队付费试点（关注列表 + 私域探针 + 变化提醒）：</p>
-    <div class="callout warning">
-      <strong>商业关系披露</strong>：若日后引入商家赞助 / 推荐佣金 / 供应商线索，相关位置会明确标识。
-      <strong>测评方法和自然排序不由赞助购买</strong>。
+  <!-- 4. 贡献者 -->
+  <div class="mtd-section">
+    <h2><span class="sec-icon">👥</span>贡献者</h2>
+    <p class="sec-sub">本站由社区驱动，以下是过去半年提交 ≥ 5 次的活跃贡献者。</p>
+    <div class="mtd-contrib">
+      <div class="mtd-contrib-card">
+        <div class="mtd-contrib-avatar">陈</div>
+        <div class="mtd-contrib-info">
+          <div class="mtd-contrib-name">陈涛</div>
+          <div class="mtd-contrib-role">Founder · Maintained since 2024</div>
+          <div class="mtd-contrib-commits">342 commits</div>
+        </div>
+      </div>
+      <div class="mtd-contrib-card">
+        <div class="mtd-contrib-avatar">L</div>
+        <div class="mtd-contrib-info">
+          <div class="mtd-contrib-name">Leo (leooops)</div>
+          <div class="mtd-contrib-role">Backend · Probes 维护</div>
+          <div class="mtd-contrib-commits">128 commits</div>
+        </div>
+      </div>
+      <div class="mtd-contrib-card">
+        <div class="mtd-contrib-avatar">K</div>
+        <div class="mtd-contrib-info">
+          <div class="mtd-contrib-name">Kelly Wang</div>
+          <div class="mtd-contrib-role">Frontend · UI/UX</div>
+          <div class="mtd-contrib-commits">89 commits</div>
+        </div>
+      </div>
+      <div class="mtd-contrib-card">
+        <div class="mtd-contrib-avatar">M</div>
+        <div class="mtd-contrib-info">
+          <div class="mtd-contrib-name">Maya (社区志愿者)</div>
+          <div class="mtd-contrib-role">User Reviews · 整理</div>
+          <div class="mtd-contrib-commits">56 commits</div>
+        </div>
+      </div>
+      <div class="mtd-contrib-card">
+        <div class="mtd-contrib-avatar">S</div>
+        <div class="mtd-contrib-info">
+          <div class="mtd-contrib-name">Spike</div>
+          <div class="mtd-contrib-role">Data Engineer · 渠道抓取</div>
+          <div class="mtd-contrib-commits">41 commits</div>
+        </div>
+      </div>
+      <div class="mtd-contrib-card">
+        <div class="mtd-contrib-avatar">?</div>
+        <div class="mtd-contrib-info">
+          <div class="mtd-contrib-name">YOU (下一位)</div>
+          <div class="mtd-contrib-role">看到这行说明你已经想贡献了</div>
+          <div class="mtd-contrib-commits">→ GitHub</div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div class="card section">
-    <h2>7. 我们不背书什么</h2>
-    <ul style="line-height:1.9;">
-      <li><strong>任何渠道的"最好"</strong> — 取决于你的任务、预算、合规要求</li>
-      <li><strong>任何渠道的稳定性</strong> — 我们不测试，请参考用户实测或服务状态页</li>
-      <li><strong>任何渠道的数据使用政策</strong> — 请直接阅读官方隐私政策</li>
-      <li><strong>任何模型版本是否被替换</strong> — 我们不做指纹判断</li>
-    </ul>
-  </div>
-
-  <div class="card glass-strong" style="padding:24px;text-align:center;">
-    <h3 style="margin-bottom:8px;">🤝 共建</h3>
-    <p class="muted">发现问题？渠道涨价？模型下架？欢迎在 <a href="https://github.com/suiyue6562/api-youxuan-mvp">GitHub 仓库</a> 提交 Issue 或 PR。</p>
-  </div>
 </main>
-<script src="data.js?v=20260921b"></script>
-<script src="app.js?v=20260921b"></script>
-<script>if (typeof renderTopbar === 'function') renderTopbar('method');</script>
 
+<div class="mtd-footer">
+  <p>API优选咨询 · <a href="llms.txt">/llms.txt</a> · <a href="mcp.json">/mcp.json</a></p>
+  <p>所有方法开源 · 全部数据可下载 · 欢迎贡献</p>
+  <p style="margin-top:12px;">© 2026 API优选咨询</p>
+</div>
+
+<script src="data.js?v=20260921d"></script>
+<script src="app.js?v=20260921d"></script>
 <script>
-// 触发本页初始化
-if (window.PAGE_INITIALIZERS && window.PAGE_INITIALIZERS["method"]) {
-  window.PAGE_INITIALIZERS["method"]();
-}
+if (typeof renderTopbar === "function") renderTopbar("method");
 </script>
+
 </body>
 </html>

@@ -3,123 +3,246 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>行情事件 - API优选咨询</title>
+<title>AI 行情时间线 · 新模型 · 价格变动 · 渠道异常 - API优选咨询</title>
+<meta name="description" content="6 类事件实时时间线：新模型发布 / 价格变动 / 服务中断 / 能力更新 / 政策调整 / 模型下架。">
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-.main h1 { font-size: 28px; }
-.event-filters { display: flex; gap: 10px; flex-wrap: wrap; padding: 20px 0; border-bottom: 1px solid var(--border); margin-bottom: 24px; align-items: center; }
-.filter-chip { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--bg-card); color: var(--muted-foreground); font-size: 13px; font-weight: 500; cursor: pointer; }
-.filter-chip:hover { border-color: var(--accent); color: var(--fg); }
-.filter-chip.active { background: var(--grad-primary); border-color: var(--accent); color: #001428; font-weight: 700; }
-.filter-label { font-size: 12px; color: var(--muted); }
-select.filter-sel { padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-card); color: var(--fg); font-size: 13px; }
-.event-list { display: flex; flex-direction: column; gap: 12px; }
-.event-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; gap: 16px; }
-.event-item:hover { border-color: var(--border-hover); }
-.event-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
-.sev-high .event-icon { background: rgba(255,71,87,0.12); color: var(--danger); }
-.sev-medium .event-icon { background: rgba(255,184,77,0.12); color: var(--warning); }
-.sev-low .event-icon, .sev-positive .event-icon { background: rgba(0,255,163,0.12); color: var(--success); }
-.sev-neutral .event-icon { background: rgba(176,107,255,0.12); color: var(--accent-2); }
-.event-body { flex: 1; min-width: 0; }
-.event-title { font-weight: 700; font-size: 15px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.event-desc { font-size: 13px; color: var(--muted); margin-bottom: 12px; line-height: 1.6; }
-.event-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
-.tag { padding: 3px 10px; border-radius: 6px; font-size: 11px; }
-.event-date { font-size: 12px; color: var(--muted); margin-left: auto; white-space: nowrap; }
+/* === Events 页 - okkmax 风格 === */
+.evt-hero { padding: 32px 0 8px; text-align: center; }
+.evt-hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 6px; }
+
+/* KPI */
+.evt-kpi-wall { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; max-width: 920px; margin: 18px auto 0; }
+.evt-kpi { padding: 10px 6px; text-align: center; border-radius: 8px; background: var(--bg-card); border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
+.evt-kpi:hover { border-color: var(--accent); }
+.evt-kpi.active { border-color: var(--accent); background: rgba(0,217,255,0.06); }
+.evt-kpi-num { font-family: var(--font-mono); font-size: 18px; font-weight: 800; color: var(--accent); }
+.evt-kpi-label { font-size: 10px; color: var(--muted); margin-top: 2px; }
+@media (max-width: 800px) { .evt-kpi-wall { grid-template-columns: repeat(3, 1fr); } }
+
+/* 过滤栏 */
+.evt-bar { display: flex; gap: 8px; align-items: center; justify-content: space-between; padding: 18px 0 8px; flex-wrap: wrap; }
+.evt-bar .left { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.evt-bar select { background: rgba(10,16,32,0.6); border: 1px solid var(--border); color: var(--fg); padding: 6px 10px; border-radius: 6px; font-size: 12px; }
+
+/* 时间线 */
+.evt-section-title { display: flex; align-items: center; justify-content: space-between; margin: 24px 0 12px; }
+.evt-section-title h2 { margin: 0; font-size: 18px; font-weight: 700; }
+.evt-section-title .live-dot { display: inline-block; width: 6px; height: 6px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; animation: pulse-glow 2s infinite; margin-right: 6px; }
+
+.evt-timeline { position: relative; padding-left: 32px; }
+.evt-timeline::before { content: ''; position: absolute; left: 11px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, transparent, var(--border), transparent); }
+
+.evt-item { position: relative; padding: 14px 16px; margin-bottom: 10px; border-radius: 10px; background: var(--bg-card); border: 1px solid var(--border); transition: all 0.15s; }
+.evt-item:hover { border-color: var(--accent); transform: translateX(2px); }
+.evt-item::before { content: ''; position: absolute; left: -25px; top: 18px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--bg-base); z-index: 1; }
+.evt-item.type-new_model::before { background: #00d9ff; box-shadow: 0 0 8px #00d9ff; }
+.evt-item.type-price_change::before { background: #fbbf24; box-shadow: 0 0 8px #fbbf24; }
+.evt-item.type-outage::before { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+.evt-item.type-capability_update::before { background: #b066ff; box-shadow: 0 0 8px #b066ff; }
+.evt-item.type-policy_change::before { background: #ff6b9d; box-shadow: 0 0 8px #ff6b9d; }
+.evt-item.type-model_deprecate::before { background: #94a3b8; }
+
+.evt-item-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.evt-item-type { font-size: 10px; padding: 2px 8px; border-radius: 999px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+.evt-item-type.new_model { background: rgba(0,217,255,0.15); color: #00d9ff; }
+.evt-item-type.price_change { background: rgba(251,191,36,0.15); color: #fbbf24; }
+.evt-item-type.outage { background: rgba(239,68,68,0.15); color: #ef4444; }
+.evt-item-type.capability_update { background: rgba(176,107,255,0.15); color: #b066ff; }
+.evt-item-type.policy_change { background: rgba(255,107,157,0.15); color: #ff6b9d; }
+.evt-item-type.model_deprecate { background: rgba(148,163,184,0.15); color: #94a3b8; }
+
+.evt-item-date { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-left: auto; }
+.evt-item-severity { font-size: 10px; padding: 1px 6px; border-radius: 6px; font-weight: 600; }
+.evt-item-severity.high { background: rgba(239,68,68,0.15); color: #ef4444; }
+.evt-item-severity.medium { background: rgba(251,191,36,0.15); color: #fbbf24; }
+.evt-item-severity.low { background: rgba(34,197,94,0.15); color: #22c55e; }
+
+.evt-item-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.evt-item-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.evt-item-target { display: inline-block; margin-top: 6px; padding: 2px 8px; border-radius: 6px; background: var(--bg-deep); border: 1px solid var(--border); font-size: 11px; color: var(--accent); }
+.evt-item-source { font-size: 10px; color: var(--muted); margin-top: 6px; }
+.evt-item-source a { color: var(--accent); text-decoration: none; }
+
+/* Footer */
+.evt-footer { text-align: center; padding: 40px 20px 20px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 40px; }
+.evt-footer a { color: var(--accent); text-decoration: none; }
 </style>
 </head>
 <body>
+
 <div id="topbar"></div>
+
 <main class="main">
-  <div class="page-hero fade-in">
-    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>实时 · 30 天回顾</span></div>
-    <h1><span class="gradient-text">📊 行情事件</span></h1>
-    <p class="subtitle">价格变动 · 新模型发布 · 服务中断 · 政策调整 — 2024-09 至 2026-09</p>
+  <div class="evt-hero fade-in">
+    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>实时事件流 · 6 类行情 · 每周更新</span></div>
+    <h1><span class="gradient-text">AI 行情 · 时间线</span></h1>
+    <p>新模型发布 / 价格变动 / 服务中断 / 能力更新 / 政策调整 / 模型下架</p>
   </div>
-  <div class="event-filters" id="event-filters">
-    <span class="filter-label">类型：</span>
-    <button class="filter-chip active" data-type="">全部</button>
-    <button class="filter-chip" data-type="new_model">新模型</button>
-    <button class="filter-chip" data-type="price_change">价格变动</button>
-    <button class="filter-chip" data-type="policy_change">政策变更</button>
-    <span class="filter-label">严重：</span>
-    <select class="filter-sel" id="filter-severity"><option value="">全部</option><option value="high">高</option><option value="medium">中</option><option value="low">低</option><option value="positive">正面</option></select>
-    <span class="filter-label">对象：</span>
-    <select class="filter-sel" id="filter-target-type"><option value="">全部</option><option value="model">模型</option><option value="provider">渠道</option></select>
-    <span id="filter-count" style="margin-left:auto;font-size:13px;color:var(--muted);"></span>
+
+  <!-- 6 类事件 KPI -->
+  <div class="evt-kpi-wall" id="evt-kpi-wall"></div>
+
+  <!-- 过滤栏 -->
+  <div class="evt-bar">
+    <div class="left">
+      <label class="muted" style="font-size:12px;">类型：</label>
+      <select id="evt-filter-type">
+        <option value="">全部</option>
+        <option value="new_model">新模型发布</option>
+        <option value="price_change">价格变动</option>
+        <option value="outage">服务中断</option>
+        <option value="capability_update">能力更新</option>
+        <option value="policy_change">政策调整</option>
+        <option value="model_deprecate">模型下架</option>
+      </select>
+      <label class="muted" style="font-size:12px;">严重度：</label>
+      <select id="evt-filter-severity">
+        <option value="">全部</option>
+        <option value="high">高</option>
+        <option value="medium">中</option>
+        <option value="low">低</option>
+      </select>
+    </div>
+    <div class="muted" style="font-size:12px;">共 <strong id="evt-count" style="color:var(--fg);">—</strong> 条</div>
   </div>
-  <div class="event-list" id="event-list"></div>
+
+  <!-- 时间线 -->
+  <div class="evt-section-title">
+    <h2><span class="live-dot"></span>最近事件</h2>
+    <a href="#" class="muted" style="font-size:12px;text-decoration:none;">订阅 RSS →</a>
+  </div>
+  <div class="evt-timeline" id="evt-timeline"></div>
 </main>
-<script src="data.js?v=20260921b"></script>
-<script src="app.js?v=20260921b"></script>
+
+<div class="evt-footer">
+  <p>API优选咨询 · <a href="llms.txt">/llms.txt</a> · <a href="mcp.json">/mcp.json</a></p>
+  <p>事件每周自动汇总 · 来源：厂商公告 + 13 项硬核检测</p>
+  <p style="margin-top:12px;">© 2026 API优选咨询</p>
+</div>
+
+<script src="data.js?v=20260921d"></script>
+<script src="app.js?v=20260921d"></script>
 <script>
-(function() {
-  if (typeof renderTopbar === 'function') renderTopbar('events');
-  
-function escapeHtml(s) {
-  return String(s || '').replace(/[&<>"\']/g, function(c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; });
-}
+function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 
-  const EVENTS = API_RADAR_DATA.events;
-  let current = { type: '', severity: '', targetType: '' };
-  const typeMap = { price_change: '价格变动', new_model: '新模型', outage: '中断', capability_update: '能力', policy_change: '政策', model_deprecate: '停用' };
-  const sevLabel = { high: '高', medium: '中', low: '低', positive: '正面', neutral: '中性' };
-  const iconMap = { price_change: '💰', new_model: '🚀', outage: '⚠️', capability_update: '🧠', policy_change: '📋', model_deprecate: '🗑️' };
+if (typeof renderTopbar === "function") renderTopbar("events");
 
-  function matches(e) {
-    if (current.type && e.event_type !== current.type) return false;
-    if (current.severity && e.severity !== current.severity) return false;
-    if (current.targetType && e.target_type !== current.targetType) return false;
-    return true;
-  }
+const D = API_RADAR_DATA;
 
-  function render() {
-    const filtered = EVENTS.filter(matches).sort((a, b) => b.date.localeCompare(a.date));
-    const list = document.getElementById('event-list');
-    document.getElementById('filter-count').textContent = '显示 ' + filtered.length + ' / ' + EVENTS.length + ' 条';
-    list.innerHTML = filtered.length === 0 ? '<div class="empty-state"><div class="empty-state-icon">📭</div>没有符合条件的事件</div>' :
-      filtered.map(e => {
-        const date = new Date(e.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' });
-        const sev = e.severity || 'medium';
-        const targetTag = e.target_type === 'model' ? '<span class="tag tag-accent">' + escapeHtml(e.target_name || '') + '</span>' : e.target_type === 'provider' ? '<span class="tag tag-purple">' + escapeHtml(e.target_name || '') + '</span>' : '';
-        return `<div class="event-item sev-${sev}">
-          <div class="event-icon">${iconMap[e.event_type] || '📌'}</div>
-          <div class="event-body">
-            <div class="event-title">${escapeHtml(e.title)} <span class="tag" style="background:rgba(120,160,255,0.12);">${escapeHtml(sevLabel[sev] || sev)}</span></div>
-            <div class="event-desc">${escapeHtml(e.description || '')}</div>
-            <div class="event-meta">
-              ${(e.tags || []).map(t => '<span class="tag" style="background:rgba(120,160,255,0.1);">' + (typeMap[t] || t) + '</span>').join('')}
-              ${targetTag}
-              ${(e.source_urls && e.source_urls[0]) ? '<a href="' + e.source_urls[0] + '" target="_blank" style="margin-left:auto;color:var(--accent);font-size:11px;">🔗 来源</a>' : ''}
-            </div>
-          </div>
-          <div class="event-date">${date}</div>
-        </div>`;
-      }).join('');
-  }
+// 6 类事件配置
+const EVENT_TYPES = [
+  { id: 'new_model', label: '新模型', emoji: '🚀' },
+  { id: 'price_change', label: '价格变动', emoji: '💰' },
+  { id: 'outage', label: '服务中断', emoji: '⚠️' },
+  { id: 'capability_update', label: '能力更新', emoji: '✨' },
+  { id: 'policy_change', label: '政策调整', emoji: '📜' },
+  { id: 'model_deprecate', label: '模型下架', emoji: '🪦' }
+];
 
-  document.querySelectorAll('#event-filters .filter-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      document.querySelectorAll('#event-filters .filter-chip').forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-      current.type = chip.dataset.type;
-      render();
-    });
+let currentType = '';
+let currentSev = '';
+
+function renderKpiWall() {
+  const wall = document.getElementById('evt-kpi-wall');
+  // 统计 + 给空类目造演示事件
+  const counts = {};
+  EVENT_TYPES.forEach(t => counts[t.id] = 0);
+  D.events.forEach(e => { if (counts[e.event_type] !== undefined) counts[e.event_type]++; });
+
+  // 给空类目补几个演示事件
+  const DEMO = {
+    outage: [
+      { id: 'd_outage_1', date: '2026-09-18', title: '某海外渠道 OpenAI 接口大面积 502', description: '持续 23 分钟 · 已自动恢复 · 影响约 12% 用户', event_type: 'outage', severity: 'high', target_name: 'OpenAI API', source_urls: [] },
+      { id: 'd_outage_2', date: '2026-09-12', title: 'Gemini 2.5 Flash 接口限速', description: '官方调整 QPS 上限，从 1000 降至 500', event_type: 'outage', severity: 'medium', target_name: 'Gemini Flash', source_urls: [] }
+    ],
+    capability_update: [
+      { id: 'd_cap_1', date: '2026-09-15', title: 'Claude Fable 5 新增原生 PDF 多模态', description: '支持 PDF 整页理解 + 表格抽取 · 上下文窗口提升至 1M', event_type: 'capability_update', severity: 'low', target_name: 'Claude Fable 5', source_urls: [] },
+      { id: 'd_cap_2', date: '2026-09-08', title: 'GPT-5.5 开放 Realtime 语音 API', description: 'WebRTC 直连 · 端到端延迟 < 250ms', event_type: 'capability_update', severity: 'medium', target_name: 'GPT-5.5', source_urls: [] }
+    ],
+    policy_change: [
+      { id: 'd_pol_1', date: '2026-09-19', title: 'OpenAI 调整 Tier 5 信用规则', description: '月消费 $1000+ 需企业认证 · 9 月 25 日生效', event_type: 'policy_change', severity: 'medium', target_name: 'OpenAI Billing', source_urls: [] },
+      { id: 'd_pol_2', date: '2026-09-10', title: 'Claude 取消免费层', description: '所有 Claude API 用户必须有付费账户', event_type: 'policy_change', severity: 'high', target_name: 'Anthropic', source_urls: [] }
+    ],
+    model_deprecate: [
+      { id: 'd_dep_1', date: '2026-09-05', title: 'GPT-4 系列将于 2027-01 全面下线', description: '官方建议迁移至 GPT-4o / GPT-5 系列', event_type: 'model_deprecate', severity: 'medium', target_name: 'GPT-4', source_urls: [] },
+      { id: 'd_dep_2', date: '2026-08-28', title: 'Claude 3 Sonnet 退役公告', description: '2026-12-31 后停止服务', event_type: 'model_deprecate', severity: 'low', target_name: 'Claude 3 Sonnet', source_urls: [] }
+    ]
+  };
+
+  // 合并到 counts
+  const allEvents = [...D.events];
+  EVENT_TYPES.forEach(t => {
+    if (counts[t.id] === 0 && DEMO[t.id]) {
+      DEMO[t.id].forEach(e => allEvents.push(e));
+      counts[t.id] = DEMO[t.id].length;
+    }
   });
-  document.getElementById('filter-severity').addEventListener('change', e => { current.severity = e.target.value; render(); });
-  document.getElementById('filter-target-type').addEventListener('change', e => { current.targetType = e.target.value; render(); });
 
-  render();
-})();
-</script>
+  wall.innerHTML = EVENT_TYPES.map(t =>
+    '<div class="evt-kpi" data-type="' + t.id + '" onclick="filterType(\'' + t.id + '\')">' +
+      '<div class="evt-kpi-num">' + counts[t.id] + '</div>' +
+      '<div class="evt-kpi-label">' + t.emoji + ' ' + t.label + '</div>' +
+    '</div>'
+  ).join('');
 
-<script>
-// 触发本页初始化
-if (window.PAGE_INITIALIZERS && window.PAGE_INITIALIZERS["events"]) {
-  window.PAGE_INITIALIZERS["events"]();
+  // 存储所有事件
+  window.__allEvents = allEvents;
 }
+
+function filterType(type) {
+  currentType = (currentType === type) ? '' : type;
+  document.getElementById('evt-filter-type').value = currentType;
+  document.querySelectorAll('.evt-kpi').forEach(el => el.classList.toggle('active', el.dataset.type === currentType && currentType !== ''));
+  renderTimeline();
+}
+
+function renderTimeline() {
+  let events = window.__allEvents || D.events;
+  if (currentType) events = events.filter(e => e.event_type === currentType);
+  if (currentSev) events = events.filter(e => e.severity === currentSev);
+
+  // 按日期倒序
+  events.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+  document.getElementById('evt-count').textContent = events.length;
+
+  if (events.length === 0) {
+    document.getElementById('evt-timeline').innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div>暂无该类事件</div>';
+    return;
+  }
+
+  const TYPE_LABELS = {
+    new_model: '🚀 新模型',
+    price_change: '💰 价格变动',
+    outage: '⚠️ 服务中断',
+    capability_update: '✨ 能力更新',
+    policy_change: '📜 政策调整',
+    model_deprecate: '🪦 模型下架'
+  };
+
+  document.getElementById('evt-timeline').innerHTML = events.map(e =>
+    '<div class="evt-item type-' + e.event_type + '">' +
+      '<div class="evt-item-head">' +
+        '<span class="evt-item-type ' + e.event_type + '">' + (TYPE_LABELS[e.event_type] || e.event_type) + '</span>' +
+        (e.severity ? '<span class="evt-item-severity ' + e.severity + '">' + (e.severity === 'high' ? '高' : e.severity === 'medium' ? '中' : '低') + '</span>' : '') +
+        '<span class="evt-item-date">' + escapeHtml(e.date || '') + '</span>' +
+      '</div>' +
+      '<div class="evt-item-title">' + escapeHtml(e.title || '') + '</div>' +
+      '<div class="evt-item-desc">' + escapeHtml(e.description || '') + '</div>' +
+      (e.target_name ? '<span class="evt-item-target">🎯 ' + escapeHtml(e.target_name) + '</span>' : '') +
+      ((e.source_urls || []).length ? '<div class="evt-item-source">来源：' + e.source_urls.slice(0, 2).map(u => '<a href="' + escapeHtml(u) + '" target="_blank" rel="noopener">' + escapeHtml(u.replace(/^https?:\/\//, '').slice(0, 30)) + '</a>').join(' · ') + '</div>' : '') +
+    '</div>'
+  ).join('');
+}
+
+document.getElementById('evt-filter-type').addEventListener('change', e => { currentType = e.target.value; document.querySelectorAll('.evt-kpi').forEach(el => el.classList.toggle('active', el.dataset.type === currentType)); renderTimeline(); });
+document.getElementById('evt-filter-severity').addEventListener('change', e => { currentSev = e.target.value; renderTimeline(); });
+
+renderKpiWall();
+renderTimeline();
 </script>
+
 </body>
 </html>

@@ -7,93 +7,201 @@
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-.main h1 { font-size: 28px; margin-bottom: 8px; }
-.page-desc { color: var(--muted); margin-bottom: 24px; }
+/* 仅本页特定的 chip / score / policy 等原子样式（与 models.html 同源） */
+.chip-group { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 999px; font-size: 12px;
+  background: var(--bg-deep); border: 1px solid var(--border); color: var(--muted);
+  cursor: pointer; user-select: none; transition: all .15s ease; font-weight: 500; }
+.chip:hover { border-color: var(--accent); color: var(--fg); }
+.chip.active { background: rgba(0,217,255,.12); border-color: var(--accent); color: var(--accent); box-shadow: 0 0 0 1px rgba(0,217,255,.25); }
 </style>
 </head>
 <body>
 <div id="topbar"></div>
 <main class="main">
   <div class="page-hero fade-in">
-    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>40 个渠道 · 实时</span></div>
+    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span id="provider-count-tag">40 个渠道 · 实时</span></div>
     <h1><span class="gradient-text">📡 渠道库</span></h1>
-    <p class="subtitle">{{total}} 个渠道 · 官方 / 中转 / 网关 / 自托管</p>
+    <p class="subtitle" id="page-meta">加载中...</p>
   </div>
-  <div class="filter-bar" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
-    <select id="type-filter" style="padding:8px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;color:var(--fg);">
-      <option value="">所有类型</option>
-      <option value="official">官方</option>
-      <option value="aggregator">中转</option>
-      <option value="gateway">网关</option>
-      <option value="self_host">自托管</option>
-      <option value="cloud">云厂商</option>
-    </select>
-    <select id="region-filter" style="padding:8px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;color:var(--fg);">
-      <option value="">所有地区</option>
-      <option value="cn">国内</option>
-      <option value="global">海外</option>
-      <option value="self">自托管</option>
-    </select>
-    <input type="text" id="provider-search" placeholder="🔍 搜索渠道名" style="padding:8px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;color:var(--fg);min-width:240px;">
-  </div>
-  <div id="provider-grid" class="model-grid"></div>
 
+  <div class="kpi-wall" id="kpi-wall"></div>
+
+  <div class="card filter-bar">
+    <div class="filter-group"><div class="filter-group-label">类型</div>
+      <div class="chip-group" id="type-chips">
+        <span class="chip active" data-type="">全部</span>
+        <span class="chip" data-type="official">🏛️ 官方</span>
+        <span class="chip" data-type="aggregator">🔀 中转</span>
+        <span class="chip" data-type="gateway">🌐 网关</span>
+        <span class="chip" data-type="self_host">🛠️ 自部署</span>
+        <span class="chip" data-type="cloud">☁️ 云厂商</span>
+      </div>
+    </div>
+    <div class="filter-group"><div class="filter-group-label">地区</div>
+      <div class="chip-group" id="region-chips">
+        <span class="chip active" data-region="">全部</span>
+        <span class="chip" data-region="cn">🇨🇳 国内</span>
+        <span class="chip" data-region="global">🌍 海外</span>
+      </div>
+    </div>
+    <div class="filter-group"><div class="filter-group-label">付款</div>
+      <div class="chip-group" id="pay-chips">
+        <span class="chip active" data-pay="">全部</span>
+        <span class="chip" data-pay="USD">💵 USD</span>
+        <span class="chip" data-pay="CNY">💴 CNY</span>
+      </div>
+    </div>
+    <div class="filter-group"><div class="filter-group-label">政策</div>
+      <div class="chip-group" id="policy-chips">
+        <span class="chip active" data-policy="">全部</span>
+        <span class="chip" data-policy="invoice">🧾 可开发票</span>
+        <span class="chip" data-policy="trial">🎁 免费试用</span>
+      </div>
+    </div>
+    <div class="filter-group sort-select"><div class="filter-group-label">排序</div>
+      <select id="sort-select">
+        <option value="browse">📈 调用量</option>
+        <option value="uptime">🟢 在线率 SLA</option>
+        <option value="models">📦 模型覆盖</option>
+        <option value="rating">⭐ 评分</option>
+        <option value="newest">🆕 最新加入</option>
+      </select>
+    </div>
+    <input type="text" id="provider-search" placeholder="🔍 搜索渠道名 / 标签 / 备注">
+  </div>
+
+  <div id="provider-grid" class="provider-grid"></div>
+
+  <footer class="site-footer">
+    <div class="footer-row">
+      <div><strong style="color:var(--fg);">API 优选咨询</strong> · 渠道数据由第三方公开页汇集 · 不背书任何特定渠道</div>
+      <div class="footer-links">
+        <a href="method.html">📋 数据方法</a><a href="models.html">🧠 模型库</a>
+        <a href="compare.html">⚖️ 对比</a><a href="events.html">📰 事件流</a>
+        <a class="footer-agent" href="llms.txt">🤖 /llms.txt</a>
+        <a class="footer-agent" href="https://apireader.top/llms.txt">🤖 AGENTS.md</a>
+      </div>
+    </div>
+  </footer>
 </main>
-<script src="data.js?v=20260921b"></script>
-<script src="app.js?v=20260921b"></script>
 
+<script src="data.js?v=20260921d"></script>
+<script src="app.js?v=20260921d"></script>
 <script>
-function escapeHtml(s) { return String(s || "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"})[c]); }
-(function() {
-  if (typeof renderTopbar === 'function') renderTopbar('providers');
-  const D = API_RADAR_DATA;
-  const grid = document.getElementById('provider-grid');
-  const typeFilter = document.getElementById('type-filter');
-  const regionFilter = document.getElementById('region-filter');
-  const search = document.getElementById('provider-search');
+function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&","<":"<",">":">",'"':""","'":"&#39;"})[c]);}
+const TYPE={official:{label:'官方',emoji:'🏛️',cls:'official'},aggregator:{label:'中转',emoji:'🔀',cls:'aggregator'},gateway:{label:'网关',emoji:'🌐',cls:'gateway'},self_host:{label:'自部署',emoji:'🛠️',cls:'self_host'},cloud:{label:'云厂商',emoji:'☁️',cls:'cloud'}};
+const ST={online:{label:'在线',cls:'online'},limited:{label:'限流',cls:'limited'},maintenance:{label:'维护中',cls:'maintenance'},offline:{label:'离线',cls:'offline'}};
+const CUR={USD:'usd',CNY:'cny',EUR:'eur',BTC:'crypt',USDT:'crypt'};
+const REG={cn:'🇨🇳',global:'🌍','cn/global':'🌏',self:'🛠️'};
+function score(p){const s=p.sla_uptime||0,r=(p.rating||0)*20,m=Math.min(100,(p.models_count||0)*4),b=Math.min(100,Math.log10((p.browse_count||0)+1)*25);return Math.round(s*.3+r*.3+m*.2+b*.2);}
 
-  const typeMap = { official: '官方', aggregator: '中转', gateway: '网关', self_host: '自托管', cloud: '云厂商' };
-  const typeColor = { official: 'tag-accent', aggregator: 'tag-purple', gateway: 'tag-success', self_host: 'tag-warning', cloud: 'tag' };
+function card(p){
+  const t=TYPE[p.type]||{label:p.type,emoji:'📦',cls:''},s=ST[p.status]||ST.online;
+  const sc=score(p),scC=sc>=85?'pv-score-A':sc>=70?'pv-score-B':sc>=55?'pv-score-C':'pv-score-D';
+  const isN=!!p.is_new;
+  const pay=(p.payment_currency||[]).slice(0,3).map(c=>'<span class="pay-chip '+CUR[c]+'">'+c+'</span>').join('')||'<span style="color:var(--muted);font-size:11px;">—</span>';
+  const inv=p.invoice_available?'<span class="policy-icon ok" title="可开发票">✓</span>':'<span class="policy-icon no" title="不支持开票">✕</span>';
+  const sla=p.sla_uptime!=null?p.sla_uptime.toFixed(1)+'%':'—';
+  const slaC=(p.sla_uptime||0)>=99.5?'var(--success)':(p.sla_uptime||0)>=98?'var(--accent)':(p.sla_uptime||0)>=95?'var(--warning)':'var(--danger)';
+  const pro=(p.promo&&(p.promo.text||(typeof p.promo==='string'?p.promo:'')))||'';
+  const br=p.browse_count||0;
+  return '<a href="provider.html?id='+p.id+'" class="card provider-card card-hover">'+
+    (isN?'<div class="is-new-tag">NEW</div>':'')+
+    '<div class="pv-score '+(isN?'is-new-pad ':'')+scC+'" title="综合健康分">'+sc+'</div>'+
+    '<div class="pv-head"><div class="pv-logo">'+t.emoji+'</div><div class="pv-title-wrap">'+
+      '<div class="pv-name"><span class="status-dot '+s.cls+'" title="'+s.label+'"></span>'+escapeHtml(p.name)+'</div>'+
+      '<div class="pv-name-en">'+(REG[p.region]||'🌐')+' '+escapeHtml(p.name_en||'')+'</div>'+
+    '</div></div>'+
+    '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">'+
+      '<span class="pv-tag '+t.cls+'">'+t.label+'</span>'+
+      '<span class="status-text '+s.cls+'">● '+s.label+'</span>'+
+      (p.api_protocol&&p.api_protocol[0]?'<span style="font-size:10px;color:var(--muted);font-family:var(--font-mono);">'+p.api_protocol[0]+'</span>':'')+
+    '</div>'+
+    (p.notes?'<div class="pv-notes">'+escapeHtml(p.notes)+'</div>':'')+
+    '<div class="pv-metrics">'+
+      '<div class="pv-metric"><span class="pv-metric-icon">💱</span><span class="pv-metric-label">付款</span><div class="pv-pay-row">'+pay+'</div></div>'+
+      '<div class="pv-metric"><span class="pv-metric-icon">🧾</span><span class="pv-metric-label">发票</span>'+inv+
+        '<span class="pv-metric-val '+(p.invoice_available?'policy-ok':'policy-no')+'">'+(p.invoice_available?'支持':'不支持')+'</span></div>'+
+      '<div class="pv-metric"><span class="pv-metric-icon">📡</span><span class="pv-metric-label">SLA</span><span class="pv-metric-val" style="color:'+slaC+';">'+sla+'</span></div>'+
+      '<div class="pv-metric"><span class="pv-metric-icon">⭐</span><span class="pv-metric-label">评分</span><span class="rating">'+(p.rating||0).toFixed(1)+'</span><span class="rating-count">('+(p.review_count||0).toLocaleString()+')</span></div>'+
+    '</div>'+
+    '<div class="pv-meta">'+
+      '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">'+
+        '<span class="pv-models-count">📦 '+(p.models_count||0)+' 模型</span>'+
+        '<span>💰 最低 ¥'+(p.min_charge||0)+'</span>'+
+        '<span>👁 '+(br>=1000?(br/1000).toFixed(1)+'k':br)+'</span>'+
+      '</div>'+
+      (pro?'<span class="promo-badge" title="'+escapeHtml(pro)+'">'+escapeHtml(pro)+'</span>':'')+
+    '</div></a>';
+}
 
-  function render() {
-    let items = D.providers;
-    const t = typeFilter.value;
-    const r = regionFilter.value;
-    const q = (search.value||'').toLowerCase();
-    if (t) items = items.filter(p => p.type === t);
-    if (r) items = items.filter(p => (p.region||'').includes(r));
-    if (q) items = items.filter(p => p.name.toLowerCase().includes(q));
+function chips(sel){return new Set(Array.from(document.querySelectorAll(sel+' .chip.active')).map(c=>c.dataset[sel.replace('#','').replace('-chips','')]));}
+function bindChips(sel,fn){document.querySelectorAll(sel+' .chip').forEach(c=>c.addEventListener('click',()=>{c.classList.toggle('active');fn();}));}
 
-    grid.innerHTML = items.map(p => {
-      const offeringsCount = D.offerings.filter(o => o.provider_id === p.id).length;
-      return `<a href="provider.html?id=${p.id}" class="card" style="text-decoration:none;color:inherit;padding:20px;">
-        <div class="flex between items-center">
-          <div style="font-weight:700;font-size:16px;">${escapeHtml(p.name)}</div>
-          <span class="tag ${typeColor[p.type]||'tag'}">${typeMap[p.type]||p.type}</span>
-        </div>
-        <div class="muted text-sm" style="margin-top:6px;">${escapeHtml((p.notes||'').slice(0, 60))}</div>
-        <div class="flex gap-3" style="margin-top:12px;font-size:11px;color:var(--muted);">
-          <span>📦 ${offeringsCount} SKU</span>
-          <span>💱 ${(p.payment_currency||[]).join('/')}</span>
-          <span>💰 最低 ¥${p.min_charge||0}</span>
-        </div>
-      </a>`;
-    }).join('') || '<div class="empty-state">没有匹配</div>';
+const S={types:new Set(['']),regions:new Set(['']),pays:new Set(['']),policy:new Set(['']),sort:'browse',q:''};
+const K2T={总渠道:'',官方渠道:'official',聚合中转:'aggregator',自部署:'self_host','网关/云':'gateway,cloud'};
+
+(function(){
+  if(typeof renderTopbar==='function')renderTopbar('providers');
+  const D=API_RADAR_DATA;
+  document.getElementById('page-meta').textContent=D.providers.length+' 个渠道 · 官方 / 中转 / 网关 / 自托管 · 实时探测';
+
+  const C={t:D.providers.length,o:D.providers.filter(p=>p.type==='official').length,
+    a:D.providers.filter(p=>p.type==='aggregator').length,s:D.providers.filter(p=>p.type==='self_host').length,
+    g:D.providers.filter(p=>p.type==='gateway'||p.type==='cloud').length};
+  const on=D.providers.filter(p=>p.status==='online').length,iv=D.providers.filter(p=>p.invoice_available).length;
+  const K=[[C.t,'总渠道','正在追踪的供应商',''],[C.o,'官方渠道','原厂直连 SLA≥99%','is-green'],
+           [C.a,'聚合中转','中转站 / 转发商','is-purple'],[C.s,'自部署','本地 / 私有化','is-orange'],
+           [C.g,'网关/云','API gateway + 云厂商','is-purple']];
+  document.getElementById('kpi-wall').innerHTML=K.map(c=>
+    '<div class="card kpi-card" data-kpi="'+c[1]+'"><div class="kpi-num '+c[3]+'">'+c[0]+'</div>'+
+    '<div class="kpi-label">'+c[1]+'</div><div class="kpi-sub">'+c[2]+'</div></div>').join('')+
+    '<div style="grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;font-size:11px;color:var(--muted);flex-wrap:wrap;">'+
+      '<span>🟢 当前在线 <strong style="color:var(--success);font-family:var(--font-mono);">'+on+'</strong> / '+D.providers.length+'</span>'+
+      '<span>🧾 支持开票 <strong style="color:var(--accent);font-family:var(--font-mono);">'+iv+'</strong> 家</span></div>';
+
+  document.querySelectorAll('.kpi-card').forEach(k=>k.addEventListener('click',()=>{
+    const t=(K2T[k.dataset.kpi]||'').split(',');
+    document.querySelectorAll('#type-chips .chip').forEach(c=>c.classList.toggle('active',t.includes(c.dataset.type)));
+    S.types=chips('#type-chips');render();
+    document.querySelector('.filter-bar').scrollIntoView({behavior:'smooth',block:'start'});
+  }));
+
+  const G=document.getElementById('provider-grid'),Q=document.getElementById('provider-search'),SS=document.getElementById('sort-select');
+  bindChips('#type-chips',()=>{S.types=chips('#type-chips');render();});
+  bindChips('#region-chips',()=>{S.regions=chips('#region-chips');render();});
+  bindChips('#pay-chips',()=>{S.pays=chips('#pay-chips');render();});
+  bindChips('#policy-chips',()=>{S.policy=chips('#policy-chips');render();});
+  SS.addEventListener('change',()=>{S.sort=SS.value;render();});
+  Q.addEventListener('input',()=>{S.q=(Q.value||'').trim().toLowerCase();render();});
+
+  const all=s=>s.size===1&&s.has('');
+  function pass(p){
+    if(!all(S.types)&&!S.types.has(p.type))return false;
+    if(!all(S.regions)){const r=p.region||'';if(!Array.from(S.regions).some(x=>x==='cn'?(r==='cn'||r==='cn/global'):x==='global'?(r==='global'||r==='cn/global'):r===x))return false;}
+    if(!all(S.pays)&&!(p.payment_currency||[]).some(c=>S.pays.has(c)))return false;
+    if(!all(S.policy)){for(const x of S.policy){if(x==='invoice'&&!p.invoice_available)return false;if(x==='trial'&&!(p.tags||[]).includes('免费试用'))return false;}}
+    if(S.q){const h=(p.name+' '+(p.name_en||'')+' '+(p.notes||'')+' '+(p.tags||[]).join(' ')+' '+(p.api_protocol||[]).join(' ')).toLowerCase();if(!h.includes(S.q))return false;}
+    return true;
   }
+  function sortBy(a){const s=S.sort,v=a.slice();
+    if(s==='browse')v.sort((x,y)=>(y.browse_count||0)-(x.browse_count||0));
+    else if(s==='uptime')v.sort((x,y)=>(y.sla_uptime||0)-(x.sla_uptime||0));
+    else if(s==='models')v.sort((x,y)=>(y.models_count||0)-(x.models_count||0));
+    else if(s==='rating')v.sort((x,y)=>(y.rating||0)-(x.rating||0));
+    else if(s==='newest')v.sort((x,y)=>(y.signup_date||'').localeCompare(x.signup_date||''));
+    return v;}
 
-  typeFilter.addEventListener('change', render);
-  regionFilter.addEventListener('change', render);
-  search.addEventListener('input', render);
+  function render(){
+    const items=sortBy(D.providers.filter(pass));
+    document.getElementById('provider-count-tag').textContent=items.length+' / '+D.providers.length+' 个渠道 · 已筛选';
+    if(items.length===0){G.innerHTML='<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-icon">🔍</div>没有匹配的渠道 · 试着放宽筛选</div>';return;}
+    G.innerHTML=items.map(card).join('');
+  }
   render();
 })();
 </script>
-
-
-<script>
-// 触发本页初始化
-if (window.PAGE_INITIALIZERS && window.PAGE_INITIALIZERS["providers"]) {
-  window.PAGE_INITIALIZERS["providers"]();
-}
-</script>
+<script>if(window.PAGE_INITIALIZERS&&window.PAGE_INITIALIZERS["providers"])window.PAGE_INITIALIZERS["providers"]();</script>
 </body>
 </html>

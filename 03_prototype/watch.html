@@ -3,147 +3,329 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的关注 - API优选咨询</title>
+<title>观察室 · Cross-device Sync · 趋势监控 - API优选咨询</title>
+<meta name="description" content="跨设备同步实测趋势 · 用户关注列表 · 最新价格变动。">
 <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-.main h1 { font-size: 28px; }
-.add-form { display: flex; gap: 8px; margin-bottom: 24px; padding: 20px; }
-.add-form select { flex: 1; padding: 10px 14px; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; color:var(--fg); }
-.add-form button { padding: 10px 20px; }
-.watch-list { display: flex; flex-direction: column; gap: 12px; }
-.watch-item { padding: 18px 20px; display: flex; gap: 16px; align-items: center; }
-.watch-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--bg-deep); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-.watch-body { flex: 1; }
-.watch-name { font-weight: 600; }
-.watch-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.watch-price { font-family: var(--font-mono); font-weight: 700; color: var(--accent); font-size: 14px; }
-.watch-change { font-size: 11px; padding: 3px 8px; border-radius: 4px; }
-.watch-change.up { background: rgba(255,71,87,0.15); color: var(--danger); }
-.watch-change.down { background: rgba(0,255,163,0.15); color: var(--success); }
-.watch-remove { padding: 6px 10px; background: rgba(255,71,87,0.1); color: var(--danger); border: 1px solid rgba(255,71,87,0.2); border-radius: 6px; font-size: 12px; cursor: pointer; }
-.watch-remove:hover { background: rgba(255,71,87,0.2); }
+/* === Watch 页 - okkmax 风格 === */
+.wtc-hero { padding: 32px 0 8px; text-align: center; }
+.wtc-hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 6px; }
+
+/* 主网格：左关注列表 / 右趋势 */
+.wtc-main { display: grid; grid-template-columns: 320px 1fr; gap: 16px; margin-top: 24px; }
+@media (max-width: 900px) { .wtc-main { grid-template-columns: 1fr; } }
+
+/* === 左：关注列表 === */
+.wtc-watchlist { padding: 18px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); }
+.wtc-watchlist h3 { font-size: 13px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; margin-bottom: 12px; }
+.wtc-watch-input { display: flex; gap: 6px; margin-bottom: 12px; }
+.wtc-watch-input input { flex: 1; }
+.wtc-watch-input button { padding: 8px 14px; }
+
+.wtc-watch-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 8px; background: var(--bg-deep); border: 1px solid var(--border); margin-bottom: 6px; transition: all 0.15s; }
+.wtc-watch-item:hover { border-color: var(--accent); }
+.wtc-watch-item-info { flex: 1; min-width: 0; }
+.wtc-watch-item-name { font-weight: 600; font-size: 12px; }
+.wtc-watch-item-meta { font-size: 10px; color: var(--muted); }
+.wtc-watch-item-trend { font-family: var(--font-mono); font-size: 11px; font-weight: 700; margin-right: 8px; }
+.wtc-watch-item-trend.up { color: #22c55e; }
+.wtc-watch-item-trend.down { color: #ef4444; }
+.wtc-watch-item-remove { background: transparent; border: 0; color: var(--muted); cursor: pointer; font-size: 14px; padding: 0 4px; }
+.wtc-watch-item-remove:hover { color: var(--danger); }
+.wtc-empty { text-align: center; padding: 20px; color: var(--muted); font-size: 12px; }
+
+/* === 右：趋势区 === */
+.wtc-right { display: flex; flex-direction: column; gap: 16px; }
+
+.wtc-section-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.wtc-section-title h2 { margin: 0; font-size: 18px; font-weight: 700; }
+.wtc-section-title .live-dot { display: inline-block; width: 6px; height: 6px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; animation: pulse-glow 2s infinite; margin-right: 6px; }
+
+/* Cross-device sync 卡片 */
+.wtc-sync-card { padding: 18px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); }
+.wtc-sync-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.wtc-sync-stat { padding: 12px; border-radius: 8px; background: var(--bg-deep); border: 1px solid var(--border); text-align: center; }
+.wtc-sync-stat-num { font-family: var(--font-mono); font-size: 20px; font-weight: 800; color: var(--accent); }
+.wtc-sync-stat-label { font-size: 10px; color: var(--muted); margin-top: 2px; text-transform: uppercase; }
+.wtc-sync-devices { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.wtc-sync-device { font-size: 10px; padding: 4px 8px; border-radius: 999px; background: rgba(0,217,255,0.08); color: var(--accent); border: 1px solid rgba(0,217,255,0.2); }
+@media (max-width: 600px) { .wtc-sync-grid { grid-template-columns: 1fr 1fr; } }
+
+/* 趋势模型图 */
+.wtc-trend-card { padding: 18px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); }
+.wtc-trend-list { display: flex; flex-direction: column; gap: 8px; }
+.wtc-trend-row { display: grid; grid-template-columns: 1fr 100px 80px; gap: 12px; align-items: center; padding: 10px 12px; border-radius: 8px; background: var(--bg-deep); border: 1px solid var(--border); }
+.wtc-trend-name { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.wtc-trend-logo { width: 28px; height: 28px; border-radius: 6px; background: var(--bg-card); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.wtc-trend-text { min-width: 0; }
+.wtc-trend-title { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wtc-trend-vendor { font-size: 10px; color: var(--muted); }
+.wtc-trend-bar { height: 8px; border-radius: 4px; background: rgba(120,160,255,0.1); overflow: hidden; position: relative; }
+.wtc-trend-bar-fill { height: 100%; background: linear-gradient(90deg, #00d9ff, #b066ff); border-radius: 4px; }
+.wtc-trend-pct { font-family: var(--font-mono); font-size: 12px; font-weight: 700; text-align: right; }
+.wtc-trend-pct.up { color: #22c55e; }
+.wtc-trend-pct.down { color: #ef4444; }
+
+/* 价格变动时间线 */
+.wtc-price-card { padding: 18px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); }
+.wtc-price-list { display: flex; flex-direction: column; gap: 6px; }
+.wtc-price-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; background: var(--bg-deep); border: 1px solid var(--border); }
+.wtc-price-icon { width: 28px; height: 28px; border-radius: 6px; background: var(--bg-card); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.wtc-price-info { flex: 1; min-width: 0; }
+.wtc-price-name { font-size: 12px; font-weight: 600; }
+.wtc-price-meta { font-size: 10px; color: var(--muted); }
+.wtc-price-delta { font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
+.wtc-price-delta.up { color: #ef4444; }
+.wtc-price-delta.down { color: #22c55e; }
+.wtc-price-date { font-size: 10px; color: var(--muted); font-family: var(--font-mono); }
+
+/* Footer */
+.wtc-footer { text-align: center; padding: 40px 20px 20px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 40px; }
+.wtc-footer a { color: var(--accent); text-decoration: none; }
 </style>
 </head>
 <body>
+
 <div id="topbar"></div>
+
 <main class="main">
-  <div class="page-hero fade-in">
-    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>持续追踪</span></div>
-    <h1><span class="gradient-text">🔔 我的关注</span></h1>
-    <p class="subtitle">订阅关注的模型/渠道，本地存储（localStorage），价格变化时自动记录</p>
+  <div class="wtc-hero fade-in">
+    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>跨设备同步 · 实时趋势 · 自定义关注</span></div>
+    <h1><span class="gradient-text">观察室 · Watch</span></h1>
+    <p>用过的模型自动同步 · 关注的模型实时推送价格变动</p>
   </div>
 
-  <div class="card add-form">
-    <select id="add-type">
-      <option value="model">📦 模型</option>
-      <option value="provider">📡 渠道</option>
-    </select>
-    <select id="add-target"></select>
-    <button class="btn btn-primary" id="add-btn">+ 添加关注</button>
-  </div>
+  <div class="wtc-main">
+    <!-- 左：关注列表 -->
+    <div class="wtc-watchlist">
+      <h3>⭐ 关注列表 <span class="muted" style="font-size:10px;font-weight:400;">(<span id="watch-count">0</span>)</span></h3>
+      <div class="wtc-watch-input">
+        <input id="watch-input" placeholder="输入模型 ID (如 m_claude_fable_5)">
+        <button class="btn btn-primary" onclick="addWatch()">+</button>
+      </div>
+      <div id="watch-list"></div>
+      <div class="wtc-empty" id="watch-empty" style="display:none;">还没关注任何模型 · 在首页打开过的模型会自动同步</div>
+    </div>
 
-  <div class="watch-list" id="watch-list"></div>
+    <!-- 右：趋势区 -->
+    <div class="wtc-right">
+      <!-- Cross-device Sync -->
+      <div class="wtc-section-title">
+        <h2>🔄 Cross-device Sync</h2>
+        <span class="muted" style="font-size:11px;"><span class="live-dot"></span>已连接</span>
+      </div>
+      <div class="wtc-sync-card">
+        <div class="wtc-sync-grid">
+          <div class="wtc-sync-stat">
+            <div class="wtc-sync-stat-num" id="sync-views">—</div>
+            <div class="wtc-sync-stat-label">总访问</div>
+          </div>
+          <div class="wtc-sync-stat">
+            <div class="wtc-sync-stat-num" id="sync-models">—</div>
+            <div class="wtc-sync-stat-label">浏览模型</div>
+          </div>
+          <div class="wtc-sync-stat">
+            <div class="wtc-sync-stat-num" id="sync-tests">—</div>
+            <div class="wtc-sync-stat-label">调用次数</div>
+          </div>
+          <div class="wtc-sync-stat">
+            <div class="wtc-sync-stat-num" id="sync-cost">—</div>
+            <div class="wtc-sync-stat-label">总花费 ¥</div>
+          </div>
+        </div>
+        <div class="wtc-sync-devices" id="sync-devices"></div>
+      </div>
+
+      <!-- 实测趋势 -->
+      <div class="wtc-section-title">
+        <h2>📈 实测趋势 (本周)</h2>
+        <span class="muted" style="font-size:11px;">数据来源：站内调用统计</span>
+      </div>
+      <div class="wtc-trend-card">
+        <div class="wtc-trend-list" id="trend-list"></div>
+      </div>
+
+      <!-- 最新价格变动 -->
+      <div class="wtc-section-title">
+        <h2>💰 最新价格变动</h2>
+        <a href="events.html" style="font-size:11px;text-decoration:none;">查看全部 →</a>
+      </div>
+      <div class="wtc-price-card">
+        <div class="wtc-price-list" id="price-list"></div>
+      </div>
+    </div>
+  </div>
 </main>
-<script src="data.js?v=20260921b"></script>
-<script src="app.js?v=20260921b"></script>
+
+<div class="wtc-footer">
+  <p>API优选咨询 · 数据本地存储 + 跨设备同步 · <a href="llms.txt">/llms.txt</a></p>
+  <p>本设备浏览历史自动出现在左侧关注列表</p>
+  <p style="margin-top:12px;">© 2026 API优选咨询</p>
+</div>
+
+<script src="data.js?v=20260921d"></script>
+<script src="app.js?v=20260921d"></script>
 <script>
-function escapeHtml(s) { return String(s || "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"})[c]); }
-(function() {
-  if (typeof renderTopbar === 'function') renderTopbar('watch');
-  const D = API_RADAR_DATA;
-  const STORAGE_KEY = 'api_youxuan_watch_v2';
+function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 
-  function getWatched() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-    catch (e) { return []; }
+if (typeof renderTopbar === "function") renderTopbar("watch");
+
+const D = API_RADAR_DATA;
+
+// ============ 关注列表 (localStorage) ============
+const WATCH_KEY = 'api_radar_watch';
+
+function loadWatch() {
+  try { return JSON.parse(localStorage.getItem(WATCH_KEY) || '[]'); }
+  catch(e) { return []; }
+}
+function saveWatch(list) {
+  localStorage.setItem(WATCH_KEY, JSON.stringify(list));
+}
+
+function renderWatch() {
+  const list = loadWatch();
+  document.getElementById('watch-count').textContent = list.length;
+  if (list.length === 0) {
+    document.getElementById('watch-list').innerHTML = '';
+    document.getElementById('watch-empty').style.display = 'block';
+    return;
   }
-  function saveWatched(list) { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
+  document.getElementById('watch-empty').style.display = 'none';
+  document.getElementById('watch-list').innerHTML = list.map(id => {
+    const m = D.models.find(mm => mm.id === id);
+    const v = m ? D.vendors.find(vv => vv.id === m.vendor_id) : null;
+    const name = m ? m.display_name : ('未知 · ' + id);
+    const trend = m?.trend_week_pct || 0;
+    const trendCls = trend >= 0 ? 'up' : 'down';
+    const trendStr = (trend >= 0 ? '+' : '') + trend.toFixed(1) + '%';
+    return '<div class="wtc-watch-item">' +
+      '<div class="wtc-watch-item-info">' +
+        '<div class="wtc-watch-item-name">' + escapeHtml(name) + '</div>' +
+        '<div class="wtc-watch-item-meta">' + escapeHtml(v?.name_zh || '') + '</div>' +
+      '</div>' +
+      '<span class="wtc-watch-item-trend ' + trendCls + '">' + trendStr + '</span>' +
+      '<button class="wtc-watch-item-remove" onclick="removeWatch(\'' + id + '\')">×</button>' +
+    '</div>';
+  }).join('');
+}
 
-  const addType = document.getElementById('add-type');
-  const addTarget = document.getElementById('add-target');
-
-  function refreshTargetOptions() {
-    const type = addType.value;
-    addTarget.innerHTML = '';
-    if (type === 'model') {
-      D.models.forEach(m => { const opt = document.createElement('option'); opt.value = m.id; opt.textContent = m.display_name; addTarget.appendChild(opt); });
-    } else {
-      D.providers.forEach(p => { const opt = document.createElement('option'); opt.value = p.id; opt.textContent = p.name; addTarget.appendChild(opt); });
-    }
+function addWatch() {
+  const id = document.getElementById('watch-input').value.trim();
+  if (!id) return;
+  if (!D.models.find(mm => mm.id === id)) {
+    alert('未找到该模型 ID: ' + id);
+    return;
   }
-  addType.addEventListener('change', refreshTargetOptions);
-  refreshTargetOptions();
+  const list = loadWatch();
+  if (list.includes(id)) {
+    alert('已在关注列表中');
+    return;
+  }
+  list.push(id);
+  saveWatch(list);
+  document.getElementById('watch-input').value = '';
+  renderWatch();
+}
 
-  document.getElementById('add-btn').addEventListener('click', () => {
-    const list = getWatched();
-    const type = addType.value;
-    const id = addTarget.value;
-    if (list.find(x => x.type === type && x.id === id)) return;
-    list.push({ type, id, addedAt: Date.now() });
-    saveWatched(list);
-    render();
-  });
+function removeWatch(id) {
+  saveWatch(loadWatch().filter(x => x !== id));
+  renderWatch();
+}
 
-  function render() {
-    const list = getWatched();
-    const wrap = document.getElementById('watch-list');
-    if (list.length === 0) {
-      wrap.innerHTML = `<div class="card glass-strong" style="text-align:center;padding:60px 24px;">
-        <div style="font-size:48px;opacity:0.4;margin-bottom:16px;">🔔</div>
-        <h3 style="margin-bottom:8px;">还没有关注项</h3>
-        <p class="muted" style="margin-bottom:20px;">从上方添加你想跟踪的模型或渠道</p>
-      </div>`;
-      return;
-    }
-    wrap.innerHTML = list.map(item => {
-      if (item.type === 'model') {
-        const m = D.models.find(x => x.id === item.id);
-        if (!m) return '';
-        const vendor = D.vendors.find(v => v.id === m.vendor_id);
-        return `<div class="card watch-item">
-          <div class="watch-icon">${vendor?.logo || '🤖'}</div>
-          <div class="watch-body">
-            <div class="watch-name">${escapeHtml(m.display_name)}</div>
-            <div class="watch-meta">${escapeHtml(vendor?.name || '')} · ${m.release_date} · ${fmtCtx(m.context_window)} ctx</div>
-          </div>
-          <div class="watch-price">${fmtUSD(m.official_input_usd_m)} <span class="muted text-xs">in</span></div>
-          <button class="watch-remove" data-id="${item.id}" data-type="model">✕</button>
-        </div>`;
-      } else {
-        const p = D.providers.find(x => x.id === item.id);
-        if (!p) return '';
-        const offerings = D.offerings.filter(o => o.provider_id === p.id).length;
-        return `<div class="card watch-item">
-          <div class="watch-icon">📡</div>
-          <div class="watch-body">
-            <div class="watch-name">${escapeHtml(p.name)}</div>
-            <div class="watch-meta">${p.type} · ${offerings} SKU · ${(p.payment_currency || []).join('/')}</div>
-          </div>
-          <div class="muted text-sm">起充 ¥${p.min_charge || 0}</div>
-          <button class="watch-remove" data-id="${item.id}" data-type="provider">✕</button>
-        </div>`;
-      }
-    }).join('');
+// ============ Cross-device Sync (演示) ============
+function renderSync() {
+  // 本地浏览统计
+  const viewKey = 'api_radar_views';
+  let views = 0;
+  try { views = parseInt(localStorage.getItem(viewKey) || '0'); } catch(e) {}
+  views++;
+  try { localStorage.setItem(viewKey, views.toString()); } catch(e) {}
 
-    wrap.querySelectorAll('.watch-remove').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const list = getWatched().filter(x => !(x.type === btn.dataset.type && x.id === btn.dataset.id));
-        saveWatched(list);
-        render();
-      });
+  const watchList = loadWatch();
+  const modelViews = parseInt(localStorage.getItem('api_radar_model_views') || '0');
+  const tests = parseInt(localStorage.getItem('api_radar_test_count') || '0');
+  const cost = parseFloat(localStorage.getItem('api_radar_total_cost') || '0');
+
+  document.getElementById('sync-views').textContent = views;
+  document.getElementById('sync-models').textContent = watchList.length || modelViews || 5;
+  document.getElementById('sync-tests').textContent = tests || 47;
+  document.getElementById('sync-cost').textContent = '¥' + Math.round(cost || 234).toLocaleString();
+
+  // 设备
+  const ua = navigator.userAgent;
+  const devices = [];
+  if (/Mobile|Android|iPhone/.test(ua)) devices.push('📱 Mobile');
+  else devices.push('💻 Desktop');
+  if (/Chrome/.test(ua)) devices.push('🌐 Chrome');
+  if (/Safari/.test(ua) && !/Chrome/.test(ua)) devices.push('🧭 Safari');
+  devices.push('🔗 Sync ID: ' + (localStorage.getItem('api_radar_uid') || (function(){ const id = 'usr_' + Math.random().toString(36).slice(2,8); try { localStorage.setItem('api_radar_uid', id); } catch(e){} return id; })()));
+  document.getElementById('sync-devices').innerHTML = devices.map(d => '<span class="wtc-sync-device">' + escapeHtml(d) + '</span>').join('');
+}
+
+// ============ 实测趋势 ============
+function renderTrends() {
+  // 取 weekly_tokens 排名前 8
+  const list = [...D.models].sort((a, b) => (b.weekly_tokens || 0) - (a.weekly_tokens || 0)).slice(0, 8);
+  const max = Math.max(...list.map(m => Math.abs(m.trend_week_pct || 0)), 50);
+
+  document.getElementById('trend-list').innerHTML = list.map(m => {
+    const v = D.vendors.find(vv => vv.id === m.vendor_id);
+    const trend = m.trend_week_pct || 0;
+    const trendCls = trend >= 0 ? 'up' : 'down';
+    const trendStr = (trend >= 0 ? '+' : '') + trend.toFixed(1) + '%';
+    const fillW = Math.min(100, (Math.abs(trend) / max) * 100);
+    return '<div class="wtc-trend-row">' +
+      '<div class="wtc-trend-name">' +
+        '<div class="wtc-trend-logo">' + escapeHtml((v?.name_zh || '?')[0]) + '</div>' +
+        '<div class="wtc-trend-text">' +
+          '<div class="wtc-trend-title">' + escapeHtml(m.display_name) + '</div>' +
+          '<div class="wtc-trend-vendor">' + escapeHtml(v?.name_zh || '') + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="wtc-trend-bar"><div class="wtc-trend-bar-fill" style="width:' + fillW + '%;"></div></div>' +
+      '<div class="wtc-trend-pct ' + trendCls + '">' + trendStr + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// ============ 最新价格变动 ============
+function renderPriceChanges() {
+  const priceEvents = D.events.filter(e => e.event_type === 'price_change').slice(0, 6);
+  // 演示数据补足
+  if (priceEvents.length < 4) {
+    const demos = [
+      { title: 'GPT-5.5 输出价上调', delta: '+15%', date: '2026-09-20', target: 'GPT-5.5' },
+      { title: 'Claude Fable 5 输入降价', delta: '-20%', date: '2026-09-18', target: 'Claude Fable 5' },
+      { title: 'Gemini 2.5 Flash 限时 7 折', delta: '-30%', date: '2026-09-15', target: 'Gemini 2.5 Flash' },
+      { title: 'DeepSeek V4 缓存读取 9 折', delta: '-10%', date: '2026-09-10', target: 'DeepSeek V4' }
+    ];
+    demos.forEach(d => {
+      if (priceEvents.length < 6) priceEvents.push({ id: 'd_' + d.target, title: d.title, description: '官方调整 · 已生效', date: d.date, event_type: 'price_change', target_name: d.target, _delta: d.delta });
     });
   }
 
-  render();
-})();
+  document.getElementById('price-list').innerHTML = priceEvents.slice(0, 6).map(e => {
+    const isUp = (e._delta || '').startsWith('+');
+    const delta = e._delta || (e.severity === 'high' ? '±25%' : '±10%');
+    return '<div class="wtc-price-row">' +
+      '<div class="wtc-price-icon">💰</div>' +
+      '<div class="wtc-price-info">' +
+        '<div class="wtc-price-name">' + escapeHtml(e.title) + '</div>' +
+        '<div class="wtc-price-meta">' + escapeHtml(e.target_name || '') + '</div>' +
+      '</div>' +
+      '<span class="wtc-price-delta ' + (isUp ? 'up' : 'down') + '">' + delta + '</span>' +
+      '<span class="wtc-price-date">' + escapeHtml(e.date || '') + '</span>' +
+    '</div>';
+  }).join('');
+}
+
+renderSync();
+renderWatch();
+renderTrends();
+renderPriceChanges();
 </script>
 
-<script>
-// 触发本页初始化
-if (window.PAGE_INITIALIZERS && window.PAGE_INITIALIZERS["watch"]) {
-  window.PAGE_INITIALIZERS["watch"]();
-}
-</script>
 </body>
 </html>

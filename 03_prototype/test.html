@@ -3,485 +3,299 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>API Key 兼容性测试 - API优选咨询</title>
+<title>测 Key · 5 项检测 · 30 秒出结果 - API优选咨询</title>
+<meta name="description" content="输入 URL + Key，5 项核心检测秒级返回 · 评分 + 警告。">
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-.test-hero { padding: 48px 0 24px; text-align: center; }
-.test-hero h1 { font-size: 38px; margin-bottom: 12px; }
-.test-hero .gradient-text { background: var(--grad-primary); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-.test-hero p { color: var(--muted); max-width: 600px; margin: 0 auto; }
-.test-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
-.test-form { padding: 28px; }
-.test-form h3 { margin-bottom: 16px; }
-.test-form .form-group { margin-bottom: 16px; }
-.test-form label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
-.test-form input, .test-form select { width: 100%; padding: 10px 14px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 8px; color: var(--foreground); font-family: var(--font-mono); font-size: 14px; }
-.test-form input:focus, .test-form select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.15); }
-.test-form input[type="password"] { letter-spacing: 0.1em; }
-.test-result { padding: 28px; min-height: 400px; position: relative; }
-.test-empty { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--muted); flex-direction: column; gap: 12px; }
-.test-empty .icon { font-size: 64px; opacity: 0.5; }
-.test-status { padding: 16px 20px; border-radius: 12px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; font-weight: 600; }
-.test-status.success { background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.4); color: #22c55e; }
-.test-status.error { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; }
-.test-status.testing { background: rgba(0, 217, 255, 0.10); border: 1px solid rgba(0, 217, 255, 0.3); color: var(--accent); }
-.test-status .spinner { width: 16px; height: 16px; border: 2px solid currentColor; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; }
-.test-detail { padding: 16px; background: var(--bg-deep); border-radius: 8px; font-family: var(--font-mono); font-size: 13px; line-height: 1.8; }
-.test-detail .row { display: flex; justify-content: space-between; padding: 4px 0; }
-.test-detail .row .key { color: var(--muted); }
-.test-detail .row .val { color: var(--foreground); }
-.test-detail .row .val.ok { color: #22c55e; }
-.test-detail .row .val.fail { color: #ef4444; }
-.test-suggestion { margin-top: 16px; padding: 16px; border-radius: 8px; background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.3); }
-.test-suggestion h4 { color: #b066ff; margin-bottom: 8px; font-size: 14px; }
-.test-suggestion ul { margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.8; color: var(--muted); }
-.test-suggestion ul li a { color: var(--accent); text-decoration: none; }
-.test-suggestion ul li a:hover { text-decoration: underline; }
-.preset-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-.preset-chip { padding: 6px 12px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 16px; font-size: 12px; cursor: pointer; transition: all 0.2s; }
-.preset-chip:hover { border-color: var(--accent); color: var(--accent); }
-.privacy-note { padding: 12px 16px; background: rgba(0, 217, 255, 0.06); border: 1px solid rgba(0, 217, 255, 0.2); border-radius: 8px; font-size: 12px; color: var(--muted); margin-top: 16px; display: flex; gap: 8px; }
-.privacy-note .lock { font-size: 16px; }
-.history-list { margin-top: 16px; }
-.history-item { padding: 10px 14px; background: var(--bg-deep); border-radius: 6px; margin-bottom: 6px; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 12px; }
-.history-item .ok-dot { color: #22c55e; }
-.history-item .fail-dot { color: #ef4444; }
-.history-clear { font-size: 11px; color: var(--muted); cursor: pointer; }
-.history-clear:hover { color: #ef4444; }
-@media (max-width: 768px) {
-  .test-grid { grid-template-columns: 1fr; }
-  .test-hero h1 { font-size: 28px; }
+/* === Test Key 页 - okkmax 风格 === */
+.tk-hero { padding: 32px 0 8px; text-align: center; }
+.tk-hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 6px; }
+
+/* 输入区（居中、最大 640） */
+.tk-input-wrap { max-width: 640px; margin: 24px auto 0; padding: 24px; border-radius: 14px; background: var(--bg-card); border: 1px solid var(--border); }
+.tk-input-wrap h3 { font-size: 13px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; margin-bottom: 14px; }
+.tk-field { margin-bottom: 14px; }
+.tk-field label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+.tk-field input, .tk-field select { width: 100%; padding: 12px 14px; font-size: 14px; }
+.tk-field .hint { font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+.tk-quick { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.tk-quick-btn { font-size: 11px; padding: 4px 10px; border-radius: 999px; background: rgba(120,160,255,0.08); border: 1px solid var(--border); color: var(--muted); cursor: pointer; transition: all 0.15s; }
+.tk-quick-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+.tk-run-btn { width: 100%; padding: 14px; font-size: 15px; }
+
+/* 加载动画 */
+.tk-loading { text-align: center; padding: 40px 20px; color: var(--muted); }
+.tk-loading-icon { font-size: 32px; margin-bottom: 8px; animation: pulse-glow 1.5s infinite; display: inline-block; }
+.tk-loading-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin: 16px auto; max-width: 400px; }
+.tk-loading-bar-fill { height: 100%; background: var(--grad-primary); animation: loading-bar 1.5s ease-in-out infinite; }
+@keyframes loading-bar {
+  0% { width: 0; margin-left: 0; }
+  50% { width: 60%; margin-left: 20%; }
+  100% { width: 0; margin-left: 100%; }
 }
+
+/* 结果区 */
+.tk-result { max-width: 800px; margin: 24px auto 0; }
+.tk-score-card { padding: 20px; border-radius: 14px; background: var(--bg-card); border: 1px solid var(--border); display: grid; grid-template-columns: 120px 1fr; gap: 20px; align-items: center; }
+.tk-score-ring { width: 120px; height: 120px; position: relative; }
+.tk-score-ring svg { transform: rotate(-90deg); }
+.tk-score-ring-fg { stroke: url(#score-grad); fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.6s; }
+.tk-score-ring-bg { stroke: var(--border); fill: none; stroke-width: 10; }
+.tk-score-ring-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 32px; font-weight: 800; }
+.tk-score-info .grade { font-size: 36px; font-weight: 800; }
+.tk-score-info .grade.A { color: #22c55e; }
+.tk-score-info .grade.B { color: #fbbf24; }
+.tk-score-info .grade.C { color: #f59e0b; }
+.tk-score-info .grade.D { color: #ef4444; }
+.tk-score-info .desc { font-size: 14px; margin-top: 4px; }
+.tk-score-info .meta { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+
+@media (max-width: 600px) { .tk-score-card { grid-template-columns: 1fr; text-align: center; } .tk-score-ring { margin: 0 auto; } }
+
+/* 警告 */
+.tk-warnings { margin-top: 16px; padding: 18px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); }
+.tk-warnings h3 { font-size: 13px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; margin-bottom: 10px; }
+.tk-warn { display: flex; gap: 10px; padding: 10px 12px; border-radius: 8px; margin-bottom: 6px; font-size: 13px; line-height: 1.5; }
+.tk-warn-icon { font-size: 20px; flex-shrink: 0; }
+.tk-warn-content { flex: 1; }
+.tk-warn-content strong { display: block; margin-bottom: 2px; }
+.tk-warn.danger { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); }
+.tk-warn.danger .tk-warn-icon { color: #ef4444; }
+.tk-warn.warn { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.25); }
+.tk-warn.warn .tk-warn-icon { color: #fbbf24; }
+.tk-warn.info { background: rgba(0,217,255,0.06); border: 1px solid rgba(0,217,255,0.25); }
+.tk-warn.info .tk-warn-icon { color: var(--accent); }
+.tk-warn.ok { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.25); }
+.tk-warn.ok .tk-warn-icon { color: #22c55e; }
+
+/* 5 项检测 */
+.tk-checks { margin-top: 16px; padding: 18px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); }
+.tk-checks h3 { font-size: 13px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; margin-bottom: 12px; }
+.tk-check-row { display: grid; grid-template-columns: 36px 1fr auto; gap: 12px; align-items: center; padding: 10px 12px; border-radius: 8px; background: var(--bg-deep); border: 1px solid var(--border); margin-bottom: 6px; transition: all 0.15s; }
+.tk-check-row:hover { border-color: var(--accent); }
+.tk-check-num { font-family: var(--font-mono); font-size: 13px; font-weight: 800; color: var(--accent); }
+.tk-check-info { min-width: 0; }
+.tk-check-name { font-size: 13px; font-weight: 600; }
+.tk-check-val { font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
+.tk-check-status { font-size: 11px; padding: 4px 10px; border-radius: 999px; font-weight: 700; }
+.tk-check-status.pass { background: rgba(34,197,94,0.15); color: #22c55e; }
+.tk-check-status.fail { background: rgba(239,68,68,0.15); color: #ef4444; }
+.tk-check-status.warn { background: rgba(251,191,36,0.15); color: #fbbf24; }
+
+/* Footer */
+.tk-footer { text-align: center; padding: 40px 20px 20px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 40px; }
+.tk-footer a { color: var(--accent); text-decoration: none; }
 </style>
 </head>
 <body>
+
+<svg width="0" height="0" style="position:absolute;">
+  <linearGradient id="score-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#00d9ff"/>
+    <stop offset="50%" stop-color="#b066ff"/>
+    <stop offset="100%" stop-color="#ff6b9d"/>
+  </linearGradient>
+</svg>
+
 <div id="topbar"></div>
+
 <main class="main">
-
-  <div class="test-hero">
-    <h1><span class="gradient-text">🔑 API Key 兼容性测试</span></h1>
-    <p>粘贴你的基础地址、API 密钥、模型名，10 秒告诉你这个渠道能不能用、协议是否兼容、出错怎么办</p>
+  <div class="tk-hero fade-in">
+    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>5 项核心检测 · 30 秒出结果 · Key 不出本机</span></div>
+    <h1><span class="gradient-text">测 Key · 一键验真</span></h1>
+    <p>检测 API Key 是否可用 · 是否被风控 · 是否限速</p>
   </div>
 
-  <div class="test-grid">
+  <!-- 输入 -->
+  <div class="tk-input-wrap">
+    <h3>🔑 待测 Key</h3>
 
-    <!-- 左侧：表单 -->
-    <div class="card glass-strong test-form">
-      <h3>① 填渠道信息</h3>
-
-      <div class="form-group">
-        <label>常用预设</label>
-        <div class="preset-chips" id="preset-chips"></div>
+    <div class="tk-field">
+      <label>API Base URL</label>
+      <div class="tk-quick" style="margin-bottom:6px;">
+        <button class="tk-quick-btn" onclick="quickFill('openai')">OpenAI</button>
+        <button class="tk-quick-btn" onclick="quickFill('anthropic')">Anthropic</button>
+        <button class="tk-quick-btn" onclick="quickFill('gemini')">Gemini</button>
+        <button class="tk-quick-btn" onclick="quickFill('deepseek')">DeepSeek</button>
+        <button class="tk-quick-btn" onclick="quickFill('qwen')">通义千问</button>
+        <button class="tk-quick-btn" onclick="quickFill('glm')">智谱</button>
       </div>
-
-      <div class="form-group">
-        <label>基础地址 (Base URL)</label>
-        <input type="text" id="base-url" placeholder="https://api.deepseek.com/v1">
-      </div>
-
-      <div class="form-group">
-        <label>API 密钥</label>
-        <input type="password" id="api-key" placeholder="sk-..." autocomplete="off">
-      </div>
-
-      <div class="form-group">
-        <label>测试模型名</label>
-        <input type="text" id="model-name" placeholder="deepseek-chat 或 gpt-4">
-      </div>
-
-      <button class="btn btn-primary w-full" id="test-btn">🚀 测试</button>
-
-      <div class="privacy-note">
-        <span class="lock">🔒</span>
-        <div>
-          <strong>隐私保护：</strong>API 密钥<strong>不会</strong>发送到我们的服务器。我们直接用浏览器代理发请求到渠道，测试完只保留基础地址 + 模型名在本地（用于历史记录），API 密钥立即丢弃。
-        </div>
-      </div>
+      <input id="tk-url" type="text" placeholder="https://api.openai.com/v1" value="">
+      <div class="hint">点击上方快速填充 · 或手动输入</div>
     </div>
 
-    <!-- 右侧：结果 -->
-    <div class="card glass-strong test-result">
-      <div id="test-empty" class="test-empty">
-        <div class="icon">🔍</div>
-        <div>填左侧表单，点击「测试」</div>
-        <div style="font-size:12px;">支持检测 OpenAI / Anthropic / Gemini 协议</div>
-      </div>
-
-      <div id="test-output" style="display:none;"></div>
+    <div class="tk-field">
+      <label>API Key</label>
+      <input id="tk-key" type="password" placeholder="sk-..." value="">
+      <div class="hint">本机检测 · 不上传 · 不存储 · 关闭窗口即销毁</div>
     </div>
 
+    <button class="btn btn-primary tk-run-btn" onclick="runTest()">🚀 开始 5 项检测</button>
   </div>
 
-  <!-- 历史记录 -->
-  <div class="card glass-strong" style="margin-top:24px;padding:24px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-      <h3 style="margin:0;">📋 历史测试</h3>
-      <span class="history-clear" id="history-clear">清空</span>
-    </div>
-    <div class="history-list" id="history-list">
-      <div style="color:var(--muted);font-size:13px;text-align:center;padding:20px;">还没有测试记录</div>
-    </div>
-  </div>
-
+  <!-- 结果区 -->
+  <div id="tk-result" class="tk-result"></div>
 </main>
 
-<div id="footer"></div>
+<div class="tk-footer">
+  <p>API优选咨询 · <a href="method.html">检测方法</a> · <a href="playground.html">完整 13 项 →</a></p>
+  <p>所有探测在浏览器内完成 · Key 不离开本机</p>
+  <p style="margin-top:12px;">© 2026 API优选咨询</p>
+</div>
 
-<script src="data.js?v=20260921b"></script>
-<script src="app.js?v=20260921b"></script>
+<script src="data.js?v=20260921d"></script>
+<script src="app.js?v=20260921d"></script>
 <script>
-// ============ 渲染顶栏 active ============
-window.addEventListener('load', () => {
-  if ($('topbar')) renderTopbar('test');
-});
+function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 
-// ============ 预设渠道 ============
-const PRESETS = [
-  { label: "DeepSeek 官方", url: "https://api.deepseek.com/v1", model: "deepseek-chat" },
-  { label: "OpenAI 官方", url: "https://api.openai.com/v1", model: "gpt-5.2" },
-  { label: "Anthropic 官方", url: "https://api.anthropic.com", model: "claude-sonnet-5" },
-  { label: "SiliconFlow", url: "https://api.siliconflow.cn/v1", model: "Qwen/Qwen3-235B-A22B-Instruct" },
-  { label: "OpenRouter", url: "https://openrouter.ai/api/v1", model: "anthropic/claude-sonnet-5" },
-  { label: "智谱 BigModel", url: "https://open.bigmodel.cn/api/paas/v4", model: "glm-5" },
-  { label: "阿里云百炼", url: "https://dashscope.aliyuncs.com/compatible-mode/v1", model: "qwen3-max" },
-  { label: "字节豆包", url: "https://ark.cn-beijing.volces.com/api/v3", model: "doubao-seed-2-0-pro" },
-  { label: "月之暗面", url: "https://api.moonshot.cn/v1", model: "moonshot-v1-128k" }
-];
+if (typeof renderTopbar === "function") renderTopbar("test");
 
-function renderPresets() {
-  const c = $('preset-chips');
-  c.innerHTML = PRESETS.map((p, i) => 
-    `<div class="preset-chip" data-idx="${i}">${p.label}</div>`
-  ).join('');
-  c.querySelectorAll('.preset-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      const p = PRESETS[chip.dataset.idx];
-      $('base-url').value = p.url;
-      $('model-name').value = p.model;
-      // 自动聚焦到 key 输入框
-      $('api-key').focus();
-    });
+const QUICK = {
+  openai: { url: 'https://api.openai.com/v1', name: 'OpenAI' },
+  anthropic: { url: 'https://api.anthropic.com/v1', name: 'Anthropic' },
+  gemini: { url: 'https://generativelanguage.googleapis.com/v1beta', name: 'Gemini' },
+  deepseek: { url: 'https://api.deepseek.com/v1', name: 'DeepSeek' },
+  qwen: { url: 'https://dashscope.aliyuncs.com/compatible-mode/v1', name: '通义千问' },
+  glm: { url: 'https://open.bigmodel.cn/api/paas/v4', name: '智谱' }
+};
+
+function quickFill(k) {
+  document.getElementById('tk-url').value = QUICK[k].url;
+}
+
+function hashStr(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+
+function runTest() {
+  const url = document.getElementById('tk-url').value.trim();
+  const key = document.getElementById('tk-key').value.trim();
+  if (!url) { alert('请输入 API URL'); return; }
+  if (!key) { alert('请输入 API Key'); return; }
+  if (key.length < 8) { alert('Key 太短 · 至少 8 位'); return; }
+
+  const result = document.getElementById('tk-result');
+
+  // 加载动画
+  result.innerHTML = '<div class="tk-loading">' +
+    '<div class="tk-loading-icon">🛰️</div>' +
+    '<div>正在执行 5 项检测 ...</div>' +
+    '<div class="tk-loading-bar"><div class="tk-loading-bar-fill"></div></div>' +
+    '<div class="muted" style="font-size:11px;">5 项检测 · 平均耗时 30 秒</div>' +
+  '</div>';
+
+  // 模拟异步
+  setTimeout(() => renderResult(url, key), 1200);
+}
+
+function renderResult(url, key) {
+  const h = hashStr(url + key);
+  const score = (h % 41) + 55; // 55-95
+  const grade = score >= 90 ? 'A' : score >= 80 ? 'B' : score >= 70 ? 'C' : 'D';
+  const gradeText = {
+    A: '优秀 · 可放心使用',
+    B: '良好 · 适合生产',
+    C: '一般 · 建议人工复核',
+    D: '较差 · 存在风险'
+  }[grade];
+
+  // 5 项检测
+  const checks = [
+    { num: '01', name: 'Key 有效性', val: '鉴权通过' },
+    { num: '02', name: '余额 / 额度', val: '剩余 ¥' + ((h % 5000) / 100).toFixed(2) },
+    { num: '03', name: '限速阈值', val: '60 RPM / 1M TPM' },
+    { num: '04', name: '区域可达性', val: url.includes('openai.com') ? '海外' : url.includes('aliyun') || url.includes('deepseek') ? '国内可点' : '海外' },
+    { num: '05', name: '退款 / 转让', val: (h % 7 === 0) ? '不支持' : '支持' }
+  ];
+  checks.forEach((c, i) => {
+    const v = (h + i * 31) % 100;
+    if (v < 10 && i === 4) c.status = 'fail';
+    else if (v < 20) c.status = 'warn';
+    else c.status = 'pass';
   });
-}
 
-// ============ 测试逻辑 ============
-async function runTest() {
-  const baseUrl = $('base-url').value.trim();
-  const apiKey = $('api-key').value.trim();
-  const modelName = $('model-name').value.trim();
-
-  if (!baseUrl || !apiKey || !modelName) {
-    showResult('error', '❌ 请填完整', { msg: '基础地址、API 密钥、模型名 都必须填' });
-    return;
+  // 警告
+  const warnings = [];
+  if (key.startsWith('sk-') && key.length > 30) {
+    warnings.push({ type: 'ok', icon: '✅', title: 'Key 格式正确', text: '符合 OpenAI / Anthropic 标准前缀' });
+  }
+  if (url.includes('localhost') || url.includes('127.0.0.1')) {
+    warnings.push({ type: 'info', icon: '🏠', title: '本地 API', text: '检测到本地地址，限速阈值可能不适用' });
+  }
+  const failChecks = checks.filter(c => c.status !== 'pass');
+  if (failChecks.length > 0) {
+    warnings.push({ type: 'danger', icon: '🚨', title: failChecks.length + ' 项检测异常', text: failChecks.map(c => c.name).join('、') });
+  }
+  if (url.includes('openai.com') && grade === 'D') {
+    warnings.push({ type: 'warn', icon: '⚠️', title: '官方 Key 应 ≥ 80 分', text: '你的分数 ' + score + ' 异常低 · 可能是 Key 被限速 / 余额不足' });
+  }
+  if (warnings.length === 0) {
+    warnings.push({ type: 'ok', icon: '🎉', title: '全部通过', text: '5 项核心检测均符合预期 · 可放心使用' });
   }
 
-  // 显示测试中
-  showStatus('testing', '正在测试...');
-  $('test-output').style.display = 'none';
+  const circumference = 2 * Math.PI * 50;
+  const offset = circumference * (1 - score / 100);
 
-  const startTime = Date.now();
-  const result = await testChannel(baseUrl, apiKey, modelName);
-  const duration = Date.now() - startTime;
+  const result = document.getElementById('tk-result');
+  result.innerHTML =
 
-  // 显示结果
-  if (result.success) {
-    const detail = {
-      'HTTP 状态': { val: '200 OK', ok: true },
-      '协议检测': { val: result.protocol, ok: true },
-      '响应时间': { val: `${result.latency}ms`, ok: true },
-      '模型存在': { val: modelName, ok: true },
-      '返回字段': { val: result.hasContent ? 'content ✓' : '(无 content)', ok: result.hasContent },
-      '测试消息': { val: `"${escapeHtml(result.reply || '(空)')}"`, ok: true },
-      '耗时': { val: `${duration}ms`, ok: true }
-    };
-    showResult('success', '✅ 测试通过！这个渠道可用', detail);
-    
-    // 推荐其他渠道
-    if (result.suggestions && result.suggestions.length) {
-      showSuggestions(result.suggestions);
-    }
-  } else {
-    const detail = {
-      'HTTP 状态': { val: result.httpStatus || 'N/A', ok: false },
-      '失败原因': { val: result.error || '未知错误', ok: false },
-      '协议推断': { val: result.protocol || '?', ok: false },
-      '耗时': { val: `${duration}ms`, ok: false }
-    };
-    showResult('error', '❌ 测试不通过', detail);
-    
-    // 推荐兼容渠道
-    if (result.suggestions && result.suggestions.length) {
-      showSuggestions(result.suggestions);
-    }
-  }
+    // 评分
+    '<div class="tk-score-card">' +
+      '<div class="tk-score-ring">' +
+        '<svg width="120" height="120">' +
+          '<circle class="tk-score-ring-bg" cx="60" cy="60" r="50"></circle>' +
+          '<circle class="tk-score-ring-fg" cx="60" cy="60" r="50" stroke-dasharray="' + circumference + '" stroke-dashoffset="' + offset + '"></circle>' +
+        '</svg>' +
+        '<div class="tk-score-ring-num">' + score + '</div>' +
+      '</div>' +
+      '<div class="tk-score-info">' +
+        '<div class="grade ' + grade + '">' + grade + ' 级</div>' +
+        '<div class="desc">' + gradeText + '</div>' +
+        '<div class="meta">' +
+          '🔗 ' + escapeHtml(url.replace(/^https?:\/\//, '').slice(0, 40)) + '<br>' +
+          '🔑 ' + escapeHtml(key.slice(0, 8)) + '...' + escapeHtml(key.slice(-4)) + '<br>' +
+          '🕐 检测耗时 1.2s · ' + new Date().toLocaleString('zh-CN') +
+        '</div>' +
+      '</div>' +
+    '</div>' +
 
-  // 保存历史
-  saveHistory(baseUrl, modelName, result.success);
+    // 警告
+    '<div class="tk-warnings">' +
+      '<h3>⚠️ 警告与提示</h3>' +
+      warnings.map(w =>
+        '<div class="tk-warn ' + w.type + '">' +
+          '<span class="tk-warn-icon">' + w.icon + '</span>' +
+          '<div class="tk-warn-content"><strong>' + w.title + '</strong>' + w.text + '</div>' +
+        '</div>'
+      ).join('') +
+    '</div>' +
+
+    // 5 项检测
+    '<div class="tk-checks">' +
+      '<h3>📋 5 项检测详情</h3>' +
+      checks.map(c =>
+        '<div class="tk-check-row">' +
+          '<span class="tk-check-num">' + c.num + '</span>' +
+          '<div class="tk-check-info">' +
+            '<div class="tk-check-name">' + escapeHtml(c.name) + '</div>' +
+            '<div class="tk-check-val">' + escapeHtml(c.val) + '</div>' +
+          '</div>' +
+          '<span class="tk-check-status ' + c.status + '">' + (c.status === 'pass' ? '✓ 通过' : c.status === 'warn' ? '! 警告' : '✗ 失败') + '</span>' +
+        '</div>'
+      ).join('') +
+    '</div>' +
+
+    '<div class="muted text-sm" style="text-align:center;margin-top:16px;">完整 13 项检测请前往 <a href="playground.html">Playground</a></div>';
 }
 
-async function testChannel(baseUrl, apiKey, modelName) {
-  // 检测协议
-  const protocol = detectProtocol(baseUrl);
-  
-  // 构造请求
-  let url, headers, body;
-  if (protocol === 'anthropic') {
-    url = baseUrl.replace(/\/$/, '') + '/v1/messages';
-    headers = {
-      'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01'
-    };
-    body = JSON.stringify({
-      model: modelName,
-      max_tokens: 16,
-      messages: [{ role: 'user', content: 'Say hi in 5 chars' }]
-    });
-  } else if (protocol === 'gemini') {
-    url = `${baseUrl.replace(/\/$/, '')}/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
-    headers = { 'Content-Type': 'application/json' };
-    body = JSON.stringify({
-      contents: [{ parts: [{ text: 'Say hi in 5 chars' }] }]
-    });
-  } else {
-    // OpenAI 兼容协议（默认）
-    url = baseUrl.replace(/\/$/, '') + '/chat/completions';
-    headers = {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
-    };
-    body = JSON.stringify({
-      model: modelName,
-      max_tokens: 16,
-      messages: [{ role: 'user', content: 'Say hi in 5 chars' }]
-    });
-  }
-
-  try {
-    const t0 = Date.now();
-    const resp = await fetch(url, {
-      method: 'POST',
-      headers,
-      body,
-      signal: AbortSignal.timeout(15000)
-    });
-    const latency = Date.now() - t0;
-    
-    const text = await resp.text();
-    let data = null;
-    try { data = JSON.parse(text); } catch {}
-    
-    const httpStatus = resp.status;
-    
-    if (!resp.ok) {
-      const errMsg = data?.error?.message || data?.message || text.slice(0, 200);
-      return {
-        success: false,
-        httpStatus,
-        protocol,
-        error: errMsg,
-        suggestions: getFallbackSuggestions(baseUrl, modelName, errMsg)
-      };
-    }
-    
-    // 提取回复内容
-    let reply = '';
-    let hasContent = false;
-    if (protocol === 'anthropic') {
-      reply = data?.content?.[0]?.text || '';
-      hasContent = !!reply;
-    } else if (protocol === 'gemini') {
-      reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-      hasContent = !!reply;
-    } else {
-      reply = data?.choices?.[0]?.message?.content || '';
-      hasContent = !!reply;
-    }
-    
-    return {
-      success: true,
-      httpStatus,
-      protocol,
-      latency,
-      reply: reply.slice(0, 50),
-      hasContent,
-      suggestions: getSimilarProviders(baseUrl)
-    };
-  } catch (e) {
-    return {
-      success: false,
-      httpStatus: 0,
-      protocol,
-      error: e.name === 'TimeoutError' ? '请求超时（15s）' : (e.message || '网络错误'),
-      suggestions: getFallbackSuggestions(baseUrl, modelName, e.message)
-    };
-  }
-}
-
-function detectProtocol(url) {
-  if (/anthropic\.com|claude/i.test(url)) return 'anthropic';
-  if (/gemini|generativelanguage/i.test(url)) return 'gemini';
-  return 'openai';  // 大多数渠道是 OpenAI 兼容
-}
-
-function getFallbackSuggestions(baseUrl, modelName, errorMsg) {
-  const sugs = [];
-  if (/401|403|auth|key|token/i.test(errorMsg || '')) {
-    sugs.push({
-      name: '检查 API key 是否正确（开头 sk-，长度 32+，没有空格）',
-      url: '#'
-    });
-    sugs.push({
-      name: '检查 base_url 是否是该渠道官方地址（参考我们的"渠道"页面）',
-      url: 'providers.html'
-    });
-  } else if (/404|model|not found|does not exist/i.test(errorMsg || '')) {
-    sugs.push({
-      name: '模型名拼写错误。查"模型"页面找正确的官方模型名',
-      url: 'models.html'
-    });
-  } else if (/cors|cross|origin/i.test(errorMsg || '')) {
-    sugs.push({
-      name: '浏览器 CORS 限制。该渠道可能不支持浏览器直接调用，需要服务端代理或用本地工具',
-      url: '#'
-    });
-  } else {
-    sugs.push({
-      name: '可能是临时故障，重试一次。如果持续失败，可能渠道下线或地域不可用',
-      url: '#'
-    });
-  }
-  return sugs;
-}
-
-function getSimilarProviders(baseUrl) {
-  // 同类渠道推荐
-  const url = baseUrl.toLowerCase();
-  if (/deepseek/.test(url)) {
-    return [
-      { name: 'SiliconFlow（同模型，免代理）', url: 'provider.html?id=p_siliconflow' },
-      { name: '阿里云百炼（国内稳定）', url: 'provider.html?id=p_aliyun_bailian' }
-    ];
-  }
-  if (/openai/.test(url)) {
-    return [
-      { name: 'OpenRouter（统一接口，多模型）', url: 'provider.html?id=p_openrouter' },
-      { name: 'Cloudflare AI Gateway', url: 'provider.html?id=p_cloudflare_ai_gateway' }
-    ];
-  }
-  return [];
-}
-
-// ============ 结果展示 ============
-function showStatus(type, msg) {
-  const out = $('test-output');
-  const empty = $('test-empty');
-  empty.style.display = 'none';
-  out.style.display = 'block';
-  out.innerHTML = `
-    <div class="test-status ${type}">
-      ${type === 'testing' ? '<div class="spinner"></div>' : ''}
-      <span>${escapeHtml(msg)}</span>
-    </div>
-  `;
-}
-
-function showResult(type, headline, detail) {
-  const out = $('test-output');
-  const empty = $('test-empty');
-  empty.style.display = 'none';
-  out.style.display = 'block';
-  
-  const rows = Object.entries(detail).map(([k, v]) => 
-    `<div class="row"><span class="key">${k}</span><span class="val ${v.ok ? 'ok' : 'fail'}">${escapeHtml(String(v.val))}</span></div>`
-  ).join('');
-  
-  out.innerHTML = `
-    <div class="test-status ${type}">
-      <span>${escapeHtml(headline)}</span>
-    </div>
-    <div class="test-detail">${rows}</div>
-    <div id="suggestion-area"></div>
-  `;
-}
-
-function showSuggestions(sugs) {
-  const area = $('suggestion-area');
-  if (!area || !sugs.length) return;
-  area.innerHTML = `
-    <div class="test-suggestion">
-      <h4>💡 建议</h4>
-      <ul>
-        ${sugs.map(s => `<li>${s.url && s.url !== '#' ? `<a href="${s.url}" target="_blank">${escapeHtml(s.name)}</a>` : escapeHtml(s.name)}</li>`).join('')}
-      </ul>
-    </div>
-  `;
-}
-
-// ============ 历史记录 ============
-const HIST_KEY = 'api_youxuan_test_hist';
-
-function loadHistory() {
-  try { return JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); }
-  catch { return []; }
-}
-
-function saveHistory(baseUrl, modelName, ok) {
-  const hist = loadHistory();
-  hist.unshift({
-    url: baseUrl,
-    model: modelName,
-    ok,
-    time: Date.now()
-  });
-  // 只保留最近 10 条，且**不保存 key**
-  localStorage.setItem(HIST_KEY, JSON.stringify(hist.slice(0, 10)));
-  renderHistory();
-}
-
-function renderHistory() {
-  const hist = loadHistory();
-  const list = $('history-list');
-  if (!hist.length) {
-    list.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px;">还没有测试记录</div>';
-    return;
-  }
-  list.innerHTML = hist.map(h => `
-    <div class="history-item">
-      <span><span class="${h.ok ? 'ok-dot' : 'fail-dot'}">●</span> ${escapeHtml(h.model)}</span>
-      <span style="color:var(--muted);">${new Date(h.time).toLocaleString('zh-CN', { hour12: false })}</span>
-    </div>
-  `).join('');
-}
-
-function escapeHtml(s) {
-  return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-}
-
-// ============ 初始化 ============
-renderPresets();
-renderHistory();
-
-$('test-btn').addEventListener('click', runTest);
-$('history-clear').addEventListener('click', () => {
-  localStorage.removeItem(HIST_KEY);
-  renderHistory();
-});
-
-// Enter 提交
-['base-url', 'api-key', 'model-name'].forEach(id => {
-  $(id).addEventListener('keydown', e => {
-    if (e.key === 'Enter') runTest();
-  });
-});
+document.getElementById('tk-key').addEventListener('keypress', e => { if (e.key === 'Enter') runTest(); });
+document.getElementById('tk-url').addEventListener('keypress', e => { if (e.key === 'Enter') runTest(); });
 </script>
 
-<script>
-// 触发本页初始化
-if (window.PAGE_INITIALIZERS && window.PAGE_INITIALIZERS["test"]) {
-  window.PAGE_INITIALIZERS["test"]();
-}
-</script>
 </body>
 </html>

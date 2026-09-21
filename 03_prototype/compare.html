@@ -3,170 +3,423 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>横向比价 - API优选咨询</title>
+<title>AI 模型横向比价 · 5 维度价格表 · 月成本计算 - API优选咨询</title>
+<meta name="description" content="选 2-3 个模型横向比价：官方价 / 中转价 / 缓存价 / 月成本 / 可用渠道。">
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-.main h1 { font-size: 28px; margin-bottom: 8px; }
-.page-desc { color: var(--muted); margin-bottom: 24px; }
-.cmp-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 24px; }
-.cmp-inputs { padding: 24px; }
-.cmp-inputs h3 { margin-bottom: 16px; }
-.cmp-best { padding: 24px; background: var(--grad-glow); border-color: var(--border-strong); }
-.cmp-best-num { font-family: var(--font-mono); font-size: 36px; font-weight: 800; background: var(--grad-primary); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-.cmp-table { padding: 0; overflow: hidden; }
-.cmp-table table th { background: var(--bg-deep); }
-.cmp-table .price-cell { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--accent); }
-.badge-best { background: linear-gradient(135deg, var(--success), var(--accent)); color: #001428; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; margin-left: 6px; }
+/* === Compare 页 - okkmax 风格 === */
+.compare-hero { padding: 32px 0 8px; text-align: center; }
+.compare-hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 6px; }
+
+/* 选择栏 */
+.compare-bar { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 10px; max-width: 920px; margin: 18px auto 6px; align-items: end; }
+.compare-bar .slot-label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+.compare-bar select { width: 100%; background: rgba(10,16,32,0.6); border: 1px solid var(--border); color: var(--fg); padding: 10px 12px; border-radius: 8px; font-size: 13px; }
+.compare-bar .add-btn { padding: 10px 18px; border-radius: 8px; }
+
+/* 月成本计算器 */
+.compare-cost-card { max-width: 920px; margin: 20px auto; padding: 18px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); }
+.compare-cost-card h3 { font-size: 13px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; margin-bottom: 12px; }
+.cost-grid { display: grid; grid-template-columns: repeat(4, 1fr) 1fr; gap: 10px; align-items: end; }
+.cost-grid label { font-size: 11px; color: var(--muted); display: block; margin-bottom: 4px; }
+.cost-grid input { width: 100%; padding: 8px 10px; }
+.cost-result { font-family: var(--font-mono); padding: 10px; text-align: center; border-radius: 8px; background: rgba(0,217,255,0.06); border: 1px solid rgba(0,217,255,0.25); }
+.cost-result strong { font-size: 18px; color: var(--accent); }
+.cost-result .muted-num { color: var(--muted); font-size: 11px; margin-top: 2px; }
+@media (max-width: 800px) { .cost-grid { grid-template-columns: 1fr 1fr; } }
+
+/* === 5 维价格表 === */
+.compare-section-title { display: flex; align-items: center; justify-content: space-between; margin: 28px 0 10px; }
+.compare-section-title h2 { margin: 0; font-size: 18px; font-weight: 700; }
+.compare-section-title .dim-hint { font-size: 11px; color: var(--muted); }
+
+.compare-table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-card); }
+.compare-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 720px; }
+.compare-table thead th { background: var(--bg-deep); padding: 12px 14px; text-align: left; color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid var(--border); }
+.compare-table thead th.model-col { color: var(--accent); }
+.compare-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.compare-table tbody tr:last-child { border-bottom: 0; }
+.compare-table tbody tr:hover { background: rgba(0,217,255,0.04); }
+.compare-table td { padding: 12px 14px; vertical-align: middle; }
+.compare-table td.row-label { color: var(--muted); font-size: 12px; font-weight: 600; }
+.compare-table .price-cell { font-family: var(--font-mono); font-weight: 700; color: var(--accent); font-size: 14px; }
+.compare-table .price-cell.alt { color: var(--accent-2); }
+.compare-table .price-cell .sub { display: block; color: var(--muted); font-size: 10px; font-weight: 400; margin-top: 2px; }
+.compare-table .model-head { display: flex; align-items: center; gap: 8px; }
+.compare-table .model-head-logo { width: 24px; height: 24px; border-radius: 6px; background: var(--bg-deep); display: flex; align-items: center; justify-content: center; font-size: 12px; }
+.compare-table .model-head-name { font-weight: 700; font-size: 13px; }
+.compare-table .model-head-vendor { font-size: 10px; color: var(--muted); }
+.compare-table .winner-tag { display: inline-block; font-size: 9px; padding: 1px 6px; border-radius: 8px; background: rgba(34,197,94,0.15); color: #22c55e; font-weight: 700; margin-left: 4px; vertical-align: middle; }
+
+/* === 可使用渠道 === */
+.chan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+.chan-card { padding: 12px; border-radius: 10px; background: var(--bg-card); border: 1px solid var(--border); transition: all 0.15s; text-decoration: none; color: inherit; }
+.chan-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+.chan-card-name { font-weight: 700; font-size: 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.chan-card-status { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.chan-card-status.online { background: #22c55e; box-shadow: 0 0 6px #22c55e; }
+.chan-card-status.limited { background: #f59e0b; }
+.chan-card-status.offline { background: #ef4444; }
+.chan-card-price { font-family: var(--font-mono); color: var(--accent); font-weight: 700; font-size: 14px; }
+.chan-card-meta { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+.chan-empty { padding: 16px; text-align: center; color: var(--muted); font-size: 12px; border: 1px dashed var(--border); border-radius: 8px; }
+@media (max-width: 800px) { .chan-grid { grid-template-columns: 1fr; } }
+
+/* === Footer === */
+.compare-footer { text-align: center; padding: 40px 20px 20px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 40px; }
+.compare-footer a { color: var(--accent); text-decoration: none; }
+
+@media (max-width: 700px) { .compare-bar { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
+
 <div id="topbar"></div>
+
 <main class="main">
-  <div class="page-hero fade-in">
-    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>智能选方案</span></div>
-    <h1><span class="gradient-text">📊 横向比价</span></h1>
-    <p class="subtitle">选模型 → 填用量 → 看 N 个渠道月成本对比</p>
+  <div class="compare-hero fade-in">
+    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>横向对比 · 月成本秒算 · 13 项硬核检测</span></div>
+    <h1><span class="gradient-text">AI 模型 · 横向比价</span></h1>
+    <p>5 维度价格表：官方价 / 中转均价 / 最低价 / 月成本 / 可用渠道</p>
   </div>
 
-  <div class="cmp-grid">
-    <div class="card cmp-inputs">
-      <h3>① 用量</h3>
-      <div class="input-group" style="margin-bottom:12px;">
-        <label>模型</label>
-        <select id="cmp-model"></select>
-      </div>
-      <div class="flex gap-3" style="margin-bottom:12px;">
-        <div class="input-group w-full"><label>输入 Token（M）</label><input type="number" id="cmp-input" value="100"></div>
-        <div class="input-group w-full"><label>输出 Token（M）</label><input type="number" id="cmp-output" value="20"></div>
-      </div>
-      <div class="input-group" style="margin-bottom:12px;">
-        <label>缓存读取 Token（M，可选）</label>
-        <input type="number" id="cmp-cache" value="0">
-      </div>
-
-      <h3 style="margin-top:24px;">② 显示选项</h3>
-      <div class="flex gap-3" style="margin-bottom:12px;">
-        <div class="input-group w-full"><label>币种</label>
-          <select id="cmp-currency"><option value="CNY">人民币 ¥</option><option value="USD">美元 $</option></select>
-        </div>
-        <div class="input-group w-full"><label>排序</label>
-          <select id="cmp-sort"><option value="total">总价升序</option><option value="provider">按渠道名</option><option value="official">官方优先</option></select>
-        </div>
-      </div>
-      <button class="btn btn-primary w-full" id="cmp-btn">🧮 生成对比</button>
-
-      <div class="cmp-best" id="cmp-best" style="margin-top:24px;">
-        <div class="muted text-xs" style="text-transform:uppercase;letter-spacing:0.08em;">最低月成本</div>
-        <div class="cmp-best-num" id="cmp-best-total">¥ 0</div>
-        <div class="muted text-sm" id="cmp-best-info">—</div>
-        <div class="muted text-xs" style="margin-top:8px;" id="cmp-fx">CNY</div>
-      </div>
+  <!-- 模型选择栏 -->
+  <div class="compare-bar">
+    <div>
+      <span class="slot-label">模型 A</span>
+      <select id="cmp-a"></select>
     </div>
+    <div>
+      <span class="slot-label">模型 B</span>
+      <select id="cmp-b"></select>
+    </div>
+    <div>
+      <span class="slot-label">模型 C (可选)</span>
+      <select id="cmp-c"></select>
+    </div>
+    <button class="btn btn-primary add-btn" onclick="resetCompare()">↻ 重置</button>
+  </div>
 
-    <div class="card cmp-table">
-      <table>
-        <thead>
-          <tr><th>渠道</th><th>类型</th><th>输入成本</th><th>输出成本</th><th>缓存成本</th><th>月成本</th><th>差异</th><th>付款</th><th>发票</th><th>操作</th></tr>
-        </thead>
-        <tbody id="cmp-table-body"></tbody>
-      </table>
+  <!-- 月成本计算 -->
+  <div class="compare-cost-card">
+    <h3>💸 月成本计算器</h3>
+    <div class="cost-grid">
+      <div>
+        <label>月输入 token (M)</label>
+        <input id="cost-input" type="number" value="10" min="0" step="0.1">
+      </div>
+      <div>
+        <label>月输出 token (M)</label>
+        <input id="cost-output" type="number" value="5" min="0" step="0.1">
+      </div>
+      <div>
+        <label>缓存命中率 (%)</label>
+        <input id="cost-cache" type="number" value="60" min="0" max="100" step="5">
+      </div>
+      <div>
+        <label>使用渠道</label>
+        <select id="cost-chan">
+          <option value="official">官方价</option>
+          <option value="reseller">中转均价</option>
+          <option value="lowest">最低价</option>
+        </select>
+      </div>
+      <div>
+        <label>月成本合计</label>
+        <div class="cost-result" id="cost-result">—</div>
+      </div>
     </div>
   </div>
 
-  <div class="card glass-strong" style="margin-top:24px;padding:20px;">
-    <div class="muted text-sm">
-      💡 "中转"渠道价格可能更低但数据政策因渠道而异；建议结合"三栏分列"评估。差异 = (当前渠道 - 最低渠道) / 最低渠道 × 100%。
-    </div>
+  <!-- 5 维价格表 -->
+  <div class="compare-section-title">
+    <h2>📊 5 维价格表</h2>
+    <span class="dim-hint">数字越小越省 · 🏆 为该维度最优</span>
   </div>
+
+  <div class="compare-table-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr id="cmp-thead"></tr>
+      </thead>
+      <tbody id="cmp-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- 可使用渠道 -->
+  <div class="compare-section-title">
+    <h2>🔌 可使用渠道</h2>
+    <span class="dim-hint">点击进入对应模型</span>
+  </div>
+  <div id="cmp-channels"></div>
 </main>
-<script src="data.js?v=20260921b"></script>
-<script src="app.js?v=20260921b"></script>
+
+<div class="compare-footer">
+  <p>API优选咨询 · <a href="llms.txt">/llms.txt</a> · <a href="openapi.json">/openapi.json</a> · <a href="mcp.json">/mcp.json</a></p>
+  <p>价格每周刷新 · 13 项硬核检测独立验证</p>
+  <p style="margin-top:12px;">© 2026 API优选咨询</p>
+</div>
+
+<script src="data.js?v=20260921d"></script>
+<script src="app.js?v=20260921d"></script>
 <script>
-(function() {
-  if (typeof renderTopbar === 'function') renderTopbar('compare');
-  const D = API_RADAR_DATA;
-  const sel = document.getElementById('cmp-model');
-  D.models.forEach(m => {
-    const opt = document.createElement('option');
-    opt.value = m.id;
-    opt.textContent = m.display_name + ' (' + fmtUSD(m.official_input_usd_m) + '/' + fmtUSD(m.official_output_usd_m) + ')';
-    sel.appendChild(opt);
-  });
+function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 
-  const params = new URLSearchParams(location.search);
-  const presetModel = params.get('model');
-  if (presetModel && D.models.find(m => m.id === presetModel)) sel.value = presetModel;
+if (typeof renderTopbar === "function") renderTopbar("compare");
 
-  function runCompare() {
-    const modelId = sel.value;
-    const input = parseFloat(document.getElementById('cmp-input').value) || 0;
-    const output = parseFloat(document.getElementById('cmp-output').value) || 0;
-    const cache = parseFloat(document.getElementById('cmp-cache').value) || 0;
-    const currency = document.getElementById('cmp-currency').value;
-    const sortBy = document.getElementById('cmp-sort').value;
+const D = API_RADAR_DATA;
+const params = new URLSearchParams(location.search);
 
-    const offerings = D.offerings.filter(o => o.model_id === modelId);
-    if (offerings.length === 0) {
-      document.getElementById('cmp-table-body').innerHTML = '<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--muted);">该模型暂无渠道</td></tr>';
-      return;
-    }
+// 默认选 3 个旗舰模型
+const DEFAULTS = ['m_claude_fable_5', 'm_gpt_5_5', 'm_gemini_3_pro'];
+const initialA = params.get('a') || DEFAULTS[0];
+const initialB = params.get('b') || DEFAULTS[1];
+const initialC = params.get('c') || DEFAULTS[2];
 
-    const results = offerings.map(o => {
-      const provider = D.providers.find(p => p.id === o.provider_id);
-      const cost = calcCost(getModel(modelId), o, input, output, cache);
-      return { offering: o, provider, cost };
-    });
-
-    if (sortBy === 'total') results.sort((a, b) => a.cost.total - b.cost.total);
-    else if (sortBy === 'provider') results.sort((a, b) => a.provider.name.localeCompare(b.provider.name, 'zh'));
-    else if (sortBy === 'official') results.sort((a, b) => (b.offering.multiplier === 1.0 ? 1 : 0) - (a.offering.multiplier === 1.0 ? 1 : 0));
-
-    const best = results[0];
-    const disp = (n) => currency === 'CNY' ? fmtCNY(n * API_RADAR.FX) : fmtUSD(n);
-
-    document.getElementById('cmp-best-total').textContent = disp(best.cost.total);
-    document.getElementById('cmp-best-info').textContent = '最优：' + best.provider.name + ' · ' + getModel(modelId).display_name;
-    document.getElementById('cmp-fx').textContent = currency + ' · 汇率 ' + API_RADAR_DATA.fx_rate.date;
-
-    const tbody = document.getElementById('cmp-table-body');
-    tbody.innerHTML = '';
-    results.forEach((r, i) => {
-      const diff = best.cost.total > 0 ? ((r.cost.total - best.cost.total) / best.cost.total * 100) : 0;
-      const isBest = i === 0;
-      const tr = document.createElement('tr');
-      if (isBest) tr.style.background = 'rgba(0,255,163,0.06)';
-      const isOff = r.offering.multiplier === 1.0;
-      tr.innerHTML =
-        '<td><a href="provider.html?id=' + r.provider.id + '" style="color:var(--fg);text-decoration:none;"><strong>' + r.provider.name + '</strong></a>' + (isOff ? ' <span class="tag tag-accent" style="font-size:10px;">官方</span>' : ' <span class="tag tag-purple" style="font-size:10px;">中转 ' + r.offering.multiplier + 'x</span>') + '</td>' +
-        '<td><span style="font-size:11px;color:var(--muted);">' + ({official:'官方',aggregator:'聚合',gateway:'网关',self_host:'自托管',cloud:'云厂商'}[r.provider.type]||r.provider.type) + '</span></td>' +
-        '<td class="price-cell">' + disp(r.cost.inputCost) + '</td>' +
-        '<td class="price-cell">' + disp(r.cost.outputCost) + '</td>' +
-        '<td class="price-cell">' + disp(r.cost.cacheCost) + '</td>' +
-        '<td class="price-cell" style="font-weight:700;">' + disp(r.cost.total) + (isBest ? ' <span class="badge-best">最省</span>' : '') + '</td>' +
-        '<td style="color:' + (diff === 0 ? 'var(--success)' : 'var(--muted)') + ';">' + (diff === 0 ? '基线' : '+' + diff.toFixed(0) + '%') + '</td>' +
-        '<td style="font-size:11px;">' + (r.provider.payment_currency||[]).join('/') + '</td>' +
-        '<td>' + (r.provider.invoice_available ? '<span style="color:var(--success);">✓</span>' : '<span style="color:var(--muted);">×</span>') + '</td>' +
-        '<td><a href="provider.html?id=' + r.provider.id + '" style="font-size:12px;">详情 →</a></td>';
-      tbody.appendChild(tr);
-    });
-  }
-
-  document.getElementById('cmp-btn').addEventListener('click', runCompare);
-  ['cmp-input', 'cmp-output', 'cmp-cache', 'cmp-currency', 'cmp-sort'].forEach(id => {
-    document.getElementById(id).addEventListener('input', runCompare);
-    document.getElementById(id).addEventListener('change', runCompare);
-  });
-  sel.addEventListener('change', runCompare);
-  runCompare();
-})();
-</script>
-
-<script>
-// 触发本页初始化
-if (window.PAGE_INITIALIZERS && window.PAGE_INITIALIZERS["compare"]) {
-  window.PAGE_INITIALIZERS["compare"]();
+// 填充下拉
+function fillSelect(sel, exclude) {
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— 请选择 —</option>' + D.models
+    .filter(m => !exclude.includes(m.id))
+    .map(m => {
+      const v = D.vendors.find(vv => vv.id === m.vendor_id);
+      return '<option value="' + m.id + '">' + escapeHtml((v?.name_zh || '') + ' · ' + m.display_name) + '</option>';
+    }).join('');
+  sel.value = cur;
 }
+
+const selA = document.getElementById('cmp-a');
+const selB = document.getElementById('cmp-b');
+const selC = document.getElementById('cmp-c');
+fillSelect(selA, []);
+fillSelect(selB, []);
+fillSelect(selC, []);
+selA.value = initialA;
+selB.value = initialB;
+selC.value = initialC;
+
+[selA, selB, selC].forEach(s => s.addEventListener('change', render));
+
+// 计算单模型中转统计
+function channelStats(modelId) {
+  const offs = D.offerings.filter(o => o.model_id === modelId);
+  if (offs.length === 0) return { min: null, avg: null, max: null, count: 0 };
+  const ins = offs.map(o => o.input_usd_m || 0).filter(x => x > 0);
+  const outs = offs.map(o => o.output_usd_m || 0).filter(x => x > 0);
+  return {
+    minIn: ins.length ? Math.min(...ins) : null,
+    avgIn: ins.length ? ins.reduce((a, b) => a + b, 0) / ins.length : null,
+    maxIn: ins.length ? Math.max(...ins) : null,
+    minOut: outs.length ? Math.min(...outs) : null,
+    avgOut: outs.length ? outs.reduce((a, b) => a + b, 0) / outs.length : null,
+    count: offs.length
+  };
+}
+
+function getSelected() {
+  return [selA.value, selB.value, selC.value].filter(Boolean);
+}
+
+function renderHead() {
+  const ids = getSelected();
+  const thead = document.getElementById('cmp-thead');
+  thead.innerHTML = '<th>维度</th>' + ids.map(id => {
+    const m = D.models.find(mm => mm.id === id);
+    const vv = getVendor(m.vendor_id);
+    return '<th class="model-col"><div class="model-head">' +
+      '<div class="model-head-logo">' + escapeHtml((vv?.name_zh || '?')[0]) + '</div>' +
+      '<div><div class="model-head-name">' + escapeHtml(m?.display_name || id) + '</div>' +
+      '<div class="model-head-vendor">' + escapeHtml(vv?.name_zh || '') + '</div></div></div></th>';
+  }).join('');
+}
+
+function renderBody() {
+  const ids = getSelected();
+  if (ids.length === 0) {
+    document.getElementById('cmp-tbody').innerHTML = '<tr><td colspan="4" style="text-align:center;padding:32px;color:var(--muted);">请至少选择 1 个模型</td></tr>';
+    return;
+  }
+  const models = ids.map(id => D.models.find(mm => mm.id === id));
+  const stats = ids.map(id => channelStats(id));
+
+  // 计算每个维度的最优
+  const wins = {
+    official: null, avgIn: null, minIn: null, cache: null, cheapestMonth: null
+  };
+
+  // 找最优（数字最小）
+  models.forEach((m, i) => {
+    if (m) {
+      if (wins.official === null || (m.official_input_usd_m + m.official_output_usd_m) < (models[wins.official].official_input_usd_m + models[wins.official].official_output_usd_m)) wins.official = i;
+      if (stats[i].avgIn !== null && (wins.avgIn === null || stats[i].avgIn < stats[wins.avgIn].avgIn)) wins.avgIn = i;
+      if (stats[i].minIn !== null && (wins.minIn === null || stats[i].minIn < stats[wins.minIn].minIn)) wins.minIn = i;
+    }
+  });
+
+  const rows = [
+    {
+      label: '① 官方价 (输入+输出)',
+      cells: models.map(m => m ? {
+        text: fmtUSD(m.official_input_usd_m) + ' / ' + fmtUSD(m.official_output_usd_m),
+        sub: 'per 1M tokens'
+      } : { text: '—' }),
+      win: wins.official
+    },
+    {
+      label: '② 中转均价',
+      cells: stats.map(s => s.avgIn !== null ? {
+        text: fmtUSD(s.avgIn) + ' / ' + fmtUSD(s.avgOut),
+        sub: s.count + ' 个渠道平均'
+      } : { text: '无数据', sub: '尚未收录渠道' }),
+      win: wins.avgIn
+    },
+    {
+      label: '③ 中转最低价',
+      cells: stats.map(s => s.minIn !== null ? {
+        text: fmtUSD(s.minIn) + ' / ' + fmtUSD(s.minOut),
+        sub: '在 ' + s.count + ' 家中'
+      } : { text: '—' }),
+      win: wins.minIn
+    },
+    {
+      label: '④ 缓存价 (读取)',
+      cells: models.map(m => m?.official_cache_read_usd_m ? {
+        text: fmtUSD(m.official_cache_read_usd_m),
+        sub: '官方 cache read'
+      } : { text: '不支持', sub: '官方未公布' }),
+    },
+    {
+      label: '⑤ 月成本 (10M+5M)',
+      cells: stats.map((s, i) => {
+        const m = models[i];
+        if (!m) return { text: '—' };
+        // 中转均价月成本
+        if (s.avgIn === null) return { text: '—', sub: '无渠道数据' };
+        const cost = s.avgIn * 10 + s.avgOut * 5;
+        const costCNY = cost * 7.1;
+        return { text: '¥' + Math.round(costCNY).toLocaleString(), sub: '$' + cost.toFixed(2) + ' USD' };
+      }),
+      // 计算最便宜
+      winIdx: (() => {
+        let minI = -1, minV = Infinity;
+        stats.forEach((s, i) => {
+          if (s.avgIn === null) return;
+          const c = s.avgIn * 10 + s.avgOut * 5;
+          if (c < minV) { minV = c; minI = i; }
+        });
+        return minI;
+      })()
+    }
+  ];
+
+  const tbody = document.getElementById('cmp-tbody');
+  tbody.innerHTML = rows.map(r => {
+    const winI = r.winIdx !== undefined ? r.winIdx : r.win;
+    return '<tr>' +
+      '<td class="row-label">' + r.label + '</td>' +
+      r.cells.map((c, i) =>
+        '<td><span class="price-cell' + (i % 2 === 1 ? ' alt' : '') + '">' +
+          c.text +
+          (c.sub ? '<span class="sub">' + c.sub + '</span>' : '') +
+          (winI === i ? '<span class="winner-tag">🏆 最优</span>' : '') +
+        '</span></td>'
+      ).join('') +
+    '</tr>';
+  }).join('');
+}
+
+function renderChannels() {
+  const ids = getSelected();
+  const wrap = document.getElementById('cmp-channels');
+  if (ids.length === 0) {
+    wrap.innerHTML = '<div class="chan-empty">请选择至少 1 个模型查看可使用渠道</div>';
+    return;
+  }
+  wrap.innerHTML = ids.map(id => {
+    const m = D.models.find(mm => mm.id === id);
+    const offs = D.offerings.filter(o => o.model_id === id).slice(0, 6);
+    return '<div style="margin-top:18px;">' +
+      '<h3 style="margin-bottom:8px;font-size:14px;"><span class="gradient-text">' + escapeHtml(m?.display_name || id) + '</span> · ' + offs.length + ' 个渠道</h3>' +
+      (offs.length === 0 ? '<div class="chan-empty">暂无渠道提供</div>' :
+        '<div class="chan-grid">' + offs.map(o => {
+          const p = D.providers.find(pp => pp.id === o.provider_id);
+          return '<a href="provider.html?id=' + escapeHtml(o.provider_id) + '" class="chan-card">' +
+            '<div class="chan-card-name"><span class="chan-card-status ' + (p?.status || 'online') + '"></span>' + escapeHtml(p?.name_zh || o.provider_id) + '</div>' +
+            '<div class="chan-card-price">' + fmtUSD(o.input_usd_m) + ' / ' + fmtUSD(o.output_usd_m) + '</div>' +
+            '<div class="chan-card-meta">' + (p?.region || 'global') + ' · ' + (p?.sla_uptime ? p.sla_uptime.toFixed(1) + '%' : '—') + ' uptime</div>' +
+          '</a>';
+        }).join('') + '</div>') +
+    '</div>';
+  }).join('');
+}
+
+function updateCostResult() {
+  const ids = getSelected();
+  const inp = parseFloat(document.getElementById('cost-input').value) || 0;
+  const out = parseFloat(document.getElementById('cost-output').value) || 0;
+  const cachePct = parseFloat(document.getElementById('cost-cache').value) || 0;
+  const chanType = document.getElementById('cost-chan').value;
+  if (ids.length === 0) {
+    document.getElementById('cost-result').innerHTML = '<strong>—</strong><div class="muted-num">请选择模型</div>';
+    return;
+  }
+  // 计算所有选中模型的总成本范围
+  const totals = ids.map(id => {
+    const m = D.models.find(mm => mm.id === id);
+    const s = channelStats(id);
+    if (!m) return null;
+    let inPrice, outPrice;
+    if (chanType === 'official') {
+      inPrice = m.official_input_usd_m;
+      outPrice = m.official_output_usd_m;
+    } else if (chanType === 'lowest') {
+      inPrice = s.minIn || m.official_input_usd_m;
+      outPrice = s.minOut || m.official_output_usd_m;
+    } else {
+      inPrice = s.avgIn || m.official_input_usd_m;
+      outPrice = s.avgOut || m.official_output_usd_m;
+    }
+    const cacheRead = m.official_cache_read_usd_m || inPrice * 0.1;
+    // 缓存命中部分按 cacheRead 计费
+    const cacheInput = inp * (cachePct / 100);
+    const realInput = inp - cacheInput;
+    const cost = realInput * inPrice + cacheInput * cacheRead + out * outPrice;
+    return cost * FX.USD_CNY;
+  }).filter(x => x !== null);
+  if (totals.length === 0) {
+    document.getElementById('cost-result').innerHTML = '<strong>—</strong>';
+    return;
+  }
+  const min = Math.min(...totals);
+  const max = Math.max(...totals);
+  document.getElementById('cost-result').innerHTML =
+    '<strong>¥' + Math.round(min).toLocaleString() + (min !== max ? ' ~ ¥' + Math.round(max).toLocaleString() : '') + '</strong>' +
+    '<div class="muted-num">' + ids.length + ' 个模型 · ' + (chanType === 'official' ? '官方' : chanType === 'lowest' ? '最低' : '中转均价') + '</div>';
+}
+
+function render() {
+  renderHead();
+  renderBody();
+  renderChannels();
+  updateCostResult();
+}
+
+function resetCompare() {
+  selA.value = DEFAULTS[0];
+  selB.value = DEFAULTS[1];
+  selC.value = DEFAULTS[2];
+  render();
+}
+
+// 绑定计算器
+['cost-input', 'cost-output', 'cost-cache', 'cost-chan'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateCostResult);
+  document.getElementById(id).addEventListener('change', updateCostResult);
+});
+
+render();
 </script>
+
 </body>
 </html>
