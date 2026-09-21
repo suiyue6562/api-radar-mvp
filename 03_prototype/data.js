@@ -1871,7 +1871,28 @@ var API_RADAR_DATA = {
       "min_charge": 5,
       "notes": "官方直连，USD 充值",
       "name": "Anthropic 官方",
-      "name_short": "Anthropic 官方"
+      "name_short": "Anthropic 官方",
+      "status": "online",
+      "rating": 4.4,
+      "review_count": 1236,
+      "tags": [
+        "可开发票",
+        "官方"
+      ],
+      "browse_count": 5671,
+      "promo": null,
+      "last_check_at": "2026-09-15",
+      "api_protocol": [
+        "anthropic"
+      ],
+      "compliance": [
+        "发票",
+        "GDPR",
+        "SOC2"
+      ],
+      "models_count": 13,
+      "sla_uptime": 99.6,
+      "signup_date": "2025-11-05"
     },
     {
       "id": "p_openai_official",
@@ -1887,7 +1908,27 @@ var API_RADAR_DATA = {
       "min_charge": 5,
       "notes": "官方直连",
       "name": "OpenAI 官方",
-      "name_short": "OpenAI 官方"
+      "name_short": "OpenAI 官方",
+      "status": "online",
+      "rating": 4,
+      "review_count": 4696,
+      "tags": [
+        "可开发票",
+        "官方"
+      ],
+      "browse_count": 67513,
+      "promo": null,
+      "last_check_at": "2026-09-17",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "发票",
+        "GDPR"
+      ],
+      "models_count": 15,
+      "sla_uptime": 99.7,
+      "signup_date": "2025-10-31"
     },
     {
       "id": "p_google_official",
@@ -1903,7 +1944,28 @@ var API_RADAR_DATA = {
       "min_charge": 0,
       "notes": "免费额度+付费层",
       "name": "Google AI Studio",
-      "name_short": "Google AI Studio"
+      "name_short": "Google AI Studio",
+      "status": "online",
+      "rating": 4.9,
+      "review_count": 879,
+      "tags": [
+        "可开发票",
+        "免费试用",
+        "官方"
+      ],
+      "browse_count": 30354,
+      "promo": null,
+      "last_check_at": "2026-09-18",
+      "api_protocol": [
+        "gemini"
+      ],
+      "compliance": [
+        "发票",
+        "GDPR"
+      ],
+      "models_count": 10,
+      "sla_uptime": 99.8,
+      "signup_date": "2026-02-15"
     },
     {
       "id": "p_xai_official",
@@ -1919,7 +1981,27 @@ var API_RADAR_DATA = {
       "min_charge": 5,
       "notes": "官方直连",
       "name": "xAI 官方",
-      "name_short": "xAI 官方"
+      "name_short": "xAI 官方",
+      "status": "online",
+      "rating": 3.9,
+      "review_count": 3460,
+      "tags": [
+        "可开发票",
+        "官方"
+      ],
+      "browse_count": 24571,
+      "promo": null,
+      "last_check_at": "2026-09-21",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "发票",
+        "GDPR"
+      ],
+      "models_count": 9,
+      "sla_uptime": 99.5,
+      "signup_date": "2026-02-25"
     },
     {
       "id": "p_deepseek_official",
@@ -1936,7 +2018,29 @@ var API_RADAR_DATA = {
       "min_charge": 1,
       "notes": "国内可直接，海外 OpenAI 兼容",
       "name": "DeepSeek 官方",
-      "name_short": "DeepSeek 官方"
+      "name_short": "DeepSeek 官方",
+      "status": "online",
+      "rating": 4.8,
+      "review_count": 1090,
+      "tags": [
+        "可开发票",
+        "官方"
+      ],
+      "browse_count": 23399,
+      "promo": "⚡ 限时充 ¥100 送 ¥20",
+      "last_check_at": "2026-09-20",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "发票",
+        "ICP备案",
+        "GDPR",
+        "SOC2"
+      ],
+      "models_count": 13,
+      "sla_uptime": 99.5,
+      "signup_date": "2026-03-01"
     },
     {
       "id": "p_qwen_official",
@@ -1952,7 +2056,29 @@ var API_RADAR_DATA = {
       "min_charge": 0,
       "notes": "Qwen 官方，支持 100+ 模型",
       "name": "阿里云百炼",
-      "name_short": "阿里云百炼"
+      "name_short": "阿里云百炼",
+      "status": "limited",
+      "rating": 3.9,
+      "review_count": 2263,
+      "tags": [
+        "可开发票",
+        "免费试用",
+        "官方"
+      ],
+      "browse_count": 14460,
+      "promo": null,
+      "last_check_at": "2026-09-20",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "发票",
+        "ICP备案",
+        "GDPR"
+      ],
+      "models_count": 12,
+      "sla_uptime": 96.2,
+      "signup_date": "2025-10-30"
     },
     {
       "id": "p_zhipu_official",
@@ -1969,7 +2095,33 @@ var API_RADAR_DATA = {
       "min_charge": 1,
       "notes": "GLM 官方",
       "name": "智谱 BigModel",
-      "name_short": "智谱 BigModel"
+      "name_short": "智谱 BigModel",
+      "status": "online",
+      "rating": 3.8,
+      "review_count": 1476,
+      "tags": [
+        "可开发票",
+        "官方"
+      ],
+      "browse_count": 24041,
+      "promo": {
+        "type": "discount",
+        "text": "🎁 月付 9 折",
+        "amount": 10
+      },
+      "last_check_at": "2026-09-15",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "发票",
+        "ICP备案",
+        "GDPR",
+        "ISO27001"
+      ],
+      "models_count": 9,
+      "sla_uptime": 99.7,
+      "signup_date": "2026-06-24"
     },
     {
       "id": "p_moonshot_official",
@@ -1986,7 +2138,29 @@ var API_RADAR_DATA = {
       "min_charge": 5,
       "notes": "Kimi 官方",
       "name": "Moonshot 官方",
-      "name_short": "Moonshot 官方"
+      "name_short": "Moonshot 官方",
+      "status": "online",
+      "rating": 3.9,
+      "review_count": 2003,
+      "tags": [
+        "可开发票",
+        "官方"
+      ],
+      "browse_count": 69524,
+      "promo": "🎁 新用户首单 8 折",
+      "last_check_at": "2026-09-19",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "发票",
+        "ICP备案",
+        "GDPR",
+        "ISO27001"
+      ],
+      "models_count": 8,
+      "sla_uptime": 99.5,
+      "signup_date": "2026-07-22"
     },
     {
       "id": "p_doubao_official",
@@ -2002,7 +2176,29 @@ var API_RADAR_DATA = {
       "min_charge": 0,
       "notes": "豆包官方，企业级",
       "name": "字节火山引擎",
-      "name_short": "字节火山引擎"
+      "name_short": "字节火山引擎",
+      "status": "online",
+      "rating": 3.6,
+      "review_count": 2612,
+      "tags": [
+        "可开发票",
+        "免费试用",
+        "官方"
+      ],
+      "browse_count": 48543,
+      "promo": null,
+      "last_check_at": "2026-09-18",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "发票",
+        "ICP备案",
+        "SOC2"
+      ],
+      "models_count": 13,
+      "sla_uptime": 99.5,
+      "signup_date": "2026-02-07"
     },
     {
       "id": "p_baidu_qianfan",
@@ -2018,7 +2214,29 @@ var API_RADAR_DATA = {
       "min_charge": 0,
       "notes": "文心官方",
       "name": "百度千帆",
-      "name_short": "百度千帆"
+      "name_short": "百度千帆",
+      "status": "offline",
+      "rating": 3.6,
+      "review_count": 358,
+      "tags": [
+        "可开发票",
+        "免费试用",
+        "官方"
+      ],
+      "browse_count": 99545,
+      "promo": null,
+      "last_check_at": "2026-09-17",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "发票",
+        "ICP备案",
+        "ISO27001"
+      ],
+      "models_count": 11,
+      "sla_uptime": 0,
+      "signup_date": "2026-04-28"
     },
     {
       "id": "p_mistral_official",
@@ -2035,7 +2253,27 @@ var API_RADAR_DATA = {
       "min_charge": 5,
       "notes": "官方直连，欧盟合规",
       "name": "Mistral 官方",
-      "name_short": "Mistral 官方"
+      "name_short": "Mistral 官方",
+      "status": "online",
+      "rating": 4.9,
+      "review_count": 584,
+      "tags": [
+        "可开发票",
+        "官方"
+      ],
+      "browse_count": 26857,
+      "promo": null,
+      "last_check_at": "2026-09-17",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "发票",
+        "GDPR"
+      ],
+      "models_count": 9,
+      "sla_uptime": 99.9,
+      "signup_date": "2026-08-09"
     },
     {
       "id": "p_groq",
@@ -2051,7 +2289,26 @@ var API_RADAR_DATA = {
       "min_charge": 0,
       "notes": "LPU 推理，极速",
       "name": "GroqCloud",
-      "name_short": "GroqCloud"
+      "name_short": "GroqCloud",
+      "status": "online",
+      "rating": 3.6,
+      "review_count": 1357,
+      "tags": [
+        "免费试用",
+        "官方"
+      ],
+      "browse_count": 4428,
+      "promo": null,
+      "last_check_at": "2026-09-15",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "GDPR"
+      ],
+      "models_count": 12,
+      "sla_uptime": 99.8,
+      "signup_date": "2026-03-29"
     },
     {
       "id": "p_together_ai",
@@ -2067,7 +2324,29 @@ var API_RADAR_DATA = {
       "min_charge": 5,
       "notes": "200+ 开源模型，按 token 计费",
       "name": "Together AI",
-      "name_short": "Together AI"
+      "name_short": "Together AI",
+      "status": "online",
+      "rating": 3.6,
+      "review_count": 1211,
+      "tags": [
+        "可开发票",
+        "聚合"
+      ],
+      "featured": true,
+      "is_new": true,
+      "browse_count": 44342,
+      "promo": null,
+      "last_check_at": "2026-09-21",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "发票",
+        "GDPR"
+      ],
+      "models_count": 29,
+      "sla_uptime": 99.9,
+      "signup_date": "2026-08-22"
     },
     {
       "id": "p_fireworks_ai",
@@ -2083,7 +2362,29 @@ var API_RADAR_DATA = {
       "min_charge": 5,
       "notes": "开源模型优化推理",
       "name": "Fireworks AI",
-      "name_short": "Fireworks AI"
+      "name_short": "Fireworks AI",
+      "status": "online",
+      "rating": 4.2,
+      "review_count": 173,
+      "tags": [
+        "可开发票",
+        "聚合"
+      ],
+      "is_new": true,
+      "browse_count": 35306,
+      "promo": "🎁 新用户首单 8 折",
+      "last_check_at": "2026-09-18",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "发票",
+        "GDPR",
+        "SOC2"
+      ],
+      "models_count": 45,
+      "sla_uptime": 99.5,
+      "signup_date": "2026-06-12"
     },
     {
       "id": "p_anyscale",
@@ -2099,7 +2400,29 @@ var API_RADAR_DATA = {
       "min_charge": 0,
       "notes": "开源模型生产部署",
       "name": "Anyscale",
-      "name_short": "Anyscale"
+      "name_short": "Anyscale",
+      "status": "online",
+      "rating": 4.7,
+      "review_count": 1120,
+      "tags": [
+        "可开发票",
+        "免费试用",
+        "聚合"
+      ],
+      "browse_count": 22407,
+      "promo": null,
+      "last_check_at": "2026-09-20",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "发票",
+        "GDPR",
+        "ISO27001"
+      ],
+      "models_count": 52,
+      "sla_uptime": 99.7,
+      "signup_date": "2026-08-04"
     },
     {
       "id": "p_openrouter",
@@ -2116,7 +2439,26 @@ var API_RADAR_DATA = {
       "min_charge": 5,
       "notes": "300+ 模型，OpenAI 兼容，5.5% 平台费",
       "name": "OpenRouter",
-      "name_short": "OpenRouter"
+      "name_short": "OpenRouter",
+      "status": "online",
+      "rating": 4.5,
+      "review_count": 3023,
+      "tags": [
+        "聚合"
+      ],
+      "is_new": true,
+      "browse_count": 26930,
+      "promo": null,
+      "last_check_at": "2026-09-18",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "GDPR"
+      ],
+      "models_count": 31,
+      "sla_uptime": 99.6,
+      "signup_date": "2026-02-16"
     },
     {
       "id": "p_litellm",
@@ -2132,7 +2474,30 @@ var API_RADAR_DATA = {
       "min_charge": 0,
       "notes": "MIT 开源自托管，140+ 提供商",
       "name": "LiteLLM (自托管)",
-      "name_short": "LiteLLM (自托管)"
+      "name_short": "LiteLLM (自托管)",
+      "status": "online",
+      "rating": 4.7,
+      "review_count": 3113,
+      "tags": [
+        "免费试用",
+        "自托管"
+      ],
+      "browse_count": 84804,
+      "promo": {
+        "type": "discount",
+        "text": "💰 首单 8 折",
+        "amount": 20
+      },
+      "last_check_at": "2026-09-19",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "SOC2"
+      ],
+      "models_count": 15,
+      "sla_uptime": 99.5,
+      "signup_date": "2026-07-16"
     },
     {
       "id": "p_portkey",
@@ -2148,7 +2513,28 @@ var API_RADAR_DATA = {
       "min_charge": 0,
       "notes": "Apache-2.0 企业级网关",
       "name": "Portkey",
-      "name_short": "Portkey"
+      "name_short": "Portkey",
+      "status": "limited",
+      "rating": 4.3,
+      "review_count": 442,
+      "tags": [
+        "可开发票",
+        "免费试用",
+        "网关"
+      ],
+      "browse_count": 4709,
+      "promo": null,
+      "last_check_at": "2026-09-15",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "发票",
+        "GDPR"
+      ],
+      "models_count": 19,
+      "sla_uptime": 98.1,
+      "signup_date": "2026-05-19"
     },
     {
       "id": "p_helicone",
@@ -2164,7 +2550,26 @@ var API_RADAR_DATA = {
       "min_charge": 0,
       "notes": "可观测性优先，免费 10K/月",
       "name": "Helicone",
-      "name_short": "Helicone"
+      "name_short": "Helicone",
+      "status": "online",
+      "rating": 3.6,
+      "review_count": 3669,
+      "tags": [
+        "免费试用",
+        "网关"
+      ],
+      "browse_count": 33448,
+      "promo": null,
+      "last_check_at": "2026-09-15",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "GDPR"
+      ],
+      "models_count": 22,
+      "sla_uptime": 99.9,
+      "signup_date": "2025-11-02"
     },
     {
       "id": "p_cloudflare_ai",
@@ -2180,7 +2585,29 @@ var API_RADAR_DATA = {
       "min_charge": 0,
       "notes": "Cloudflare 用户免费",
       "name": "Cloudflare AI Gateway",
-      "name_short": "Cloudflare AI Gateway"
+      "name_short": "Cloudflare AI Gateway",
+      "status": "maintenance",
+      "rating": 3.8,
+      "review_count": 1242,
+      "tags": [
+        "可开发票",
+        "免费试用",
+        "网关"
+      ],
+      "browse_count": 51791,
+      "promo": null,
+      "last_check_at": "2026-09-21",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "发票",
+        "GDPR",
+        "SOC2"
+      ],
+      "models_count": 18,
+      "sla_uptime": 0,
+      "signup_date": "2026-08-01"
     },
     {
       "id": "p_vercel_ai_gateway",
@@ -2196,7 +2623,26 @@ var API_RADAR_DATA = {
       "min_charge": 5,
       "notes": "0 标记费",
       "name": "Vercel AI Gateway",
-      "name_short": "Vercel AI Gateway"
+      "name_short": "Vercel AI Gateway",
+      "status": "online",
+      "rating": 4.9,
+      "review_count": 1251,
+      "tags": [
+        "网关"
+      ],
+      "featured": true,
+      "browse_count": 86974,
+      "promo": "⚡ 限时充 ¥100 送 ¥20",
+      "last_check_at": "2026-09-20",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "GDPR"
+      ],
+      "models_count": 24,
+      "sla_uptime": 99.6,
+      "signup_date": "2026-04-19"
     },
     {
       "id": "p_one_api",
@@ -2212,7 +2658,27 @@ var API_RADAR_DATA = {
       "min_charge": 0,
       "notes": "国内最流行的开源聚合，docker 镜像",
       "name": "One-API (开源)",
-      "name_short": "One-API (开源)"
+      "name_short": "One-API (开源)",
+      "status": "limited",
+      "rating": 3.7,
+      "review_count": 3549,
+      "tags": [
+        "免费试用",
+        "自托管"
+      ],
+      "browse_count": 97250,
+      "promo": null,
+      "last_check_at": "2026-09-16",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "ICP备案",
+        "ISO27001"
+      ],
+      "models_count": 25,
+      "sla_uptime": 96,
+      "signup_date": "2026-02-26"
     },
     {
       "id": "p_new_api",
@@ -2228,7 +2694,31 @@ var API_RADAR_DATA = {
       "min_charge": 0,
       "notes": "One-API 升级版",
       "name": "New-API (开源)",
-      "name_short": "New-API (开源)"
+      "name_short": "New-API (开源)",
+      "status": "online",
+      "rating": 4.1,
+      "review_count": 1061,
+      "tags": [
+        "免费试用",
+        "自托管"
+      ],
+      "browse_count": 13096,
+      "promo": {
+        "type": "discount",
+        "text": "💰 首单 8 折",
+        "amount": 20
+      },
+      "last_check_at": "2026-09-18",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "ICP备案",
+        "SOC2"
+      ],
+      "models_count": 27,
+      "sla_uptime": 99.7,
+      "signup_date": "2025-12-05"
     },
     {
       "id": "p_duckcoding",
@@ -2245,7 +2735,26 @@ var API_RADAR_DATA = {
       "min_charge": 10,
       "notes": "国内中转，比官方低 30-50%",
       "name": "DuckCoding",
-      "name_short": "DuckCoding"
+      "name_short": "DuckCoding",
+      "status": "online",
+      "rating": 4.7,
+      "review_count": 31,
+      "tags": [
+        "聚合"
+      ],
+      "is_new": true,
+      "browse_count": 39586,
+      "promo": null,
+      "last_check_at": "2026-09-21",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "ICP备案"
+      ],
+      "models_count": 41,
+      "sla_uptime": 99.6,
+      "signup_date": "2026-08-17"
     },
     {
       "id": "p_api2d",
@@ -2262,7 +2771,26 @@ var API_RADAR_DATA = {
       "min_charge": 5,
       "notes": "国内老牌中转",
       "name": "API2D",
-      "name_short": "API2D"
+      "name_short": "API2D",
+      "status": "online",
+      "rating": 4.5,
+      "review_count": 384,
+      "tags": [
+        "聚合"
+      ],
+      "browse_count": 93069,
+      "promo": null,
+      "last_check_at": "2026-09-18",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "ICP备案",
+        "ISO27001"
+      ],
+      "models_count": 38,
+      "sla_uptime": 99.8,
+      "signup_date": "2025-11-13"
     },
     {
       "id": "p_aicnb",
@@ -2278,7 +2806,29 @@ var API_RADAR_DATA = {
       "min_charge": 5,
       "notes": "国内中转，含发票申请",
       "name": "AIcnb",
-      "name_short": "AIcnb"
+      "name_short": "AIcnb",
+      "status": "online",
+      "rating": 5,
+      "review_count": 739,
+      "tags": [
+        "聚合"
+      ],
+      "browse_count": 78864,
+      "promo": {
+        "type": "discount",
+        "text": "💰 首单 8 折",
+        "amount": 20
+      },
+      "last_check_at": "2026-09-19",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "ICP备案"
+      ],
+      "models_count": 53,
+      "sla_uptime": 99.8,
+      "signup_date": "2026-05-12"
     },
     {
       "id": "p_closeai",
@@ -2294,7 +2844,30 @@ var API_RADAR_DATA = {
       "min_charge": 5,
       "notes": "国内 Claude 专线",
       "name": "CloseAI",
-      "name_short": "CloseAI"
+      "name_short": "CloseAI",
+      "status": "online",
+      "rating": 4.9,
+      "review_count": 2608,
+      "tags": [
+        "聚合"
+      ],
+      "browse_count": 69027,
+      "promo": {
+        "type": "bonus",
+        "text": "⚡ 充 ¥100 送 ¥30",
+        "amount": 30
+      },
+      "last_check_at": "2026-09-21",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "ICP备案",
+        "ISO27001"
+      ],
+      "models_count": 38,
+      "sla_uptime": 99.8,
+      "signup_date": "2026-08-30"
     },
     {
       "id": "p_woka_ai",
@@ -2310,7 +2883,27 @@ var API_RADAR_DATA = {
       "min_charge": 5,
       "notes": "国内 Claude/GPT 中转",
       "name": "WokaAI",
-      "name_short": "WokaAI"
+      "name_short": "WokaAI",
+      "status": "online",
+      "rating": 3.6,
+      "review_count": 3063,
+      "tags": [
+        "聚合"
+      ],
+      "is_new": true,
+      "browse_count": 37722,
+      "promo": null,
+      "last_check_at": "2026-09-21",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "ICP备案",
+        "ISO27001"
+      ],
+      "models_count": 47,
+      "sla_uptime": 99.7,
+      "signup_date": "2026-07-06"
     },
     {
       "id": "p_chatfire",
@@ -2326,7 +2919,26 @@ var API_RADAR_DATA = {
       "min_charge": 1,
       "notes": "国内低价中转",
       "name": "ChatFire",
-      "name_short": "ChatFire"
+      "name_short": "ChatFire",
+      "status": "online",
+      "rating": 4.7,
+      "review_count": 1968,
+      "tags": [
+        "聚合"
+      ],
+      "browse_count": 45303,
+      "promo": null,
+      "last_check_at": "2026-09-18",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "ICP备案",
+        "ISO27001"
+      ],
+      "models_count": 52,
+      "sla_uptime": 99.7,
+      "signup_date": "2026-08-26"
     },
     {
       "id": "p_azure_openai",
@@ -2342,7 +2954,27 @@ var API_RADAR_DATA = {
       "min_charge": 0,
       "notes": "企业版，需 Azure 订阅",
       "name": "Azure OpenAI",
-      "name_short": "Azure OpenAI"
+      "name_short": "Azure OpenAI",
+      "status": "online",
+      "rating": 4.1,
+      "review_count": 1972,
+      "tags": [
+        "可开发票",
+        "免费试用"
+      ],
+      "browse_count": 5921,
+      "promo": null,
+      "last_check_at": "2026-09-19",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "发票",
+        "GDPR"
+      ],
+      "models_count": 24,
+      "sla_uptime": 99.9,
+      "signup_date": "2026-04-24"
     },
     {
       "id": "p_bedrock",
@@ -2358,7 +2990,28 @@ var API_RADAR_DATA = {
       "min_charge": 0,
       "notes": "AWS 企业集成",
       "name": "AWS Bedrock",
-      "name_short": "AWS Bedrock"
+      "name_short": "AWS Bedrock",
+      "status": "online",
+      "rating": 5,
+      "review_count": 1938,
+      "tags": [
+        "可开发票",
+        "免费试用"
+      ],
+      "browse_count": 23229,
+      "promo": null,
+      "last_check_at": "2026-09-16",
+      "api_protocol": [
+        "openai"
+      ],
+      "compliance": [
+        "发票",
+        "GDPR",
+        "ISO27001"
+      ],
+      "models_count": 22,
+      "sla_uptime": 99.7,
+      "signup_date": "2026-06-06"
     },
     {
       "id": "p_vertex_ai",
@@ -2374,7 +3027,27 @@ var API_RADAR_DATA = {
       "min_charge": 0,
       "notes": "Google Cloud 企业版",
       "name": "Vertex AI",
-      "name_short": "Vertex AI"
+      "name_short": "Vertex AI",
+      "status": "online",
+      "rating": 3.9,
+      "review_count": 3151,
+      "tags": [
+        "可开发票",
+        "免费试用"
+      ],
+      "browse_count": 35460,
+      "promo": null,
+      "last_check_at": "2026-09-19",
+      "api_protocol": [
+        "gemini"
+      ],
+      "compliance": [
+        "发票",
+        "GDPR"
+      ],
+      "models_count": 42,
+      "sla_uptime": 99.7,
+      "signup_date": "2026-02-24"
     }
   ],
   "offerings": [
