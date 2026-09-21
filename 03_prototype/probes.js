@@ -427,3 +427,6 @@ async function stabilityCheck(baseUrl, key, model) {
 
 // 导出
 window.RADAR_V3 = { detectFakeStream, tlsDeepCheck, httpsRedirectCheck, responseHeadersCheck, stabilityCheck };
+
+// ===== 补充导出（让 playground 能用） =====
+window.PROBE_RUN = { runProbe, deepCheck, rateLimitCheck, priceVerify };

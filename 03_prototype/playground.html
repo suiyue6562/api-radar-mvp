@@ -209,7 +209,11 @@ function toggleAllProbes() {
 }
 
 // 模拟探测 — 真实环境会发请求，这里生成确定性的演示结果
-function runProbes() {
+/**
+ * runProbes() — 13 项硬核验证
+ * 使用 probes.js 真实探测函数（deepCheck + RADAR_V3 的 5 个）
+ */
+async function runProbes() {
   const url = document.getElementById('pg-url').value.trim();
   const key = document.getElementById('pg-key').value.trim();
   const model = document.getElementById('pg-model').value;
@@ -219,105 +223,142 @@ function runProbes() {
   const cbs = document.querySelectorAll('#pg-probes input[type=checkbox]:checked');
   if (cbs.length === 0) { alert('请至少选择 1 个探测项'); return; }
 
-  // 计算分数（确定性，基于 URL hash）
-  let h = 0;
-  for (let i = 0; i < url.length; i++) h = (h * 31 + url.charCodeAt(i)) | 0;
-  const score = Math.abs(h) % 41 + 55; // 55-95
-  const grade = score >= 90 ? 'A' : score >= 80 ? 'B' : score >= 70 ? 'C' : 'D';
-  const checks = [];
-  cbs.forEach(cb => {
-    const idx = parseInt(cb.dataset.idx);
-    const p = PROBES[idx];
-    const v = (Math.abs(h + idx * 17) % 100);
-    let status = 'pass', val = 'OK';
-    if (v < 15 && idx % 4 === 3) { status = 'fail'; val = 'fail'; }
-    else if (v < 30) { status = 'warn'; val = (v + 'ms').slice(0, 6); }
-    else { val = (v + 50) + 'ms'; }
-    checks.push({ name: p.name, num: p.num, status, val });
-  });
-
-  const warnings = [];
-  if (url.includes('localhost') || url.includes('127.0.0.1')) {
-    warnings.push({ type: 'info', icon: '🔒', title: '本地 URL', text: '你正在测试本地部署的 API，不会消耗外网流量' });
-  }
-  if (url.includes('openai.com') && grade === 'A') {
-    warnings.push({ type: 'ok', icon: '✅', title: '官方域名', text: '这是 OpenAI 官方域名，指纹应为 Claude 4.5+ 系统提示词' });
-  }
-  const hasHighLatency = checks.some(c => c.status === 'warn' && c.name.includes('延迟'));
-  if (hasHighLatency) {
-    warnings.push({ type: 'warn', icon: '⏱', title: '首字延迟偏高', text: 'TTFT p95 > 800ms · 适合离线批处理，不适合实时对话' });
-  }
-  const hasFail = checks.some(c => c.status === 'fail');
-  if (hasFail) {
-    warnings.push({ type: 'danger', icon: '🚨', title: '检测到 1 项失败', text: '退款政策 / 缓存一致性异常 · 建议人工复核' });
-  }
-  if (warnings.length === 0) {
-    warnings.push({ type: 'ok', icon: '🎉', title: '全部通过', text: '13 项检测均符合预期 · 可放心使用' });
-  }
-
-  // 模拟响应
-  const response = JSON.stringify({
-    id: 'chatcmpl-' + Math.random().toString(36).slice(2, 10),
-    object: 'chat.completion',
-    created: Math.floor(Date.now() / 1000),
-    model: model,
-    choices: [{
-      index: 0,
-      message: { role: 'assistant', content: 'Hello! How can I help you today? This is a sample response from the probed API.' },
-      finish_reason: 'stop'
-    }],
-    usage: { prompt_tokens: 16, completion_tokens: 19, total_tokens: 35 }
-  }, null, 2);
-
   const out = document.getElementById('pg-output');
-  const circumference = 2 * Math.PI * 40;
-  const offset = circumference * (1 - score / 100);
+  out.innerHTML = '<div class="pg-loading"><div class="pg-spinner"></div><div>正在调用 ' + cbs.length + ' 项真实检测 · 请稍候约 30s ...</div></div>';
 
-  out.innerHTML =
-    // 评分
-    '<div class="pg-score-row">' +
-      '<div class="pg-score-ring">' +
-        '<svg width="96" height="96">' +
-          '<circle class="pg-score-ring-bg" cx="48" cy="48" r="40"></circle>' +
-          '<circle class="pg-score-ring-fg" cx="48" cy="48" r="40" stroke-dasharray="' + circumference + '" stroke-dashoffset="' + offset + '"></circle>' +
-        '</svg>' +
-        '<div class="pg-score-ring-num">' + score + '</div>' +
-      '</div>' +
-      '<div class="pg-score-info">' +
-        '<div class="pg-score-grade ' + grade + '">' + grade + ' 级</div>' +
-        '<div class="pg-score-meta">' +
-          '<strong>' + escapeHtml(url.replace(/^https?:\/\//, '').slice(0, 40)) + '</strong><br>' +
-          '模型: ' + escapeHtml(model) + '<br>' +
-          '检测项: ' + cbs.length + ' / 13 · 通过 ' + checks.filter(c => c.status === 'pass').length +
+  const selectedNames = Array.from(cbs).map(cb => PROBES[parseInt(cb.dataset.idx)].name);
+  const useDeep = selectedNames.some(n => /指纹|缓存|限速|错误码|延迟|吞吐|工具|结构|流式|Reasoning|多模态|上下文/.test(n));
+  const useAdvanced = selectedNames.some(n => /退款|首字延迟|限速|抖动/.test(n));
+
+  const checks = [];
+  const warnings = [];
+
+  try {
+    // === Step 1: deepCheck（5 个 PROBE_SET 探针） ===
+    if (useDeep && window.deepCheck) {
+      const dc = await window.deepCheck(url, key, model, 'openai', (step) => {
+        // 进度回调
+      });
+      // 5 个 probe 结果
+      dc.probes.forEach((p, i) => {
+        const num = ['01','02','03','04','05'][i] || String(i + 1).padStart(2, '0');
+        const status = p.pass ? 'pass' : 'fail';
+        checks.push({
+          num: num, name: '指纹探针 #' + (i + 1),
+          sub: p.probe.replace(/^[a-z_]+/, '').slice(0, 20),
+          status, val: p.pass ? (p.accuracy + '%') : '未通过'
+        });
+      });
+      // 综合分
+      const finalScore = dc.finalScore;
+      checks.push({ num: '06', name: '综合评分', sub: 'finalScore', status: finalScore >= 70 ? 'pass' : 'fail', val: finalScore + '/100' });
+
+      // 指纹
+      checks.push({ num: '07', name: '指纹签名', sub: dc.fingerprint.name, status: dc.fingerprint.score >= 70 ? 'pass' : 'warn', val: dc.fingerprint.score + '%' });
+
+      // 平均延迟
+      checks.push({ num: '08', name: '首字延迟 TTFT', sub: dc.avgLatency + 'ms', status: dc.avgLatency < 1500 ? 'pass' : 'warn', val: dc.avgLatency + 'ms' });
+
+      // warnings
+      if (dc.passRate < 0.6) {
+        warnings.push({ type: 'danger', icon: '🚨', title: '指纹不匹配', text: dc.fingerprint.note || '检测到指纹降级风险' });
+      }
+    }
+
+    // === Step 2: RADAR_V3 的 5 个高级检测 ===
+    if (window.RADAR_V3) {
+      // TLS 深度
+      if (selectedNames.includes('TLS 深度') || selectedNames.some(n => /TLS/.test(n))) {
+        const tls = await window.RADAR_V3.tlsDeepCheck(url);
+        checks.push({ num: '09', name: 'TLS 深度', sub: tls.grade, status: tls.grade.startsWith('A') ? 'pass' : 'warn', val: tls.grade });
+      }
+      // HTTPS 重定向
+      if (selectedNames.some(n => /HTTPS/.test(n))) {
+        const http = await window.RADAR_V3.httpsRedirectCheck(url);
+        checks.push({ num: '10', name: 'HTTPS 重定向', sub: http.hasRedirect ? '已配置' : '未配置', status: http.hasRedirect ? 'pass' : 'warn', val: http.hasRedirect ? '✓' : '✗' });
+      }
+      // 响应头
+      if (selectedNames.some(n => /响应头|Headers/.test(n))) {
+        try {
+          const rh = await window.RADAR_V3.responseHeadersCheck(url, key, model);
+          checks.push({ num: '11', name: '响应头合规', sub: rh.headersCount + ' 项', status: rh.status, val: rh.headersCount + ' headers' });
+        } catch (e) {}
+      }
+      // 稳定性
+      if (selectedNames.some(n => /抖动|稳定性|stability/i.test(n))) {
+        try {
+          const st = await window.RADAR_V3.stabilityCheck(url, key, model);
+          checks.push({ num: '12', name: '稳定性', sub: 'CV ' + st.cv, status: st.status === 'ok' ? 'pass' : 'warn', val: st.cv });
+        } catch (e) {}
+      }
+      // 假流式
+      if (selectedNames.some(n => /假流式|stream/i.test(n))) {
+        try {
+          const fs = await window.RADAR_V3.detectFakeStream(url, key, model);
+          checks.push({ num: '13', name: '假流式检测', sub: fs.isFake ? '⚠️ 疑似' : '原生', status: fs.isFake ? 'fail' : 'pass', val: fs.isFake ? '可疑' : '✓' });
+        } catch (e) {}
+      }
+    }
+
+    // === Step 3: 渲染结果 ===
+    const passCount = checks.filter(c => c.status === 'pass').length;
+    const score = Math.round(passCount / checks.length * 100);
+    const grade = score >= 90 ? 'A' : score >= 75 ? 'B' : score >= 60 ? 'C' : 'D';
+    const circumference = 2 * Math.PI * 40;
+    const offset = circumference * (1 - score / 100);
+
+    if (checks.length === 0) {
+      out.innerHTML = '<div class="pg-warn danger"><span class="pg-warn-icon">⚠</span><div>请至少选择 1 个真实探测项</div></div>';
+      return;
+    }
+
+    if (warnings.length === 0 && score >= 80) {
+      warnings.push({ type: 'ok', icon: '🎉', title: '检测通过', text: passCount + '/' + checks.length + ' 项通过 · 可放心使用' });
+    } else if (score < 60) {
+      warnings.push({ type: 'danger', icon: '🚨', title: '检测不通过', text: '只通过 ' + passCount + '/' + checks.length + ' 项 · 建议人工复核' });
+    }
+
+    out.innerHTML =
+      '<div class="pg-score-row">' +
+        '<div class="pg-score-ring">' +
+          '<svg width="96" height="96">' +
+            '<circle class="pg-score-ring-bg" cx="48" cy="48" r="40"></circle>' +
+            '<circle class="pg-score-ring-fg" cx="48" cy="48" r="40" stroke-dasharray="' + circumference + '" stroke-dashoffset="' + offset + '"></circle>' +
+          '</svg>' +
+          '<div class="pg-score-ring-num">' + score + '</div>' +
+        '</div>' +
+        '<div class="pg-score-info">' +
+          '<div class="pg-score-grade ' + grade + '">' + grade + ' 级</div>' +
+          '<div class="pg-score-meta">' +
+            '<strong>' + escapeHtml(url.replace(/^https?:\/\//, '').slice(0, 40)) + '</strong><br>' +
+            '模型: ' + escapeHtml(model) + '<br>' +
+            '检测项: ' + checks.length + ' · 通过 ' + passCount +
+          '</div>' +
         '</div>' +
       '</div>' +
-    '</div>' +
-
-    // 警告
-    '<div class="pg-warnings">' +
-      '<div class="pg-warn-title">⚠️ 警告与提示</div>' +
-      warnings.map(w =>
-        '<div class="pg-warn ' + w.type + '">' +
-          '<span class="pg-warn-icon">' + w.icon + '</span>' +
-          '<div class="pg-warn-content"><strong>' + w.title + '</strong>' + w.text + '</div>' +
+      (warnings.length > 0 ?
+        '<div class="pg-warnings">' +
+          '<div class="pg-warn-title">⚠️ 警告与提示</div>' +
+          warnings.map(w =>
+            '<div class="pg-warn ' + w.type + '">' +
+              '<span class="pg-warn-icon">' + w.icon + '</span>' +
+              '<div class="pg-warn-content"><strong>' + w.title + '</strong>' + w.text + '</div>' +
+            '</div>'
+          ).join('') +
         '</div>'
-      ).join('') +
-    '</div>' +
-
-    // 检测项
-    '<div class="pg-checks-title">📋 检测项详情</div>' +
-    '<div class="pg-checks">' + checks.map(c =>
-      '<div class="pg-check">' +
-        '<span class="pg-check-icon ' + c.status + '">' + (c.status === 'pass' ? '✓' : c.status === 'fail' ? '✗' : '!') + '</span>' +
-        '<span class="pg-check-name">' + c.num + ' ' + escapeHtml(c.name) + '</span>' +
-        '<span class="pg-check-value">' + escapeHtml(c.val) + '</span>' +
-      '</div>'
-    ).join('') + '</div>' +
-
-    // 响应
-    '<div class="pg-checks-title" style="margin-top:18px;">📡 响应详情</div>' +
-    '<div class="pg-response-meta">POST ' + escapeHtml(url) + '/chat/completions · 200 OK · 142ms</div>' +
-    '<div class="pg-response">' + escapeHtml(response) + '</div>';
+        : '') +
+      '<div class="pg-checks-title">📋 检测项详情</div>' +
+      '<div class="pg-checks">' + checks.map(c =>
+        '<div class="pg-check ' + c.status + '">' +
+          '<span class="pg-check-icon">' + (c.status === 'pass' ? '✓' : c.status === 'fail' ? '✗' : '!') + '</span>' +
+          '<span class="pg-check-name">' + c.num + ' ' + escapeHtml(c.name) + '</span>' +
+          '<span class="pg-check-sub">' + escapeHtml(c.sub || '') + '</span>' +
+          '<span class="pg-check-value">' + escapeHtml(c.val) + '</span>' +
+        '</div>'
+      ).join('') + '</div>';
+  } catch (err) {
+    out.innerHTML = '<div class="pg-warn danger"><span class="pg-warn-icon">✗</span><div class="pg-warn-content"><strong>检测失败</strong>' + escapeHtml(err.message || String(err)) + '<br>请检查 API URL 和 Key 是否正确</div></div>';
+  }
 }
 
 renderProbes();

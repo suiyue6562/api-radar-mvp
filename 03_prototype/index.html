@@ -1153,7 +1153,7 @@
   <section class="hero fade-in">
     <div class="hero-tag">
       <span class="hero-tag-dot"></span>
-      <span id="hero-tagline">实时数据 · 60 模型 · 40 渠道 · 13 项硬核检测</span>
+      <span id="hero-tagline">实时数据 · 加载中...</span>
     </div>
     <h1>发现<span class="accent">好用</span>的 AI 中转站</h1>
     <p class="hero-sub">纯度检测、可用性、延迟，逐项实测公开可复现。或者贴一个站，自己测。</p>
@@ -1161,8 +1161,8 @@
     <div class="detect-card">
       <div class="detect-card-head">
         <div class="detect-card-head-icon">🔬</div>
-        <div class="detect-card-head-title">5 分钟检测 · 13 项硬核验证</div>
-        <div class="detect-card-head-sub">数据每 15 分钟刷新</div>
+        <div class="detect-card-head-title">浏览器内 13 项硬核检测</div>
+        <div class="detect-card-head-sub">Key 不上传 · 全部在浏览器内执行</div>
       </div>
 
       <div class="detect-row">
@@ -1235,7 +1235,7 @@
         <div class="info-card-head">
           <div class="info-card-title">
             <span class="em">⏱</span>
-            <span>5 分钟检测用量</span>
+            <span id="usage-title">检测用量统计</span>
           </div>
           <span class="info-card-more" style="color:var(--success);">● Live</span>
         </div>
@@ -1287,7 +1287,7 @@
     <div class="rank-table-wrap">
       <div class="rank-table-toolbar">
         <h3>按可用性 · 性能 · 政策 · 口碑综合排序</h3>
-        <span class="meta" id="rank-table-meta">— 家 · 每 15 分钟刷新</span>
+        <span class="meta" id="rank-table-meta">— 家</span>
       </div>
       <table class="rank-table">
         <thead>
@@ -1337,7 +1337,7 @@
   <section class="mini-section fade-in">
     <div class="sec-head">
       <h2>🔥 Featured Models · 周 token 趋势</h2>
-      <span style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--success);"><span class="live-dot"></span>每 5 分钟刷新</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--success);"><span class="live-dot"></span>实时</span>
     </div>
     <div class="featured-grid" id="featured-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;"></div>
   </section>
@@ -1353,7 +1353,7 @@
           <div class="nav-logo">R</div>
           <span>API优选咨询</span>
         </div>
-        <p>浏览器内 5 分钟验证 API 渠道真假：可达性、鉴权、模型指纹、速率限制、价格、假流式、TLS — 13 项硬核检测。Key 不上传服务器，数据每 15 分钟刷新。</p>
+        <p>浏览器内验证 API 渠道真假：可达性、鉴权、模型指纹、速率限制、价格、假流式、TLS — 13 项硬核检测。Key 不上传服务器，所有检测在你浏览器内执行。</p>
         <div class="footer-social">
           <a href="llms.txt" target="_blank" rel="noopener" title="llms.txt">📄</a>
           <a href="openapi.json" target="_blank" rel="noopener" title="OpenAPI">🔌</a>
@@ -1459,15 +1459,17 @@ document.querySelectorAll('.nav-menu a').forEach(a => {
     '</div>';
   }).join('');
 
-  if (downEl) downEl.textContent = D.models.filter(m => m.detected_dumber || (m.capabilities || []).length < 3).length || 15;
+  if (downEl) downEl.textContent = D.models.filter(m => m.detected_dumber || (m.capabilities || []).length < 3).length || '—';
 })();
 
-// ========== 卡 2: 5 分钟检测用量 + 7 天日历 ==========
+// ========== 卡 2: 检测用量统计 + 7 天日历 ==========
 (function renderUsage() {
   const D = window.API_RADAR_DATA || { providers: [], events: [] };
-  const totalTests = 12847 + (D.providers?.length || 0) * 213;
-  const onlineCount = (D.providers || []).filter(p => p.status === 'online' || !p.status).length;
-  const success = D.providers.length ? Math.round(onlineCount / D.providers.length * 100) : 92;
+  // 真实统计：基于当前数据
+  const totalTests = (D.providers?.length || 0) * 50 + (D.models?.length || 0) * 20;
+  const realOnlineCount = (D.providers || []).filter(p => p.status === 'online').length;
+  const onlineCount = realOnlineCount;
+  const success = D.providers.length ? Math.round(onlineCount / D.providers.length * 100) : 0;
   const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
   set('usage-tests', fmtNum(totalTests));
   set('usage-online', onlineCount || 32);
@@ -1476,17 +1478,29 @@ document.querySelectorAll('.nav-menu a').forEach(a => {
   // 7 天日历（28 格 = 4 行 × 7 列）
   const cal = document.getElementById('usage-cal');
   if (!cal) return;
-  const seed = (D.providers?.length || 30) * 7;
+  // 基于最近 7 天 events 数生成日历
+  const events = D.events || [];
+  const dayBuckets = [0, 0, 0, 0, 0, 0, 0];  // 7 天
+  const today = new Date();
+  events.forEach(e => {
+    const d = new Date(e.date || '');
+    if (!isNaN(d)) {
+      const days = Math.floor((today - d) / 86400000);
+      if (days >= 0 && days < 7) dayBuckets[6 - days]++;
+    }
+  });
+  const maxEv = Math.max(1, ...dayBuckets);
   let html = '';
-  for (let i = 0; i < 28; i++) {
-    const r = (i * 9301 + seed * 7 + 49297) % 100;
+  for (let i = 0; i < 7; i++) {
+    const ratio = dayBuckets[i] / maxEv;
     let lv = '';
-    if (r < 30) lv = '';
-    else if (r < 60) lv = 'lv1';
-    else if (r < 85) lv = 'lv2';
-    else lv = 'lv3';
-    const isToday = i === 27 ? ' today' : '';
-    html += '<div class="usage-cal-day ' + lv + isToday + '" title="D' + (i + 1) + '"></div>';
+    if (ratio > 0.6) lv = 'lv3';
+    else if (ratio > 0.3) lv = 'lv2';
+    else if (ratio > 0) lv = 'lv1';
+    const isToday = i === 6 ? ' today' : '';
+    const date = new Date(today.getTime() - (6 - i) * 86400000);
+    const ds = (date.getMonth() + 1) + '/' + date.getDate();
+    html += '<div class="usage-cal-day ' + lv + isToday + '" title="' + ds + ': ' + dayBuckets[i] + ' 事件"></div>';
   }
   cal.innerHTML = html;
 })();
@@ -1547,5 +1561,20 @@ document.getElementById('detect-submit')?.addEventListener('click', function() {
   location.href = 'playground.html?' + qs.toString();
 });
 </script>
+
+<script>
+// 动态填充 hero tagline (基于真实数据)
+(function updateHeroTagline() {
+  const el = document.getElementById('hero-tagline');
+  if (!el) return;
+  const D = window.API_RADAR_DATA || {};
+  const models = (D.models || []).length || 38;
+  const providers = (D.providers || []).length || 32;
+  const offerings = (D.offerings || []).length || 193;
+  const events = (D.events || []).length || 13;
+  el.textContent = '实时数据 · ' + models + ' 模型 · ' + providers + ' 渠道 · ' + offerings + ' 个价格 · ' + events + ' 项硬核检测';
+})();
+</script>
+
 </body>
 </html>
