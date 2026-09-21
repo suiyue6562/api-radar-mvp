@@ -1,0 +1,8256 @@
+// Auto-generated from non_compliant_providers.json
+// Loaded by gray_market.html to bypass file:// CORS on fetch()
+window.NON_COMPLIANT_DATA = {
+  "meta": {
+    "description": "不合规API中转站清单 (合规属性=不合规)",
+    "source": "不合规API中转站完整清单_20260920.xlsx",
+    "sheet": "不合规API中转站完整清单",
+    "filter": "合规属性 == '不合规'",
+    "total_records": 488,
+    "reference_date": "2026-09-20",
+    "stats": {
+      "total": 488,
+      "by_region": {
+        "cn": 460,
+        "global": 28
+      },
+      "by_type": {
+        "aggregator": 468,
+        "gateway": 20
+      },
+      "by_online_status": {
+        "online": 484,
+        "unstable": 1,
+        "risky": 1,
+        "offline": 1,
+        "unverified": 1
+      },
+      "fields_extracted": {
+        "with_multiplier": 31,
+        "with_payment": 6,
+        "with_listed_date": 7,
+        "with_uptime": 6
+      },
+      "source_excel": "C:\\Users\\Administrator\\Desktop\\不合规API中转站完整清单_20260920 (1).xlsx",
+      "generated_at": "2026-09-21"
+    }
+  },
+  "providers": [
+    {
+      "id": "p_relay_packycode_packyapi",
+      "name_zh": "PackyCode / PackyAPI",
+      "domain": "packyapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率0.75x，支付宝微信",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 0.75,
+      "payment_methods": [
+        "alipay",
+        "wechat"
+      ]
+    },
+    {
+      "id": "p_relay_xcode_best",
+      "name_zh": "xcode.best",
+      "domain": "xcode.best",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率0.38x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 0.38
+    },
+    {
+      "id": "p_relay_nekoapi",
+      "name_zh": "NekoAPI",
+      "domain": "api.nekoapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_claude_bestswifter_com",
+      "name_zh": "claude.bestswifter.com",
+      "domain": "claude.bestswifter.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率0.50x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 0.5
+    },
+    {
+      "id": "p_relay_35_aigcbest",
+      "name_zh": "35-aigcbest",
+      "domain": "35.aigcbest.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api",
+      "name_zh": "API易",
+      "domain": "apiyi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick",
+        "apisou"
+      ],
+      "notes": "老牌企业级中转",
+      "type": "aggregator",
+      "online_status": "online",
+      "maturity": "established"
+    },
+    {
+      "id": "p_relay_xjai_new",
+      "name_zh": "xjai-new",
+      "domain": "new.xjai.cc",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_avemujica",
+      "name_zh": "Avemujica",
+      "domain": "api.avemujica.moe",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率0.75x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 0.75
+    },
+    {
+      "id": "p_relay_coderelay_cn",
+      "name_zh": "coderelay.cn",
+      "domain": "coderelay.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率1.25x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 1.25
+    },
+    {
+      "id": "p_relay_airouter",
+      "name_zh": "AIRouter",
+      "domain": "airouter.mxyhi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_packyapi_ai",
+      "name_zh": "packyapi.ai",
+      "domain": "packyapi.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "PackyAPI另一个域名",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_galaxyapi",
+      "name_zh": "GalaxyAPI",
+      "domain": "api.openai-ch.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_kksj",
+      "name_zh": "kksj",
+      "domain": "cnapi.kksj.org",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_v_api",
+      "name_zh": "V-API",
+      "domain": "api.gpt.ge",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "relaypick",
+        "awesome_ai_api"
+      ],
+      "notes": "倍率2.50x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 2.5
+    },
+    {
+      "id": "p_relay_ai_luminai_cc",
+      "name_zh": "ai.luminai.cc",
+      "domain": "ai.luminai.cc",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率0.38x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 0.38
+    },
+    {
+      "id": "p_relay_xycai",
+      "name_zh": "XycAi星道智能",
+      "domain": "xyc.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick",
+        "aiapirank"
+      ],
+      "notes": "上线10个月",
+      "type": "aggregator",
+      "online_status": "online",
+      "listed_date": "2025-11-24",
+      "months_active": 10
+    },
+    {
+      "id": "p_relay_9527code",
+      "name_zh": "9527code",
+      "domain": "9527.codes",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick",
+        "aiapirank"
+      ],
+      "notes": "在线率96.5%",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_suanniao_shop",
+      "name_zh": "suanniao.shop",
+      "domain": "suanniao.shop",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率0.25x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 0.25
+    },
+    {
+      "id": "p_relay_qiuqiutoken_com",
+      "name_zh": "qiuqiutoken.com",
+      "domain": "qiuqiutoken.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率1.75x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 1.75
+    },
+    {
+      "id": "p_relay_console_claudeapi_com",
+      "name_zh": "console.claudeapi.com",
+      "domain": "console.claudeapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率2.00x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 2.0
+    },
+    {
+      "id": "p_relay_nbility_dev",
+      "name_zh": "nbility.dev",
+      "domain": "nbility.dev",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_linkapi_ai",
+      "name_zh": "linkapi.ai",
+      "domain": "linkapi.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率2.50x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 2.5
+    },
+    {
+      "id": "p_relay_sbgpt",
+      "name_zh": "sbgpt",
+      "domain": "go.sbgpt.site",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_openailabs",
+      "name_zh": "openaiLabs",
+      "domain": "openai-labs.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_no_1_api",
+      "name_zh": "No.1-API",
+      "domain": "api.rcouyi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_jiekou_ai",
+      "name_zh": "jiekou.ai",
+      "domain": "jiekou.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_aiapi_world",
+      "name_zh": "aiapi.world",
+      "domain": "aiapi.world",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率2.49x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 2.49
+    },
+    {
+      "id": "p_relay_xiaoma_best",
+      "name_zh": "xiaoma.best",
+      "domain": "xiaoma.best",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_deepkey_top",
+      "name_zh": "deepkey.top",
+      "domain": "deepkey.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ruoli_dev",
+      "name_zh": "ruoli.dev",
+      "domain": "ruoli.dev",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率0.30x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 0.3
+    },
+    {
+      "id": "p_relay_bearlab_ai",
+      "name_zh": "bearlab.ai",
+      "domain": "bearlab.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_zen_ai",
+      "name_zh": "ZEN-AI",
+      "domain": "zen-ai.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_autorouter_io",
+      "name_zh": "autorouter.io",
+      "domain": "autorouter.io",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick",
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_kfcv50api",
+      "name_zh": "KFCV50API",
+      "domain": "kfcv50.link",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率0.02x，疑似公益",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 0.02,
+      "suspicion": "possibly_charity"
+    },
+    {
+      "id": "p_relay_v3",
+      "name_zh": "v3",
+      "domain": "api.v3.cm",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "relaypick",
+        "awesome_ai_api"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_callxyq_xyz",
+      "name_zh": "callxyq.xyz",
+      "domain": "callxyq.xyz",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_xpluse_plus",
+      "name_zh": "xpluse.plus",
+      "domain": "xpluse.plus",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "在线率仅79%",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_1xm_ai",
+      "name_zh": "1xm.ai",
+      "domain": "1xm.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_sudocode",
+      "name_zh": "SudoCode",
+      "domain": "sudocode.chat",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "relaypick",
+        "aiapirank"
+      ],
+      "notes": "上线4个月",
+      "type": "aggregator",
+      "online_status": "online",
+      "listed_date": "2026-05-23",
+      "months_active": 4
+    },
+    {
+      "id": "p_relay_claudecn_top",
+      "name_zh": "claudecn.top",
+      "domain": "claudecn.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_53",
+      "name_zh": "时脉API",
+      "domain": "shimaiapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_mzlone_top",
+      "name_zh": "mzlone.top",
+      "domain": "mzlone.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ggwk1",
+      "name_zh": "ggwk1",
+      "domain": "ggwk1.online",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "relaypick",
+        "awesome_ai_api"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_claudecn_ai",
+      "name_zh": "claudecn.ai",
+      "domain": "claudecn.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_apilio",
+      "name_zh": "Apilio",
+      "domain": "api.apilio.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_bytonsec_com",
+      "name_zh": "ai.bytonsec.com",
+      "domain": "ai.bytonsec.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_chat_ekti_cc",
+      "name_zh": "chat.ekti.cc",
+      "domain": "chat.ekti.cc",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_umiluxury_com",
+      "name_zh": "umiluxury.com",
+      "domain": "umiluxury.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率1.35x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 1.35
+    },
+    {
+      "id": "p_relay_aiya",
+      "name_zh": "AiYa",
+      "domain": "api.aiyahmm.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "在线率84%",
+      "type": "aggregator",
+      "online_status": "online",
+      "uptime_pct": 84
+    },
+    {
+      "id": "p_relay_yourapi_cn",
+      "name_zh": "yourapi.cn",
+      "domain": "yourapi.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_linkuai",
+      "name_zh": "LinkUAI",
+      "domain": "linkuai.net",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_36niu_com",
+      "name_zh": "36niu.com",
+      "domain": "36niu.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_buzzai_cc",
+      "name_zh": "buzzai.cc",
+      "domain": "buzzai.cc",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率0.57x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 0.57
+    },
+    {
+      "id": "p_relay_xiaojing",
+      "name_zh": "xiaojing",
+      "domain": "open.xiaojingai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_apinebula_com",
+      "name_zh": "apinebula.com",
+      "domain": "apinebula.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_daodunapi_com",
+      "name_zh": "daodunapi.com",
+      "domain": "daodunapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick",
+        "veridrop"
+      ],
+      "notes": "倍率4.50x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 4.5
+    },
+    {
+      "id": "p_relay_ai_flashapi_top",
+      "name_zh": "ai.flashapi.top",
+      "domain": "ai.flashapi.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率4.00x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 4.0
+    },
+    {
+      "id": "p_relay_78code_cc",
+      "name_zh": "78code.cc",
+      "domain": "78code.cc",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_aixoras_com",
+      "name_zh": "aixoras.com",
+      "domain": "aixoras.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_tokentaken",
+      "name_zh": "TokenTaken",
+      "domain": "api.tokentaken.org",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_tongapi_com",
+      "name_zh": "tongapi.com",
+      "domain": "tongapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_aiapify_com",
+      "name_zh": "aiapify.com",
+      "domain": "aiapify.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_new_050602_xyz",
+      "name_zh": "new.050602.xyz",
+      "domain": "new.050602.xyz",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_aigcbest_top",
+      "name_zh": "aigcbest.top",
+      "domain": "aigcbest.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ogog_ai",
+      "name_zh": "ogog.ai",
+      "domain": "ogog.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率7.50x，高价站",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 7.5,
+      "pricing_tag": "premium"
+    },
+    {
+      "id": "p_relay_sparkcode_top",
+      "name_zh": "sparkcode.top",
+      "domain": "sparkcode.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_xyusec_com",
+      "name_zh": "xyusec.com",
+      "domain": "xyusec.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_user_tocodex_com",
+      "name_zh": "user.tocodex.com",
+      "domain": "user.tocodex.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt_codex"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "专攻Codex",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai",
+      "name_zh": "AI派",
+      "domain": "api.aipaibox.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率3.75x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 3.75
+    },
+    {
+      "id": "p_relay_aixor_org",
+      "name_zh": "aixor.org",
+      "domain": "aixor.org",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率3.25x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 3.25
+    },
+    {
+      "id": "p_relay_hyperapi",
+      "name_zh": "HyperAPI",
+      "domain": "hyperapi.cc",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_magic666_top",
+      "name_zh": "magic666.top",
+      "domain": "magic666.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_4router_net",
+      "name_zh": "4router.net",
+      "domain": "4router.net",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率5.50x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 5.5
+    },
+    {
+      "id": "p_relay_clauddy_com",
+      "name_zh": "clauddy.com",
+      "domain": "clauddy.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率3.00x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 3.0
+    },
+    {
+      "id": "p_relay_cun_ai",
+      "name_zh": "CUN.ai",
+      "domain": "cun.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick",
+        "aiapirank"
+      ],
+      "notes": "AIAPIRank排名第1",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_juxingai_top",
+      "name_zh": "juxingai.top",
+      "domain": "juxingai.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率8.00x，高价",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 8.0,
+      "pricing_tag": "premium"
+    },
+    {
+      "id": "p_relay_kuaipao_pro",
+      "name_zh": "kuaipao.pro",
+      "domain": "kuaipao.pro",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "在线率76%",
+      "type": "aggregator",
+      "online_status": "unstable",
+      "uptime_pct": 76
+    },
+    {
+      "id": "p_relay_xiamiapi_xyz",
+      "name_zh": "xiamiapi.xyz",
+      "domain": "xiamiapi.xyz",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率15x，超高价",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 15.0,
+      "pricing_tag": "premium"
+    },
+    {
+      "id": "p_relay_cc_honoursoft_cn",
+      "name_zh": "cc.honoursoft.cn",
+      "domain": "cc.honoursoft.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_duiapi",
+      "name_zh": "DuiAPI",
+      "domain": "duiapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "上线3个月",
+      "type": "aggregator",
+      "online_status": "online",
+      "listed_date": "2026-06-22",
+      "months_active": 3
+    },
+    {
+      "id": "p_relay_kelaiapi_cc",
+      "name_zh": "kelaiapi.cc",
+      "domain": "kelaiapi.cc",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率6.25x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 6.25
+    },
+    {
+      "id": "p_relay_openclawroot_com",
+      "name_zh": "openclawroot.com",
+      "domain": "openclawroot.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_comeu",
+      "name_zh": "ComeU客优",
+      "domain": "comeu.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率12.5x，超高价",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 12.5,
+      "pricing_tag": "premium"
+    },
+    {
+      "id": "p_relay_hao_ai",
+      "name_zh": "hao.ai",
+      "domain": "hao.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick",
+        "veridrop"
+      ],
+      "notes": "上线6个月",
+      "type": "aggregator",
+      "online_status": "online",
+      "listed_date": "2026-03-24",
+      "months_active": 6
+    },
+    {
+      "id": "p_relay_ai_97",
+      "name_zh": "云雾AI",
+      "domain": "yunwu.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick",
+        "apisou"
+      ],
+      "notes": "运营44个月，老牌",
+      "type": "aggregator",
+      "online_status": "online",
+      "months_active": 44,
+      "maturity": "established"
+    },
+    {
+      "id": "p_relay_apiporter",
+      "name_zh": "ApiPorter",
+      "domain": "apiporter.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "倍率5.00x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 5.0
+    },
+    {
+      "id": "p_relay_dawcode",
+      "name_zh": "DawCode",
+      "domain": "dawclaudecode.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude"
+      ],
+      "source_list": [
+        "relaypick",
+        "apisou"
+      ],
+      "notes": "专攻Claude Code",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_plus",
+      "name_zh": "API Plus",
+      "domain": "api.apiplus.cloud",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "在线率0%，疑似跑路",
+      "type": "aggregator",
+      "online_status": "risky",
+      "uptime_pct": 0,
+      "suspicion": "runaway_suspected"
+    },
+    {
+      "id": "p_relay_bobdong_cn",
+      "name_zh": "bobdong.cn",
+      "domain": "bobdong.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_chintao_ai",
+      "name_zh": "Chintao AI",
+      "domain": "chintao.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "relaypick"
+      ],
+      "notes": "在线率0%",
+      "type": "aggregator",
+      "online_status": "offline",
+      "uptime_pct": 0,
+      "suspicion": "runaway_or_dead"
+    },
+    {
+      "id": "p_relay_ai_103",
+      "name_zh": "酷站AI",
+      "domain": "api.koozhan.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "383次检测，评分94",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_code28_ccwu_cc",
+      "name_zh": "code28.ccwu.cc",
+      "domain": "code28.ccwu.cc",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "4979次检测，评分100",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_kuaiapi_net",
+      "name_zh": "kuaiapi.net",
+      "domain": "kuaiapi.net",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "2465次检测",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_top_com",
+      "name_zh": "api-top.com",
+      "domain": "api-top.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "2447次检测",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_passion8_cc",
+      "name_zh": "passion8.cc",
+      "domain": "passion8.cc",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "5471次检测",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_wawapi_top",
+      "name_zh": "wawapi.top",
+      "domain": "wawapi.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "2211次检测",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_topapi_io",
+      "name_zh": "topapi.io",
+      "domain": "topapi.io",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "811次检测",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_wawazz_xyz",
+      "name_zh": "wawazz.xyz",
+      "domain": "wawazz.xyz",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "3503次检测",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_routemux_com",
+      "name_zh": "routemux.com",
+      "domain": "routemux.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "729次检测",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_codex666ai_com",
+      "name_zh": "codex666ai.com",
+      "domain": "codex666ai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "4364次检测",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_zivv_pro",
+      "name_zh": "zivv.pro",
+      "domain": "zivv.pro",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_hapiopen_cc",
+      "name_zh": "hapiopen.cc",
+      "domain": "hapiopen.cc",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "978次检测",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_mintpop_ai",
+      "name_zh": "mintpop.ai",
+      "domain": "mintpop.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_xiaoxuapi_com",
+      "name_zh": "api.xiaoxuapi.com",
+      "domain": "api.xiaoxuapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "1118次检测",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_omniakey_com",
+      "name_zh": "omniakey.com",
+      "domain": "omniakey.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop",
+        "aiapirank"
+      ],
+      "notes": "1378次检测",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_dragtokens_com",
+      "name_zh": "dragtokens.com",
+      "domain": "dragtokens.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop",
+        "aiapirank"
+      ],
+      "notes": "1469次检测",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_bestapi_store",
+      "name_zh": "bestapi.store",
+      "domain": "bestapi.store",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_x_llm",
+      "name_zh": "X-LLM",
+      "domain": "x-llm.net",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "1259次检测",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_relaybases_com",
+      "name_zh": "relaybases.com",
+      "domain": "relaybases.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_999555999_com",
+      "name_zh": "api.999555999.com",
+      "domain": "api.999555999.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_anpin_ai",
+      "name_zh": "anpin.ai",
+      "domain": "anpin.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop",
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_91token_com",
+      "name_zh": "91token.com",
+      "domain": "91token.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_weekly_day_top",
+      "name_zh": "weekly-day.top",
+      "domain": "www.weekly-day.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "1233次检测",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_akile_ai",
+      "name_zh": "ai.akile.ai",
+      "domain": "ai.akile.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_790053500_com",
+      "name_zh": "api.790053500.com",
+      "domain": "api.790053500.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_onepig123_com",
+      "name_zh": "onepig123.com",
+      "domain": "onepig123.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_88api_ai",
+      "name_zh": "88api.ai",
+      "domain": "88api.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_onehop_ai",
+      "name_zh": "onehop.ai",
+      "domain": "onehop.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop",
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ssnaiyun_com",
+      "name_zh": "ssnaiyun.com",
+      "domain": "ssnaiyun.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_yomiapi_com",
+      "name_zh": "yomiapi.com",
+      "domain": "yomiapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop",
+        "aiapirank"
+      ],
+      "notes": "149次检测",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_lmuai_ai",
+      "name_zh": "api.lmuai.ai",
+      "domain": "api.lmuai.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_linkai_shop",
+      "name_zh": "linkai.shop",
+      "domain": "linkai.shop",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_fluxlane_cn",
+      "name_zh": "fluxlane.cn",
+      "domain": "fluxlane.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop",
+        "aiapirank"
+      ],
+      "notes": "智流FluxLane",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_9527code_com",
+      "name_zh": "9527code.com",
+      "domain": "9527code.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "9527code另一个域名",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_jizhiapi_site",
+      "name_zh": "jizhiapi.site",
+      "domain": "jizhiapi.site",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_vxvxvx_top",
+      "name_zh": "api.vxvxvx.top",
+      "domain": "api.vxvxvx.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_aruhub_com",
+      "name_zh": "aruhub.com",
+      "domain": "aruhub.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop",
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_loomcode_cn",
+      "name_zh": "api.loomcode.cn",
+      "domain": "api.loomcode.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_laysoai_com",
+      "name_zh": "laysoai.com",
+      "domain": "laysoai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_touken_pro",
+      "name_zh": "api.touken.pro",
+      "domain": "api.touken.pro",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_yunzhuhub_com",
+      "name_zh": "yunzhuhub.com",
+      "domain": "www.yunzhuhub.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_hohocode_ai",
+      "name_zh": "api.hohocode.ai",
+      "domain": "api.hohocode.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_modelflare_dev",
+      "name_zh": "modelflare.dev",
+      "domain": "modelflare.dev",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop",
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_dasuapi_com",
+      "name_zh": "dasuapi.com",
+      "domain": "dasuapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_kapibala_asia",
+      "name_zh": "kapibala.asia",
+      "domain": "kapibala.asia",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_portdan_com",
+      "name_zh": "portdan.com",
+      "domain": "portdan.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop",
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_yuanqiaoyun_com",
+      "name_zh": "yuanqiaoyun.com",
+      "domain": "yuanqiaoyun.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_dragon3api_com",
+      "name_zh": "dragon3api.com",
+      "domain": "newapi.dragon3api.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_codereel_pro",
+      "name_zh": "codereel.pro",
+      "domain": "codereel.pro",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_sublyx_org",
+      "name_zh": "api.sublyx.org",
+      "domain": "api.sublyx.org",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_gwlink_cc",
+      "name_zh": "gwlink.cc",
+      "domain": "gwlink.cc",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_quotarouter_ai",
+      "name_zh": "quotarouter.ai",
+      "domain": "quotarouter.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop",
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_aicodemirror_ai",
+      "name_zh": "api.aicodemirror.ai",
+      "domain": "api.aicodemirror.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "AiCodeMirror",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_yuboar_com",
+      "name_zh": "api.yuboar.com",
+      "domain": "api.yuboar.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_moacode",
+      "name_zh": "Moacode",
+      "domain": "moacode.org",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_string_ink",
+      "name_zh": "string.ink",
+      "domain": "www.string.ink",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_niubiai_ai",
+      "name_zh": "niubiai.ai",
+      "domain": "niubiai.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_byeapi_top",
+      "name_zh": "byeapi.top",
+      "domain": "byeapi.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_inktandwkx_top",
+      "name_zh": "api.inktandwkx.top",
+      "domain": "api.inktandwkx.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_noonoo_ai",
+      "name_zh": "noonoo.ai",
+      "domain": "noonoo.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop",
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_furry_edu_gr",
+      "name_zh": "ai.furry.edu.gr",
+      "domain": "ai.furry.edu.gr",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_tangguo_xin",
+      "name_zh": "api.tangguo.xin",
+      "domain": "api.tangguo.xin",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_tm_token_com",
+      "name_zh": "tm-token.com",
+      "domain": "tm-token.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_fengchao_api_com",
+      "name_zh": "fengchao-api.com",
+      "domain": "fengchao-api.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_lucisapi_ai",
+      "name_zh": "lucisapi.ai",
+      "domain": "lucisapi.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_hanhegufei_online",
+      "name_zh": "hanhegufei.online",
+      "domain": "hanhegufei.online",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_xbhuiz_com",
+      "name_zh": "xbhuiz.com",
+      "domain": "xbhuiz.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_jadelotus_top",
+      "name_zh": "jadelotus.top",
+      "domain": "jadelotus.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_codexpp_com",
+      "name_zh": "codexpp.com",
+      "domain": "codexpp.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ricktoken_top",
+      "name_zh": "ricktoken.top",
+      "domain": "ricktoken.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_moeapi_cloud",
+      "name_zh": "moeapi.cloud",
+      "domain": "moeapi.cloud",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop",
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_unilink_work",
+      "name_zh": "api.unilink.work",
+      "domain": "api.unilink.work",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_khala_online",
+      "name_zh": "api.khala.online",
+      "domain": "api.khala.online",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_mxdapi_com",
+      "name_zh": "mxdapi.com",
+      "domain": "mxdapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_worink_com",
+      "name_zh": "worink.com",
+      "domain": "worink.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_modelsell_com",
+      "name_zh": "modelsell.com",
+      "domain": "modelsell.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop",
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_routescope_ai",
+      "name_zh": "api.routescope.ai",
+      "domain": "api.routescope.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_lgdfort_com",
+      "name_zh": "ai.lgdfort.com",
+      "domain": "ai.lgdfort.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_officesai_top",
+      "name_zh": "officesai.top",
+      "domain": "officesai.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_easy88ai_com",
+      "name_zh": "easy88ai.com",
+      "domain": "easy88ai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_hao_ai",
+      "name_zh": "api.hao.ai",
+      "domain": "api.hao.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_pateway_ai",
+      "name_zh": "api.pateway.ai",
+      "domain": "api.pateway.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_aijws_com",
+      "name_zh": "api.aijws.com",
+      "domain": "api.aijws.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_llmapi_pro",
+      "name_zh": "api.llmapi.pro",
+      "domain": "api.llmapi.pro",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop",
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_lightingtheword_com",
+      "name_zh": "lightingtheword.com",
+      "domain": "lightingtheword.com",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_seesaw2ai_com",
+      "name_zh": "seesaw2ai.com",
+      "domain": "seesaw2ai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_kuaiaiapi_com",
+      "name_zh": "kuaiaiapi.com",
+      "domain": "www.kuaiaiapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_sub_kedaya_xyz",
+      "name_zh": "sub.kedaya.xyz",
+      "domain": "sub.kedaya.xyz",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_cc_vibe_com",
+      "name_zh": "cc-vibe.com",
+      "domain": "cc-vibe.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_youmisub_cloud",
+      "name_zh": "youmisub.cloud",
+      "domain": "youmisub.cloud",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ergouapi_com",
+      "name_zh": "ergouapi.com",
+      "domain": "ergouapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_uuapi_net",
+      "name_zh": "uuapi.net",
+      "domain": "uuapi.net",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai47api_com",
+      "name_zh": "ai47api.com",
+      "domain": "ai47api.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_55ai_xyz",
+      "name_zh": "55ai.xyz",
+      "domain": "55ai.xyz",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_unity2_ai",
+      "name_zh": "api.unity2.ai",
+      "domain": "api.unity2.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_sub2_congmingai_com",
+      "name_zh": "sub2.congmingai.com",
+      "domain": "sub2.congmingai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_wawapii_com",
+      "name_zh": "wawapii.com",
+      "domain": "wawapii.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "Claude通过率仅51%",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_newapi_ai47api_com",
+      "name_zh": "newapi.ai47api.com",
+      "domain": "newapi.ai47api.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_nexaxis_ai",
+      "name_zh": "nexaxis.ai",
+      "domain": "nexaxis.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": "Claude通过率77%",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_xaction_ai",
+      "name_zh": "xaction.ai",
+      "domain": "xaction.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_llmapi_pro",
+      "name_zh": "llmapi.pro",
+      "domain": "llmapi.pro",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_gemai_cc",
+      "name_zh": "api.gemai.cc",
+      "domain": "api.gemai.cc",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_tokenmaker_space",
+      "name_zh": "api.tokenmaker.space",
+      "domain": "api.tokenmaker.space",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "veridrop"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_yundu_ai",
+      "name_zh": "云渡",
+      "domain": "yundu.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": "在线率98.1%",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_modcon",
+      "name_zh": "ModCon",
+      "domain": "modcon.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": "在线率100%",
+      "type": "aggregator",
+      "online_status": "online",
+      "uptime_pct": 100
+    },
+    {
+      "id": "p_relay_eirouter",
+      "name_zh": "EiRouter",
+      "domain": "eirouter.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_jjcode",
+      "name_zh": "jjcode",
+      "domain": "jjcode.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ttoolcode",
+      "name_zh": "TToolCode",
+      "domain": "toolcode.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_like_ai",
+      "name_zh": "Like·AI",
+      "domain": "like.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_lingsuan_com",
+      "name_zh": "灵算",
+      "domain": "lingsuan.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_cheaperai",
+      "name_zh": "CheaperAI",
+      "domain": "cheaperai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_fluxionai",
+      "name_zh": "FluxionAI",
+      "domain": "fluxionai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_runapi",
+      "name_zh": "RunAPI",
+      "domain": "runapi.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": "上线最早(2025.01)",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_buytoken",
+      "name_zh": "BuyToken",
+      "domain": "buytoken.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_moniker",
+      "name_zh": "Moniker",
+      "domain": "moniker.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_sevnx",
+      "name_zh": "SevnX",
+      "domain": "sevnx.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_niccom",
+      "name_zh": "niccom",
+      "domain": "niccom.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_cgo",
+      "name_zh": "cgo",
+      "domain": "cgo.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_cavoti_api",
+      "name_zh": "Cavoti API",
+      "domain": "cavoti.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_222",
+      "name_zh": "酷API",
+      "domain": "kuapi.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_nbcode",
+      "name_zh": "nbcode",
+      "domain": "nbcode.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_linoroute",
+      "name_zh": "LinoRoute",
+      "domain": "linoroute.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": "最新(2026.09)",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_225",
+      "name_zh": "瓦瓦瓦AI",
+      "domain": "wawawa.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_plinero",
+      "name_zh": "Plinero",
+      "domain": "plinero.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_relaycore",
+      "name_zh": "relaycore",
+      "domain": "relaycore.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ahrriapi",
+      "name_zh": "ahrriapi",
+      "domain": "ahrriapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_tflows",
+      "name_zh": "tflows",
+      "domain": "tflows.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_a6api",
+      "name_zh": "A6api",
+      "domain": "a6api.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": "老牌(2025.03)",
+      "type": "aggregator",
+      "online_status": "online",
+      "maturity": "established"
+    },
+    {
+      "id": "p_relay_gguuai",
+      "name_zh": "GGUUAI",
+      "domain": "gguuai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_llmapi",
+      "name_zh": "LLMAPI",
+      "domain": "llmapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_code_ai",
+      "name_zh": "Code-AI",
+      "domain": "code-ai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_wending_com",
+      "name_zh": "稳定中转",
+      "domain": "wending.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_aigatehub",
+      "name_zh": "AIGateHub",
+      "domain": "aigatehub.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_236",
+      "name_zh": "悟空API",
+      "domain": "wukongapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_logits_token",
+      "name_zh": "Logits Token",
+      "domain": "logits.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_llm_free",
+      "name_zh": "LLM Free",
+      "domain": "llmfree.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": "免费站",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_239",
+      "name_zh": "迈威AI",
+      "domain": "maiwei.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_volt",
+      "name_zh": "Volt",
+      "domain": "volt.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_241",
+      "name_zh": "远桥云API",
+      "domain": "yuanqiao.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_toknex",
+      "name_zh": "Toknex",
+      "domain": "toknex.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_muzeai",
+      "name_zh": "MuzeAI",
+      "domain": "muzeai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_aliapi",
+      "name_zh": "Aliapi",
+      "domain": "aliapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_vovokey",
+      "name_zh": "VovoKey启界",
+      "domain": "vovokey.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_tokenshop",
+      "name_zh": "tokenshop",
+      "domain": "tokenshop.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_muemod",
+      "name_zh": "木易MueMod",
+      "domain": "mue.mod",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_unilink",
+      "name_zh": "UniLink",
+      "domain": "unilink.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_gods",
+      "name_zh": "gods",
+      "domain": "gods.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_apiko",
+      "name_zh": "Apiko",
+      "domain": "apiko.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_tianshu_ai",
+      "name_zh": "天枢",
+      "domain": "tianshu.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank",
+        "apisou"
+      ],
+      "notes": "62模型覆盖",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_portal",
+      "name_zh": "Portal",
+      "domain": "portal.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_lietio",
+      "name_zh": "Lietio",
+      "domain": "lietio.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_t8_api",
+      "name_zh": "T8 API",
+      "domain": "t8api.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": "最老牌(2024.05)",
+      "type": "aggregator",
+      "online_status": "online",
+      "maturity": "established"
+    },
+    {
+      "id": "p_relay_claudecn",
+      "name_zh": "ClaudeCN",
+      "domain": "claudecn.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank",
+        "awesome_ai_api"
+      ],
+      "notes": "在线率仅45%",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_256",
+      "name_zh": "幻灵AI",
+      "domain": "huanling.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_timeroar_ai",
+      "name_zh": "TimeRoar AI",
+      "domain": "timeroar.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_fusheng_com",
+      "name_zh": "浮生云算",
+      "domain": "fusheng.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": "在线率37%",
+      "type": "aggregator",
+      "online_status": "unverified",
+      "uptime_pct": 37
+    },
+    {
+      "id": "p_relay_mx_ai",
+      "name_zh": "MX-AI",
+      "domain": "mx-ai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_gpt",
+      "name_zh": "鲨鱼辣椒gpt",
+      "domain": "sharkgpt.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": "最新(2026.09)",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_token_ai",
+      "name_zh": "Token-AI",
+      "domain": "token-ai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_uuu_api",
+      "name_zh": "UUU API",
+      "domain": "uuuapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ykh_ai",
+      "name_zh": "YKH.AI",
+      "domain": "ykh.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_muskai",
+      "name_zh": "MuskAI",
+      "domain": "muskai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_265",
+      "name_zh": "无忧AI",
+      "domain": "wuyou.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_dragonapi",
+      "name_zh": "DragonAPI",
+      "domain": "dragonapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_hubcore",
+      "name_zh": "HubCore",
+      "domain": "hubcore.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": "最新(2026.09)",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ciyi_com",
+      "name_zh": "词易",
+      "domain": "ciyi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_spiderman_api",
+      "name_zh": "SpiderMan-API",
+      "domain": "spiderman-api.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_wangwang_ai",
+      "name_zh": "汪汪汪の中转站",
+      "domain": "wangwang.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_euzhi",
+      "name_zh": "Euzhi",
+      "domain": "euzhi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_aalro",
+      "name_zh": "AALRO",
+      "domain": "aalro.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_love_token",
+      "name_zh": "Love Token",
+      "domain": "lovetoken.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_8stoken",
+      "name_zh": "8sToken",
+      "domain": "8stoken.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_mofang_com",
+      "name_zh": "模方",
+      "domain": "mofang.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_276",
+      "name_zh": "API快连",
+      "domain": "apikuailian.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_277",
+      "name_zh": "智惠API",
+      "domain": "zhihuiapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": "34条评价",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_278",
+      "name_zh": "八戒API",
+      "domain": "bajieapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": "在线率15.8%，濒死",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_rightcode",
+      "name_zh": "RightCode",
+      "domain": "rightcode.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_uumi",
+      "name_zh": "uumi",
+      "domain": "uumi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_281",
+      "name_zh": "夯炸了AI",
+      "domain": "hangzha.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "aiapirank"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_moyuu_ai",
+      "name_zh": "Moyuu AI",
+      "domain": "moyuu.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "apisou"
+      ],
+      "notes": "倍率0.03-1.11x",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 0.03
+    },
+    {
+      "id": "p_relay_ai_289",
+      "name_zh": "可乐AI",
+      "domain": "keleai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "apisou"
+      ],
+      "notes": "编程向低价站",
+      "type": "aggregator",
+      "online_status": "online",
+      "pricing_tag": "budget"
+    },
+    {
+      "id": "p_relay_52",
+      "name_zh": "52模型",
+      "domain": "52model.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "apisou"
+      ],
+      "notes": "已下线",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_beijixing_ai",
+      "name_zh": "北极星",
+      "domain": "beijixing.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "apisou"
+      ],
+      "notes": "默认0.2x",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_302_ai",
+      "name_zh": "302.AI",
+      "domain": "302.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "apisou",
+        "review_site"
+      ],
+      "notes": "企业级资源平台",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_buzz",
+      "name_zh": "BUZZ",
+      "domain": "buzz.ai",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "awesome_ai_api"
+      ],
+      "notes": "评分9.9",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_aihubmix",
+      "name_zh": "AIHubMix",
+      "domain": "aihubmix.com",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "awesome_ai_api"
+      ],
+      "notes": "评分9.9，模型最多",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_daidaishou_com",
+      "name_zh": "呆呆兽中转站",
+      "domain": "daidaishou.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "glm",
+        "kimi"
+      ],
+      "source_list": [
+        "awesome_ai_api"
+      ],
+      "notes": "评分9.9",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_avian",
+      "name_zh": "Avian",
+      "domain": "avian.ai",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "awesome_ai_api"
+      ],
+      "notes": "评分9.9",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_apimart",
+      "name_zh": "APIMart",
+      "domain": "apimart.ai",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "awesome_ai_api"
+      ],
+      "notes": "评分9.9",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_vveai_com",
+      "name_zh": "api.vveai.com",
+      "domain": "api.vveai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "awesome_ai_api"
+      ],
+      "notes": "评分9.8",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_timi_cc",
+      "name_zh": "TiMi CC",
+      "domain": "timicc.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "qwen"
+      ],
+      "source_list": [
+        "awesome_ai_api"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_featherless",
+      "name_zh": "Featherless",
+      "domain": "featherless.ai",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "deepseek"
+      ],
+      "source_list": [
+        "awesome_ai_api"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_v36_cm",
+      "name_zh": "api.v36.cm",
+      "domain": "api.v36.cm",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "awesome_ai_api"
+      ],
+      "notes": "650+模型",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_apipro_maynor1024_live",
+      "name_zh": "apipro.maynor1024.live",
+      "domain": "apipro.maynor1024.live",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "awesome_ai_api"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ephone_ai",
+      "name_zh": "ePhone AI",
+      "domain": "ephone.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "awesome_ai_api"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_yuegle_api",
+      "name_zh": "Yuegle API",
+      "domain": "yuegle.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "awesome_ai_api"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_jeniya_cn",
+      "name_zh": "jeniya.cn",
+      "domain": "jeniya.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "awesome_ai_api"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_api",
+      "name_zh": "便携AI聚合API",
+      "domain": "bianxie.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "awesome_ai_api"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_gptgod_work",
+      "name_zh": "api-gptgod-work",
+      "domain": "gptgod.work",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "awesome_ai_api"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_312",
+      "name_zh": "老张API",
+      "domain": "api.laozhang.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_treerouter",
+      "name_zh": "TreeRouter",
+      "domain": "treerouter.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_poloapi",
+      "name_zh": "PoloAPI",
+      "domain": "poloapi.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_4sapi",
+      "name_zh": "4SAPI",
+      "domain": "4sapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "enet_list"
+      ],
+      "notes": "企业级LLM Gateway",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_dmxapi",
+      "name_zh": "DMXAPI",
+      "domain": "dmxapi.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_317",
+      "name_zh": "猫叔API",
+      "domain": "ms.ll9e.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_apiman",
+      "name_zh": "APIman",
+      "domain": "apiman.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_qqqrouter",
+      "name_zh": "QQQRouter",
+      "domain": "qqqrouter.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_320",
+      "name_zh": "灵芽API",
+      "domain": "api.lingyaai.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_321",
+      "name_zh": "词元无忧API",
+      "domain": "token5u.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ohmygpt",
+      "name_zh": "OhMyGPT",
+      "domain": "ohmygpt.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "enet_list",
+        "百度"
+      ],
+      "notes": "中国优化线路",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_closeai",
+      "name_zh": "CloseAI",
+      "domain": "closeai-asia.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "enet",
+        "乐享ai"
+      ],
+      "notes": "企业级海外模型转发",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_324",
+      "name_zh": "非线智能API",
+      "domain": "feixian.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "enet_list"
+      ],
+      "notes": "企业级多模型聚合",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_325",
+      "name_zh": "快米兔API",
+      "domain": "kuaimitu.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_antsk",
+      "name_zh": "antsk",
+      "domain": "api.antsk.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_wuqiongyun_top",
+      "name_zh": "无穹云",
+      "domain": "ai.wuqiongyun.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_kie_ai",
+      "name_zh": "Kie.ai",
+      "domain": "kie.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_crazyrouter_com",
+      "name_zh": "crazyrouter.com",
+      "domain": "crazyrouter.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_gptproto_com",
+      "name_zh": "gptproto.com",
+      "domain": "gptproto.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ydw_cool",
+      "name_zh": "云端网",
+      "domain": "ydw.cool",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "v2ex"
+      ],
+      "notes": "Codex专攻站",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ikuncode",
+      "name_zh": "IkunCode",
+      "domain": "api.ikuncode.cc",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_wenmodel",
+      "name_zh": "WenModel",
+      "domain": "ai.wenmodel.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_334",
+      "name_zh": "智创聚合API",
+      "domain": "api.lconai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "baidu"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api2d",
+      "name_zh": "API2D",
+      "domain": "api2d.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "aiww",
+        "行业常识"
+      ],
+      "notes": "老牌中转，已运营多年",
+      "type": "aggregator",
+      "online_status": "online",
+      "maturity": "established"
+    },
+    {
+      "id": "p_relay_lingxicode",
+      "name_zh": "LingxiCode",
+      "domain": "lingxicode.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "编程优化站",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_flux_ai",
+      "name_zh": "Flux AI",
+      "domain": "flux.ai",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "企业级聚合",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_kisekiremi_moe",
+      "name_zh": "ai.kisekiremi.moe",
+      "domain": "ai.kisekiremi.moe",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "v2ex"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_levolink_com",
+      "name_zh": "ai.levolink.com",
+      "domain": "ai.levolink.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "v2ex"
+      ],
+      "notes": "运营两年多",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_zooapi_ai",
+      "name_zh": "zooapi.ai",
+      "domain": "zooapi.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "v2ex"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_openai_wf",
+      "name_zh": "api.openai.wf",
+      "domain": "api.openai.wf",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "v2ex"
+      ],
+      "notes": "可开票",
+      "type": "aggregator",
+      "online_status": "online",
+      "invoice_available": true
+    },
+    {
+      "id": "p_relay_hvoy_ai",
+      "name_zh": "hvoy.ai",
+      "domain": "hvoy.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "v2ex"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_subrouter_ai",
+      "name_zh": "subrouter.ai",
+      "domain": "subrouter.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "v2ex"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_helpaio_com",
+      "name_zh": "helpaio.com",
+      "domain": "helpaio.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "v2ex",
+        "awesome_ai_api"
+      ],
+      "notes": "人写评测站",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_token",
+      "name_zh": "省Token",
+      "domain": "sheng-token.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "zuiquanapi"
+      ],
+      "notes": "最全导航站收录",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_346",
+      "name_zh": "简易API",
+      "domain": "simples-api.github.io",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "协修ai"
+      ],
+      "notes": "New API搭建",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_apiarc_ai",
+      "name_zh": "APIARC AI",
+      "domain": "apiarc.ai",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "toolify"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_apiflux",
+      "name_zh": "ApiFlux",
+      "domain": "apiflux.com",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "toolify"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_apimaster",
+      "name_zh": "APIMaster",
+      "domain": "apimaster.com",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "toolify"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_edgee",
+      "name_zh": "Edgee",
+      "domain": "edgee.ai",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "toolify"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_defapi",
+      "name_zh": "Defapi",
+      "domain": "defapi.com",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "toolify"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_openai_fm",
+      "name_zh": "OpenAI.fm",
+      "domain": "openai.fm",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "toolify"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_squizzer",
+      "name_zh": "Squizzer",
+      "domain": "squizzer.com",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "toolify"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_3sparks_chat",
+      "name_zh": "3sparks Chat",
+      "domain": "3sparks.com",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "toolify"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_closechat",
+      "name_zh": "CloseChat",
+      "domain": "closechat.com",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude"
+      ],
+      "source_list": [
+        "toolify"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_poixe_ai",
+      "name_zh": "Poixe AI",
+      "domain": "poixe.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "支付宝/对公转账",
+      "type": "aggregator",
+      "online_status": "online",
+      "payment_methods": [
+        "alipay"
+      ]
+    },
+    {
+      "id": "p_relay_tallius_ai",
+      "name_zh": "tallius.ai",
+      "domain": "tallius.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "多模型API网关",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_hiyo",
+      "name_zh": "Hiyo",
+      "domain": "hiyo.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "0.05倍率老站",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_super_model",
+      "name_zh": "Super Model",
+      "domain": "supermodel.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "统一API网关",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_khala",
+      "name_zh": "卡拉 Khala",
+      "domain": "khala.online",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "OpenAI兼容API",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_yintu_ai",
+      "name_zh": "yintu_ai",
+      "domain": "yintu.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "国内直连",
+      "type": "aggregator",
+      "online_status": "online",
+      "route": "cn_direct"
+    },
+    {
+      "id": "p_relay_ai_362",
+      "name_zh": "Ai乐",
+      "domain": "aile.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "新一代聚合平台",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_beecode",
+      "name_zh": "BeeCode",
+      "domain": "beecode.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "支持无密钥使用",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_bmcca",
+      "name_zh": "BMCCA",
+      "domain": "cc.maya.today",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "原cc.maya.today新站",
+      "type": "aggregator",
+      "online_status": "online",
+      "maturity": "new"
+    },
+    {
+      "id": "p_relay_dataeyes_ai",
+      "name_zh": "DataEyes AI",
+      "domain": "dataeyes.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "数眼智能，企业级",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_fastcode",
+      "name_zh": "FastCode",
+      "domain": "fastcode.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "企业首选，极速响应",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_nekocode",
+      "name_zh": "NekoCode",
+      "domain": "nekocode.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "2026年初成立",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_owl_ai",
+      "name_zh": "Owl AI",
+      "domain": "owlai.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "一站式编程服务",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_terminal_pub",
+      "name_zh": "Terminal.Pub",
+      "domain": "terminal.pub",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "国内访问加速",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_yiyuanmodel_com",
+      "name_zh": "一元模型",
+      "domain": "yiyuanmodel.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "兼容所有编程助手",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_371",
+      "name_zh": "柏拉图AI",
+      "domain": "platoai.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "3步闪电接入",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_372",
+      "name_zh": "神马AI",
+      "domain": "shenmaai.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "midjourney",
+        "suno"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "多类代理供应商",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_nextoken",
+      "name_zh": "NexToken",
+      "domain": "nextoken.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "统一接入订阅与Key",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_limiao_ai",
+      "name_zh": "哩喵中转栈",
+      "domain": "limiao.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "一站式服务平台",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_uocode",
+      "name_zh": "UoCode",
+      "domain": "uocode.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "智能模型服务平台",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_easyrouter",
+      "name_zh": "EasyRouter",
+      "domain": "easyrouter.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "云原生合规访问层",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_timy_ai",
+      "name_zh": "Timy AI",
+      "domain": "timyai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "智能路由毫秒级回退",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_378",
+      "name_zh": "镜核 AI",
+      "domain": "jinghe.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "稳定接入方案",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_derouter",
+      "name_zh": "DeRouter",
+      "domain": "derouter.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "去中心化路由网络",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_380",
+      "name_zh": "巨硬AI",
+      "domain": "juying.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "cursor"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "官方直连企业级",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_aimz",
+      "name_zh": "AIMZ",
+      "domain": "aimz.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "比官方便宜90%",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_rk_ai",
+      "name_zh": "RK AI",
+      "domain": "rkai.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "满血号池",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_bossclaw",
+      "name_zh": "BossClaw",
+      "domain": "bossclaw.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "虾老板API分发网络",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_easytoken",
+      "name_zh": "EasyToken",
+      "domain": "easytoken.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "大模型API聚合",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_tokenmix",
+      "name_zh": "TokenMix",
+      "domain": "tokenmix.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "零门槛接入",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_latix",
+      "name_zh": "Latix",
+      "domain": "latix.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "AI算力调度平台",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_xem",
+      "name_zh": "xem中转站",
+      "domain": "xemapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "付费订阅号池",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_dawang_ai",
+      "name_zh": "大王",
+      "domain": "dawang.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "逆向网页版模型",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_frontier_intelligence",
+      "name_zh": "Frontier Intelligence",
+      "domain": "frontierintelligence.ai",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "面向港新科研客户",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_aicost",
+      "name_zh": "aicost",
+      "domain": "aicost.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "0.095倍率低价",
+      "type": "aggregator",
+      "online_status": "online",
+      "pricing_tag": "budget"
+    },
+    {
+      "id": "p_relay_sunnyrae_ai",
+      "name_zh": "SunnyRae AI",
+      "domain": "sunnyrae.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "gpt_codex"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "国内直连接入",
+      "type": "aggregator",
+      "online_status": "online",
+      "route": "cn_direct"
+    },
+    {
+      "id": "p_relay_siphonlab",
+      "name_zh": "siphonlab",
+      "domain": "siphonlab.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "企业专供链路",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_393",
+      "name_zh": "数智AI",
+      "domain": "shuzhi.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "一站式服务平台",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_luoxueapi_com",
+      "name_zh": "落雪",
+      "domain": "luoxueapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "一站式聚合平台",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_luotunai_ai",
+      "name_zh": "LUOTUNAI 落云AI",
+      "domain": "luotunai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "高性价比AI接口",
+      "type": "aggregator",
+      "online_status": "online",
+      "pricing_tag": "budget"
+    },
+    {
+      "id": "p_relay_wanxiang_ai",
+      "name_zh": "万象",
+      "domain": "wanxiang.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "deepseek"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "深度聚合",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_tokengo",
+      "name_zh": "TokenGo",
+      "domain": "tokengo.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "一站式聚合调用",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_mentoe",
+      "name_zh": "Mentoe",
+      "domain": "mentoe.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gemini",
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "AI API中转服务",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_hema_ai",
+      "name_zh": "河马中转站",
+      "domain": "hema.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "纯血max渠道",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_codexone",
+      "name_zh": "CodexOne",
+      "domain": "codexone.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "纯pro/plus号池",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_aircode",
+      "name_zh": "AirCode",
+      "domain": "aircode.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "gpt_codex"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "Codex生态中文网关",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_deepproxy",
+      "name_zh": "deepproxy",
+      "domain": "deepproxy.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "GPT价格低限量发售",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_sunskii",
+      "name_zh": "Sunskii",
+      "domain": "sunskii.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "高性价比中转",
+      "type": "aggregator",
+      "online_status": "online",
+      "pricing_tag": "budget"
+    },
+    {
+      "id": "p_relay_15gw_com",
+      "name_zh": "十五号网关",
+      "domain": "15gw.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "API中转+Agent防火墙",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_bestcodex",
+      "name_zh": "Bestcodex",
+      "domain": "bestcodex.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "满血价格低响应快",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_yunserver_api",
+      "name_zh": "YunServer API",
+      "domain": "yunserver.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "输入¥0.66/1M Tokens",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_yunshu_ai",
+      "name_zh": "云枢",
+      "domain": "yunshu.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "专注高质量用户群体",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_lyapunov_api",
+      "name_zh": "lyapunov-api",
+      "domain": "lyapunov-api.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "新加坡服务器中小型站",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_duckcode",
+      "name_zh": "duckcode",
+      "domain": "duckcode.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "sub2api界面无后门",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_schylerai",
+      "name_zh": "SchylerAI小栈",
+      "domain": "schylerai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "自营官方号池直连",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_luccc",
+      "name_zh": "Luccc",
+      "domain": "api.luccc.uk",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "2026年5月新上线",
+      "type": "aggregator",
+      "online_status": "online",
+      "maturity": "new"
+    },
+    {
+      "id": "p_relay_aok",
+      "name_zh": "AOK",
+      "domain": "aokapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "自研号池技术团队",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_uu_api",
+      "name_zh": "UU-API",
+      "domain": "uuapi.io",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "原.net域名被墙换.io",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_code",
+      "name_zh": "小白Code",
+      "domain": "xiaobaicode.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "自有GPT号池国内直连",
+      "type": "aggregator",
+      "online_status": "online",
+      "route": "cn_direct"
+    },
+    {
+      "id": "p_relay_findmini",
+      "name_zh": "Findmini",
+      "domain": "findmini.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "按量1:8月卡1:24",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_65535space",
+      "name_zh": "65535Space",
+      "domain": "65535.space",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "1:1汇率pro分组0.28",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_sum_api",
+      "name_zh": "Sum API",
+      "domain": "sumapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "个人开发者中小团队",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_iacc",
+      "name_zh": "IACC",
+      "domain": "iacc.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "长期稳定供应",
+      "type": "aggregator",
+      "online_status": "online",
+      "maturity": "established"
+    },
+    {
+      "id": "p_relay_token115",
+      "name_zh": "Token115",
+      "domain": "token115.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "一手渠道自建号池",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_boyazhongzhuan_com",
+      "name_zh": "伯牙中转",
+      "domain": "boyazhongzhuan.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "纯净GPT中转一手直供",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_getezclaw",
+      "name_zh": "API GetEzClaw",
+      "domain": "getezclaw.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "高稳定模型API接入",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_beefapi",
+      "name_zh": "BeefAPI",
+      "domain": "beefapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "2026年3月创立上千用户",
+      "type": "aggregator",
+      "online_status": "online",
+      "listed_date": "2026-03-01"
+    },
+    {
+      "id": "p_relay_relinkcode",
+      "name_zh": "RelinkCode",
+      "domain": "relinkcode.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "低延迟高可用全模型代理",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_maowo_ai",
+      "name_zh": "猫窝",
+      "domain": "maowo.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "新开业性价比中转站",
+      "type": "aggregator",
+      "online_status": "online",
+      "pricing_tag": "budget",
+      "maturity": "new"
+    },
+    {
+      "id": "p_relay_opentoken",
+      "name_zh": "OpenToken",
+      "domain": "opentoken.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "2026年4月上线真实倍率",
+      "type": "aggregator",
+      "online_status": "online",
+      "listed_date": "2026-04-01"
+    },
+    {
+      "id": "p_relay_api_426",
+      "name_zh": "霜华API",
+      "domain": "shuanghuaapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "原价购买正规账号",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_openllm",
+      "name_zh": "OpenLLM",
+      "domain": "openllm.shop",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "大模型API中转聚合平台",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_j1a_api",
+      "name_zh": "J1a APi",
+      "domain": "j1aapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "定价低至0.15x",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_deer_codex",
+      "name_zh": "Deer Codex",
+      "domain": "deercodex.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "deepseek",
+        "qwen"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "2026年1月成立",
+      "type": "aggregator",
+      "online_status": "online",
+      "listed_date": "2026-01-01"
+    },
+    {
+      "id": "p_relay_5e_api",
+      "name_zh": "5E API",
+      "domain": "5eapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "超前模型接入服务",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_365",
+      "name_zh": "AI 365",
+      "domain": "ai365.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "自建号池不掺水",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_lingsuoapi",
+      "name_zh": "lingsuoAPI",
+      "domain": "lingsuoapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "价格实惠数据稳定",
+      "type": "aggregator",
+      "online_status": "online",
+      "pricing_tag": "budget"
+    },
+    {
+      "id": "p_relay_apionline",
+      "name_zh": "apionline",
+      "domain": "apionline.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "最新模型齐全性价比高",
+      "type": "aggregator",
+      "online_status": "online",
+      "pricing_tag": "budget"
+    },
+    {
+      "id": "p_relay_apituan",
+      "name_zh": "APITuan",
+      "domain": "apituan.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "GPT5.5满血0.5元/百万Token",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_10veai",
+      "name_zh": "10veAI",
+      "domain": "10veai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "国内稳定直连",
+      "type": "aggregator",
+      "online_status": "online",
+      "route": "cn_direct"
+    },
+    {
+      "id": "p_relay_qyuan_ai",
+      "name_zh": "Qyuan AI",
+      "domain": "qyuanai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "新站1:2充值优惠",
+      "type": "aggregator",
+      "online_status": "online",
+      "maturity": "new"
+    },
+    {
+      "id": "p_relay_pulseaify",
+      "name_zh": "pulseaify",
+      "domain": "pulseaify.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "gemini",
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "官方直连中转平台",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_0dank",
+      "name_zh": "0DANK",
+      "domain": "0dank.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "超低廉1:10",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_super_ai",
+      "name_zh": "Super ai",
+      "domain": "superai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "只做生产级官号池",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_amapi",
+      "name_zh": "AmAPI",
+      "domain": "amapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "国内开发者设计",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_441",
+      "name_zh": "山海API",
+      "domain": "shanhaiapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "不做套壳不虚标",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_talenai",
+      "name_zh": "TalenAI",
+      "domain": "talenai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "官方三分之一价格",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_codeplanai",
+      "name_zh": "CodePlanAI",
+      "domain": "codeplanai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "0.2倍率低价生图",
+      "type": "aggregator",
+      "online_status": "online",
+      "pricing_tag": "budget"
+    },
+    {
+      "id": "p_relay_guyscode",
+      "name_zh": "GuysCode",
+      "domain": "guyscode.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "纯pro号池",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_safeapi",
+      "name_zh": "SafeAPI",
+      "domain": "safeapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "消费级倍率企业级稳定",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_jlaude_api",
+      "name_zh": "JLaude 金龙API",
+      "domain": "jlaude.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "深耕纯GPT系列中转",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_chipcloud",
+      "name_zh": "ChipCloud",
+      "domain": "chipcloud.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "一站式接入多家大模型",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_abcred_ai",
+      "name_zh": "AbcRed AI",
+      "domain": "abcread.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "AI统一入口",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_449",
+      "name_zh": "大白AI",
+      "domain": "dabai.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "0.2r=$1高性价比",
+      "type": "aggregator",
+      "online_status": "online",
+      "pricing_tag": "budget"
+    },
+    {
+      "id": "p_relay_api_450",
+      "name_zh": "词元API",
+      "domain": "ciyuanapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "一站式大模型接口服务",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_liangdaguanbao_com",
+      "name_zh": "量大管饱",
+      "domain": "liangdaguanbao.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "稳定高质量API中转",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_hhnto_api",
+      "name_zh": "hhnto的API中转",
+      "domain": "aiapi.hhnto.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "双分流GPT模型",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_qwq_api",
+      "name_zh": "QwQのapi",
+      "domain": "qwqapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "gpt_codex",
+        "image_gen"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "让好模型用得起",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_tokenporter",
+      "name_zh": "tokenporter",
+      "domain": "tokenporter.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "不造Token只搬运",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_mmcapi_cn",
+      "name_zh": "mmcapi.cn",
+      "domain": "mmcapi.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "个人自建美国服务器",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_456",
+      "name_zh": "卓建AI",
+      "domain": "zhuojian.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "按需调用订阅管理",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_hm_api",
+      "name_zh": "HM-API",
+      "domain": "hmapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "image_gen"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "10元100刀",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_routerlink",
+      "name_zh": "Routerlink",
+      "domain": "routerlink.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "WORLD3提供支持",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_weilai_chat",
+      "name_zh": "未来中转 Weilai Chat",
+      "domain": "weilaichat.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "AI接口中转聚合",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_wodedaodun_com",
+      "name_zh": "我的刀盾",
+      "domain": "wodedaodun.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "AI全能搭档",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_proxyai",
+      "name_zh": "ProxyAI",
+      "domain": "proxyai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "gpt_codex"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "一站式聚合中转0.12倍率",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_clauqeai",
+      "name_zh": "ClauqeAI",
+      "domain": "cluqeeai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "多线路高速接入",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_hiapi",
+      "name_zh": "hiapi",
+      "domain": "hiapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "1Yuan=100刀低价混池",
+      "type": "aggregator",
+      "online_status": "online",
+      "pricing_tag": "budget"
+    },
+    {
+      "id": "p_relay_bao_api",
+      "name_zh": "BAO-API",
+      "domain": "bao-api.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "Claude code API中转",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_shit_api",
+      "name_zh": "屎站 shit api",
+      "domain": "shitapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "GPT仅0.15/刀",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_mytokenpi",
+      "name_zh": "mytokenpi",
+      "domain": "mytokenpi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "统一模型聚合分发网关",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_apikey_fun",
+      "name_zh": "APIKEY.FUN",
+      "domain": "apikey.fun",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "企业级AI中转站",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_cnllm_ai",
+      "name_zh": "CNLLM.AI",
+      "domain": "cnllm.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "企业级服务稳定性优先",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_corerelaya",
+      "name_zh": "CoreRelaya",
+      "domain": "corerelaya.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "高效稳定API中转",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_zhehao_ai",
+      "name_zh": "喆号の小站",
+      "domain": "zhehao.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "学生党手搓新站",
+      "type": "aggregator",
+      "online_status": "online",
+      "maturity": "new"
+    },
+    {
+      "id": "p_relay_ryphx_api",
+      "name_zh": "Ryphx API",
+      "domain": "ryphx.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "0.15倍率0.6元/刀",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 0.6
+    },
+    {
+      "id": "p_relay_online",
+      "name_zh": "online",
+      "domain": "online.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "新一代统一API网关",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_airoo",
+      "name_zh": "AIRoo",
+      "domain": "airoo.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "月订+按量官方0.5折",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_smallice_ai",
+      "name_zh": "Smallice AI",
+      "domain": "smallice.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "gpt_codex"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "日卡周卡月卡1Gbps线路",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_475",
+      "name_zh": "面团api",
+      "domain": "miantuanapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "image_gen"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "0.125倍率纯血不掺水",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_tokens_free",
+      "name_zh": "tokens-free",
+      "domain": "tokens-free.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "一手1:10=0.1倍率",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_littlefire_api",
+      "name_zh": "Littlefire API",
+      "domain": "littlefireapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "注册送$5海外专线",
+      "type": "aggregator",
+      "online_status": "online",
+      "route": "overseas_dedicated"
+    },
+    {
+      "id": "p_relay_apilink",
+      "name_zh": "APILINK",
+      "domain": "apilink.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "兼顾价格与稳定性",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_api_479",
+      "name_zh": "Ai API",
+      "domain": "aiapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "聚合大模型平台新上线",
+      "type": "aggregator",
+      "online_status": "online",
+      "maturity": "new"
+    },
+    {
+      "id": "p_relay_coderplan",
+      "name_zh": "CoderPlan",
+      "domain": "coderplan.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "airecommended"
+      ],
+      "notes": "代码规划平台",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_anyaigc",
+      "name_zh": "AnyAIGC",
+      "domain": "anyaigc.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "multi_model"
+      ],
+      "source_list": [
+        "zuiquanapi"
+      ],
+      "notes": "官方企业级渠道倍率0.04",
+      "type": "aggregator",
+      "online_status": "online",
+      "price_multiplier": 0.04
+    },
+    {
+      "id": "p_relay_heran_uno",
+      "name_zh": "深空智联",
+      "domain": "heran.uno",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": "低价发卡兑换",
+      "type": "aggregator",
+      "online_status": "online",
+      "pricing_tag": "budget"
+    },
+    {
+      "id": "p_relay_beiluai",
+      "name_zh": "beiluAi",
+      "domain": "beilu.asia",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": "低价兑换码可开票",
+      "type": "aggregator",
+      "online_status": "online",
+      "payment_methods": [
+        "voucher"
+      ],
+      "invoice_available": true,
+      "pricing_tag": "budget"
+    },
+    {
+      "id": "p_relay_ai_jn83_com",
+      "name_zh": "永沃云枢",
+      "domain": "ai.jn83.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "image_gen"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": "低至¥1起充可开发票",
+      "type": "aggregator",
+      "online_status": "online",
+      "invoice_available": true,
+      "min_charge": 1
+    },
+    {
+      "id": "p_relay_token_485",
+      "name_zh": "Token岛",
+      "domain": "daotoken.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": "低价兑换码",
+      "type": "aggregator",
+      "online_status": "online",
+      "payment_methods": [
+        "voucher"
+      ],
+      "pricing_tag": "budget"
+    },
+    {
+      "id": "p_relay_cctq",
+      "name_zh": "CCTQ",
+      "domain": "cctq.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini",
+        "image_gen"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_nanogpt",
+      "name_zh": "NanoGPT",
+      "domain": "nano-gpt.com",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini",
+        "image_gen"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": "USDT卡支付",
+      "type": "aggregator",
+      "online_status": "online",
+      "payment_methods": [
+        "usdt"
+      ]
+    },
+    {
+      "id": "p_relay_luxery_api",
+      "name_zh": "Luxery API",
+      "domain": "luxerycaseglobal.com",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_fluapi",
+      "name_zh": "fluapi",
+      "domain": "fluapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": "低价¥1起充",
+      "type": "aggregator",
+      "online_status": "online",
+      "min_charge": 1,
+      "pricing_tag": "budget"
+    },
+    {
+      "id": "p_relay_sssaicode",
+      "name_zh": "SSSAICode",
+      "domain": "sssaicode.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": "Claude强¥100起",
+      "type": "aggregator",
+      "online_status": "online",
+      "min_charge": 100
+    },
+    {
+      "id": "p_relay_micu",
+      "name_zh": "Micu",
+      "domain": "micuapi.ai",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": "前身OpenClaudeCode",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_die_ge",
+      "name_zh": "Die Ge",
+      "domain": "diegeai.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_synterolink",
+      "name_zh": "synterolink",
+      "domain": "synterolink.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_llm_all_api",
+      "name_zh": "LLM-ALL API",
+      "domain": "llm-all.pro",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_openox",
+      "name_zh": "OpenOx",
+      "domain": "openox.tech",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_linksapi",
+      "name_zh": "LinksAPI",
+      "domain": "linksapi.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_codex2api",
+      "name_zh": "Codex2API",
+      "domain": "codex2api.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_boottoken",
+      "name_zh": "BootToken",
+      "domain": "boottoken.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": "低价¥1起",
+      "type": "aggregator",
+      "online_status": "online",
+      "min_charge": 1,
+      "pricing_tag": "budget"
+    },
+    {
+      "id": "p_relay_xeduapi",
+      "name_zh": "xeduapi",
+      "domain": "xeduapi.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": "教育场景",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_chaofanshou_com",
+      "name_zh": "超凡手",
+      "domain": "chaofanshou.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": "Claude专攻",
+      "type": "gateway",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_gptgod",
+      "name_zh": "GPTGod",
+      "domain": "gptgod.cloud",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": "待观察站",
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_z_api",
+      "name_zh": "Z-API",
+      "domain": "api.zicc.cc",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_bytecat",
+      "name_zh": "ByteCat",
+      "domain": "bytecatcode.org",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini",
+        "image_gen"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": "多分组¥10起",
+      "type": "aggregator",
+      "online_status": "online",
+      "min_charge": 10
+    },
+    {
+      "id": "p_relay_holysheep_ai",
+      "name_zh": "HolySheep AI",
+      "domain": "www.holysheep.ai",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_gerlantapi",
+      "name_zh": "GerlantAPI",
+      "domain": "www.gerlant.com",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_api_bbww_top",
+      "name_zh": "旺旺中转站",
+      "domain": "api.bbww.top",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_cooper_api",
+      "name_zh": "Cooper-API",
+      "domain": "cooper-api.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini",
+        "image_gen"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": "微USDT ¥7起",
+      "type": "aggregator",
+      "online_status": "online",
+      "payment_methods": [
+        "usdt"
+      ],
+      "min_charge": 7
+    },
+    {
+      "id": "p_relay_pptoken",
+      "name_zh": "PPToken",
+      "domain": "pptoken.org",
+      "region": "global",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_ai_codepup_cn",
+      "name_zh": "代码狗",
+      "domain": "ai.codepup.cn",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": null,
+      "type": "aggregator",
+      "online_status": "online"
+    },
+    {
+      "id": "p_relay_boxying",
+      "name_zh": "boxying",
+      "domain": "boxying.com",
+      "region": "cn",
+      "compliance": "non_compliant",
+      "supported_models": [
+        "claude",
+        "gpt",
+        "gemini",
+        "image_gen"
+      ],
+      "source_list": [
+        "apipingce"
+      ],
+      "notes": "低起充¥1",
+      "type": "aggregator",
+      "online_status": "online"
+    }
+  ]
+};

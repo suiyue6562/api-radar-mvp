@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>不合规中转站专区 · 灰产市场透明化目录 · API优选咨询</title>
+<meta name="description" content="488 家公开可访问的不合规 API 中转站清单 · 仅限中国大陆以外访问 · 含完整收录标准与风险提示">
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ===== gray_market 页 · okkmax 极简风格 ===== */
+.gm-banner-warn {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px; margin-bottom: 24px;
+  background: #fef3c7; border: 1px solid #fde68a;
+  border-radius: var(--radius); color: #92400e;
+  font-size: 13px; font-weight: 500;
+}
+.gm-banner-warn strong { color: #78350f; font-weight: 700; }
+.gm-banner-warn .pulse-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #d97706; flex-shrink: 0;
+  animation: pulse-soft 1.8s ease-in-out infinite;
+}
+
+/* 访问限制遮罩 */
+.gm-gate {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #fcfcfd;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.gm-gate-card {
+  max-width: 580px; width: 100%;
+  background: #fff; border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px 36px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+.gm-gate-emoji { font-size: 56px; margin-bottom: 16px; }
+.gm-gate h2 { font-size: 22px; margin-bottom: 12px; }
+.gm-gate p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+.gm-gate-list { background: var(--bg-deep); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; margin: 20px 0; font-size: 13px; line-height: 1.9; color: var(--fg); }
+.gm-gate-list b { color: var(--fg-strong); }
+.gm-gate-actions { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+.gm-gate-actions .btn { padding: 10px 20px; font-size: 13px; }
+.gm-gate-tok { display: flex; align-items: center; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border); }
+.gm-gate-tok input { flex: 1; font-family: var(--font-mono); font-size: 12px; }
+.gm-gate-tok small { color: var(--muted); font-size: 11px; }
+
+/* 风险确认层（access gate 通过后的二次确认） */
+.gm-consent {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,0.45);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px; backdrop-filter: blur(2px);
+}
+.gm-consent-card {
+  max-width: 640px; width: 100%;
+  background: #fff; border-radius: var(--radius-lg);
+  padding: 32px 36px; max-height: 90vh; overflow-y: auto;
+}
+.gm-consent h3 { font-size: 18px; margin-bottom: 12px; }
+.gm-consent ol { padding-left: 20px; font-size: 13px; line-height: 1.85; color: var(--fg); margin: 16px 0; }
+.gm-consent ol li { margin-bottom: 8px; }
+.gm-consent-check {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin: 18px 0; padding: 14px; background: var(--bg-deep);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  font-size: 13px; cursor: pointer; user-select: none;
+}
+.gm-consent-check input { margin-top: 2px; cursor: pointer; }
+.gm-consent-foot { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+
+/* KPI 墙 — 5 列 */
+.gm-kpi { grid-template-columns: repeat(5, 1fr); }
+@media (max-width: 1100px) { .gm-kpi { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 600px) { .gm-kpi { grid-template-columns: repeat(2, 1fr); } }
+
+/* 收录标准模块 */
+.gm-standards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+@media (max-width: 900px) { .gm-standards { grid-template-columns: 1fr; } }
+.gm-std-card { padding: 20px; }
+.gm-std-card h3 { font-size: 15px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.gm-std-card ol, .gm-std-card ul { padding-left: 18px; font-size: 13px; line-height: 1.85; color: var(--fg); }
+.gm-std-card li { margin-bottom: 6px; }
+.gm-std-card li b { color: var(--fg-strong); }
+.gm-std-tag { display: inline-block; padding: 2px 7px; border-radius: 4px; background: var(--bg-deep); border: 1px solid var(--border); font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-left: 6px; }
+
+/* 表格区域 */
+.gm-table-toolbar {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+  padding: 16px; margin-bottom: 12px;
+}
+.gm-table-toolbar .chip-group { display: flex; gap: 6px; flex-wrap: wrap; }
+.gm-table-toolbar .chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 5px 11px; border-radius: 999px; font-size: 12px;
+  background: var(--bg-deep); border: 1px solid var(--border);
+  color: var(--muted); cursor: pointer; user-select: none;
+  transition: all .15s; font-weight: 500;
+}
+.gm-table-toolbar .chip:hover { border-color: var(--accent); color: var(--fg); }
+.gm-table-toolbar .chip.active { background: var(--fg); border-color: var(--fg); color: #fff; }
+.gm-table-toolbar .filter-label {
+  font-size: 11px; color: var(--muted); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.04em; margin-right: 4px;
+}
+.gm-table-toolbar input[type="text"] { padding: 7px 12px; font-size: 13px; min-width: 220px; }
+.gm-search-wrap { margin-left: auto; }
+
+/* 表格 - 紧凑虚拟滚动 */
+.gm-table-wrap {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: #fff; overflow: hidden;
+}
+.gm-table-head {
+  display: grid;
+  grid-template-columns: 28px 1.6fr 0.9fr 1fr 0.9fr 0.8fr 0.9fr 80px;
+  background: var(--bg-deep); border-bottom: 1px solid var(--border);
+  font-size: 11px; font-weight: 600; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.gm-table-head > div { padding: 12px 12px; }
+.gm-table-body {
+  height: 560px; overflow-y: auto; overflow-x: hidden;
+  position: relative;
+}
+.gm-table-body::-webkit-scrollbar { width: 10px; }
+.gm-row {
+  display: grid;
+  grid-template-columns: 28px 1.6fr 0.9fr 1fr 0.9fr 0.8fr 0.9fr 80px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  font-size: 13px;
+  transition: background .1s;
+}
+.gm-row:hover { background: var(--bg-deep); }
+.gm-row > div { padding: 10px 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gm-row .gm-idx { font-family: var(--font-mono); color: var(--muted-foreground); font-size: 11px; }
+.gm-row .gm-name { font-weight: 600; color: var(--fg-strong); }
+.gm-row .gm-name a { color: var(--fg-strong); }
+.gm-row .gm-name a:hover { color: var(--accent-2); }
+.gm-row .gm-domain { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.gm-row .gm-mult { font-family: var(--font-mono); font-weight: 700; font-size: 12px; }
+.gm-row .gm-mult.is-low { color: var(--success); }
+.gm-row .gm-mult.is-high { color: var(--warning); }
+.gm-row .gm-mult.is-vhigh { color: var(--danger); }
+.gm-row .gm-mult.is-charity { color: #2563eb; }
+
+.gm-pill {
+  display: inline-block; padding: 2px 7px; border-radius: 4px;
+  font-size: 10px; font-weight: 700; border: 1px solid;
+  font-family: var(--font-mono);
+}
+.gm-pill-cn { background: #fef2f2; color: #991b1b; border-color: #fecaca; }
+.gm-pill-global { background: #eff6ff; color: #1e40af; border-color: #bfdbfe; }
+.gm-pill-online { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
+.gm-pill-offline { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
+.gm-pill-risky { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+.gm-pill-unstable { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+.gm-pill-unverified { background: var(--bg-deep); color: var(--muted); border-color: var(--border); }
+
+.gm-models { display: flex; gap: 4px; flex-wrap: wrap; }
+.gm-mod-chip {
+  display: inline-block; padding: 1px 5px;
+  font-size: 9px; font-weight: 600;
+  border-radius: 3px; background: var(--bg-deep);
+  border: 1px solid var(--border); color: var(--fg);
+  font-family: var(--font-mono);
+}
+.gm-mod-multi { color: var(--muted); font-size: 10px; }
+
+.gm-actions { display: flex; gap: 4px; justify-content: flex-end; }
+.gm-act-btn {
+  padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border);
+  background: var(--bg-base); font-size: 10px; color: var(--fg);
+  font-family: var(--font-mono); cursor: pointer; transition: all .15s;
+}
+.gm-act-btn:hover { border-color: var(--fg); color: var(--fg-strong); }
+
+/* 详情抽屉 */
+.gm-detail {
+  position: fixed; inset: 0; z-index: 9500;
+  background: rgba(0,0,0,0.4); display: none;
+  align-items: center; justify-content: center; padding: 24px;
+}
+.gm-detail.open { display: flex; }
+.gm-detail-card {
+  max-width: 560px; width: 100%; max-height: 88vh; overflow-y: auto;
+  background: #fff; border-radius: var(--radius-lg);
+  padding: 28px 32px;
+}
+.gm-detail-close {
+  position: absolute; top: 14px; right: 18px;
+  background: transparent; border: 0; font-size: 22px; cursor: pointer;
+  color: var(--muted); line-height: 1;
+}
+.gm-detail h3 { font-size: 18px; margin-bottom: 4px; padding-right: 30px; }
+.gm-detail .gm-detail-domain { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-bottom: 18px; word-break: break-all; }
+.gm-detail-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; font-size: 13px; margin-bottom: 16px; }
+.gm-detail-grid dt { color: var(--muted); font-weight: 500; }
+.gm-detail-grid dd { color: var(--fg-strong); font-family: var(--font-mono); font-size: 12px; }
+.gm-detail-notes {
+  background: var(--bg-deep); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px 14px;
+  font-size: 12px; line-height: 1.6; color: var(--fg);
+  margin-bottom: 14px;
+}
+.gm-detail-foot {
+  display: flex; gap: 8px; justify-content: flex-end; padding-top: 12px;
+  border-top: 1px dashed var(--border); font-size: 11px; color: var(--muted);
+}
+
+/* 风险提示模块 */
+.gm-disclaimer {
+  margin-top: 32px; padding: 24px;
+  background: var(--bg-deep); border: 1px solid var(--border);
+  border-radius: var(--radius); font-size: 13px; line-height: 1.85;
+}
+.gm-disclaimer h3 { font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.gm-disclaimer ol { padding-left: 20px; margin-top: 8px; }
+.gm-disclaimer li { margin-bottom: 6px; color: var(--fg); }
+.gm-disclaimer li::marker { color: var(--danger); font-weight: 700; }
+
+/* 计数 */
+.gm-counter {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 999px;
+  background: var(--bg-deep); border: 1px solid var(--border);
+  font-size: 11px; color: var(--muted);
+}
+.gm-counter-num { font-family: var(--font-mono); font-weight: 700; color: var(--fg-strong); }
+
+@media (max-width: 900px) {
+  .gm-table-head, .gm-row { grid-template-columns: 24px 1.4fr 0.8fr 0.9fr 70px; }
+  .gm-table-head > div:nth-child(4),
+  .gm-table-head > div:nth-child(5),
+  .gm-table-head > div:nth-child(6),
+  .gm-table-head > div:nth-child(7),
+  .gm-row > div:nth-child(4),
+  .gm-row > div:nth-child(5),
+  .gm-row > div:nth-child(6),
+  .gm-row > div:nth-child(7) { display: none; }
+  .gm-table-body { height: 480px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== 访问限制遮罩 ========== -->
+<div id="gm-gate" class="gm-gate">
+  <div class="gm-gate-card">
+    <div class="gm-gate-emoji">🌐</div>
+    <h2>此页面仅限中国大陆以外用户访问</h2>
+    <p>本页聚合了 <b>488 家公开可访问的不合规 API 中转站</b>。根据合规策略，仅对境外 IP 开放浏览。</p>
+    <div class="gm-gate-list">
+      <b>⚠️ 本站定位：</b><br>
+      我们是<b>中立信息发布平台</b>，只整理公开榜单 / 社区讨论 / 媒体报道中的站点信息，<b>不提供中转服务、不充值返佣、不做交易撮合</b>。<br><br>
+      <b>📍 访问限制检测原理：</b><br>
+      通过浏览器语言 (<code>Intl.DateTimeFormat().resolvedOptions().locale</code> + <code>navigator.languages</code>) 进行的<b>友好提示</b>，<b>并非 100% 准确</b>。在境外使用大陆语言浏览同样可见；境内使用英文浏览器也可绕过。
+    </div>
+    <div class="gm-gate-tok">
+      <input type="password" id="gm-tok" placeholder="访问口令 (gray-market-token)">
+      <button class="btn btn-primary" id="gm-tok-go">验证</button>
+    </div>
+    <div class="gm-gate-actions">
+      <a href="index.html" class="btn btn-ghost">← 回到首页</a>
+      <button class="btn btn-ghost" onclick="window.close();setTimeout(()=>history.back(),100);">离开本站</button>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:16px;">
+      提示：检测仅基于浏览器 locale，无法判断您真实所在地区。如确认您在境外，请直接点击"验证"继续；如您在境内，请遵守所在地区法规。
+    </p>
+  </div>
+</div>
+
+<!-- ========== 风险确认层 ========== -->
+<div id="gm-consent" class="gm-consent" style="display:none;">
+  <div class="gm-consent-card">
+    <h3>⚠️ 进入浏览前请阅读以下风险</h3>
+    <p style="font-size:13px;color:var(--muted);">本页所有站点均为<b style="color:var(--danger);">不合规中转站</b>，存在已知风险。继续浏览即表示您已知悉并自担风险。</p>
+    <ol>
+      <li><b>资金损失风险</b> · 充值后无法退款 / 站点跑路 / 余额清零</li>
+      <li><b>账户封禁风险</b> · 支付宝 / 微信 / 信用卡被风控甚至永久封号</li>
+      <li><b>隐私泄露风险</b> · API Key 被站点记录、转卖或用于第三方训练</li>
+      <li><b>数据截获风险</b> · 请求内容（含代码、商业机密）被第三方中间人读取</li>
+      <li><b>上游封号风险</b> · OpenAI / Anthropic / Google 检测到非授权访问后封禁账号</li>
+      <li><b>法律责任风险</b> · 违反所在国家或地区法规导致行政处罚</li>
+      <li><b>本站免责</b> · 本平台不为任何收录站点的服务、稳定性、资金安全、合法性负责</li>
+    </ol>
+    <label class="gm-consent-check">
+      <input type="checkbox" id="gm-consent-cb">
+      <span>我已了解上述风险，包括但不限于资金损失、隐私泄露、账号封禁。继续浏览即视为接受《<a href="01_docs/gray_market_collection_standards.md" target="_blank">收录标准与免责声明</a>》全部条款。</span>
+    </label>
+    <div class="gm-consent-foot">
+      <button class="btn btn-ghost" onclick="document.getElementById('gm-gate').style.display='flex';document.getElementById('gm-consent').style.display='none';">← 返回</button>
+      <button class="btn btn-primary" id="gm-consent-go" disabled>确认进入 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 详情抽屉 ========== -->
+<div class="gm-detail" id="gm-detail">
+  <div class="gm-detail-card">
+    <button class="gm-detail-close" onclick="document.getElementById('gm-detail').classList.remove('open')">×</button>
+    <h3 id="gm-d-name">-</h3>
+    <div class="gm-detail-domain" id="gm-d-domain">-</div>
+    <dl class="gm-detail-grid">
+      <dt>地区</dt><dd id="gm-d-region">-</dd>
+      <dt>合规属性</dt><dd>non_compliant · 不合规</dd>
+      <dt>类型</dt><dd id="gm-d-type">-</dd>
+      <dt>当前状态</dt><dd id="gm-d-status">-</dd>
+      <dt>价格倍率</dt><dd id="gm-d-mult">-</dd>
+      <dt>支付方式</dt><dd id="gm-d-pay">-</dd>
+      <dt>支持模型</dt><dd id="gm-d-models">-</dd>
+      <dt>数据来源</dt><dd id="gm-d-src">-</dd>
+      <dt>ID</dt><dd id="gm-d-id">-</dd>
+    </dl>
+    <div id="gm-d-notes-wrap" style="display:none;">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">📝 备注</div>
+      <div class="gm-detail-notes" id="gm-d-notes">-</div>
+    </div>
+    <div class="gm-detail-foot">
+      <span>本页所有外链均带 nofollow · 不为收录站背书</span>
+      <a id="gm-d-link" href="#" target="_blank" rel="nofollow noopener" class="btn btn-ghost" style="font-size:12px;">访问 →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 主页面 ========== -->
+<div id="topbar"></div>
+
+<main class="main">
+  <!-- 顶部警告 banner -->
+  <div class="gm-banner-warn fade-in">
+    <span class="pulse-dot"></span>
+    <span>
+      <strong>⚠️ 不合规中转站专区</strong> ·
+      <span id="gm-banner-total">488</span> 家 · 不背书 · 仅供参考 ·
+      仅限中国大陆以外用户访问 ·
+      收录标准见 <a href="01_docs/gray_market_collection_standards.md" target="_blank" style="color:#92400e;text-decoration:underline;">01_docs/gray_market_collection_standards.md</a>
+    </span>
+  </div>
+
+  <!-- Hero -->
+  <div class="page-hero fade-in">
+    <div class="page-hero-tagline">
+      <span class="page-hero-tagline-dot" style="background:var(--warning);"></span>
+      <span>中立第三方信息发布 · 公开榜单汇总 · 灰产市场透明化目录</span>
+    </div>
+    <h1><span class="gradient-text">🌐 不合规中转站专区</span></h1>
+    <p class="subtitle">
+      把散落在 RelayPick、Veridrop、AIAPIRank、Reddit、Telegram 公开群的不合规 AI API 中转站情报<b>结构化、可对比、可检索</b>。
+      <br><span style="font-size:12px;color:var(--muted);">我们不做中转、不充值、不导流 —— <b style="color:var(--danger);">只做镜子，不做货架</b>。</span>
+    </p>
+  </div>
+
+  <!-- KPI 墙 -->
+  <div class="kpi-wall gm-kpi" id="gm-kpi"></div>
+
+  <!-- 收录标准 + 要素 -->
+  <h2 style="margin-top: 40px; margin-bottom: 16px; font-size: 20px;">📋 完整收录标准与要素</h2>
+  <div class="gm-standards">
+    <div class="card gm-std-card">
+      <h3>✅ 必须满足的收录条件 <span class="gm-std-tag">4 项</span></h3>
+      <ol>
+        <li><b>公开可访问</b> · 域名可正常打开，无需邀请码 / 内测资格 / 翻墙</li>
+        <li><b>有用户使用</b> · 在 RelayPick / Veridrop / Reddit / Telegram 公开渠道有真实讨论或排名</li>
+        <li><b>价格可查</b> · 前台或注册后能直接看到定价（不必登录也能看倍率）</li>
+        <li><b>信息可核验</b> · 至少 2 个独立信息源可交叉验证其存在与运营状态</li>
+      </ol>
+      <h3 style="margin-top:18px;">❌ 不收录的情形</h3>
+      <ul>
+        <li>纯骗局 / 诈骗站（收款后跑路、被举报欺诈）</li>
+        <li>只通过电话 / 微信私聊联系（无公开网址）</li>
+        <li>必须付费才能查看定价（违反中立原则）</li>
+        <li>已被国家工信部明令封禁</li>
+        <li>明确从事违法违规业务（洗钱、盗刷、未授权转售）</li>
+        <li>盗用正规厂商品牌且无真实服务</li>
+      </ul>
+    </div>
+    <div class="card gm-std-card">
+      <h3>📝 必填数据点 <span class="gm-std-tag">10 项 · 缺一不收录</span></h3>
+      <ol>
+        <li><b>站点名称</b> · 品牌识别</li>
+        <li><b>域名 / 入口</b> · 用户直接访问</li>
+        <li><b>地区</b> · 国内 / 海外 / 国内运营海外服务</li>
+        <li><b>合规属性</b> · 不合规 / 风险</li>
+        <li><b>主要支持模型</b> · GPT / Claude / Gemini 等</li>
+        <li><b>价格倍率</b> · 本站价 ÷ 官方价</li>
+        <li><b>支付方式</b> · 支付宝 / USDT / 微信 等</li>
+        <li><b>数据来源</b> · RelayPick / Veridrop / AIAPIRank 等</li>
+        <li><b>首次出现时间</b> · Wayback Machine 最早快照</li>
+        <li><b>最近验证时间</b> · 我们最后一次实际访问</li>
+      </ol>
+      <h3 style="margin-top:18px;">📊 可选数据点 <span class="gm-std-tag">7 项 · 缺失不阻塞</span></h3>
+      <ul>
+        <li>最低充值金额 / 退款政策 / 是否开发票</li>
+        <li>退款手续费 / 30天在线率（自建探针）</li>
+        <li>平均延迟（秒）/ 用户评价（可信第三方）</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 筛选 + 表格 -->
+  <h2 style="margin-top: 32px; margin-bottom: 16px; font-size: 20px; display: flex; align-items: center; gap: 12px;">
+    📜 收录清单
+    <span class="gm-counter">
+      显示 <span class="gm-counter-num" id="gm-shown">488</span> /
+      总 <span class="gm-counter-num" id="gm-total">488</span>
+    </span>
+  </h2>
+
+  <div class="card gm-table-toolbar">
+    <div>
+      <span class="filter-label">地区</span>
+      <div class="chip-group" id="gm-region-chips">
+        <span class="chip active" data-region="">全部</span>
+        <span class="chip" data-region="cn">🇨🇳 国内</span>
+        <span class="chip" data-region="global">🌍 海外</span>
+      </div>
+    </div>
+    <div>
+      <span class="filter-label">状态</span>
+      <div class="chip-group" id="gm-status-chips">
+        <span class="chip active" data-status="">全部</span>
+        <span class="chip" data-status="online">🟢 在线</span>
+        <span class="chip" data-status="risky">🔴 风险</span>
+        <span class="chip" data-status="offline">⚫ 离线</span>
+      </div>
+    </div>
+    <div>
+      <span class="filter-label">类型</span>
+      <div class="chip-group" id="gm-type-chips">
+        <span class="chip active" data-type="">全部</span>
+        <span class="chip" data-type="aggregator">🔀 中转</span>
+        <span class="chip" data-type="gateway">🌐 网关</span>
+      </div>
+    </div>
+    <div class="gm-search-wrap">
+      <input type="text" id="gm-q" placeholder="🔍 搜索 名称 / 域名 / 模型">
+    </div>
+  </div>
+
+  <div class="gm-table-wrap">
+    <div class="gm-table-head">
+      <div>#</div>
+      <div>名称</div>
+      <div>地区</div>
+      <div>支持模型</div>
+      <div>价格倍率</div>
+      <div>状态</div>
+      <div>来源</div>
+      <div style="text-align:right;">操作</div>
+    </div>
+    <div class="gm-table-body" id="gm-table-body">
+      <div class="empty-state"><div class="empty-state-icon">⏳</div>加载中...</div>
+    </div>
+  </div>
+
+  <!-- 风险提示 + 免责声明 -->
+  <div class="gm-disclaimer">
+    <h3>⚠️ 风险提示与免责声明</h3>
+    <p style="color:var(--muted);">请仔细阅读以下条款。继续浏览即视为您已充分理解并同意全部内容。</p>
+    <ol>
+      <li><b>本站为中立信息发布平台</b>，仅整理、转写、对比来自公开渠道的数据，不直接提供任何 API 中转、代理、充值、撮合服务。</li>
+      <li><b>本站不为任何收录站点的服务质量、稳定性、资金安全性、合法性负责</b>。收录仅代表「该站点曾在公开渠道被多次讨论」，不代表本站推荐或背书。</li>
+      <li><b>使用不合规中转站存在已知风险</b>，包括但不限于：
+        充值后无法退款 / 站点跑路；信用卡 / 支付宝 / 微信账户被风控或封禁；
+        API Key 被站点记录、转卖、用于训练第三方模型；
+        请求内容（含代码、隐私数据、商业机密）被第三方截获；
+        上游厂商（OpenAI / Anthropic / Google 等）封禁账号；
+        违反所在国家 / 地区法律法规导致法律责任。
+      </li>
+      <li><b>您需对自身行为独立承担责任</b>。本站不对您的任何直接或间接损失、纠纷、行政处罚、法律诉讼承担赔偿或连带责任。</li>
+      <li><b>本站保留随时下架、修改、拒绝收录任何站点的权利</b>，无需提前通知。</li>
+      <li><b>如您所在司法辖区不允许查看此类信息，请立即关闭页面</b>。</li>
+    </ol>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-row">
+      <div><strong style="color:var(--fg);">API 优选咨询</strong> · 不合规中转站专区 · 中立第三方信息发布平台</div>
+      <div class="footer-links">
+        <a href="index.html">← 首页</a>
+        <a href="providers.html">📡 合规渠道库</a>
+        <a href="method.html">📋 数据方法</a>
+        <a href="01_docs/gray_market_collection_standards.md">📄 收录标准全文</a>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<script src="non_compliant_data.js?v=20260921g"></script>
+<script>
+// ============== 访问限制检测 ==============
+(function gate() {
+  var ACCESS_TOKEN = 'gray-market-token';
+  var locale = (Intl.DateTimeFormat().resolvedOptions().locale || '').toLowerCase();
+  var langs = (navigator.languages || [navigator.language || '']).map(function(s){return (s||'').toLowerCase();});
+  var isCnLocale = locale.startsWith('zh-cn') || locale === 'zh-cn' || langs.some(function(l){return l.startsWith('zh-cn');});
+  // 已通过访问口令 -> 直接跳过检测
+  if (sessionStorage.getItem('gm_token_ok') === '1') {
+    document.getElementById('gm-gate').style.display = 'none';
+    showConsent();
+    return;
+  }
+  // 友好提示：CN 语言环境提示风险，非 CN 语言可一键通过
+  var gateEl = document.getElementById('gm-gate');
+  if (!isCnLocale) {
+    // 在海外语言下，gate 仍显示但提示可一键通过
+    var p = gateEl.querySelector('h2');
+    if (p) p.innerHTML = '🌐 不合规中转站专区 · Access Gate';
+    gateEl.querySelector('.gm-gate-list').innerHTML =
+      '<b>检测结果：</b>您的浏览器语言为 <code>' + escapeHtml(locale) + '</code>，不在中国 (zh-CN) 范围内。<br><br>' +
+      '<b>📍 本站定位：</b><br>' +
+      '我们是<b>中立信息发布平台</b>，只整理公开榜单 / 社区讨论 / 媒体报道中的站点信息，<b>不提供中转服务、不充值返佣、不做交易撮合</b>。<br><br>' +
+      '<b>🔓 验证方式：</b>输入访问口令 <code>gray-market-token</code> 进入。';
+  }
+  document.getElementById('gm-tok-go').addEventListener('click', function() {
+    var v = document.getElementById('gm-tok').value.trim();
+    if (v === ACCESS_TOKEN) {
+      sessionStorage.setItem('gm_token_ok', '1');
+      gateEl.style.display = 'none';
+      showConsent();
+    } else {
+      var inp = document.getElementById('gm-tok');
+      inp.style.borderColor = 'var(--danger)';
+      inp.value = ''; inp.placeholder = '❌ 口令错误';
+      setTimeout(function(){ inp.style.borderColor = ''; inp.placeholder = '访问口令 (gray-market-token)'; }, 2000);
+    }
+  });
+  document.getElementById('gm-tok').addEventListener('keydown', function(e){
+    if (e.key === 'Enter') document.getElementById('gm-tok-go').click();
+  });
+
+  function showConsent() {
+    if (localStorage.getItem('gm_consent_ok') === '1') {
+      document.getElementById('gm-consent').style.display = 'none';
+      return;
+    }
+    document.getElementById('gm-consent').style.display = 'flex';
+    var cb = document.getElementById('gm-consent-cb');
+    var btn = document.getElementById('gm-consent-go');
+    cb.addEventListener('change', function(){ btn.disabled = !cb.checked; });
+    btn.addEventListener('click', function() {
+      if (!cb.checked) return;
+      localStorage.setItem('gm_consent_ok', '1');
+      document.getElementById('gm-consent').style.display = 'none';
+    });
+  }
+})();
+
+// ============== 数据加载 ==============
+var GM_DATA = null;
+var GM_FILTERED = [];
+
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function escapeUrl(u) {
+  if (!u) return '#';
+  if (/^https?:\/\//i.test(u)) return u;
+  return 'https://' + u;
+}
+
+var MODEL_LABEL = {
+  gpt:'GPT', claude:'Claude', gemini:'Gemini', deepseek:'DeepSeek',
+  qwen:'Qwen', glm:'GLM', flux:'Flux', spark:'Spark', doubao:'豆包',
+  kimi:'Kimi', ernie:'文心', image_gen:'生图', gpt_codex:'Codex',
+  cursor:'Cursor', grok:'Grok', mistral:'Mistral', llama:'LLaMA',
+  midjourney:'MJ', suno:'Suno', multi_model:'多模型'
+};
+
+function renderModels(arr) {
+  if (!arr || arr.length === 0) return '<span class="gm-mod-multi">—</span>';
+  if (arr.length === 1 && arr[0] === 'multi_model') return '<span class="gm-mod-multi">多模型</span>';
+  var html = arr.slice(0, 4).map(m => '<span class="gm-mod-chip">' + escapeHtml(MODEL_LABEL[m] || m) + '</span>').join('');
+  if (arr.length > 4) html += '<span class="gm-mod-multi">+' + (arr.length - 4) + '</span>';
+  return html;
+}
+
+function multClass(m) {
+  if (m == null) return '';
+  if (m < 0.1) return 'is-charity';
+  if (m < 0.5) return 'is-low';
+  if (m < 1.5) return '';
+  if (m < 3) return 'is-high';
+  return 'is-vhigh';
+}
+
+function regionPill(r) {
+  if (r === 'cn') return '<span class="gm-pill gm-pill-cn">CN</span>';
+  if (r === 'global') return '<span class="gm-pill gm-pill-global">GLOBAL</span>';
+  return '<span class="gm-pill gm-pill-unverified">' + escapeHtml(r) + '</span>';
+}
+
+function statusPill(s) {
+  var m = {
+    online: ['gm-pill-online', '🟢 在线'],
+    offline: ['gm-pill-offline', '⚫ 离线'],
+    risky: ['gm-pill-risky', '🔴 风险'],
+    unstable: ['gm-pill-unstable', '🟡 不稳定'],
+    unverified: ['gm-pill-unverified', '⚪ 未验证']
+  };
+  var v = m[s] || m.unverified;
+  return '<span class="gm-pill ' + v[0] + '">' + v[1] + '</span>';
+}
+
+function sourcePill(srcs) {
+  if (!srcs || srcs.length === 0) return '<span class="gm-mod-multi">—</span>';
+  var labels = {relaypick:'RelayPick', veridrop:'Veridrop', aiapirank:'AIAPIRank',
+                apisou:'APISou', awesome_ai_api:'awesome-ai-api', toolify:'Toolify',
+                apipingce:'apipingce', zuiquanapi:'zuiquanapi', airecommended:'airecommended',
+                official:'官方', enet_list:'enet', review_site:'评测站', baidu:'百度', v2ex:'V2EX'};
+  return srcs.slice(0, 2).map(s => '<span class="gm-mod-chip">' + escapeHtml(labels[s] || s) + '</span>').join('') +
+    (srcs.length > 2 ? '<span class="gm-mod-multi">+' + (srcs.length - 2) + '</span>' : '');
+}
+
+// ============== 虚拟滚动渲染 ==============
+var ROW_H = 42; // 估算行高
+var BUFFER = 8;
+
+function rowHtml(p, idx) {
+  var mult = p.price_multiplier != null ? p.price_multiplier : null;
+  var multTxt = mult != null ? mult.toFixed(2) + 'x' : '<span class="gm-mod-multi">—</span>';
+  var isCharity = p.suspicion === 'possibly_charity';
+  var multCls = multClass(mult) + (isCharity ? ' is-charity' : '');
+  var charityTag = isCharity ? ' <span class="gm-pill gm-pill-unverified" style="background:#eff6ff;color:#1e40af;border-color:#bfdbfe;">🎁 公益</span>' : '';
+  return '<div class="gm-row" data-id="' + escapeHtml(p.id) + '" style="height:' + ROW_H + 'px;">' +
+    '<div class="gm-idx">' + (idx + 1) + '</div>' +
+    '<div class="gm-name"><a href="' + escapeUrl(p.domain) + '" target="_blank" rel="nofollow noopener">' + escapeHtml(p.name_zh) + '</a>' + charityTag + '</div>' +
+    '<div>' + regionPill(p.region) + '</div>' +
+    '<div class="gm-models">' + renderModels(p.supported_models) + '</div>' +
+    '<div class="gm-mult ' + multCls + '">' + multTxt + '</div>' +
+    '<div>' + statusPill(p.online_status) + '</div>' +
+    '<div>' + sourcePill(p.source_list) + '</div>' +
+    '<div class="gm-actions"><button class="gm-act-btn" data-act="detail">详情</button></div>' +
+    '</div>';
+}
+
+function renderVisible() {
+  var body = document.getElementById('gm-table-body');
+  if (GM_FILTERED.length === 0) {
+    body.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div>没有匹配的站点 · 试着放宽筛选</div>';
+    return;
+  }
+  var scrollTop = body.scrollTop;
+  var viewport = body.clientHeight;
+  var startIdx = Math.max(0, Math.floor(scrollTop / ROW_H) - BUFFER);
+  var endIdx = Math.min(GM_FILTERED.length, Math.ceil((scrollTop + viewport) / ROW_H) + BUFFER);
+  var totalH = GM_FILTERED.length * ROW_H;
+  var html = '<div style="height:' + totalH + 'px;position:relative;">' +
+    '<div style="position:absolute;top:' + (startIdx * ROW_H) + 'px;left:0;right:0;">' +
+    GM_FILTERED.slice(startIdx, endIdx).map(function(p, i){ return rowHtml(p, startIdx + i); }).join('') +
+    '</div></div>';
+  body.innerHTML = html;
+}
+
+// ============== 筛选 ==============
+var S = { region: '', status: '', type: '', q: '' };
+
+function applyFilter() {
+  var q = S.q.trim().toLowerCase();
+  GM_FILTERED = GM_DATA.providers.filter(function(p) {
+    if (S.region && p.region !== S.region) return false;
+    if (S.status && p.online_status !== S.status) return false;
+    if (S.type && p.type !== S.type) return false;
+    if (q) {
+      var hay = (p.name_zh + ' ' + (p.domain || '') + ' ' + (p.supported_models || []).join(' ') + ' ' + (p.notes || '')).toLowerCase();
+      if (hay.indexOf(q) === -1) return false;
+    }
+    return true;
+  });
+  document.getElementById('gm-shown').textContent = GM_FILTERED.length.toLocaleString();
+  var body = document.getElementById('gm-table-body');
+  body.scrollTop = 0;
+  renderVisible();
+}
+
+function bindChips(sel, key) {
+  document.querySelectorAll(sel + ' .chip').forEach(function(c) {
+    c.addEventListener('click', function() {
+      document.querySelectorAll(sel + ' .chip').forEach(function(x){ x.classList.remove('active'); });
+      c.classList.add('active');
+      S[key] = c.dataset[key] || '';
+      applyFilter();
+    });
+  });
+}
+
+// ============== 详情 ==============
+function showDetail(id) {
+  var p = GM_DATA.providers.find(function(x){ return x.id === id; });
+  if (!p) return;
+  document.getElementById('gm-d-name').textContent = p.name_zh;
+  document.getElementById('gm-d-domain').textContent = (p.domain || '');
+  document.getElementById('gm-d-region').textContent = p.region === 'cn' ? '🇨🇳 中国大陆' : (p.region === 'global' ? '🌍 海外' : p.region);
+  document.getElementById('gm-d-type').textContent = p.type === 'aggregator' ? '🔀 中转 / 聚合' : (p.type === 'gateway' ? '🌐 网关' : p.type);
+  document.getElementById('gm-d-status').textContent = ({online:'🟢 在线', offline:'⚫ 离线', risky:'🔴 风险', unstable:'🟡 不稳定', unverified:'⚪ 未验证'})[p.online_status] || p.online_status;
+  document.getElementById('gm-d-mult').textContent = p.price_multiplier != null ? p.price_multiplier.toFixed(2) + 'x' : '—';
+  document.getElementById('gm-d-pay').textContent = (p.payment_methods || []).join(', ') || '—';
+  document.getElementById('gm-d-models').textContent = (p.supported_models || []).map(function(m){ return MODEL_LABEL[m] || m; }).join(', ') || '—';
+  var srcLabels = {relaypick:'RelayPick', veridrop:'Veridrop', aiapirank:'AIAPIRank', apisou:'APISou', awesome_ai_api:'awesome-ai-api', toolify:'Toolify', apipingce:'apipingce', zuiquanapi:'zuiquanapi', airecommended:'airecommended', official:'官方', baidu:'百度搜索', v2ex:'V2EX'};
+  document.getElementById('gm-d-src').textContent = (p.source_list || []).map(function(s){ return srcLabels[s] || s; }).join(', ') || '—';
+  document.getElementById('gm-d-id').textContent = p.id;
+  var notesWrap = document.getElementById('gm-d-notes-wrap');
+  if (p.notes) {
+    notesWrap.style.display = '';
+    document.getElementById('gm-d-notes').textContent = p.notes;
+  } else {
+    notesWrap.style.display = 'none';
+  }
+  var link = document.getElementById('gm-d-link');
+  link.href = escapeUrl(p.domain);
+  document.getElementById('gm-detail').classList.add('open');
+}
+
+document.addEventListener('click', function(e){
+  var btn = e.target.closest && e.target.closest('[data-act="detail"]');
+  if (btn) {
+    var row = btn.closest('.gm-row');
+    if (row && row.dataset.id) showDetail(row.dataset.id);
+  }
+  if (e.target.id === 'gm-detail') e.target.classList.remove('open');
+});
+
+// ============== 启动 ==============
+function boot() {
+  var stats = GM_DATA.meta ? GM_DATA.meta.stats : (GM_DATA.stats || {});
+  var total = (stats && stats.total) || GM_DATA.providers.length;
+  var byRegion = (stats && stats.by_region) || {};
+  var byStatus = (stats && stats.by_online_status) || (stats && stats.by_status) || {};
+  var byType = (stats && stats.by_type) || {};
+
+  // KPI 墙 — 数据驱动
+  var proBonoKpi = (stats && stats.pro_bono_count) || GM_DATA.providers.filter(function(p){ return p.suspicion === 'possibly_charity'; }).length;
+  var withMult = (stats && stats.fields_extracted && stats.fields_extracted.with_multiplier) || GM_DATA.providers.filter(function(p){ return p.price_multiplier != null; }).length;
+  var humanV = (stats && stats.human_verified) || 0;
+
+  var cnN = byRegion.cn || 0, glN = byRegion.global || 0;
+  var onlineN = byStatus.online || 0, offlineN = byStatus.offline || 0, riskyN = (byStatus.risky || 0) + (byStatus.unstable || 0);
+
+  var kpis = [
+    [total, '总收录', '公开可访问的不合规中转站', 'is-orange'],
+    [cnN, '中国大陆运营', '主要服务国内用户', ''],
+    [glN, '海外运营', '主要服务海外用户', 'is-purple'],
+    [onlineN, '当前在线', '探针可达', 'is-green'],
+    [proBonoKpi, '已确认公益', '🎁 疑似非营利 / 公共利益', ''],
+  ];
+  document.getElementById('gm-kpi').innerHTML = kpis.map(function(c) {
+    return '<div class="card kpi-card">' +
+      '<div class="kpi-num ' + c[3] + '">' + c[0] + '</div>' +
+      '<div class="kpi-label">' + c[1] + '</div>' +
+      '<div class="kpi-sub">' + c[2] + '</div></div>';
+  }).join('') +
+    '<div style="grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;font-size:11px;color:var(--muted);flex-wrap:wrap;">' +
+      '<span>🔴 风险/不稳定 <strong style="color:var(--danger);font-family:var(--font-mono);">' + riskyN + '</strong></span>' +
+      '<span>⚫ 已离线 <strong style="color:var(--fg);font-family:var(--font-mono);">' + offlineN + '</strong></span>' +
+      '<span>💰 已采集价格倍率 <strong style="color:var(--accent);font-family:var(--font-mono);">' + withMult + '</strong> 家</span>' +
+      '<span>📊 数据源: <strong style="font-family:var(--font-mono);">不合规API中转站完整清单_20260920.xlsx</strong></span>' +
+    '</div>';
+
+  document.getElementById('gm-total').textContent = total.toLocaleString();
+  document.getElementById('gm-banner-total').textContent = total;
+  document.title = total + ' 家不合规中转站 · 灰产市场透明化目录 · API优选咨询';
+
+  // 绑定筛选
+  bindChips('#gm-region-chips', 'region');
+  bindChips('#gm-status-chips', 'status');
+  bindChips('#gm-type-chips', 'type');
+  document.getElementById('gm-q').addEventListener('input', function(e){
+    S.q = e.target.value || '';
+    applyFilter();
+  });
+
+  // 虚拟滚动
+  var body = document.getElementById('gm-table-body');
+  var raf = null;
+  body.addEventListener('scroll', function() {
+    if (raf) return;
+    raf = requestAnimationFrame(function() { raf = null; renderVisible(); });
+  });
+  window.addEventListener('resize', renderVisible);
+
+  applyFilter();
+}
+
+// ============== 数据加载（优先脚本，回退 fetch，最后回退 data.js） ==============
+function tryBoot() {
+  if (window.NON_COMPLIANT_DATA && window.NON_COMPLIANT_DATA.providers) {
+    GM_DATA = window.NON_COMPLIANT_DATA;
+    boot();
+    return true;
+  }
+  return false;
+}
+if (!tryBoot()) {
+  fetch('../02_data/non_compliant_providers.json')
+    .then(function(r){ if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+    .then(function(d){ GM_DATA = d; boot(); })
+    .catch(function(){
+      // 回退：从 data.js 找（含 non_compliant 字段的 providers）
+      var D = window.API_RADAR_DATA;
+      if (D && D.providers) {
+        var filtered = D.providers.filter(function(p){ return p.compliance === 'non_compliant'; });
+        GM_DATA = {
+          meta: { stats: { total: filtered.length, by_region: {}, by_online_status: {}, by_type: {}, fields_extracted: {} } },
+          providers: filtered
+        };
+        boot();
+      } else {
+        document.getElementById('gm-table-body').innerHTML =
+          '<div class="empty-state"><div class="empty-state-icon">❌</div>数据加载失败 · 请确认 <code>non_compliant_data.js</code> 或 <code>02_data/non_compliant_providers.json</code> 存在</div>';
+      }
+    });
+}
+
+// 顶部导航（与其他页面一致）
+(function(){
+  var NAV = [
+    { href: 'index.html', label: '首页', id: 'home' },
+    { href: 'models.html', label: '模型库', id: 'models' },
+    { href: 'providers.html', label: '渠道库', id: 'providers' },
+    { href: 'compare.html', label: '比价', id: 'compare' },
+    { href: 'events.html', label: '行情', id: 'events' },
+    { href: 'playground.html', label: 'Playground', id: 'playground' },
+    { href: 'business.html', label: '商家', id: 'business' },
+    { href: 'watch.html', label: '观察室', id: 'watch' },
+    { href: 'method.html', label: '方法', id: 'method' },
+    { href: 'test.html', label: '测 Key', id: 'test' },
+  ];
+  var bar = document.getElementById('topbar');
+  if (!bar) return;
+  bar.innerHTML = '<div class="topbar-inner">' +
+    '<a href="index.html" class="brand">' +
+      '<div class="brand-logo">R</div>' +
+      '<span class="brand-text">API优选咨询</span>' +
+      '<span class="brand-sub">v2.1</span>' +
+    '</a>' +
+    '<nav class="nav">' + NAV.map(function(n){
+      return '<a href="' + n.href + '">' + n.label + '</a>';
+    }).join('') + '</nav>' +
+  '</div>';
+})();
+</script>
+
+</body>
+</html>
