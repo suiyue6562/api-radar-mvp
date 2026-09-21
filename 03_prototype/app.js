@@ -1,6 +1,6 @@
 // API优选咨询 - 主应用脚本 v2.1
 // 包含顶部导航、IQ 榜、时间线、KPI、6列主表、Top Picks、Perks、Featured、Best For、Tab、计算器、搜索
-// 首页 v3 — okkmax 风格
+// 首页 v3 — okkmax 极简白底风格（无渐变、无 glow）
 
 const D = (typeof API_RADAR_DATA !== 'undefined') ? API_RADAR_DATA : (window.API_RADAR_DATA || { vendors: [], models: [], providers: [], offerings: [], events: [] });
 
@@ -184,7 +184,7 @@ function renderModelIQ() {
       const trendArrow = trend >= 0 ? '▲' : '▼';
       const trendColor = trend >= 0 ? 'var(--success)' : '#f87171';
       return '<a href="model.html?id=' + m.id + '" class="card" style="padding:16px 18px;text-decoration:none;color:inherit;display:flex;align-items:center;gap:14px;transition:all 0.2s;">' +
-        '<div style="font-family:var(--font-mono);font-size:22px;font-weight:800;background:var(--grad-primary);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;min-width:32px;">#' + row.score + '</div>' +
+        '<div style="font-family:var(--font-mono);font-size:22px;font-weight:800;color:var(--fg-strong);min-width:32px;">#' + row.score + '</div>' +
         '<div style="width:36px;height:36px;border-radius:8px;background:var(--bg-deep);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">' + logo + '</div>' +
         '<div style="flex:1;min-width:0;">' +
           '<div style="font-weight:700;font-size:13px;line-height:1.2;">' + escapeHtml(m.display_name || m.name) + '</div>' +

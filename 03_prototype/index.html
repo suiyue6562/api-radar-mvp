@@ -29,8 +29,8 @@
   gap: 8px;
   padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(0,217,255,0.08);
-  border: 1px solid rgba(0,217,255,0.2);
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   color: var(--accent);
   font-size: 12px;
   font-weight: 600;
@@ -40,8 +40,8 @@
   width: 6px; height: 6px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: var(--glow-cyan);
-  animation: pulse-glow 2s infinite;
+  box-shadow: var(---cyan);
+  
 }
 .hero-v3 h1 {
   font-size: 56px;
@@ -51,7 +51,7 @@
   letter-spacing: -0.02em;
 }
 .hero-v3 h1 .gradient-text {
-  background: linear-gradient(135deg, #00d9ff 0%, #b066ff 50%, #ff6b9d 100%);
+  background: #000000;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -126,7 +126,7 @@
 }
 .iq-card:hover::before { transform: scaleX(1); }
 .iq-card:hover { border-color: var(--border-hover); transform: translateY(-3px); }
-.iq-card-1 { background: linear-gradient(135deg, rgba(0,217,255,0.06), rgba(176,102,255,0.04)); }
+.iq-card-1 { background: #000000, rgba(176,102,255,0.04)); }
 .iq-rank-big {
   font-family: var(--font-mono);
   font-size: 48px;
@@ -192,7 +192,7 @@
   text-decoration: none;
   color: inherit;
 }
-.timeline-row:hover { background: rgba(0,217,255,0.04); }
+.timeline-row:hover { background: rgba(0, 0, 0, 0.04); }
 .timeline-row:last-child { border-bottom: 0; }
 .tl-logo {
   width: 28px; height: 28px;
@@ -210,8 +210,8 @@
   font-size: 11px;
   color: var(--accent);
   padding: 3px 8px;
-  background: rgba(0,217,255,0.08);
-  border: 1px solid rgba(0,217,255,0.15);
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   white-space: nowrap;
 }
@@ -280,7 +280,7 @@
   align-items: center;
   padding: 18px 24px;
   border-bottom: 1px solid var(--border);
-  background: rgba(0,217,255,0.02);
+  background: rgba(0, 0, 0, 0.02);
 }
 .rank-table-header h3 { margin: 0; font-size: 16px; }
 .rank-table {
@@ -305,7 +305,7 @@
   transition: background 0.15s;
   cursor: pointer;
 }
-.rank-table tbody tr:hover { background: rgba(0,217,255,0.04); }
+.rank-table tbody tr:hover { background: rgba(0, 0, 0, 0.04); }
 .rank-table tbody tr:last-child { border-bottom: 0; }
 .rank-table td { padding: 14px; vertical-align: middle; }
 .rank-table .col-rank {
@@ -374,8 +374,8 @@
   width: 20px; height: 20px;
   border-radius: 4px;
   font-size: 11px;
-  background: rgba(0,217,255,0.08);
-  border: 1px solid rgba(0,217,255,0.15);
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.15);
 }
 .rank-table .pay-icon.no { opacity: 0.3; }
 .rank-table .review-stars {
@@ -470,8 +470,8 @@
   font-size: 10px;
   color: var(--accent);
   padding: 3px 7px;
-  background: rgba(0,217,255,0.08);
-  border: 1px solid rgba(0,217,255,0.15);
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   white-space: nowrap;
   margin-left: auto;
@@ -515,8 +515,8 @@
   letter-spacing: 0.08em;
   color: var(--accent);
   padding: 4px 10px;
-  background: rgba(0,217,255,0.08);
-  border: 1px solid rgba(0,217,255,0.2);
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   margin-bottom: 14px;
 }
@@ -592,14 +592,14 @@
   font-size: 11px;
   color: var(--accent);
   padding: 5px 10px;
-  background: rgba(0,217,255,0.06);
-  border: 1px solid rgba(0,217,255,0.15);
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 5px;
   text-decoration: none;
   transition: all 0.15s;
 }
 .footer-machines a:hover {
-  background: rgba(0,217,255,0.12);
+  background: rgba(0, 0, 0, 0.12);
   border-color: var(--accent);
 }
 .footer-col h4 {
@@ -804,22 +804,22 @@
           <div style="font-size:24px;margin-bottom:10px;">📄</div>
           <div style="font-weight:700;font-size:14px;margin-bottom:6px;">OpenAPI 3.1</div>
           <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:10px;">60 模型 + 40 渠道查询端点，可被 GPT Actions / Claude Tools 自动生成客户端。</div>
-          <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);padding:5px 8px;background:rgba(0,217,255,0.08);border:1px solid rgba(0,217,255,0.2);border-radius:5px;display:inline-block;">GET /openapi.json</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);padding:5px 8px;background:rgba(0, 0, 0, 0.08);border:1px solid rgba(0, 0, 0, 0.2);border-radius:5px;display:inline-block;">GET /openapi.json</div>
         </a>
         <a href="mcp.json" target="_blank" rel="noopener" class="card" style="padding:20px;text-decoration:none;color:inherit;transition:all 0.2s;display:block;">
           <div style="font-size:24px;margin-bottom:10px;">🔌</div>
           <div style="font-weight:700;font-size:14px;margin-bottom:6px;">MCP Server</div>
           <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:10px;">Model Context Protocol 配置。Claude Desktop / Zed / Continue 一行命令装好。</div>
-          <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);padding:5px 8px;background:rgba(0,217,255,0.08);border:1px solid rgba(0,217,255,0.2);border-radius:5px;display:inline-block;">GET /mcp.json</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);padding:5px 8px;background:rgba(0, 0, 0, 0.08);border:1px solid rgba(0, 0, 0, 0.2);border-radius:5px;display:inline-block;">GET /mcp.json</div>
         </a>
         <a href="llms.txt" target="_blank" rel="noopener" class="card" style="padding:20px;text-decoration:none;color:inherit;transition:all 0.2s;display:block;">
           <div style="font-size:24px;margin-bottom:10px;">📚</div>
           <div style="font-weight:700;font-size:14px;margin-bottom:6px;">llms.txt</div>
           <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:10px;">纯 Markdown 站点地图 + 全模型说明。LLM 直接读，知道本站做什么、数据怎么用。</div>
-          <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);padding:5px 8px;background:rgba(0,217,255,0.08);border:1px solid rgba(0,217,255,0.2);border-radius:5px;display:inline-block;">GET /llms.txt</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);padding:5px 8px;background:rgba(0, 0, 0, 0.08);border:1px solid rgba(0, 0, 0, 0.2);border-radius:5px;display:inline-block;">GET /llms.txt</div>
         </a>
       </div>
-      <div style="margin-top:18px;padding:14px;background:rgba(0,217,255,0.04);border:1px solid rgba(0,217,255,0.15);border-radius:8px;">
+      <div style="margin-top:18px;padding:14px;background:rgba(0, 0, 0, 0.04);border:1px solid rgba(0, 0, 0, 0.15);border-radius:8px;">
         <p style="font-size:12px;color:var(--muted);margin:0;line-height:1.7;">
           <strong style="color:var(--accent);">用法示例 —</strong>
           在你的 <code style="background:var(--bg-deep);padding:2px 6px;border-radius:4px;color:var(--accent);">AGENTS.md</code> 加一行：

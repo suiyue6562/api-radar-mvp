@@ -40,7 +40,7 @@
 
 .wtc-section-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .wtc-section-title h2 { margin: 0; font-size: 18px; font-weight: 700; }
-.wtc-section-title .live-dot { display: inline-block; width: 6px; height: 6px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; animation: pulse-glow 2s infinite; margin-right: 6px; }
+.wtc-section-title .live-dot { display: inline-block; width: 6px; height: 6px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e;  margin-right: 6px; }
 
 /* Cross-device sync 卡片 */
 .wtc-sync-card { padding: 18px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); }
@@ -49,7 +49,7 @@
 .wtc-sync-stat-num { font-family: var(--font-mono); font-size: 20px; font-weight: 800; color: var(--accent); }
 .wtc-sync-stat-label { font-size: 10px; color: var(--muted); margin-top: 2px; text-transform: uppercase; }
 .wtc-sync-devices { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
-.wtc-sync-device { font-size: 10px; padding: 4px 8px; border-radius: 999px; background: rgba(0,217,255,0.08); color: var(--accent); border: 1px solid rgba(0,217,255,0.2); }
+.wtc-sync-device { font-size: 10px; padding: 4px 8px; border-radius: 999px; background: rgba(0, 0, 0, 0.08); color: var(--accent); border: 1px solid rgba(0, 0, 0, 0.2); }
 @media (max-width: 600px) { .wtc-sync-grid { grid-template-columns: 1fr 1fr; } }
 
 /* 趋势模型图 */
@@ -62,7 +62,7 @@
 .wtc-trend-title { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .wtc-trend-vendor { font-size: 10px; color: var(--muted); }
 .wtc-trend-bar { height: 8px; border-radius: 4px; background: rgba(120,160,255,0.1); overflow: hidden; position: relative; }
-.wtc-trend-bar-fill { height: 100%; background: linear-gradient(90deg, #00d9ff, #b066ff); border-radius: 4px; }
+.wtc-trend-bar-fill { height: 100%; background: #000000; border-radius: 4px; }
 .wtc-trend-pct { font-family: var(--font-mono); font-size: 12px; font-weight: 700; text-align: right; }
 .wtc-trend-pct.up { color: #22c55e; }
 .wtc-trend-pct.down { color: #ef4444; }

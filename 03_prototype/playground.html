@@ -32,7 +32,7 @@
 
 .pg-probes-grid { display: grid; grid-template-columns: 1fr; gap: 4px; max-height: 280px; overflow-y: auto; padding-right: 4px; }
 .pg-probe-check { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 6px; cursor: pointer; transition: background 0.15s; font-size: 12px; }
-.pg-probe-check:hover { background: rgba(0,217,255,0.04); }
+.pg-probe-check:hover { background: rgba(0, 0, 0, 0.04); }
 .pg-probe-check input { width: auto; padding: 0; margin: 0; cursor: pointer; }
 .pg-probe-check-num { font-family: var(--font-mono); font-size: 10px; color: var(--muted); min-width: 18px; }
 .pg-probe-check-name { flex: 1; font-weight: 500; }
@@ -74,7 +74,7 @@
 .pg-warn.danger .pg-warn-icon { color: #ef4444; }
 .pg-warn.warn { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.25); }
 .pg-warn.warn .pg-warn-icon { color: #fbbf24; }
-.pg-warn.info { background: rgba(0,217,255,0.06); border: 1px solid rgba(0,217,255,0.25); }
+.pg-warn.info { background: rgba(0, 0, 0, 0.06); border: 1px solid rgba(0, 0, 0, 0.25); }
 .pg-warn.info .pg-warn-icon { color: var(--accent); }
 .pg-warn.ok { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.25); }
 .pg-warn.ok .pg-warn-icon { color: #22c55e; }
@@ -105,9 +105,9 @@
 <!-- SVG gradient for score ring -->
 <svg width="0" height="0" style="position:absolute;">
   <linearGradient id="score-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-    <stop offset="0%" stop-color="#00d9ff"/>
-    <stop offset="50%" stop-color="#b066ff"/>
-    <stop offset="100%" stop-color="#ff6b9d"/>
+    <stop offset="0%" stop-color="#000000"/>
+    <stop offset="50%" stop-color="#000000"/>
+    <stop offset="100%" stop-color="#000000"/>
   </linearGradient>
 </svg>
 

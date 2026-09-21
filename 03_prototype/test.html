@@ -28,9 +28,9 @@
 
 /* 加载动画 */
 .tk-loading { text-align: center; padding: 40px 20px; color: var(--muted); }
-.tk-loading-icon { font-size: 32px; margin-bottom: 8px; animation: pulse-glow 1.5s infinite; display: inline-block; }
+.tk-loading-icon { font-size: 32px; margin-bottom: 8px;  display: inline-block; }
 .tk-loading-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin: 16px auto; max-width: 400px; }
-.tk-loading-bar-fill { height: 100%; background: var(--grad-primary); animation: loading-bar 1.5s ease-in-out infinite; }
+.tk-loading-bar-fill { height: 100%; background: var(--grad-primary);  }
 @keyframes loading-bar {
   0% { width: 0; margin-left: 0; }
   50% { width: 60%; margin-left: 20%; }
@@ -66,7 +66,7 @@
 .tk-warn.danger .tk-warn-icon { color: #ef4444; }
 .tk-warn.warn { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.25); }
 .tk-warn.warn .tk-warn-icon { color: #fbbf24; }
-.tk-warn.info { background: rgba(0,217,255,0.06); border: 1px solid rgba(0,217,255,0.25); }
+.tk-warn.info { background: rgba(0, 0, 0, 0.06); border: 1px solid rgba(0, 0, 0, 0.25); }
 .tk-warn.info .tk-warn-icon { color: var(--accent); }
 .tk-warn.ok { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.25); }
 .tk-warn.ok .tk-warn-icon { color: #22c55e; }
@@ -94,9 +94,9 @@
 
 <svg width="0" height="0" style="position:absolute;">
   <linearGradient id="score-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-    <stop offset="0%" stop-color="#00d9ff"/>
-    <stop offset="50%" stop-color="#b066ff"/>
-    <stop offset="100%" stop-color="#ff6b9d"/>
+    <stop offset="0%" stop-color="#000000"/>
+    <stop offset="50%" stop-color="#000000"/>
+    <stop offset="100%" stop-color="#000000"/>
   </linearGradient>
 </svg>
 
