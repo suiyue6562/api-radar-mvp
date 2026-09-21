@@ -245,6 +245,32 @@
   .gm-row > div:nth-child(7) { display: none; }
   .gm-table-body { height: 480px; }
 }
+
+/* === 标签色板（价格/风险/年限/支付） === */
+.gm-pill-muted { background: #f3f4f6; color: #6b7280; border-color: #e5e7eb; }
+.gm-pill-good { background: #dcfce7; color: #166534; border-color: #86efac; }
+.gm-pill-warn { background: #fef3c7; color: #92400e; border-color: #fcd34d; }
+.gm-pill-bad { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+.gm-pill-charity { background: #ede9fe; color: #5b21b6; border-color: #c4b5fd; }
+.gm-pill-pay { background: #eff6ff; color: #1e40af; border-color: #bfdbfe; }
+
+.gm-pills-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.gm-pill { white-space: nowrap; }
+
+/* === 详情面板：优劣势双栏 === */
+.gm-pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+.gm-pros-col, .gm-cons-col { padding: 10px; border-radius: 6px; }
+.gm-pros-col { background: #f0fdf4; border: 1px solid #bbf7d0; }
+.gm-cons-col { background: #fef2f2; border: 1px solid #fecaca; }
+.gm-pros-col h4, .gm-cons-col h4 { font-size: 11px; font-weight: 700; margin: 0 0 8px; text-transform: uppercase; letter-spacing: 0.06em; }
+.gm-pros-col h4 { color: #166534; }
+.gm-cons-col h4 { color: #991b1b; }
+.gm-pro-item, .gm-con-item { font-size: 12px; line-height: 1.6; padding: 4px 0; }
+.gm-pro-item { color: #166534; }
+.gm-con-item { color: #991b1b; }
+.gm-pro-empty, .gm-con-empty { font-size: 11px; color: var(--muted); font-style: italic; padding: 4px 0; }
+@media (max-width: 700px) { .gm-pros-cons { grid-template-columns: 1fr; } }
+
 </style>
 </head>
 <body>
@@ -321,7 +347,18 @@
       <div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">📝 备注</div>
       <div class="gm-detail-notes" id="gm-d-notes">-</div>
     </div>
-    <div class="gm-detail-foot">
+
+        <div class="gm-pros-cons">
+          <div class="gm-pros-col">
+            <h4>✓ 优点</h4>
+            <div id="gm-d-pros"></div>
+          </div>
+          <div class="gm-cons-col">
+            <h4>⚠️ 风险</h4>
+            <div id="gm-d-cons"></div>
+          </div>
+        </div>
+            <div class="gm-detail-foot">
       <span>本页所有外链均带 nofollow · 不为收录站背书</span>
       <a id="gm-d-link" href="#" target="_blank" rel="nofollow noopener" class="btn btn-ghost" style="font-size:12px;">访问 →</a>
     </div>
@@ -627,20 +664,68 @@ function sourcePill(srcs) {
 var ROW_H = 42; // 估算行高
 var BUFFER = 8;
 
+// === 价格标签生成 ===
+function priceTagHtml(m) {
+  if (m == null) return '<span class="gm-pill gm-pill-muted">❓ 倍率未公开</span>';
+  if (m < 0.3) return '<span class="gm-pill gm-pill-charity">💰 ' + m.toFixed(2) + 'x 超低价</span>';
+  if (m < 0.5) return '<span class="gm-pill gm-pill-charity">💸 ' + m.toFixed(2) + 'x 低价</span>';
+  if (m < 1.0) return '<span class="gm-pill gm-pill-good">💸 ' + m.toFixed(2) + 'x 健康价</span>';
+  if (m < 1.5) return '<span class="gm-pill gm-pill-muted">⚖️ ' + m.toFixed(2) + 'x 标准</span>';
+  if (m < 2.5) return '<span class="gm-pill gm-pill-warn">💎 ' + m.toFixed(2) + 'x 溢价</span>';
+  return '<span class="gm-pill gm-pill-bad">🔴 ' + m.toFixed(2) + 'x 高溢价</span>';
+}
+
+// === 年限标签 ===
+function ageTagHtml(months) {
+  if (months == null) return '';
+  if (months < 3) return '<span class="gm-pill gm-pill-warn">🆕 仅 ' + months + ' 月</span>';
+  if (months < 12) return '<span class="gm-pill gm-pill-muted">🟡 ' + months + ' 月</span>';
+  return '<span class="gm-pill gm-pill-good">✅ 老牌 ' + months + '月+</span>';
+}
+
+// === 在线率标签 ===
+function uptimeTagHtml(p) {
+  var u = p.uptime_pct;
+  if (u == null) return '';
+  if (u < 30) return '<span class="gm-pill gm-pill-bad">⚠️ 疑似跑路 ' + u + '%</span>';
+  if (u < 70) return '<span class="gm-pill gm-pill-warn">⚠️ 限流 ' + u + '%</span>';
+  if (u < 90) return '<span class="gm-pill gm-pill-muted">在线率 ' + u + '%</span>';
+  return '<span class="gm-pill gm-pill-good">✓ ' + u + '%</span>';
+}
+
+// === 支付图标（沿用 okkmax）===
+function payIconsHtml(methods) {
+  if (!methods || methods.length === 0) return '<span class="gm-pill gm-pill-muted">❓ 支付未公开</span>';
+  var icons = {alipay:'💙 支付宝', wechat:'💚 微信', usdt:'🟢 USDT', paypal:'💛 PayPal', card:'💳 银行卡', bank:'🏦 对公', corp:'🏢 企业'};
+  return methods.map(function(m){ var l = icons[m]; return l ? '<span class="gm-pill gm-pill-pay">' + l + '</span>' : ''; }).filter(Boolean).join('');
+}
+
+// === 风险汇总标签 ===
+function riskPillsHtml(riskLevel) {
+  if (riskLevel === 'low') return '<span class="gm-pill gm-pill-good">🟢 低风险</span>';
+  if (riskLevel === 'medium') return '<span class="gm-pill gm-pill-warn">🟡 中风险</span>';
+  return '<span class="gm-pill gm-pill-bad">🔴 高风险（缺数据）</span>';
+}
+
 function rowHtml(p, idx) {
   var mult = p.price_multiplier != null ? p.price_multiplier : null;
-  var multTxt = mult != null ? mult.toFixed(2) + 'x' : '<span class="gm-mod-multi">—</span>';
-  var isCharity = p.suspicion === 'possibly_charity';
-  var multCls = multClass(mult) + (isCharity ? ' is-charity' : '');
-  var charityTag = isCharity ? ' <span class="gm-pill gm-pill-unverified" style="background:#eff6ff;color:#1e40af;border-color:#bfdbfe;">🎁 公益</span>' : '';
+  var multCls = multClass(mult);
+  var tags = p.tags || [];
+  var hasCharity = tags.indexOf('risk_charity_suspicion') >= 0;
+  var hasRuined = tags.indexOf('risk_ruined') >= 0;
+  // 顶部 pill：价格 + 风险 + 年限
+  var topPills = priceTagHtml(mult) + ' ' + riskPillsHtml(p.risk_level) + ' ' + ageTagHtml(p.months_active);
   return '<div class="gm-row" data-id="' + escapeHtml(p.id) + '" style="height:' + ROW_H + 'px;">' +
     '<div class="gm-idx">' + (idx + 1) + '</div>' +
-    '<div class="gm-name"><a href="' + escapeUrl(p.domain) + '" target="_blank" rel="nofollow noopener">' + escapeHtml(p.name_zh) + '</a>' + charityTag + '</div>' +
-    '<div>' + regionPill(p.region) + '</div>' +
-    '<div class="gm-models">' + renderModels(p.supported_models) + '</div>' +
-    '<div class="gm-mult ' + multCls + '">' + multTxt + '</div>' +
-    '<div>' + statusPill(p.online_status) + '</div>' +
-    '<div>' + sourcePill(p.source_list) + '</div>' +
+    '<div class="gm-name">' +
+      '<a href="' + escapeUrl(p.domain) + '" target="_blank" rel="nofollow noopener">' + escapeHtml(p.name_zh) + '</a>' +
+      '<div class="gm-pills-row">' + topPills + '</div>' +
+    '</div>' +
+    '<div>' + regionPill(p.region) + '<div style="font-size:10px;color:var(--muted);margin-top:2px;">' + escapeHtml(p.type === 'aggregator' ? '聚合' : p.type === 'gateway' ? '网关' : p.type) + '</div></div>' +
+    '<div class="gm-models">' + renderModels(p.supported_models) + '<div style="font-size:10px;color:var(--muted);margin-top:2px;">' + (p.supported_models ? p.supported_models.length : 0) + ' 类模型</div></div>' +
+    '<div class="gm-mult ' + multCls + '">' + (mult != null ? mult.toFixed(2) + 'x' : '—') + '</div>' +
+    '<div>' + statusPill(p.online_status) + (p.uptime_pct != null ? '<div style="font-size:10px;margin-top:2px;">' + p.uptime_pct + '%</div>' : '') + '</div>' +
+    '<div style="font-size:11px;">' + payIconsHtml(p.payment_methods) + '</div>' +
     '<div class="gm-actions"><button class="gm-act-btn" data-act="detail">详情</button></div>' +
     '</div>';
 }
@@ -717,6 +802,18 @@ function showDetail(id) {
   } else {
     notesWrap.style.display = 'none';
   }
+  // === 渲染优劣势双栏（清晰明白） ===
+  var proEl = document.getElementById('gm-d-pros');
+  var conEl = document.getElementById('gm-d-cons');
+  var pros = p.strengths || [];
+  var cons = p.weaknesses || [];
+  proEl.innerHTML = pros.length
+    ? pros.map(function(s){ return '<div class="gm-pro-item">✓ ' + escapeHtml(s.replace(/^✓\s*/, '')) + '</div>'; }).join('')
+    : '<div class="gm-pro-empty">无明确优点记录</div>';
+  conEl.innerHTML = cons.length
+    ? cons.map(function(s){ return '<div class="gm-con-item">⚠ ' + escapeHtml(s.replace(/^[⚠✗❓]+\s*/, '')) + '</div>'; }).join('')
+    : '<div class="gm-con-empty">无明确风险记录</div>';
+
   var link = document.getElementById('gm-d-link');
   link.href = escapeUrl(p.domain);
   document.getElementById('gm-detail').classList.add('open');

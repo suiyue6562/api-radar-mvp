@@ -1,15 +1,33 @@
 // API优选咨询 Cloudflare Worker - Phase 2
 // hostname routing: api.apiyouxuan.top -> API, admin.apiyouxuan.top -> Admin
+// Phase 2.1: Brand fallback for www.apireader.top when origin is down
+
+// 源站（Tunnel → Python http.server）的回源地址。
+// Worker 路由到 www.apireader.top 时，先去拉源站；拉不到就降级。
+const ORIGIN_HOSTS = [
+  'https://www.apireader.top',
+  'https://apireader.top',
+];
 
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    const host = request.headers.get('host') || '';
+    const host = (request.headers.get('host') || '').toLowerCase();
     const path = url.pathname;
     const method = request.method;
 
     if (method === 'OPTIONS') {
       return new Response(null, { headers: corsHeaders() });
+    }
+
+    // ============ Phase 2.1: 品牌降级 fallback ============
+    // www.apireader.top / apireader.top 走主站源站；
+    // 不接管 /api/* 和 /admin*，留给下方原路由处理。
+    if (method === 'GET' && shouldProxyToOrigin(host, path)) {
+      const fallback = await tryOrigin(request, path);
+      if (fallback) return fallback;
+      // 源站死了 → 品牌降级页
+      return brandFallbackPage(host, path);
     }
 
     if (host.startsWith('admin.')) {
@@ -586,4 +604,302 @@ function corsHeaders() {
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Max-Age': '86400'
   };
+}
+
+// ============ Phase 2.1: 品牌降级 fallback ============
+//
+// 场景：apireader.top / www.apireader.top 走 Cloudflare Tunnel → 源站
+//       (Python http.server) → 源站进程死了，Tunnel 把 502 透出给 Cloudflare。
+//
+// 行为：Worker 在路由接管前先试一次回源，成功就透传；
+//       失败就返回品牌友好 HTML（不是 Cloudflare 通用 502 页）。
+
+// 哪些 Host + Path 走回源策略？
+function shouldProxyToOrigin(host, path) {
+  // 只接管主站域
+  if (host !== 'apireader.top' && host !== 'www.apireader.top') return false;
+  // 不接管 Worker 自己的 API/Admin 路由
+  if (path.startsWith('/api/')) return false;
+  if (path === '/admin' || path.startsWith('/admin') || path === '/admin/') return false;
+  return true;
+}
+
+// 试源站：成功返回 Response；失败返回 null（调用方决定降级）
+async function tryOrigin(request, path) {
+  const headers = new Headers(request.headers);
+  // 移除 Cloudflare 专属头，避免回源时不一致
+  headers.set('Host', 'www.apireader.top');
+  for (const k of ['cf-connecting-ip', 'cf-warp-tag-id', 'cf-ray']) headers.delete(k);
+  for (const base of ORIGIN_HOSTS) {
+    try {
+      const controller = new AbortController();
+      const t = setTimeout(() => controller.abort(), 4000); // 4s 超时，比 Cloudflare 早
+      const r = await fetch(base + path + (new URL(request.url)).search, {
+        method: 'GET',
+        headers,
+        redirect: 'follow',
+        signal: controller.signal,
+      });
+      clearTimeout(t);
+      if (r && r.ok && r.status >= 200 && r.status < 400) {
+        // 透传：把 Content-Type 留给浏览器自己判
+        return new Response(r.body, {
+          status: r.status,
+          headers: r.headers,
+        });
+      }
+    } catch (_) {
+      // 继续试下一个 base
+    }
+  }
+  return null;
+}
+
+// 品牌降级页 —— 使用 03_prototype/style.css 同样的 okkmax 极简白底风格
+function brandFallbackPage(host, path) {
+  const html = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API优选咨询 — 源站维护中</title>
+<meta name="description" content="API优选咨询源站正在维护，API 路由仍正常可用。">
+<meta name="robots" content="noindex">
+<style>
+  :root {
+    --bg-base: #ffffff;
+    --bg-deep: #f9fafb;
+    --border: #e5e7eb;
+    --border-strong: #d1d5db;
+    --fg: #1a1a1a;
+    --fg-strong: #000000;
+    --muted: #6b7280;
+    --muted-2: #9ca3af;
+    --accent: #1f2937;
+    --accent-2: #2563eb;
+    --warning: #d97706;
+    --success: #16a34a;
+    --danger: #dc2626;
+    --shadow-md: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --radius: 6px;
+    --radius-lg: 8px;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: ui-monospace, 'JetBrains Mono', 'SF Mono', 'Cascadia Code', Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #fcfcfd;
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a { color: var(--fg); text-decoration: none; transition: color 0.15s; }
+  a:hover { color: var(--accent-2); }
+  button { cursor: pointer; border: 0; background: transparent; color: inherit; font: inherit; }
+  code, .mono { font-family: var(--font-mono); }
+
+  /* === Topbar（与主站一致） === */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    height: 56px;
+    display: flex; align-items: center;
+    padding: 0 24px;
+  }
+  .topbar-inner {
+    width: 100%; max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 15px; color: var(--fg-strong);
+  }
+  .brand-mark {
+    width: 28px; height: 28px;
+    border-radius: var(--radius);
+    background: var(--fg-strong);
+    color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 800; font-size: 14px;
+    letter-spacing: -0.02em;
+  }
+  .status-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--bg-base);
+  }
+  .status-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--warning);
+    box-shadow: 0 0 0 0 rgba(217,119,6,0.6);
+    animation: pulse 1.8s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(217,119,6,0.55); }
+    70% { box-shadow: 0 0 0 8px rgba(217,119,6,0); }
+    100% { box-shadow: 0 0 0 0 rgba(217,119,6,0); }
+  }
+
+  /* === Main === */
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 80px 24px 120px;
+  }
+  .eyebrow {
+    display: inline-block;
+    padding: 4px 10px;
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-size: 44px;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--fg-strong);
+    margin-bottom: 16px;
+  }
+  .lede {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 560px;
+    margin-bottom: 40px;
+  }
+
+  /* === Info card === */
+  .card {
+    background: var(--bg-base);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin: 16px 0;
+    box-shadow: var(--shadow-md);
+  }
+  .card-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .card-row:last-child { border-bottom: 0; }
+  .card-row .k { color: var(--muted); font-size: 13px; }
+  .card-row .v { font-family: var(--font-mono); font-size: 13px; color: var(--fg-strong); }
+
+  /* === CTAs === */
+  .ctas { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 42px;
+    padding: 0 20px;
+    border-radius: var(--radius);
+    font-size: 14px; font-weight: 600;
+    transition: opacity 0.15s, border-color 0.15s, background 0.15s;
+    border: 1px solid var(--border);
+    background: var(--bg-base);
+    color: var(--fg);
+  }
+  .btn:hover { border-color: var(--fg-strong); color: var(--fg-strong); }
+  .btn-primary { background: var(--fg-strong); color: #fff; border-color: var(--fg-strong); }
+  .btn-primary:hover { opacity: 0.88; color: #fff; }
+  .btn-ghost { background: transparent; }
+
+  /* === Notice === */
+  .notice {
+    margin-top: 32px;
+    padding: 14px 16px;
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .notice strong { color: var(--fg-strong); }
+
+  /* === Footer === */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 24px;
+    text-align: center;
+    color: var(--muted-2);
+    font-size: 12px;
+    font-family: var(--font-mono);
+  }
+  .footer code { background: var(--bg-deep); padding: 2px 6px; border-radius: 4px; }
+
+  @media (max-width: 560px) {
+    h1 { font-size: 32px; }
+    main { padding: 48px 20px 80px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark">R</span>
+      <span>API优选咨询</span>
+    </a>
+    <span class="status-pill">
+      <span class="status-dot"></span>
+      <span>源站维护中</span>
+    </span>
+  </div>
+</header>
+
+<main>
+  <span class="eyebrow">Service Notice · 服务提示</span>
+  <h1>源站正在维护，<br>数据服务不受影响。</h1>
+  <p class="lede">
+    www.apireader.top 的静态页面暂不可达（后台源站服务正在重启）。
+    <strong>API 数据接口一切正常</strong>，开发者与已对接服务可继续调用。
+    通常 1–3 分钟内自动恢复。
+  </p>
+
+  <div class="card" aria-label="状态详情">
+    <div class="card-row"><span class="k">受影响范围</span><span class="v">主站静态页（HTML / JS / CSS）</span></div>
+    <div class="card-row"><span class="k">API 接口</span><span class="v" style="color:var(--success);">✓ 正常</span></div>
+    <div class="card-row"><span class="k">管理后台</span><span class="v" style="color:var(--success);">✓ 正常</span></div>
+    <div class="card-row"><span class="k">预计恢复</span><span class="v">≤ 3 分钟（自动 watchdog）</span></div>
+  </div>
+
+  <div class="ctas">
+    <button class="btn btn-primary" onclick="location.reload()">↻ 重新尝试</button>
+    <a class="btn" href="https://api.apireader.top/api/data" target="_blank" rel="noopener">查看实时 API 数据 →</a>
+    <a class="btn btn-ghost" href="https://status.apireader.top" target="_blank" rel="noopener">状态页</a>
+  </div>
+
+  <div class="notice">
+    <strong>如果你正在对接 API：</strong>所有 <code>api.apireader.top/api/*</code> 端点返回真实数据，无需任何变更。
+    问题仅出现在 <code>www.apireader.top</code> 的前端页面部分。
+  </div>
+</main>
+
+<footer class="footer">
+  <code>${host}${path}</code> · 502 透传 → Worker 品牌降级 · ${new Date().toISOString().slice(0,16).replace('T',' ')} UTC
+</footer>
+
+</body>
+</html>`;
+  return new Response(html, {
+    status: 503, // 503 而不是 200，让监控工具知道这是降级状态
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'no-store, max-age=0',
+      'X-Fallback': 'origin-down',
+      'Retry-After': '60',
+    },
+  });
 }
