@@ -512,7 +512,8 @@
     // 在海外语言下，gate 仍显示但提示可一键通过
     var p = gateEl.querySelector('h2');
     if (p) p.innerHTML = '🌐 不合规中转站专区 · Access Gate';
-    gateEl.querySelector('.gm-gate-list').innerHTML =
+    var list = gateEl.querySelector('.gm-gate-list');
+    if (list) list.innerHTML =
       '<b>检测结果：</b>您的浏览器语言为 <code>' + escapeHtml(locale) + '</code>，不在中国 (zh-CN) 范围内。<br><br>' +
       '<b>📍 本站定位：</b><br>' +
       '我们是<b>中立信息发布平台</b>，只整理公开榜单 / 社区讨论 / 媒体报道中的站点信息，<b>不提供中转服务、不充值返佣、不做交易撮合</b>。<br><br>' +
