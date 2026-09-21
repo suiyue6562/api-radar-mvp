@@ -184,9 +184,11 @@ function renderPrice5D(m){const i=m.official_input_usd_m??m.price_input_per_m??0
   const now=Date.now(),day=86400000;
   const newThisWeek=D.models.filter(m=>{const d=m.release_date?Date.parse(m.release_date):0;return d&&(now-d)<=7*day}).length;
   document.getElementById('kpi-total-models').textContent=totalModels;
-  document.getElementById('kpi-total-vendors').textContent=totalVendors;
-  document.getElementById('kpi-total-skus').textContent=totalSkus;
-  document.getElementById('kpi-new-models').textContent='+'+newThisWeek;
+    document.getElementById('kpi-total-vendors').textContent=totalVendors;
+    document.getElementById('kpi-total-skus').textContent=totalSkus;
+    document.getElementById('kpi-new-models').textContent='+'+newThisWeek;
+    document.getElementById('model-count-tag').textContent=totalModels+' 个模型 · 实时';
+    document.getElementById('page-subtitle').textContent=totalModels+' 个模型横向对比 · 价格 5 维 / 周 token 用量 / 能力图标 / 综合分数 / Best for';
 
   const grid=document.getElementById('model-grid');
   const vendorBox=document.getElementById('vendor-chips');
