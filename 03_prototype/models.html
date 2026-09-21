@@ -13,11 +13,11 @@
 .models-hero h1{font-size:36px;margin-bottom:6px;font-weight:800}
 .models-hero .gradient-text{background:#000000;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .models-hero p{color:var(--muted);max-width:720px;margin:0 auto 8px;font-size:14px}
-.models-kpi-wall{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:880px;margin:16px auto 0}
+.kpi-wall{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:880px;margin:16px auto 0}
 .models-kpi{padding:14px 8px;text-align:center;border-radius:10px;background:var(--bg-card);border:1px solid var(--border);transition:all .15s}
 .models-kpi:hover{border-color:var(--accent);transform:translateY(-1px)}
 .models-kpi-num{font-family:var(--font-mono);font-size:24px;font-weight:800;color:var(--accent);line-height:1.2}.models-kpi-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:4px}.models-kpi.accent .models-kpi-num{color:var(--accent-2)}.models-kpi.warn .models-kpi-num{color:#f59e0b}.models-kpi.success .models-kpi-num{color:#22c55e}
-@media (max-width:700px){.models-kpi-wall{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:700px){.kpi-wall{grid-template-columns:repeat(2,1fr)}}
 .filter-bar{display:flex;flex-wrap:wrap;gap:14px 18px;padding:18px 20px;margin:24px 0 16px;align-items:flex-start}
 .filter-group{display:flex;flex-direction:column;gap:6px}
 .filter-group-title{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
@@ -95,7 +95,7 @@
         <h1><span class="gradient-text">🧠 AI 模型库</span></h1>
         <p id="page-subtitle">横向对比 · 价格 5 维 / 周 token 用量 / 能力图标 / 综合分数 / Best for</p>
   </div>
-  <div class="models-kpi-wall fade-in">
+  <div class="kpi-wall fade-in">
     <div class="models-kpi"><div class="models-kpi-num" id="kpi-total-models">—</div><div class="models-kpi-label">总模型</div></div>
     <div class="models-kpi accent"><div class="models-kpi-num" id="kpi-total-vendors">—</div><div class="models-kpi-label">总厂商</div></div>
     <div class="models-kpi success"><div class="models-kpi-num" id="kpi-total-skus">—</div><div class="models-kpi-label">总 SKU</div></div>

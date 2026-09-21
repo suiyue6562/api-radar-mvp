@@ -15,12 +15,12 @@
 .biz-hero p { color: var(--muted); max-width: 720px; margin: 0 auto 12px; font-size: 14px; }
 
 /* KPI 数字墙 */
-.biz-kpi-wall { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 720px; margin: 16px auto 0; }
+.kpi-wall { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 720px; margin: 16px auto 0; }
 .biz-kpi { padding: 12px 8px; text-align: center; border-radius: 10px; background: var(--bg-card); border: 1px solid var(--border); }
 .biz-kpi-num { font-family: var(--font-mono); font-size: 22px; font-weight: 800; color: var(--accent); }
 .biz-kpi-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
 .biz-kpi.warn .biz-kpi-num { color: #f59e0b; }
-@media (max-width: 700px) { .biz-kpi-wall { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 700px) { .kpi-wall { grid-template-columns: repeat(2, 1fr); } }
 
 /* === Latest test results 时间线（仿 okkmax） === */
 .biz-section-title { display: flex; align-items: center; justify-content: space-between; margin: 28px 0 12px; }
@@ -136,7 +136,7 @@
   </div>
 
   <!-- 4 个 KPI 数据墙 -->
-  <div class="biz-kpi-wall">
+  <div class="kpi-wall">
     <div class="biz-kpi">
       <div class="biz-kpi-num" id="biz-kpi-total">—</div>
       <div class="biz-kpi-label">收录商家</div>

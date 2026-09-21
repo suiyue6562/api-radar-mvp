@@ -31,17 +31,17 @@
 .pvd-hero-desc { color: var(--muted); font-size: 13px; line-height: 1.7; margin: 14px 0 4px; max-width: 920px; }
 
 /* 4 KPI 数据墙 */
-.pvd-kpi-wall { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 18px 0 8px; }
-.pvd-kpi { padding: 14px 12px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); transition: all 0.15s; }
-.pvd-kpi:hover { border-color: var(--border-hover); transform: translateY(-1px); }
-.pvd-kpi-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; font-weight: 600; }
-.pvd-kpi-num { font-family: var(--font-mono); font-size: 22px; font-weight: 800; color: var(--accent); line-height: 1.2; }
-.pvd-kpi-num.purple { color: var(--accent-2); }
-.pvd-kpi-num.success { color: var(--success); }
-.pvd-kpi-num.pink { color: var(--accent-3); }
-.pvd-kpi-sub { font-size: 10px; color: var(--muted); margin-top: 2px; font-family: var(--font-mono); }
-.pvd-kpi-num.warn { color: #f59e0b; }
-@media (max-width: 700px) { .pvd-kpi-wall { grid-template-columns: repeat(2, 1fr); } }
+.kpi-wall-wall { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 18px 0 8px; }
+.kpi-wall { padding: 14px 12px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); transition: all 0.15s; }
+.kpi-wall:hover { border-color: var(--border-hover); transform: translateY(-1px); }
+.kpi-wall-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; font-weight: 600; }
+.kpi-wall-num { font-family: var(--font-mono); font-size: 22px; font-weight: 800; color: var(--accent); line-height: 1.2; }
+.kpi-wall-num.purple { color: var(--accent-2); }
+.kpi-wall-num.success { color: var(--success); }
+.kpi-wall-num.pink { color: var(--accent-3); }
+.kpi-wall-sub { font-size: 10px; color: var(--muted); margin-top: 2px; font-family: var(--font-mono); }
+.kpi-wall-num.warn { color: #f59e0b; }
+@media (max-width: 700px) { .kpi-wall-wall { grid-template-columns: repeat(2, 1fr); } }
 
 /* Section 标题 */
 .pvd-section { display: flex; align-items: center; justify-content: space-between; margin: 32px 0 12px; }
@@ -369,26 +369,26 @@ const PAY_CARDS = {
     </div>
 
     <!-- 4 KPI 数据墙 -->
-    <div class="pvd-kpi-wall">
-      <div class="pvd-kpi">
-        <div class="pvd-kpi-label">Uptime</div>
-        <div class="pvd-kpi-num ${slaClass === 'danger' ? 'pink' : (slaClass === 'warn' ? 'warn' : 'success')}" style="color:${slaClass === 'danger' ? 'var(--danger)' : (slaClass === 'warn' ? '#f59e0b' : 'var(--success)')};">${sla ? sla.toFixed(1) + '%' : '—'}</div>
-        <div class="pvd-kpi-sub">SLA · ${sla >= 99 ? '稳定' : sla >= 95 ? '一般' : '需关注'}</div>
+    <div class="kpi-wall-wall">
+      <div class="kpi-wall">
+        <div class="kpi-wall-label">Uptime</div>
+        <div class="kpi-wall-num ${slaClass === 'danger' ? 'pink' : (slaClass === 'warn' ? 'warn' : 'success')}" style="color:${slaClass === 'danger' ? 'var(--danger)' : (slaClass === 'warn' ? '#f59e0b' : 'var(--success)')};">${sla ? sla.toFixed(1) + '%' : '—'}</div>
+        <div class="kpi-wall-sub">SLA · ${sla >= 99 ? '稳定' : sla >= 95 ? '一般' : '需关注'}</div>
       </div>
-      <div class="pvd-kpi">
-        <div class="pvd-kpi-label">Latency</div>
-        <div class="pvd-kpi-num purple">${latency}<span style="font-size:12px;color:var(--muted);font-weight:600;">s</span></div>
-        <div class="pvd-kpi-sub">P50 · 近 30 天</div>
+      <div class="kpi-wall">
+        <div class="kpi-wall-label">Latency</div>
+        <div class="kpi-wall-num purple">${latency}<span style="font-size:12px;color:var(--muted);font-weight:600;">s</span></div>
+        <div class="kpi-wall-sub">P50 · 近 30 天</div>
       </div>
-      <div class="pvd-kpi">
-        <div class="pvd-kpi-label">用户评价</div>
-        <div class="pvd-kpi-num pink">${rating ? rating.toFixed(1) : '—'}<span style="font-size:12px;color:var(--muted);font-weight:600;">/5</span></div>
-        <div class="pvd-kpi-sub">★ ${reviewCount.toLocaleString()} 条评论</div>
+      <div class="kpi-wall">
+        <div class="kpi-wall-label">用户评价</div>
+        <div class="kpi-wall-num pink">${rating ? rating.toFixed(1) : '—'}<span style="font-size:12px;color:var(--muted);font-weight:600;">/5</span></div>
+        <div class="kpi-wall-sub">★ ${reviewCount.toLocaleString()} 条评论</div>
       </div>
-      <div class="pvd-kpi">
-        <div class="pvd-kpi-label">模型覆盖</div>
-        <div class="pvd-kpi-num">${modelCount}</div>
-        <div class="pvd-kpi-sub">个 SKU · ${(provider.api_protocol || []).join(' / ') || '—'}</div>
+      <div class="kpi-wall">
+        <div class="kpi-wall-label">模型覆盖</div>
+        <div class="kpi-wall-num">${modelCount}</div>
+        <div class="kpi-wall-sub">个 SKU · ${(provider.api_protocol || []).join(' / ') || '—'}</div>
       </div>
     </div>
 

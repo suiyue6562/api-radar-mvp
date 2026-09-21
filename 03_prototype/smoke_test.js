@@ -80,6 +80,9 @@ function makeSandbox() {
     setInterval: () => 0,
     addEventListener: () => {},
     removeEventListener: () => {},
+    crypto: { randomUUID: () => 'uuid-' + Math.random().toString(36).slice(2) },
+    atob: (s) => Buffer.from(s, 'base64').toString(),
+    btoa: (s) => Buffer.from(s).toString('base64'),
     alert: (msg) => console.log('  alert:', String(msg).slice(0, 80)),
     confirm: () => true,
     prompt: () => '',
@@ -126,10 +129,12 @@ function loadPage(pageName) {
 
 function testPage(pageName) {
   const { sandbox, scripts } = loadPage(pageName);
-  // Pre-load dependencies
+  // Pre-load dependencies inside their own IIFE scope to avoid duplicate-const issues
   for (const src of ['data.js','featured.js','app.js','ads.js','ab.js']) {
     try {
-      vm.runInContext(fs.readFileSync(path.join(dir, src), 'utf8'), sandbox);
+      const src_code = fs.readFileSync(path.join(dir, src), 'utf8');
+      // Wrap in IIFE so top-level const/let don't leak into the page script
+      vm.runInContext('(function(){\n' + src_code + '\n})();', sandbox);
     } catch(e) {
       return { page: pageName, status: 'FAIL', err: `[${src}] ${e.message}` };
     }

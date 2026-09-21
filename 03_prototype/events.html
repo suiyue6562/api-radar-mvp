@@ -13,13 +13,13 @@
 .evt-hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 6px; }
 
 /* KPI */
-.evt-kpi-wall { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; max-width: 920px; margin: 18px auto 0; }
+.kpi-wall { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; max-width: 920px; margin: 18px auto 0; }
 .evt-kpi { padding: 10px 6px; text-align: center; border-radius: 8px; background: var(--bg-card); border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
 .evt-kpi:hover { border-color: var(--accent); }
 .evt-kpi.active { border-color: var(--accent); background: rgba(0, 0, 0, 0.06); }
 .evt-kpi-num { font-family: var(--font-mono); font-size: 18px; font-weight: 800; color: var(--accent); }
 .evt-kpi-label { font-size: 10px; color: var(--muted); margin-top: 2px; }
-@media (max-width: 800px) { .evt-kpi-wall { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 800px) { .kpi-wall { grid-template-columns: repeat(3, 1fr); } }
 
 /* 过滤栏 */
 .evt-bar { display: flex; gap: 8px; align-items: center; justify-content: space-between; padding: 18px 0 8px; flex-wrap: wrap; }
@@ -82,7 +82,7 @@
   </div>
 
   <!-- 6 类事件 KPI -->
-  <div class="evt-kpi-wall" id="evt-kpi-wall"></div>
+  <div class="kpi-wall" id="kpi-wall"></div>
 
   <!-- 过滤栏 -->
   <div class="evt-bar">
@@ -147,7 +147,7 @@ let currentType = '';
 let currentSev = '';
 
 function renderKpiWall() {
-  const wall = document.getElementById('evt-kpi-wall');
+  const wall = document.getElementById('kpi-wall');
   // 统计 + 给空类目造演示事件
   const counts = {};
   EVENT_TYPES.forEach(t => counts[t.id] = 0);
