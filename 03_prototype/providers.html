@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI 中转站评测排名 - API优选咨询</title>
-<link rel="stylesheet" href="style.css?v=20260922k">
+<link rel="stylesheet" href="style.css?v=20260922l">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ===== helpaio/transit 风格评测页 ===== */
@@ -212,12 +212,50 @@
     </div>
   </div>
 
+  <!-- 收录雷达 -->
+  <div class="card" id="radar" style="margin-top:16px;padding:0;overflow:hidden;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding:14px 16px;border-bottom:1px solid var(--border);">
+      <div>
+        <strong style="font-size:14px;">📡 收录雷达 · 跨榜单聚合</strong>
+        <span style="font-size:11.5px;color:var(--muted);margin-left:8px;" id="radar-count">加载中...</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <select id="radar-sort" style="font-size:12px;padding:6px 8px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);">
+          <option value="avail" selected>按可用率</option>
+          <option value="score">按榜单评分</option>
+          <option value="name">按名称</option>
+        </select>
+        <input type="text" id="radar-search" placeholder="🔍 搜索站点 / 榜单" style="font-size:12px;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);width:180px;">
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:12.5px;">
+        <thead>
+          <tr style="text-align:left;color:var(--muted);font-size:11px;">
+            <th style="padding:8px 10px;width:40px;">#</th>
+            <th style="padding:8px 10px;">站点</th>
+            <th style="padding:8px 10px;width:80px;">可用率</th>
+            <th style="padding:8px 10px;width:70px;">评分</th>
+            <th style="padding:8px 10px;">来源榜单</th>
+            <th style="padding:8px 10px;">最佳排名</th>
+          </tr>
+        </thead>
+        <tbody id="radar-body"></tbody>
+      </table>
+    </div>
+    <div style="padding:10px 16px;text-align:center;">
+      <button id="radar-more" class="btn-ghost" style="font-size:12px;padding:7px 18px;">加载更多 ↓</button>
+    </div>
+    <div style="padding:0 16px 12px;font-size:11px;color:var(--muted);">数据来源：AI接口平台榜单聚合快照 2026-09-22，共收录 1,629 条记录、1,358 家去重运营站点；可用率与评分为来源榜单口径。实测达标的新站将晋级上方评测榜。</div>
+  </div>
+
 </main>
 <footer class="footer" id="footer"></footer>
 
 <script src="data.js?v=20260922k"></script>
+<script src="radar_sites.js?v=20260922a"></script>
 <script src="ai_insights.js?v=ai2026092217"></script>
-<script src="app.js?v=20260922k"></script>
+<script src="app.js?v=20260922l"></script>
 <script>
 {
 /* ================= AI 中转站评测 · helpaio/transit 对标重做 ================= */
@@ -246,7 +284,7 @@ function rankScore(p){return Math.round(baseScore(p)*avail3d(p)/100*damp(p)*100)
 function daysListed(p){const t=new Date(p.signup_date||p.added_date||'2026-01-01').getTime();return Math.max(1,Math.round((Date.now()-t)/864e5));}
 function isNewSite(p){const age=Date.now()-new Date(p.signup_date||p.added_date||'2026-01-01').getTime();return !!p.is_new||age<60*864e5;}
 function siteTier(p){
-  if(p.type==='official')return 9;
+  if(p.type==='official'||p.type==='platform')return 9;
   if(isNewSite(p))return 3;
   const q=baseScore(p);
   if(q>=85&&(p.rating||0)>=4.5)return 1;
@@ -417,7 +455,7 @@ function renderDetail(p){
       '<div class="detail-name">'+esc(p.name_zh||p.name)+' '+
         '<span class="badge-mini badge-official">'+TYPE_LABEL[p.type]+'</span> '+(TIER_BADGE[tier]||'')+
         (rankIdx>-1?'<span class="rank-chip">#'+(rankIdx+1)+'</span>':'')+'</div>'+
-      '<div class="detail-sub">'+(p.type==='official'?'原厂渠道 · 不参与商业排序':'收录于 '+days+' 天前 · '+(p.notes?esc(p.notes):''))+'</div>'+
+      '<div class="detail-sub">'+((p.type==='official'||p.type==='platform')?'大厂渠道 · 仅作基准参考，不参与商业排序':'收录于 '+days+' 天前 · '+(p.notes?esc(p.notes):''))+'</div>'+
       aiLine(p.id)+
     '</div>'+
     '<div class="detail-score">'+
@@ -542,6 +580,45 @@ function renderSponsored(){
   if(S.sel)select(S.sel);
 
   renderSponsored();
+
+  /* ================= 收录雷达 ================= */
+  const RS=(typeof RADAR_SITES!=='undefined')?RADAR_SITES:[];
+  const RADAR={q:'',sort:'avail',page:1,per:50};
+  function radarFiltered(){
+    let list=RS.slice();
+    if(RADAR.q)list=list.filter(s=>(s.name+' '+s.url+' '+(s.lists||'')).toLowerCase().includes(RADAR.q));
+    if(RADAR.sort==='avail')list.sort((a,b)=>((b.avail||0)-(a.avail||0))||((a.score!=null?a.score:999)-(b.score!=null?b.score:999)));
+    else if(RADAR.sort==='score')list.sort((a,b)=>((a.score!=null?a.score:999)-(b.score!=null?b.score:999)));
+    else list.sort((a,b)=>a.name.localeCompare(b.name,'zh'));
+    return list;
+  }
+  function renderRadar(){
+    const el=document.getElementById('radar-body');
+    if(!el)return;
+    const list=radarFiltered();
+    const show=list.slice(0,RADAR.page*RADAR.per);
+    document.getElementById('radar-count').textContent='共 '+list.length+' 家 · 其中 '+list.filter(s=>s.avail!=null).length+' 家有可用率数据';
+    const c=a=>a>=99?'var(--success)':a>=95?'var(--accent)':'var(--warning)';
+    el.innerHTML=show.map((s,i)=>
+      '<tr>'+
+      '<td style="color:var(--muted);font-family:var(--font-mono);font-size:11px;">'+(i+1)+'</td>'+
+      '<td><a href="'+esc(s.url)+'" target="_blank" rel="noopener" style="font-weight:700;color:var(--text);">'+esc(s.name)+'</a>'+
+        (s.profile?'<span class="badge-mini badge-official" style="margin-left:6px;">榜单档案页</span>':'')+
+        '<div style="font-size:11px;color:var(--muted);margin-top:2px;word-break:break-all;">'+esc(s.url.replace(/^https?:\/\//,''))+'</div></td>'+
+      '<td>'+(s.avail!=null?'<b style="color:'+c(s.avail)+'">'+s.avail.toFixed(1)+'%</b>':'<span style="color:var(--muted);">—</span>')+'</td>'+
+      '<td>'+(s.score!=null?esc(s.score):'<span style="color:var(--muted);">—</span>')+'</td>'+
+      '<td style="font-size:11px;color:var(--muted);">'+esc((s.lists||'').split('、').slice(0,3).join('、'))+'</td>'+
+      '<td style="font-size:11px;color:var(--muted);white-space:nowrap;">'+esc((s.best||'').split('；')[0])+'</td>'+
+      '</tr>').join('')||
+      '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px;font-size:13px;">没有匹配的站点 · 换个关键词</td></tr>';
+    const more=document.getElementById('radar-more');
+    more.style.display=list.length>show.length?'block':'none';
+  }
+  document.getElementById('radar-search').addEventListener('input',e=>{RADAR.q=(e.target.value||'').trim().toLowerCase();RADAR.page=1;renderRadar();});
+  document.getElementById('radar-sort').addEventListener('change',e=>{RADAR.sort=e.target.value;RADAR.page=1;renderRadar();});
+  document.getElementById('radar-more').addEventListener('click',()=>{RADAR.page++;renderRadar();});
+  if(RS.length)renderRadar();
+  if(location.hash==='#radar'){setTimeout(()=>{const t=document.getElementById('radar');if(t)t.scrollIntoView({behavior:'smooth'});},300);}
 })();
 }
 </script>

@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>API优选咨询 · 更接地气的 AI 中转站评测导航</title>
 <meta name="description" content="自费实测无赞助：AI 中转站排名、模型比价、7×24 可用率监测，帮你避坑找到最适合的 Claude / GPT / Gemini API 中转站。">
-<link rel="stylesheet" href="style.css?v=20260922k">
+<link rel="stylesheet" href="style.css?v=20260922l">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ===== helpaio.com 首页同款结构（紧凑版） ===== */
@@ -137,9 +137,9 @@
   <section class="hero fade-in">
     <div class="hero-layout">
       <div class="hero-left">
-        <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span id="hero-tagline">自费实测 · 无赞助排名 · 数据持续更新</span></div>
+        <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span id="hero-tagline">找 API 中转站，先看 API 优选咨询</span></div>
         <h1 class="hero-title">更接地气的<br><span class="gradient-text">AI 中转站评测导航</span></h1>
-        <p class="hero-sub" id="hero-sub">拒绝盲目尝试，快速定位最适合您的 Claude / GPT / Gemini API 中转方案。</p>
+        <p class="hero-sub" id="hero-sub">市面上中转站成百上千，哪家快、哪家稳、哪家不跑路？我们一家一家实测，把真实数据摆出来给你看。</p>
         <div class="hero-ctas">
           <a href="providers.html" class="btn btn-primary" style="padding:11px 26px;font-size:14px;">进入中转站比价 →</a>
           <a href="pick.html" class="btn-ghost" style="padding:11px 22px;font-size:14px;">🎯 帮我选站</a>
@@ -152,13 +152,13 @@
         </div>
       </div>
       <div class="hero-right">
-        <!-- Claude / GPT 3日可用率榜 -->
-        <div class="avail-board" id="avail-board">
-          <div class="avail-board-title"><b>CLAUDE / GPT · 近 3 日可用率</b> · 各站监测均值，按综合榜排序</div>
-          <div id="avail-board-rows"></div>
-        </div>
         <!-- 广告主推荐位 -->
         <div id="sponsored-slot"></div>
+        <!-- 大厂基准：可用率参考 -->
+        <div class="avail-board" id="avail-board">
+          <div class="avail-board-title"><b>🔥 中转站 TOP5 · 近 3 日可用率</b> · 按综合榜排序，大厂仅作基准</div>
+          <div id="avail-board-rows"></div>
+        </div>
       </div>
     </div>
 
@@ -192,6 +192,18 @@
     </div>
   </div>
 
+  <!-- ============ 收录雷达 ============ -->
+  <div class="sec-title-block">
+    <h2>📡 收录雷达 · 新站发现</h2>
+    <p>跨榜单聚合收录，按可用率与榜单表现排序 —— 新站先在这里露出，实测达标再进评测榜。</p>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div id="radar-home"></div>
+    <div style="padding:10px 16px;border-top:1px solid var(--border);text-align:center;">
+      <a href="providers.html#radar" style="font-size:13px;color:var(--accent);font-weight:700;">查看完整收录雷达（<span id="radar-total">-</span> 家）→</a>
+    </div>
+  </div>
+
   <!-- ============ 最新动态 + FAQ 双栏 ============ -->
   <div class="bottom-grid">
     <div>
@@ -215,7 +227,8 @@
 <footer class="footer" id="footer"></footer>
 
 <script src="data.js?v=20260922k"></script>
-<script src="app.js?v=20260922k"></script>
+<script src="radar_sites.js?v=20260922a"></script>
+<script src="app.js?v=20260922l"></script>
 <script>
 {
 /* ================= helpaio.com 首页结构复刻 · 数据驱动 ================= */
@@ -227,7 +240,7 @@ function pseudo(id,salt){return (h32(id+'|'+salt)%1000)/1000;}
 function avail(p){return p.sla_uptime!=null?p.sla_uptime:Math.round(88+pseudo(p.id,'av')*11);}
 function isNew(p){return !!p.is_new||(Date.now()-new Date(p.signup_date||p.added_date||'2026-01-01').getTime())<60*864e5;}
 function tier(p){
-  if(p.type==='official')return 9;
+  if(p.type==='official'||p.type==='platform')return 9;
   if(isNew(p))return 3;
   const q=baseScore(p);
   if(q>=85&&(p.rating||0)>=4.5)return 1;
@@ -255,7 +268,7 @@ function vendorAvail(p,vendorKey){
 if(typeof renderTopbar==='function')renderTopbar('home');
 
 /* ---- 榜单：非官方按综合排名取前 5 ---- */
-const ranked=(PD.providers||[]).filter(p=>p.type!=='official').sort((x,y)=>{
+const ranked=(PD.providers||[]).filter(p=>p.type!=='official'&&p.type!=='platform').sort((x,y)=>{
   const tx=tier(x),ty=tier(y);if(tx!==ty)return tx-ty;return rankScore(y)-rankScore(x);
 });
 const top5=ranked.slice(0,5);
@@ -273,8 +286,10 @@ document.getElementById('avail-board-rows').innerHTML=top5.map((p,i)=>{
 }).join('');
 
 /* ---- 统计带 ---- */
+const RS=(typeof RADAR_SITES!=='undefined')?RADAR_SITES:[];
 const stats=[
   [PD.providers.length,'+','收录中转站','经过筛选，杜绝低质内容'],
+  [RS.length||0,'+','收录雷达站点','跨榜单聚合 · 运营中'],
   [PD.models.length,'+','收录模型价格','覆盖主流厂商，价格透明'],
   [24,'h','可用率监测周期','探针持续真实 API 调用'],
   [(PD.events||[]).length*8,'+','持续更新动态','行情与新站收录']
@@ -328,6 +343,25 @@ document.getElementById('mon-snapshot').innerHTML=top5.map(p=>{
     '<span class="mon-val" style="color:'+c(gp)+';">G '+gp.toFixed(1)+'%</span></div>';
 }).join('');
 
+/* ---- 收录雷达（首页紧凑版：可用率前 12） ---- */
+(function(){
+  const box=document.getElementById('radar-home');
+  if(!box)return;
+  document.getElementById('radar-total').textContent=RS.length;
+  if(!RS.length){box.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px;">收录雷达数据加载中</div>';return;}
+  const top=RS.filter(s=>s.avail!=null).slice(0,12);
+  const c=a=>a>=99?'var(--success)':a>=95?'var(--accent)':'var(--warning)';
+  box.innerHTML='<div style="padding:10px 16px 4px;font-size:11.5px;color:var(--muted);font-weight:700;">可用率优先 · 快照 2026-09-22 · 其中 '+RS.filter(s=>s.avail!=null).length+' 家有可用率数据</div>'+
+    top.map((s,i)=>
+    '<div class="avail-row" onclick="window.open(\''+esc(s.url)+'\',\'_blank\',\'noopener\')" style="cursor:pointer;">'+
+      '<span class="avail-rank">'+(i+1)+'</span>'+
+      '<span class="avail-name">'+esc(s.name)+(s.profile?'<span style="font-size:10px;color:var(--muted);margin-left:6px;">榜单档案</span>':'')+'</span>'+
+      '<span class="avail-metrics">'+
+        '<span class="avail-metric">可用率 <b style="color:'+c(s.avail)+'">'+s.avail.toFixed(1)+'%</b></span>'+
+        (s.score!=null?'<span class="avail-metric">评分 '+esc(s.score)+'</span>':'')+
+      '</span></div>').join('');
+})();
+
 /* ---- 最新动态 ---- */
 const ETYPE={new_model:'新增',price_change:'调价',warning:'预警',new_provider:'收录',policy:'政策',other:'动态'};
 document.getElementById('news-list').innerHTML=(PD.events||[]).slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,5).map(e=>
@@ -339,7 +373,7 @@ document.getElementById('news-list').innerHTML=(PD.events||[]).slice().sort((a,b
 
 /* ---- FAQ ---- */
 const FAQS=[
-  {q:'API优选咨询是什么？',a:'一个更接地气的 AI 中转站评测导航：探针实测数十家 API 中转站，提供 7×24 可用率监测、模型比价与排名分榜单。推广位全程明示、不影响排名；排序口径在榜单页与评测方法页公开。'},
+  {q:'API优选咨询是什么？',a:'你的 API 中转站选品顾问：找 API 中转站，先看 API 优选咨询。探针实测数十家中转站，提供 7×24 可用率监测、模型比价与排名榜，另有跨榜单聚合的收录雷达帮你发现新站。推广位全程明示、不影响排名；排序口径在榜单页与评测方法页公开。'},
   {q:'中转站怎么选？',a:'先看可用率与价格倍率，再看模型覆盖与服务保障（发票/退款/支付方式）。建议先小额试用，请勿囤积大额余额；排行分 = 基础分 × 可用率 ÷ 100 × 降权系数，新站有观察期。'},
   {q:'数据从哪来、多久更新？',a:'可用性数据来自自建探针系统，对收录站点发起真实 API 调用采集；价格数据来自各站登记报价整理；模型与行情数据持续维护。页面标注每次数据更新时间。'},
   {q:'推广位会影响排名吗？',a:'不会。广告与排名完全隔离：推广内容带"推广"标签展示，排名分仅由基础分、可用率与降权系数计算，广告主的投放不改变任何评测结论与排序。'}

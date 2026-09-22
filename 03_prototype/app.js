@@ -48,9 +48,8 @@ function renderTopbar(active = '') {
   if (!bar) return;
   bar.innerHTML = '<div class="topbar-inner">' +
     '<a href="index.html" class="brand">' +
-      '<div class="brand-logo">R</div>' +
+      '<img class="brand-logo-img" src="assets/logo-icon.png" alt="API优选咨询">' +
       '<span class="brand-text">API优选咨询</span>' +
-      '<span class="brand-sub">v2.1</span>' +
     '</a>' +
     '<nav class="nav">' + NAV.map(n =>
       '<a href="' + n.href + '" class="' + (active === n.id ? 'active' : '') + '">' + n.label + '</a>'
@@ -738,10 +737,11 @@ function renderFooter() {
         '<div class="footer-grid">' +
         '<div class="footer-brand-col">' +
           '<div class="brand-mini">' +
-            '<div class="brand-logo">R</div>' +
+            '<img class="brand-logo-img" src="assets/logo-icon.png" alt="API优选咨询" style="width:24px;height:24px;">' +
             '<span>API优选咨询</span>' +
           '</div>' +
-          '<p>浏览器内 5 分钟验证 API 渠道真假：可达性、鉴权、模型指纹、速率限制、价格、假流式、TLS — 13 项硬核检测。Key 不上传服务器，数据每 15 分钟刷新。</p>' +
+          '<p><b>找 API 中转站，先看 API 优选咨询。</b></p>' +
+          '<p>评测每一家，优选不踩坑 —— 稳定性、速度、价格、客服，一项一项给你比清楚。不吹不黑，只说真话。</p>' +
           '<div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;font-weight:700;">机器可读 · Machine-Readable</div>' +
           '<div class="footer-machines">' +
             '<a href="llms.txt" target="_blank" rel="noopener">/llms.txt</a>' +
@@ -781,8 +781,8 @@ function renderFooter() {
         '</div>' +
       '</div>' +
       '<div class="footer-bottom">' +
-        '<span>© 2026 API优选咨询 · v2.1 · 数据基于公开来源聚合</span>' +
-        '<span class="mono">Built for AI Agents · CORS Open · Zero Auth</span>' +
+        '<span>© 2026 API优选咨询 · 帮你筛过的 API 中转站 · 数据基于公开来源聚合</span>' +
+        '<span class="mono">API 中转站，优选才靠谱 · 评测每一家，优选不踩坑</span>' +
       '</div>' +
     '</div>';
 }

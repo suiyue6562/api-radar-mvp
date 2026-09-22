@@ -146,6 +146,12 @@ input:focus, select:focus, textarea:focus {
   color: #ffffff;
   font-size: 14px;
 }
+.brand-logo-img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  display: block;
+}
 .brand-text {
   color: var(--fg-strong);
   font-weight: 700;

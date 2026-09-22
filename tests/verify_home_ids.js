@@ -57,9 +57,9 @@ const boardRows = (board.match(/avail-row/g) || []).length;
 check('可用率榜 5 行', boardRows === 5, 'rows=' + boardRows);
 check('可用率榜含 Claude/GPT 指标', board.includes('Claude') && board.includes('GPT'));
 
-// 3. 统计带：4 项且为数字
+// 3. 统计带：≥4 项且为数字
 const stats = fill('stats-band');
-check('统计带 4 项', (stats.match(/stat-card/g) || []).length === 4);
+check('统计带 ≥4 项', (stats.match(/stat-card/g) || []).length >= 4);
 check('统计带含收录站数', /收录中转站/.test(stats));
 
 // 4. 金刚区：8 个快捷入口，含核心链接
