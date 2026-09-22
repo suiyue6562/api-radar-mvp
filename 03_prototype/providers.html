@@ -239,8 +239,7 @@
             <th style="padding:8px 10px;width:80px;">可用率</th>
             <th style="padding:8px 10px;width:70px;">评分</th>
             <th style="padding:8px 10px;width:100px;">本站实测</th>
-            <th style="padding:8px 10px;">来源榜单</th>
-            <th style="padding:8px 10px;">最佳排名</th>
+            <th style="padding:8px 10px;">推荐理由</th>
           </tr>
         </thead>
         <tbody id="radar-body"></tbody>
@@ -249,7 +248,7 @@
     <div style="padding:10px 16px;text-align:center;">
       <button id="radar-more" class="btn-ghost" style="font-size:12px;padding:7px 18px;">加载更多 ↓</button>
     </div>
-    <div style="padding:0 16px 12px;font-size:11px;color:var(--muted);">收录范围：仅真实直连的中转站官网（已排除第三方榜单站的档案页，不为他人导流）；源数据为 AI接口平台榜单聚合快照 2026-09-22。「本站实测」列为本站探针分批实测（每天约 70 家、1 秒间隔，滚动覆盖全部直连站）。实测达标的新站将晋级上方评测榜。</div>
+    <div style="padding:0 16px 12px;font-size:11px;color:var(--muted);">收录范围：仅真实直连的中转站官网（已排除第三方榜单站的档案页，不为他人导流）；源数据为 AI接口平台榜单聚合快照 2026-09-22。「本站实测」列为本站探针分批实测（每天约 70 家、1 秒间隔，滚动覆盖全部直连站）。「推荐理由」由 AI 基于官网真实信息提炼卖点与价格（每天约 25 家滚动覆盖，官网未披露价格不编造），实测达标的新站将晋级上方评测榜。</div>
   </div>
 
 </main>
@@ -257,9 +256,10 @@
 
 <script src="data.js?v=20260922k"></script>
 <script src="radar_sites.js?v=20260922b"></script>
-<script src="radar_probe.js?v=ai2026092217"></script>
-<script src="probe_stats.js?v=ai2026092217"></script>
-<script src="ai_insights.js?v=ai2026092217"></script>
+<script src="radar_probe.js?v=ai2026092219"></script>
+<script src="radar_ai.js?v=ai2026092219"></script>
+<script src="probe_stats.js?v=ai2026092219"></script>
+<script src="ai_insights.js?v=ai2026092219"></script>
 <script src="app.js?v=20260922l"></script>
 <script>
 {
@@ -604,6 +604,7 @@ function renderSponsored(){
   /* ================= 收录雷达 ================= */
   const RS=(typeof RADAR_SITES!=='undefined')?RADAR_SITES:[];
   const RPC=(typeof RADAR_PROBE!=='undefined'&&RADAR_PROBE.checked)?RADAR_PROBE.checked:{};
+  const RAI=(typeof RADAR_AI!=='undefined')?RADAR_AI:{};
   const RADAR={q:'',sort:'probe',page:1,per:50};
   const rkey=s=>((s.url||'').replace(/^https?:\/\//,'')).toLowerCase().replace(/\/$/,'');
   const ralive=st=>(st>=200&&st<400)||st===401||st===403;
@@ -630,6 +631,19 @@ function renderSponsored(){
     const c2=a=>a>=99?'var(--success)':a>=95?'var(--accent)':'var(--warning)';
     el.innerHTML=show.map((s,i)=>{
       const c=RPC[rkey(s)];
+      const ai=RAI[rkey(s)];
+      let reason;
+      if(ai&&ai.highlights){
+        reason='<div style="font-size:11.5px;color:var(--text);line-height:1.5;">✨ '+esc(ai.highlights)+'</div>'
+          +((ai.price&&ai.price!=='未披露')
+            ?'<div style="font-size:11px;color:var(--accent);margin-top:3px;">💰 '+esc(ai.price)+'</div>'
+            :'<div style="font-size:11px;color:var(--muted);margin-top:3px;">💰 价格未披露 · 以官网为准</div>')
+          +'<div style="font-size:10.5px;color:var(--muted);margin-top:3px;">'+esc((s.lists||'').split('、').slice(0,2).join('、'))+' 在榜</div>';
+      }else{
+        reason='<div style="font-size:11.5px;color:var(--muted);line-height:1.5;">'+((s.lists||'').split('、').slice(0,3).join('、')||'—')+' 在榜</div>'
+          +(s.avail!=null?'<div style="font-size:11px;color:var(--muted);margin-top:3px;">源榜单可用率 '+s.avail.toFixed(1)+'%</div>':'')
+          +(c?'<div style="font-size:11px;color:var(--muted);margin-top:3px;">本站实测 '+c.latency_ms+'ms</div>':'');
+      }
       const probeCell=c
         ?(ralive(c.status)
           ?'<b style="color:var(--success);">✓ 存活</b> <span style="color:var(--muted);">'+c.latency_ms+'ms</span>'
@@ -643,10 +657,9 @@ function renderSponsored(){
       '<td>'+(s.avail!=null?'<b style="color:'+c2(s.avail)+'">'+s.avail.toFixed(1)+'%</b>':'<span style="color:var(--muted);">—</span>')+'</td>'+
       '<td>'+(s.score!=null?esc(s.score):'<span style="color:var(--muted);">—</span>')+'</td>'+
       '<td>'+probeCell+'</td>'+
-      '<td style="font-size:11px;color:var(--muted);">'+esc((s.lists||'').split('、').slice(0,3).join('、'))+'</td>'+
-      '<td style="font-size:11px;color:var(--muted);white-space:nowrap;">'+esc((s.best||'').split('；')[0])+'</td>'+
+      '<td>'+reason+'</td>'+
       '</tr>';}).join('')||
-      '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px;font-size:13px;">没有匹配的站点 · 换个关键词</td></tr>';
+      '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px;font-size:13px;">没有匹配的站点 · 换个关键词</td></tr>';
     const more=document.getElementById('radar-more');
     more.style.display=list.length>show.length?'block':'none';
   }

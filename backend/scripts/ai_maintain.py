@@ -43,6 +43,9 @@ RADAR_SAMPLES = REPO / "02_data" / "samples" / "radar_uptime.jsonl"
 RADAR_CURSOR = REPO / "02_data" / "samples" / "radar_cursor.json"
 RADAR_BATCH = 70           # 每天探测 70 家雷达站点，约 7 天轮完 500 家直连站
 RADAR_INTERVAL = 1.0       # 请求间隔秒数（礼貌频率）
+RADAR_AI_OUT = REPO / "03_prototype" / "radar_ai.js"
+RADAR_AI_CURSOR = REPO / "02_data" / "samples" / "radar_ai_cursor.json"
+RADAR_AI_BATCH = 25        # 每天给 25 家雷达站生成 AI 卖点/价格画像，约 20 天轮完 503 家
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
@@ -198,7 +201,11 @@ def write_insights(generated_at, insights):
               "// 每日两次更新，请勿手改。\n")
     OUT_JS.write_text(header + "var API_RADAR_AI = " + body + ";\n", encoding="utf-8")
     write_probe_stats(generated_at)
-    # 每次生成换 URL 版本号，绕过浏览器/Cloudflare 缓存拿到最新数据
+    bump_versions()
+
+
+def bump_versions():
+    """每次生成换 URL 版本号，绕过浏览器/Cloudflare 缓存拿到最新数据"""
     try:
         stamp = "ai" + datetime.datetime.now().strftime("%Y%m%d%H")
         for html in (REPO / "03_prototype" / "provider.html",
@@ -206,7 +213,7 @@ def write_insights(generated_at, insights):
                      REPO / "03_prototype" / "index.html",
                      REPO / "03_prototype" / "pick.html"):
             txt = html.read_text(encoding="utf-8")
-            txt2 = re.sub(r"(ai_insights|probe_stats|radar_probe)\.js\?v=[^\"']+",
+            txt2 = re.sub(r"(ai_insights|probe_stats|radar_probe|radar_ai)\.js\?v=[^\"']+",
                           lambda m: m.group(1) + ".js?v=" + stamp, txt)
             if txt2 != txt:
                 html.write_text(txt2, encoding="utf-8")
@@ -293,6 +300,117 @@ def radar_probe_step(now):
     print(f"  📡 雷达探测：本批 {len(batch)} 家（{cursor}-{cursor + len(batch)}/{len(sites)}）→ radar_probe.js")
 
 
+def radar_rkey(url):
+    return re.sub(r"^https?://", "", (url or "").strip()).lower().rstrip("/")
+
+
+def radar_ai_step(now, key):
+    """分批给雷达直连站生成 AI 画像（卖点/价格）→ radar_ai.js（每天一批，约 20 天轮完）"""
+    sites = [s for s in load_radar_sites()
+             if not s.get("profile") and (s.get("url") or "").startswith("http")]
+    if not sites:
+        print("  🤖 雷达AI：无直连站点，跳过")
+        return
+    cursor = 0
+    if RADAR_AI_CURSOR.exists():
+        try:
+            cursor = json.loads(RADAR_AI_CURSOR.read_text(encoding="utf-8")).get("cursor", 0)
+        except Exception:
+            cursor = 0
+    if cursor >= len(sites):
+        cursor = 0  # 新一轮
+    batch = sites[cursor:cursor + RADAR_AI_BATCH]
+
+    old = {}
+    if RADAR_AI_OUT.exists():
+        m = re.search(r"var\s+RADAR_AI\s*=\s*(\{.*\});?\s*$",
+                      RADAR_AI_OUT.read_text(encoding="utf-8"), re.S)
+        if m:
+            try:
+                old = json.loads(m.group(1))
+            except Exception:
+                old = {}
+    old.pop("generated_at", None)
+
+    for i, s in enumerate(batch, 1):
+        rk = radar_rkey(s["url"])
+        prev = old.get(rk) or {}
+        prev_ts = prev.get("generated_at", "")
+        if prev_ts:
+            try:
+                age = (datetime.datetime.now()
+                       - datetime.datetime.fromisoformat(prev_ts)).days
+            except ValueError:
+                age = 99
+            if age < 14 and prev.get("highlights"):
+                print(f"  🤖 [{i:02d}/{len(batch)}] ↻ {(s.get('name') or '')[:22]}（14天内已有画像）")
+                continue
+        pr = probe(s["url"].strip())
+        if pr["status"] == 0:
+            old[rk] = {**prev, "probe": pr, "generated_at": now}
+            print(f"  🤖 [{i:02d}/{len(batch)}] ✗ {(s.get('name') or '')[:22]} 探测失败，跳过AI")
+            time.sleep(1.0)
+            continue
+        prompt = f"""你是 API 中转站评测编辑。下面是一家 API 中转站官网的实测页面信息：
+- 站点名称：{s.get('name') or '未知'}
+- 官网：{s.get('url')}
+- 实测页面：HTTP {pr['status']}，标题《{pr['title'] or '无'}》，描述：{pr['meta'] or '（无）'}
+- 来源榜单信息：{'; '.join(s.get('lists') or []) or '无'}
+
+任务（只输出一个 JSON 对象，不要 markdown 代码块，不要任何解释）：
+1. highlights：从页面真实信息中提炼该站最突出的卖点，一句话不超过 40 字，客观具体，必须基于页面/描述中真实存在的信息，禁止编造
+2. price：页面中真实披露的价格/计费信息原文摘要（不超过 40 字，如"GPT-4o 输入 $2.5/M"）；页面没有披露任何价格信息就填"未披露"，禁止编造数字
+
+输出格式：{{"highlights": "...", "price": "..."}}"""
+        ok = False
+        for attempt in (1, 2):
+            suffix = "" if attempt == 1 else "\n\n上次输出无法解析。再次强调：只输出一个 JSON 对象，不要 markdown 代码块，不要任何解释。"
+            try:
+                import requests
+                r = requests.post(API_URL,
+                                  headers={"Content-Type": "application/json",
+                                           "Authorization": "Bearer " + key},
+                                  json={"model": MODEL,
+                                        "messages": [{"role": "user", "content": prompt + suffix}],
+                                        "max_tokens": 500,
+                                        "temperature": 0.2},
+                                  timeout=90)
+                r.raise_for_status()
+                content = r.json()["choices"][0]["message"]["content"]
+                ai = extract_json(content)
+                highlights = re.sub(r"\s+", " ", str(ai.get("highlights", ""))).strip()[:60]
+                price = re.sub(r"\s+", " ", str(ai.get("price", ""))).strip()[:60]
+                if highlights:
+                    old[rk] = {"highlights": highlights, "price": price,
+                               "probe": {"status": pr["status"], "latency_ms": pr["latency_ms"],
+                                         "title": pr["title"]},
+                               "generated_at": now}
+                    print(f"  🤖 [{i:02d}/{len(batch)}] ✓ {(s.get('name') or '')[:22]}: {highlights[:30]}")
+                    ok = True
+                break
+            except Exception as e:
+                if attempt == 2:
+                    old[rk] = {**prev, "probe": pr, "generated_at": now,
+                               "ai_error": str(e)[:120]}
+                    print(f"  🤖 [{i:02d}/{len(batch)}] ⚠ {(s.get('name') or '')[:22]} AI失败: {e}")
+        time.sleep(1.0)
+        # 逐家落盘：中断/超时不丢进度，重跑时按 generated_at 自动跳过 14 天内的
+        body = json.dumps({"generated_at": now, "total": len(old), **old},
+                          ensure_ascii=False, indent=1)
+        RADAR_AI_OUT.write_text("// 自动生成：backend/scripts/ai_maintain.py（MiniMax M3）\n"
+                                "// 收录雷达站 AI 画像：卖点/价格（仅基于官网真实披露信息，每天约25家）\n"
+                                "var RADAR_AI = " + body + ";\n", encoding="utf-8")
+    RADAR_AI_OUT.write_text("// 自动生成：backend/scripts/ai_maintain.py（MiniMax M3）\n"
+                            "// 收录雷达站 AI 画像：卖点/价格（仅基于官网真实披露信息，每天约25家）\n"
+                            "var RADAR_AI = " + body + ";\n", encoding="utf-8")
+    RADAR_AI_CURSOR.write_text(json.dumps(
+        {"cursor": cursor + len(batch), "total": len(sites), "ran_at": now},
+        ensure_ascii=False), encoding="utf-8")
+    bump_versions()
+    print(f"  🤖 雷达AI：本批 {len(batch)} 家（{cursor}-{cursor + len(batch)}/{len(sites)}），"
+          f"累计画像 {len(old)} 家 → radar_ai.js")
+
+
 def write_probe_stats(generated_at):
     """从 uptime.jsonl 计算每家真实探测统计 → probe_stats.js（前端唯一可信实测数据源）"""
     stats = {}
@@ -336,7 +454,17 @@ def main():
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--offset", type=int, default=0, help="跳过前 N 家（分批跑用）")
     ap.add_argument("--skip-radar", action="store_true", help="跳过雷达站点探测")
+    ap.add_argument("--radar-ai-only", action="store_true",
+                    help="只跑雷达站 AI 画像（卖点/价格），不探测不更新评测榜")
     args = ap.parse_args()
+
+    now = datetime.datetime.now().isoformat(timespec="seconds")
+    if args.radar_ai_only:
+        key = load_key()
+        if not key:
+            sys.exit("❌ 未找到 MINIMAX_API_KEY（环境变量 / .env.ai / backend/scripts/.env）")
+        radar_ai_step(now, key)
+        return
 
     data = load_data()
     providers = data["providers"]
@@ -379,6 +507,9 @@ def main():
     key = load_key()
     if not key:
         sys.exit("❌ 未找到 MINIMAX_API_KEY（环境变量 / .env.ai / backend/scripts/.env）")
+
+    if not args.skip_radar:
+        radar_ai_step(now, key)
 
     old = {}
     if OUT_JS.exists():
