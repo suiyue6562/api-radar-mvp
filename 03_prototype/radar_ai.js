@@ -1,7 +1,7 @@
 // 自动生成：backend/scripts/ai_maintain.py（MiniMax M3）
 // 收录雷达站 AI 画像：卖点/价格（仅基于官网真实披露信息，每天约25家）
 var RADAR_AI = {
- "generated_at": "2026-09-22T19:08:32",
+ "generated_at": "2026-09-22T20:22:58",
  "total": 25,
  "hyperapi.cc": {
   "highlights": "统一AI API网关，集成管理后台一站式中转服务",
@@ -256,5 +256,116 @@ var RADAR_AI = {
    "title": "New API"
   },
   "generated_at": "2026-09-22T19:08:32"
+ },
+ "airouter.mxyhi.com": {
+  "highlights": "统一AI API网关，提供统一管理后台仪表盘",
+  "price": "未披露",
+  "probe": {
+   "status": 200,
+   "latency_ms": 987,
+   "title": "New API"
+  },
+  "generated_at": "2026-09-22T20:17:49"
+ },
+ "user.tocodex.com": {
+  "highlights": "统一AI模型聚合网关，跨格式兼容OpenAI/Claude/Gemini接口",
+  "price": "未披露",
+  "probe": {
+   "status": 200,
+   "latency_ms": 874,
+   "title": "ToCodex"
+  },
+  "generated_at": "2026-09-22T20:17:49"
+ },
+ "kfcv50.link": {
+  "highlights": "页面返回403错误，标题为《访问受限》，无实际内容展示",
+  "price": "未披露",
+  "probe": {
+   "status": 403,
+   "latency_ms": 620,
+   "title": "访问受限"
+  },
+  "generated_at": "2026-09-22T20:17:49"
+ },
+ "bearlab.ai": {
+  "highlights": "页面返回 403，无法获取真实内容",
+  "price": "未披露",
+  "probe": {
+   "status": 403,
+   "latency_ms": 670,
+   "title": ""
+  },
+  "generated_at": "2026-09-22T20:17:49"
+ },
+ "78code.cc": {
+  "probe": {
+   "status": 0,
+   "latency_ms": 8034,
+   "final_url": "",
+   "title": "",
+   "meta": "",
+   "error": "ConnectTimeout: HTTPSConnectionPool(host='78code.cc', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSC"
+  },
+  "generated_at": "2026-09-22T20:22:58"
+ },
+ "suanniao.shop": {
+  "highlights": "统一AI API网关，配备管理后台系统",
+  "price": "未披露",
+  "probe": {
+   "status": 200,
+   "latency_ms": 906,
+   "title": "New API"
+  },
+  "generated_at": "2026-09-22T20:17:49"
+ },
+ "api.gpt.ge": {
+  "highlights": "支持上百种模型API直连中转，涵盖OpenAI、Claude、Gemini、Deepseek等全系列",
+  "price": "未披露",
+  "probe": {
+   "status": 200,
+   "latency_ms": 539,
+   "title": "V-API - 为您提供稳定可靠的Openai ChatGPT、Gemini、Claude、Deepseek、Grok、openclaw等API直连中转服务！"
+  },
+  "generated_at": "2026-09-22T20:17:49"
+ },
+ "new.xjai.cc": {
+  "highlights": "提供统一AI API网关及管理后台",
+  "price": "未披露",
+  "probe": {
+   "status": 200,
+   "latency_ms": 722,
+   "title": "New API"
+  },
+  "generated_at": "2026-09-22T20:17:49"
+ },
+ "www.ggwk1.online": {
+  "highlights": "站点首页为模板复刻页面，未展示具体产品功能与卖点",
+  "price": "未披露",
+  "probe": {
+   "status": 200,
+   "latency_ms": 828,
+   "title": "Home - ggwk"
+  },
+  "generated_at": "2026-09-22T20:17:49"
+ },
+ "cnapi.kksj.org": {
+  "highlights": "提供AI API网关与统一管理后台一站式服务",
+  "price": "未披露",
+  "probe": {
+   "status": 200,
+   "latency_ms": 1868,
+   "title": "KKSJ API"
+  },
+  "generated_at": "2026-09-22T20:17:49"
+ },
+ "apiyi.com": {
+  "highlights": "一站式聚合Nano Banana Pro、Sora 2等多款前沿模型，OpenAI兼容接口",
+  "price": "未披露",
+  "probe": {
+   "status": 200,
+   "latency_ms": 706,
+   "title": "APIYI - Unified AI API Gateway"
+  },
+  "generated_at": "2026-09-22T20:22:58"
  }
 };
