@@ -33,8 +33,9 @@ function escapeHtml(s) {
 // ============ 顶部导航 — 仿 okkmax 风格：brand + 8 链接 + 右侧搜索/积分/设置/登录 ============
 const NAV = [
   { href: 'index.html', label: '首页', id: 'home' },
+  { href: 'providers.html', label: 'AI中转', id: 'providers' },
+  { href: 'pick.html', label: '🎯 帮我选站', id: 'pick' },
   { href: 'models.html', label: '模型库', id: 'models' },
-  { href: 'providers.html', label: '渠道库', id: 'providers' },
   { href: 'compare.html', label: '比价', id: 'compare' },
   { href: 'events.html', label: '行情', id: 'events' },
   { href: 'playground.html', label: 'Playground', id: 'playground' },

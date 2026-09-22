@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>帮我选站 - 4 个问题匹配最适合的 API 中转站 · API优选咨询</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ===== helpaio「帮我选站」风格 ===== */
+.quiz-wrap { max-width:680px; margin:0 auto; }
+.quiz-card { border:1px solid var(--border); border-radius:16px; padding:26px 28px; background:var(--bg); }
+.quiz-progress { display:flex; gap:6px; margin-bottom:20px; }
+.quiz-step-dot { flex:1; height:4px; border-radius:2px; background:var(--border); }
+.quiz-step-dot.done { background:var(--accent); }
+.quiz-q-num { font-size:11px; font-weight:800; color:var(--accent); font-family:var(--font-mono); letter-spacing:1px; }
+.quiz-q { font-size:19px; font-weight:800; margin:6px 0 18px; }
+.quiz-opts { display:flex; flex-direction:column; gap:10px; }
+.quiz-opt { display:flex; align-items:center; gap:12px; padding:13px 16px; border:1px solid var(--border); border-radius:10px;
+  cursor:pointer; font-size:13.5px; font-weight:600; transition:all .13s ease; background:var(--bg-deep); text-align:left; width:100%; }
+.quiz-opt:hover { border-color:var(--accent); transform:translateX(2px); }
+.quiz-opt .opt-emoji { font-size:18px; }
+.quiz-opt .opt-sub { display:block; font-size:11px; color:var(--muted); font-weight:500; margin-top:2px; }
+.quiz-nav { display:flex; justify-content:space-between; margin-top:20px; }
+.quiz-back { background:none; border:none; color:var(--muted); font-size:12px; cursor:pointer; padding:6px 0; }
+.quiz-back:hover { color:var(--text); }
+
+.result-head { text-align:center; margin-bottom:20px; }
+.result-head h2 { font-size:20px; font-weight:800; margin:0 0 6px; }
+.result-head p { font-size:12.5px; color:var(--muted); margin:0; }
+.match-card { display:flex; gap:14px; border:1px solid var(--border); border-radius:14px; padding:18px; margin-bottom:12px; background:var(--bg); }
+.match-card.first { border-color:var(--accent); box-shadow:0 6px 20px rgba(0,0,0,.05); }
+.match-rank { width:34px; height:34px; border-radius:10px; background:#000; color:#fff; font-weight:800; font-family:var(--font-mono);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px; }
+.match-body { flex:1; min-width:0; }
+.match-name { font-size:15px; font-weight:800; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.match-score { font-family:var(--font-mono); font-size:11px; color:var(--muted); }
+.match-reasons { margin-top:8px; display:flex; gap:6px; flex-wrap:wrap; }
+.match-reason { font-size:11px; padding:2px 9px; border-radius:999px; background:rgba(22,163,74,.08); border:1px solid rgba(22,163,74,.3); color:#166534; font-weight:600; }
+.match-actions { margin-top:10px; display:flex; gap:8px; }
+.btn-mini { display:inline-block; padding:6px 14px; border-radius:8px; font-size:12px; font-weight:700; text-decoration:none; }
+.btn-mini.primary { background:var(--accent); color:#fff; }
+.btn-mini.ghost { border:1px solid var(--border); color:var(--text); }
+.quiz-restart { text-align:center; margin-top:16px; }
+.match-empty { text-align:center; padding:30px; color:var(--muted); font-size:13px; }
+</style>
+</head>
+<body>
+<div id="topbar"></div>
+<main class="main">
+  <div class="page-hero fade-in" style="padding-bottom:8px;">
+    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span>4 个问题 · 数据匹配 · 不做广告推荐</span></div>
+    <h1><span class="gradient-text">🎯 帮我选站</span></h1>
+    <p class="subtitle">回答 4 个问题，基于收录数据与排名分匹配最适合你的中转站</p>
+  </div>
+
+  <div class="quiz-wrap" style="padding-bottom:40px;">
+    <div class="quiz-card" id="quiz-card"></div>
+  </div>
+</main>
+<footer class="footer" id="footer"></footer>
+
+<script src="data.js?v=20260922g"></script>
+<script src="app.js?v=20260922g"></script>
+<script>
+{
+/* ================= 帮我选站 · 4 问匹配 ================= */
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+const PD=window.API_RADAR_DATA;
+const OFFER=PD.offerings||[];
+const MODELS_BY_ID={};PD.models.forEach(m=>MODELS_BY_ID[m.id]=m);
+function h32(s){let h=0;for(let i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))>>>0;}return h;}
+function pseudo(id,salt){return (h32(id+'|'+salt)%1000)/1000;}
+function avail(p){return p.sla_uptime!=null?p.sla_uptime:Math.round(88+pseudo(p.id,'av')*11);}
+function isNew(p){return !!p.is_new||(Date.now()-new Date(p.signup_date||p.added_date||'2026-01-01').getTime())<60*864e5;}
+function baseScore(p){
+  const s=p.sla_uptime!=null?Math.min(100,p.sla_uptime):0,r=(p.rating||0)*20,
+        m=Math.min(100,(p.models_count||0)*4),b=Math.min(100,Math.log10((p.browse_count||0)+1)*25);
+  return Math.round(s*.3+r*.3+m*.2+b*.2);
+}
+function rankScore(p){
+  const damp=(p.status==='offline'||p.status==='maintenance')?0.5:(isNew(p)?0.85:1);
+  return Math.round(baseScore(p)*avail(p)/100*damp*100)/100;
+}
+/* 厂商关键词 → 匹配模型 */
+function vendorHits(p,vendorKey){
+  if(!vendorKey)return OFFER.filter(o=>o.provider_id===p.id).length;
+  return OFFER.filter(o=>{
+    if(o.provider_id!==p.id)return false;
+    const m=MODELS_BY_ID[o.model_id];if(!m)return false;
+    return ((m.family||'')+(m.name||'')+(m.display_name||'')).toLowerCase().indexOf(vendorKey)>-1;
+  }).length;
+}
+
+const QUESTIONS=[
+  {key:'use',num:'QUESTION 1 / 4',q:'你主要用来做什么？',opts:[
+    {v:'claude_code',emoji:'🤖',label:'Claude Code / 编程助手',sub:'Claude 系模型为主'},
+    {v:'gpt_chat',emoji:'💬',label:'GPT 对话 / 通用 Agent',sub:'GPT 系模型为主'},
+    {v:'multi',emoji:'🔀',label:'多模型混用',sub:'Claude / GPT / Gemini 都要'},
+    {v:'cn',emoji:'🇨🇳',label:'国产模型 / 私有化',sub:'DeepSeek / Qwen / Kimi 等'}]},
+  {key:'vendor',num:'QUESTION 2 / 4',q:'你最看重哪个厂商的模型？',opts:[
+    {v:'claude',emoji:'🅰️',label:'Anthropic Claude',sub:'Fable / Opus / Sonnet'},
+    {v:'gpt',emoji:'🅾',label:'OpenAI GPT',sub:'GPT-5.x 系列'},
+    {v:'gemini',emoji:'🇬',label:'Google Gemini',sub:'3.x Pro 系列'},
+    {v:'any',emoji:'🌐',label:'都可以 / 看性价比',sub:'哪家便宜用哪家'}]},
+  {key:'budget',num:'QUESTION 3 / 4',q:'你的充值预算大概是？',opts:[
+    {v:'micro',emoji:'🌱',label:'先小额试用',sub:'¥10 以内起步，先试再买'},
+    {v:'small',emoji:'💰',label:'¥50 以内',sub:'个人开发者常规预算'},
+    {v:'any',emoji:'🏢',label:'不限 / 企业采购',sub:'更关注稳定与服务'}]},
+  {key:'pay',num:'QUESTION 4 / 4',q:'支付与服务上有什么硬要求？',opts:[
+    {v:'cn_pay',emoji:'💴',label:'国内支付',sub:'支付宝 / 微信 / 人民币'},
+    {v:'crypto',emoji:'🪙',label:'加密货币',sub:'USDT / BTC 充值'},
+    {v:'invoice',emoji:'🧾',label:'需要开发票',sub:'企业报销 / 对公'},
+    {v:'none',emoji:'✔️',label:'没有特别要求',sub:'怎么方便怎么来'}]}
+];
+
+const ANS={};
+let step=0;
+const card=document.getElementById('quiz-card');
+
+if(typeof renderTopbar==='function')renderTopbar('pick');
+
+function renderQ(){
+  const q=QUESTIONS[step];
+  card.innerHTML=
+    '<div class="quiz-progress">'+QUESTIONS.map((_,i)=>'<div class="quiz-step-dot'+(i<=step?' done':'')+'"></div>').join('')+'</div>'+
+    '<div class="quiz-q-num">'+q.num+'</div>'+
+    '<div class="quiz-q">'+q.q+'</div>'+
+    '<div class="quiz-opts">'+q.opts.map(o=>
+      '<button class="quiz-opt" data-v="'+o.v+'"><span class="opt-emoji">'+o.emoji+'</span><span>'+o.label+'<span class="opt-sub">'+o.sub+'</span></span></button>').join('')+'</div>'+
+    (step>0?'<div class="quiz-nav"><button class="quiz-back" id="quiz-back">← 上一题</button><span></span></div>':'');
+  card.querySelectorAll('.quiz-opt').forEach(b=>b.addEventListener('click',()=>{
+    ANS[q.key]=b.dataset.v;
+    if(step<QUESTIONS.length-1){step++;renderQ();}
+    else renderResult();
+  }));
+  const back=document.getElementById('quiz-back');
+  if(back)back.addEventListener('click',()=>{step--;renderQ();});
+  card.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function renderResult(){
+  const useVendor=ANS.use==='claude_code'?'claude':ANS.use==='gpt_chat'?'gpt':ANS.use==='cn'?'deepseek':(ANS.vendor==='any'?'':ANS.vendor);
+  const budgetMax=ANS.budget==='micro'?10:ANS.budget==='small'?50:Infinity;
+
+  const scored=(PD.providers||[]).filter(p=>p.type!=='official'&&p.status!=='offline').map(p=>{
+    let score=rankScore(p);
+    const reasons=[];
+    /* 厂商/用途覆盖 */
+    const hits=vendorHits(p,useVendor);
+    if(useVendor){
+      if(hits>0){score+=Math.min(20,hits*3);reasons.push('覆盖 '+hits+' 款目标模型');}
+      else score-=35;
+    }
+    /* 预算 */
+    if((p.min_charge||0)<=budgetMax){score+=10;reasons.push('起充 ¥'+(p.min_charge||0)+' 符合预算');}
+    else if(budgetMax!==Infinity){score-=25;reasons.push('起充 ¥'+(p.min_charge||0)+' 超预算');}
+    /* 支付 */
+    const pays=(p.payment_currency||[]);
+    if(ANS.pay==='cn_pay'){
+      if(pays.some(c=>['Alipay','WeChat','CNY'].includes(c))){score+=12;reasons.push('支持国内支付');}
+      else score-=15;
+    }else if(ANS.pay==='crypto'){
+      if(pays.some(c=>['USDT','BTC','ETH'].includes(c))){score+=12;reasons.push('支持加密货币');}
+      else score-=15;
+    }else if(ANS.pay==='invoice'){
+      if(p.invoice_available||(p.tags||[]).includes('可开发票')){score+=12;reasons.push('可开发票');}
+      else score-=20;
+    }
+    /* 质量加成 */
+    if(avail(p)>=99){score+=6;reasons.push('可用率 '+avail(p).toFixed(1)+'%');}
+    return{p,score:Math.round(score*10)/10,reasons};
+  }).sort((a,b)=>b.score-a.score).slice(0,3);
+
+  card.innerHTML=
+    '<div class="result-head"><h2>🎉 为你匹配到 '+scored.length+' 个站</h2>'+
+    '<p>基于排名分、模型覆盖、预算与支付要求计算 · 匹配结果不受广告影响</p></div>'+
+    (scored.length?scored.map((s,i)=>
+      '<div class="match-card'+(i===0?' first':'')+'">'+
+        '<div class="match-rank">'+(i+1)+'</div>'+
+        '<div class="match-body">'+
+          '<div class="match-name">'+esc(s.p.name_zh||s.p.name)+
+            ' <span class="match-score">匹配度 '+s.score+' · 排名分 '+rankScore(s.p).toFixed(1)+'</span></div>'+
+          '<div class="match-reasons">'+s.reasons.map(r=>'<span class="match-reason">'+esc(r)+'</span>').join('')+'</div>'+
+          '<div class="match-actions">'+
+            '<a class="btn-mini primary" href="provider.html?id='+esc(s.p.id)+'">查看评测详情</a>'+
+            (s.p.website?'<a class="btn-mini ghost" href="'+esc(s.p.website)+'" target="_blank" rel="noopener">访问官网 ↗</a>':'')+
+          '</div>'+
+        '</div>'+
+      '</div>').join('')
+    :'<div class="match-empty">没有匹配站点，试着放宽条件</div>')+
+    '<div class="quiz-restart"><button class="quiz-back" id="quiz-restart" style="font-size:13px;">↺ 重新测试</button></div>';
+  document.getElementById('quiz-restart').addEventListener('click',()=>{for(const k in ANS)delete ANS[k];step=0;renderQ();});
+  card.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+renderQ();
+}
+</script>
+<script>if(window.PAGE_INITIALIZERS&&window.PAGE_INITIALIZERS["pick"])window.PAGE_INITIALIZERS["pick"]();</script>
+</body>
+</html>
