@@ -38,7 +38,7 @@ const NAV = [
   { href: 'models.html', label: '模型库', id: 'models' },
   { href: 'compare.html', label: '比价', id: 'compare' },
   { href: 'events.html', label: '行情', id: 'events' },
-  { href: 'playground.html', label: 'Playground', id: 'playground' },
+  { href: 'playground.html', label: 'API检测', id: 'playground' },
   { href: 'watch.html', label: '观察室', id: 'watch' },
   { href: 'method.html', label: '方法', id: 'method' },
 ];

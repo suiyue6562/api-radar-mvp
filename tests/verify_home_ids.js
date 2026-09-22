@@ -62,10 +62,10 @@ const stats = fill('stats-band');
 check('统计带 4 项', (stats.match(/stat-card/g) || []).length === 4);
 check('统计带含收录站数', /收录中转站/.test(stats));
 
-// 4. 三大板块：3 张卡
+// 4. 金刚区：8 个快捷入口，含核心链接
 const plates = fill('plate-grid');
-check('三大板块 3 卡', (plates.match(/plate-num/g) || []).length === 3);
-check('板块链接', plates.includes('providers.html') && plates.includes('compare.html') && plates.includes('events.html'));
+check('金刚区 8 入口', (plates.match(/class="tile"/g) || []).length === 8);
+check('入口链接齐全', ['providers.html','pick.html','compare.html','playground.html','watch.html','events.html','models.html','method.html'].every(l => plates.includes(l)));
 
 // 5. 模型比价：≥1 条倍率，最低值高亮
 const mult = fill('mult-compare');
