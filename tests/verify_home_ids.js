@@ -90,7 +90,7 @@ check('动态列表非空', news.length > 100, news.length + ' chars');
 check('FAQ 4 条', (fill('faq-list').match(/faq-item/g) || []).length === 4);
 
 // 9. 首页文案
-check('Hero 标题', html.includes('AI 中转站评测导航'));
+check('Hero 标题', html.includes('API 中转站的真实现状'));
 check('排名口径声明', html.includes('基础分 × 可用率') || html.includes('基础分'));
 
 console.log(fail === 0 ? '\n🎉 全部通过' : '\n❌ ' + fail + ' 项失败');

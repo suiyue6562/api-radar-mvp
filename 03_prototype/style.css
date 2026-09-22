@@ -1,30 +1,32 @@
-/* ===== API 优选咨询 · okkmax 极简白底设计系统 ===== */
+/* ===== API 观察者 · 黄黑观察者设计系统 ===== */
 :root {
-  /* ===== helpaio.com 配色体系（HSL 原值） ===== */
+  /* ===== API 观察者配色体系（品牌黄 #FDC132 + 墨黑） ===== */
   /* 背景层级 */
-  --bg-base: hsl(210, 20%, 96%);   /* 冷灰蓝页面底 */
-  --bg-deep: hsl(220, 14%, 95%);   /* 次级背景 */
-  --bg-card: hsl(45, 20%, 99%);    /* 暖白卡片 */
-  --bg-card-hover: hsl(220, 14%, 95%);
-  --bg-glass: hsl(45, 20%, 99%);
+  --bg-base: hsl(45, 25%, 97%);    /* 暖白纸感页面底 */
+  --bg-deep: hsl(42, 20%, 94%);    /* 次级背景 */
+  --bg-card: hsl(45, 30%, 99.5%);  /* 卡片近白 */
+  --bg-card-hover: hsl(42, 30%, 96%);
+  --bg-glass: hsl(45, 30%, 99.5%);
 
   /* 边框 */
-  --border: hsl(220, 16%, 89%);
-  --border-hover: hsl(178, 72%, 29%);  /* hover 改深青 */
-  --border-strong: hsl(220, 16%, 87%);
+  --border: hsl(40, 14%, 88%);
+  --border-hover: hsl(42, 96%, 48%);   /* hover 改品牌黄 */
+  --border-strong: hsl(40, 14%, 85%);
 
   /* 文字 */
-  --fg: hsl(222, 18%, 14%);        /* 深海军蓝黑 */
-  --fg-strong: hsl(222, 18%, 10%);
-  --muted: hsl(220, 10%, 40%);
-  --muted-foreground: hsl(220, 10%, 55%);
+  --fg: hsl(40, 12%, 10%);         /* 墨黑 */
+  --fg-strong: hsl(40, 14%, 6%);
+  --muted: hsl(40, 6%, 38%);
+  --muted-foreground: hsl(40, 5%, 55%);
 
-  /* 强调色（helpaio shadcn tokens） */
-  --accent: hsl(178, 72%, 29%);    /* 深青 primary */
+  /* 强调色（API 观察者 tokens：黄=高光，墨黑=行动） */
+  --accent: hsl(42, 98%, 55%);     /* 品牌黄 primary：背景/高亮/进度条 */
+  --accent-strong: hsl(38, 96%, 44%);  /* hover 深黄 */
+  --accent-ink: hsl(38, 90%, 30%); /* 深琥珀：黄底上/白底上的可读文字强调 */
   --accent-2: hsl(212, 76%, 48%);  /* 信息蓝 */
   --accent-3: hsl(352, 66%, 50%);  /* 玫瑰红 */
   --success: hsl(158, 58%, 38%);   /* emerald */
-  --warning: hsl(38, 90%, 48%);    /* amber */
+  --warning: hsl(24, 92%, 46%);    /* 橙（与品牌黄拉开区分） */
   --danger: hsl(352, 66%, 50%);    /* destructive */
 
   /* 四色图标体系（theme colors + light 底） */
@@ -34,9 +36,8 @@
   --theme-teal: hsl(178, 72%, 29%);     --theme-teal-light: hsl(178, 70%, 95%);
 
   /* 渐变（保留变量名以兼容） */
-  --grad-primary: hsl(178, 72%, 29%);
-  --grad-card: hsl(45, 20%, 99%);
-  --grad-card: hsl(45, 20%, 99%);
+  --grad-primary: hsl(42, 98%, 55%);
+  --grad-card: hsl(45, 30%, 99.5%);
 
   /* 阴影（极简、很轻） */
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
@@ -56,9 +57,9 @@
   --radius-xl: 12px;
 }
 
-/* ===== helpaio UI 基因：直角 + 系统字体 + 深青交互 ===== */
+/* ===== API 观察者 UI 基因：直角 + 系统字体 + 黄黑交互 ===== */
 *, *::before, *::after { border-radius: 0 !important; }
-::selection { background: hsl(178, 72%, 29%); color: #fff; }
+::selection { background: hsl(42, 98%, 55%); color: hsl(40, 14%, 6%); }
 a, button { transition: color .12s ease, border-color .12s ease, background .12s ease; }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -226,13 +227,14 @@ input:focus, select:focus, textarea:focus {
 }
 .btn-primary {
   background: var(--accent);
-  color: #ffffff;
+  color: hsl(40, 14%, 8%);
   border-color: var(--accent);
-  font-weight: 600;
+  font-weight: 700;
 }
 .btn-primary:hover {
-  background: var(--accent-strong, hsl(178, 72%, 24%));
-  border-color: var(--accent-strong, hsl(178, 72%, 24%));
+  background: var(--accent-strong, hsl(38, 96%, 44%));
+  border-color: var(--accent-strong, hsl(38, 96%, 44%));
+  color: hsl(40, 14%, 8%);
 }
 .btn-ghost {
   background: var(--bg-base);
@@ -334,10 +336,13 @@ th {
 }
 tbody tr:hover { background: var(--bg-deep); }
 
-/* ===== 渐变文字改为普通黑 ===== */
+/* ===== 渐变文字改为品牌黄高光块（海报式黄色高亮） ===== */
 .gradient-text {
   color: var(--fg-strong);
-  background: none;
+  background: var(--accent);
+  padding: 0 10px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
   -webkit-background-clip: initial;
   background-clip: initial;
   -webkit-text-fill-color: initial;
@@ -536,7 +541,7 @@ tbody tr:hover { background: var(--bg-deep); }
   padding: 2px 7px;
   border-radius: 4px;
   background: var(--accent);
-  color: #ffffff;
+  color: hsl(40, 14%, 8%);
   font-size: 9px;
   font-weight: 800;
   letter-spacing: .5px;
@@ -553,15 +558,15 @@ tbody tr:hover { background: var(--bg-deep); }
   justify-content: center;
   font-weight: 800;
   font-size: 13px;
-  color: #ffffff;
+  color: hsl(40, 14%, 8%);
   background: var(--accent);
   box-shadow: none;
 }
 .pv-score.is-new-pad { right: 50px; }
-.pv-score-A { background: var(--success); }
-.pv-score-B { background: var(--accent-2); }
-.pv-score-C { background: var(--warning); }
-.pv-score-D { background: var(--danger); }
+.pv-score-A { background: var(--success); color: #ffffff; }
+.pv-score-B { background: var(--accent-2); color: #ffffff; }
+.pv-score-C { background: var(--warning); color: #ffffff; }
+.pv-score-D { background: var(--danger); color: #ffffff; }
 
 /* ============ Footer ============ */
 .site-footer { margin-top: 56px; padding: 32px 0 24px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; background: var(--bg-deep); }
@@ -715,7 +720,7 @@ tbody tr:hover { background: var(--bg-deep); }
   text-decoration: none;
   transition: background 0.15s;
 }
-.topbar-login:hover { background: var(--accent); }
+.topbar-login:hover { background: var(--accent); color: hsl(40, 14%, 8%) !important; }
 @media (max-width: 1100px) {
   .topbar-actions { padding-left: 8px; }
   .topbar-icon-btn { padding: 0 6px; }

@@ -6,9 +6,10 @@
 <meta http-equiv="Expires" content="0">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>API 中转站实测 · 40 家厂商 · 真假可用性价格测评 - API优选咨询</title>
+<title>API 中转站实测 · 40 家厂商 · 真假可用性价格测评 - API观察者</title>
+<link rel="icon" type="image/png" href="assets/logo-icon.png?v=20260922r">
 <meta name="description" content="实测 40 家 AI API 中转站：纯度检测 / 可用性监控 / 价格对比 / 退款政策 / 用户口碑。13 项硬核检测独立验证。">
-<link rel="stylesheet" href="style.css?v=20260922k">
+<link rel="stylesheet" href="style.css?v=20260922r">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* === 信息发布站 — okkmax 风格 === */
@@ -20,7 +21,7 @@
 /* KPI 数字墙 */
 .kpi-wall { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 720px; margin: 16px auto 0; }
 .biz-kpi { padding: 12px 8px; text-align: center; border-radius: 10px; background: var(--bg-card); border: 1px solid var(--border); }
-.biz-kpi-num { font-family: var(--font-mono); font-size: 22px; font-weight: 800; color: var(--accent); }
+.biz-kpi-num { font-family: var(--font-mono); font-size: 22px; font-weight: 800; color:var(--accent-ink); }
 .biz-kpi-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
 .biz-kpi.warn .biz-kpi-num { color: #f59e0b; }
 @media (max-width: 700px) { .kpi-wall { grid-template-columns: repeat(2, 1fr); } }
@@ -28,12 +29,12 @@
 /* === Latest test results 时间线（仿 okkmax） === */
 .biz-section-title { display: flex; align-items: center; justify-content: space-between; margin: 28px 0 12px; }
 .biz-section-title h2 { margin: 0; font-size: 18px; font-weight: 700; }
-.biz-section-title a { color: var(--accent); font-size: 12px; text-decoration: none; }
+.biz-section-title a { color:var(--accent-ink); font-size: 12px; text-decoration: none; }
 .biz-section-title .live-dot { display: inline-block; width: 6px; height: 6px; background: #22c55e; border-radius: 50%; margin-right: 6px; }
 
 .biz-timeline { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
 .biz-timeline-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; background: var(--bg-card); border: 1px solid var(--border); transition: all 0.15s; text-decoration: none; color: inherit; }
-.biz-timeline-row:hover { border-color: var(--accent); transform: translateX(2px); }
+.biz-timeline-row:hover { border-color:var(--accent-ink); transform: translateX(2px); }
 .biz-timeline-row .tl-logo { width: 24px; height: 24px; border-radius: 6px; background: var(--bg-deep); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
 .biz-timeline-row .tl-model { font-weight: 600; font-size: 12px; }
 .biz-timeline-row .tl-badge { font-size: 10px; padding: 1px 6px; border-radius: 8px; font-weight: 600; }
@@ -87,10 +88,10 @@
 /* === Top Picks 用户口碑（仿 okkmax） === */
 .biz-picks-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
 .biz-pick { padding: 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; transition: all 0.15s; }
-.biz-pick:hover { border-color: var(--accent); }
+.biz-pick:hover { border-color:var(--accent-ink); }
 .biz-pick-quote { font-size: 13px; line-height: 1.5; color: var(--fg); margin-bottom: 8px; }
-.biz-pick-quote::before { content: '\201C'; font-size: 20px; color: var(--accent); margin-right: 2px; }
-.biz-pick-quote::after { content: '\201D'; font-size: 20px; color: var(--accent); margin-left: 2px; }
+.biz-pick-quote::before { content: '\201C'; font-size: 20px; color:var(--accent-ink); margin-right: 2px; }
+.biz-pick-quote::after { content: '\201D'; font-size: 20px; color:var(--accent-ink); margin-left: 2px; }
 .biz-pick-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
 .biz-pick-tag { font-size: 10px; padding: 2px 7px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 8px; color: var(--muted); }
 .biz-pick-tag.bad { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); color: #ef4444; }
@@ -105,14 +106,14 @@
 /* === Perks & promotions === */
 .biz-perks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .biz-perk { padding: 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; transition: all 0.15s; text-decoration: none; color: inherit; }
-.biz-perk:hover { border-color: var(--accent); transform: translateY(-1px); }
+.biz-perk:hover { border-color:var(--accent-ink); transform: translateY(-1px); }
 .biz-perk-tag { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 8px; font-weight: 600; margin-bottom: 8px; }
 .biz-perk-tag.free { background: rgba(34,197,94,0.15); color: #22c55e; }
 .biz-perk-tag.discount { background: rgba(0, 0, 0, 0.15); color: #000000; }
 .biz-perk-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
 .biz-perk-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
 .biz-perk-meta { font-size: 11px; color: var(--muted); margin-top: 8px; }
-.biz-perk-cta { margin-top: 10px; font-size: 12px; color: var(--accent); font-weight: 600; }
+.biz-perk-cta { margin-top: 10px; font-size: 12px; color:var(--accent-ink); font-weight: 600; }
 @media (max-width: 900px) { .biz-perks-grid { grid-template-columns: 1fr; } }
 
 /* === 排序 + 筛选栏 === */
@@ -124,7 +125,7 @@
 
 /* === Footer === */
 .biz-footer { text-align: center; padding: 40px 20px 20px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 40px; }
-.biz-footer a { color: var(--accent); text-decoration: none; }
+.biz-footer a { color:var(--accent-ink); text-decoration: none; }
 </style>
 </head>
 <body>
@@ -214,7 +215,7 @@
 
 
 <script src="data.js?v=20260922k"></script>
-<script src="app.js?v=20260922l"></script>
+<script src="app.js?v=20260922r"></script>
 <script>
 function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 if (typeof renderTopbar === "function") renderTopbar("business");

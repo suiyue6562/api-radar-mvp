@@ -1,4 +1,4 @@
-// API优选咨询 模型探测套件 (v2)
+// API观察者 模型探测套件 (v2)
 // 5 个有标准答案的探测 prompt，识别真假模型 + 模型指纹
 
 const PROBE_SET = [
@@ -213,7 +213,7 @@ async function priceVerify(baseUrl, key, model, protocol, claimedInput, claimedO
 
 // 导出（playground.html 用）
 window.RADAR_PROBES = { PROBE_SET, MODEL_FINGERPRINTS, getFingerprint, deepCheck, rateLimitCheck, priceVerify, runProbe, checkProbeAnswer };
-// API优选咨询 检测套件 v3 - 业内空白补全
+// API观察者 检测套件 v3 - 业内空白补全
 
 // ============ 1. 假流式识别 ============
 // 假流式特征：声称 SSE 但一次返回整段（单 chunk 巨大）

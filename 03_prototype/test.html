@@ -6,9 +6,10 @@
 <meta http-equiv="Expires" content="0">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>测 Key · 5 项检测 · 30 秒出结果 - API优选咨询</title>
+<title>测 Key · 5 项检测 · 30 秒出结果 - API观察者</title>
+<link rel="icon" type="image/png" href="assets/logo-icon.png?v=20260922r">
 <meta name="description" content="输入 URL + Key，5 项核心检测秒级返回 · 评分 + 警告。">
-<link rel="stylesheet" href="style.css?v=20260922k">
+<link rel="stylesheet" href="style.css?v=20260922r">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* === Test Key 页 - okkmax 风格 === */
@@ -25,7 +26,7 @@
 
 .tk-quick { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
 .tk-quick-btn { font-size: 11px; padding: 4px 10px; border-radius: 999px; background: rgba(120,160,255,0.08); border: 1px solid var(--border); color: var(--muted); cursor: pointer; transition: all 0.15s; }
-.tk-quick-btn:hover { color: var(--accent); border-color: var(--accent); }
+.tk-quick-btn:hover { color:var(--accent-ink); border-color:var(--accent-ink); }
 
 .tk-run-btn { width: 100%; padding: 14px; font-size: 15px; }
 
@@ -70,7 +71,7 @@
 .tk-warn.warn { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.25); }
 .tk-warn.warn .tk-warn-icon { color: #fbbf24; }
 .tk-warn.info { background: rgba(0, 0, 0, 0.06); border: 1px solid rgba(0, 0, 0, 0.25); }
-.tk-warn.info .tk-warn-icon { color: var(--accent); }
+.tk-warn.info .tk-warn-icon { color:var(--accent-ink); }
 .tk-warn.ok { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.25); }
 .tk-warn.ok .tk-warn-icon { color: #22c55e; }
 
@@ -78,8 +79,8 @@
 .tk-checks { margin-top: 16px; padding: 18px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); }
 .tk-checks h3 { font-size: 13px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; margin-bottom: 12px; }
 .tk-check-row { display: grid; grid-template-columns: 36px 1fr auto; gap: 12px; align-items: center; padding: 10px 12px; border-radius: 8px; background: var(--bg-deep); border: 1px solid var(--border); margin-bottom: 6px; transition: all 0.15s; }
-.tk-check-row:hover { border-color: var(--accent); }
-.tk-check-num { font-family: var(--font-mono); font-size: 13px; font-weight: 800; color: var(--accent); }
+.tk-check-row:hover { border-color:var(--accent-ink); }
+.tk-check-num { font-family: var(--font-mono); font-size: 13px; font-weight: 800; color:var(--accent-ink); }
 .tk-check-info { min-width: 0; }
 .tk-check-name { font-size: 13px; font-weight: 600; }
 .tk-check-val { font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
@@ -90,7 +91,7 @@
 
 /* Footer */
 .tk-footer { text-align: center; padding: 40px 20px 20px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 40px; }
-.tk-footer a { color: var(--accent); text-decoration: none; }
+.tk-footer a { color:var(--accent-ink); text-decoration: none; }
 </style>
 </head>
 <body>
@@ -148,7 +149,7 @@
 
 
 <script src="data.js?v=20260922k"></script>
-<script src="app.js?v=20260922l"></script>
+<script src="app.js?v=20260922r"></script>
 <script>
 function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 

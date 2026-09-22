@@ -6,9 +6,10 @@
 <meta http-equiv="Expires" content="0">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI 行情时间线 · 新模型 · 价格变动 · 渠道异常 - API优选咨询</title>
+<title>AI 行情时间线 · 新模型 · 价格变动 · 渠道异常 - API观察者</title>
+<link rel="icon" type="image/png" href="assets/logo-icon.png?v=20260922r">
 <meta name="description" content="6 类事件实时时间线：新模型发布 / 价格变动 / 服务中断 / 能力更新 / 政策调整 / 模型下架。">
-<link rel="stylesheet" href="style.css?v=20260922k">
+<link rel="stylesheet" href="style.css?v=20260922r">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* === Events 页 - okkmax 风格 === */
@@ -18,9 +19,9 @@
 /* KPI */
 .kpi-wall { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; max-width: 920px; margin: 18px auto 0; }
 .evt-kpi { padding: 10px 6px; text-align: center; border-radius: 8px; background: var(--bg-card); border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
-.evt-kpi:hover { border-color: var(--accent); }
-.evt-kpi.active { border-color: var(--accent); background: rgba(0, 0, 0, 0.06); }
-.evt-kpi-num { font-family: var(--font-mono); font-size: 18px; font-weight: 800; color: var(--accent); }
+.evt-kpi:hover { border-color:var(--accent-ink); }
+.evt-kpi.active { border-color:var(--accent-ink); background: rgba(0, 0, 0, 0.06); }
+.evt-kpi-num { font-family: var(--font-mono); font-size: 18px; font-weight: 800; color:var(--accent-ink); }
 .evt-kpi-label { font-size: 10px; color: var(--muted); margin-top: 2px; }
 @media (max-width: 800px) { .kpi-wall { grid-template-columns: repeat(3, 1fr); } }
 
@@ -38,7 +39,7 @@
 .evt-timeline::before { content: ''; position: absolute; left: 11px; top: 0; bottom: 0; width: 2px; background: var(--border); }
 
 .evt-item { position: relative; padding: 14px 16px; margin-bottom: 10px; border-radius: 10px; background: var(--bg-card); border: 1px solid var(--border); transition: all 0.15s; }
-.evt-item:hover { border-color: var(--accent); transform: translateX(2px); }
+.evt-item:hover { border-color:var(--accent-ink); transform: translateX(2px); }
 .evt-item::before { content: ''; position: absolute; left: -25px; top: 18px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--bg-base); z-index: 1; }
 .evt-item.type-new_model::before { background: var(--accent); }
 .evt-item.type-price_change::before { background: #fbbf24; }
@@ -64,13 +65,13 @@
 
 .evt-item-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
 .evt-item-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
-.evt-item-target { display: inline-block; margin-top: 6px; padding: 2px 8px; border-radius: 6px; background: var(--bg-deep); border: 1px solid var(--border); font-size: 11px; color: var(--accent); }
+.evt-item-target { display: inline-block; margin-top: 6px; padding: 2px 8px; border-radius: 6px; background: var(--bg-deep); border: 1px solid var(--border); font-size: 11px; color:var(--accent-ink); }
 .evt-item-source { font-size: 10px; color: var(--muted); margin-top: 6px; }
-.evt-item-source a { color: var(--accent); text-decoration: none; }
+.evt-item-source a { color:var(--accent-ink); text-decoration: none; }
 
 /* Footer */
 .evt-footer { text-align: center; padding: 40px 20px 20px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 40px; }
-.evt-footer a { color: var(--accent); text-decoration: none; }
+.evt-footer a { color:var(--accent-ink); text-decoration: none; }
 </style>
 </head>
 <body>
@@ -124,7 +125,7 @@
 
 
 <script src="data.js?v=20260922k"></script>
-<script src="app.js?v=20260922l"></script>
+<script src="app.js?v=20260922r"></script>
 <script>
 function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 

@@ -6,9 +6,10 @@
 <meta http-equiv="Expires" content="0">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>API优选咨询 · 更接地气的 AI 中转站评测导航</title>
-<meta name="description" content="自费实测无赞助：AI 中转站排名、模型比价、7×24 可用率监测，帮你避坑找到最适合的 Claude / GPT / Gemini API 中转站。">
-<link rel="stylesheet" href="style.css?v=20260922l">
+<title>API观察者 · 找 API 中转站，先看 API观察者</title>
+<link rel="icon" type="image/png" href="assets/logo-icon.png?v=20260922r">
+<meta name="description" content="找 API 中转站，先看 API观察者。持续观察每家中转站的真实现状：哪家掉线、哪家涨价、哪家上新，每日实测，不吹不黑，只说真话。">
+<link rel="stylesheet" href="style.css?v=20260922r">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ===== helpaio.com 首页同款结构（紧凑版） ===== */
@@ -35,9 +36,9 @@
 .avail-board-title b { color:var(--text); }
 .avail-row { display:flex; align-items:center; gap:12px; padding:8px 14px; border:1px solid var(--border); border-radius:10px; margin-bottom:6px;
   background:var(--bg); cursor:pointer; transition:all .15s ease; }
-.avail-row:hover { border-color:var(--accent); }
+.avail-row:hover { border-color:var(--accent-ink); }
 .avail-rank { font-family:var(--font-mono); font-weight:800; font-size:15px; width:26px; color:var(--muted); flex-shrink:0; text-align:center; }
-.avail-row:nth-child(2) .avail-rank, .avail-row:nth-child(3) .avail-rank, .avail-row:nth-child(4) .avail-rank { color:var(--accent); }
+.avail-row:nth-child(2) .avail-rank, .avail-row:nth-child(3) .avail-rank, .avail-row:nth-child(4) .avail-rank { color:var(--accent-ink); }
 .avail-name { flex:1; min-width:0; font-weight:700; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .avail-metrics { display:flex; gap:16px; flex-shrink:0; }
 .avail-metric { font-size:12px; color:var(--muted); }
@@ -47,7 +48,7 @@
 .stats-band { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; max-width:1080px; margin:20px auto 0; }
 .stat-card { border:1px dashed var(--border); border-radius:12px; padding:12px 14px; text-align:center; background:var(--bg-deep); }
 .stat-num { font-size:22px; font-weight:800; font-family:var(--font-mono); }
-.stat-num span { font-size:13px; color:var(--accent); font-weight:700; }
+.stat-num span { font-size:13px; color:var(--accent-ink); font-weight:700; }
 .stat-label { font-size:12.5px; font-weight:700; margin-top:2px; }
 .stat-sub { font-size:10.5px; color:var(--muted); margin-top:2px; }
 
@@ -64,7 +65,7 @@
 @media (max-width: 920px) { .tile-grid { grid-template-columns:repeat(2,1fr); } }
 .tile { display:flex; align-items:center; gap:12px; border:1px solid var(--border); padding:15px 16px; background:var(--bg-card);
   text-decoration:none; color:var(--fg); transition:all .15s ease; }
-.tile:hover { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 6px 18px rgba(20,60,60,.10); }
+.tile:hover { border-color:var(--accent-ink); transform:translateY(-2px); box-shadow:0 6px 18px rgba(20,60,60,.10); }
 .tile-icon { width:40px; height:40px; display:flex; align-items:center; justify-content:center; font-size:19px; flex-shrink:0; }
 .tile-icon.t1 { background:var(--theme-teal-light); }
 .tile-icon.t2 { background:var(--theme-coral-light); }
@@ -78,7 +79,7 @@
 .tile-name { display:block; font-size:14px; font-weight:700; line-height:1.3; white-space:nowrap; }
 .tile-sub { display:block; font-size:11px; color:var(--muted); margin-top:3px; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .tile-arrow { flex-shrink:0; color:var(--muted); font-size:14px; opacity:0; transform:translateX(-4px); transition:all .15s ease; }
-.tile:hover .tile-arrow { opacity:1; transform:translateX(0); color:var(--accent); }
+.tile:hover .tile-arrow { opacity:1; transform:translateX(0); color:var(--accent-ink); }
 
 .data-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:14px; max-width:1060px; margin:24px auto 0; }
 .data-card { border:1px solid var(--border); border-radius:14px; padding:20px; background:var(--bg); }
@@ -88,7 +89,7 @@
 .mult-row:last-child { border-bottom:none; }
 .mult-name { flex:1; min-width:0; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .mult-badge { font-family:var(--font-mono); font-weight:800; font-size:13px; padding:2px 9px; border-radius:6px; background:var(--bg-deep); border:1px solid var(--border); }
-.mult-badge.min { background:var(--accent); color:#fff; border-color:var(--accent); }
+.mult-badge.min { background:var(--accent); color:#fff; border-color:var(--accent-ink); }
 .mult-foot { font-size:11px; color:var(--muted); margin-top:10px; }
 
 .mon-row { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px dashed var(--border); font-size:12.5px; }
@@ -98,7 +99,7 @@
 
 .news-list { max-width:none; margin:0; }
 .news-item { display:flex; gap:14px; padding:12px 14px; border:1px solid var(--border); border-radius:12px; margin-bottom:8px; background:var(--bg); }
-.news-badge { flex-shrink:0; align-self:flex-start; font-size:11px; font-weight:800; padding:3px 9px; border-radius:6px; background:var(--bg-deep); border:1px solid var(--border); color:var(--accent); font-family:var(--font-mono); }
+.news-badge { flex-shrink:0; align-self:flex-start; font-size:11px; font-weight:800; padding:3px 9px; border-radius:6px; background:var(--bg-deep); border:1px solid var(--border); color:var(--accent-ink); font-family:var(--font-mono); }
 .news-body { min-width:0; }
 .news-title { font-size:13.5px; font-weight:700; margin-bottom:3px; }
 .news-desc { font-size:12px; color:var(--muted); line-height:1.7; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
@@ -111,7 +112,7 @@
 .faq-item.open .faq-q .arrow { transform:rotate(180deg); }
 .faq-a { display:none; padding:0 16px 13px; font-size:12px; color:var(--muted); line-height:1.8; }
 .faq-item.open .faq-a { display:block; }
-.faq-a a { color:var(--accent); }
+.faq-a a { color:var(--accent-ink); }
 
 .cta-banner { max-width:1080px; margin:36px auto 0; text-align:center; border:1px dashed var(--border); border-radius:16px; padding:26px 24px; background:var(--bg-deep); }
 .cta-banner h2 { font-size:20px; font-weight:800; margin:0 0 6px; }
@@ -137,9 +138,9 @@
   <section class="hero fade-in">
     <div class="hero-layout">
       <div class="hero-left">
-        <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span id="hero-tagline">找 API 中转站，先看 API 优选咨询</span></div>
-        <h1 class="hero-title">更接地气的<br><span class="gradient-text">AI 中转站评测导航</span></h1>
-        <p class="hero-sub" id="hero-sub">市面上中转站成百上千，哪家快、哪家稳、哪家不跑路？我们一家一家实测，把真实数据摆出来给你看。</p>
+        <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span id="hero-tagline">找 API 中转站，先看 API观察者</span></div>
+        <h1 class="hero-title">持续观察每一家<br><span class="gradient-text">API 中转站的真实现状</span></h1>
+        <p class="hero-sub" id="hero-sub">哪家最近掉线了？哪家涨价了？哪家新上了什么功能？我们每天都在盯着，一项一项实测，把真实情况告诉你。不吹不黑，只说真话。</p>
         <div class="hero-ctas">
           <a href="providers.html" class="btn btn-primary" style="padding:11px 26px;font-size:14px;">进入中转站比价 →</a>
           <a href="pick.html" class="btn-ghost" style="padding:11px 22px;font-size:14px;">🎯 帮我选站</a>
@@ -180,7 +181,7 @@
     </div>
     <div class="data-card">
       <h3>🟢 实测存活率</h3>
-      <div class="sub">探针每日 2 次真实 HTTP 探测 · 官网可达口径，样本趋势见 <a href="watch.html" style="color:var(--accent);">观察室</a></div>
+      <div class="sub">探针每日 2 次真实 HTTP 探测 · 官网可达口径，样本趋势见 <a href="watch.html" style="color:var(--accent-ink);">观察室</a></div>
       <div id="mon-snapshot"></div>
     </div>
   </div>
@@ -193,7 +194,7 @@
   <div class="card" style="padding:0;overflow:hidden;">
     <div id="radar-home"></div>
     <div style="padding:10px 16px;border-top:1px solid var(--border);text-align:center;">
-      <a href="providers.html#radar" style="font-size:13px;color:var(--accent);font-weight:700;">查看完整收录雷达（<span id="radar-total">-</span> 家）→</a>
+      <a href="providers.html#radar" style="font-size:13px;color:var(--accent-ink);font-weight:700;">查看完整收录雷达（<span id="radar-total">-</span> 家）→</a>
     </div>
   </div>
 
@@ -222,7 +223,7 @@
 <script src="data.js?v=20260922k"></script>
 <script src="radar_sites.js?v=20260922b"></script>
 <script src="probe_stats.js?v=ai2026092219"></script>
-<script src="app.js?v=20260922l"></script>
+<script src="app.js?v=20260922r"></script>
 <script>
 {
 /* ================= helpaio.com 首页结构复刻 · 数据驱动 ================= */
@@ -351,7 +352,7 @@ document.getElementById('news-list').innerHTML=(PD.events||[]).slice().sort((a,b
 
 /* ---- FAQ ---- */
 const FAQS=[
-  {q:'API优选咨询是什么？',a:'你的 API 中转站选品顾问：找 API 中转站，先看 API 优选咨询。探针实测数十家中转站，提供 7×24 可用率监测、模型比价与排名榜，另有跨榜单聚合的收录雷达帮你发现新站。推广位全程明示、不影响排名；排序口径在榜单页与评测方法页公开。'},
+  {q:'API观察者是什么？',a:'你的 API 中转站选品顾问：找 API 中转站，先看 API观察者。探针实测数十家中转站，提供 7×24 可用率监测、模型比价与排名榜，另有跨榜单聚合的收录雷达帮你发现新站。推广位全程明示、不影响排名；排序口径在榜单页与评测方法页公开。'},
   {q:'中转站怎么选？',a:'先看可用率与价格倍率，再看模型覆盖与服务保障（发票/退款/支付方式）。建议先小额试用，请勿囤积大额余额；排行分 = 基础分 × 可用率 ÷ 100 × 降权系数，新站有观察期。'},
   {q:'数据从哪来、多久更新？',a:'可用性数据来自自建探针系统，对收录站点发起真实 API 调用采集；价格数据来自各站登记报价整理；模型与行情数据持续维护。页面标注每次数据更新时间。'},
   {q:'推广位会影响排名吗？',a:'不会。广告与排名完全隔离：推广内容带"推广"标签展示，排名分仅由基础分、可用率与降权系数计算，广告主的投放不改变任何评测结论与排序。'}

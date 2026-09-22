@@ -7,9 +7,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>不合规中转站专区 · 灰产市场透明化目录 · API优选咨询</title>
+<title>不合规中转站专区 · 灰产市场透明化目录 · API观察者</title>
+<link rel="icon" type="image/png" href="assets/logo-icon.png?v=20260922r">
 <meta name="description" content="488 家公开可访问的不合规 API 中转站清单 · 仅限中国大陆以外访问 · 含完整收录标准与风险提示">
-<link rel="stylesheet" href="style.css?v=20260922k">
+<link rel="stylesheet" href="style.css?v=20260922r">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ===== gray_market 页 · okkmax 极简风格 ===== */
@@ -104,7 +105,7 @@
   color: var(--muted); cursor: pointer; user-select: none;
   transition: all .15s; font-weight: 500;
 }
-.gm-table-toolbar .chip:hover { border-color: var(--accent); color: var(--fg); }
+.gm-table-toolbar .chip:hover { border-color:var(--accent-ink); color: var(--fg); }
 .gm-table-toolbar .chip.active { background: var(--fg); border-color: var(--fg); color: #fff; }
 .gm-table-toolbar .filter-label {
   font-size: 11px; color: var(--muted); font-weight: 600;
@@ -853,13 +854,13 @@ function boot() {
     '<div style="grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;font-size:11px;color:var(--muted);flex-wrap:wrap;">' +
       '<span>🔴 风险/不稳定 <strong style="color:var(--danger);font-family:var(--font-mono);">' + riskyN + '</strong></span>' +
       '<span>⚫ 已离线 <strong style="color:var(--fg);font-family:var(--font-mono);">' + offlineN + '</strong></span>' +
-      '<span>💰 已采集价格倍率 <strong style="color:var(--accent);font-family:var(--font-mono);">' + withMult + '</strong> 家</span>' +
+      '<span>💰 已采集价格倍率 <strong style="color:var(--accent-ink);font-family:var(--font-mono);">' + withMult + '</strong> 家</span>' +
       '<span>📊 数据源: <strong style="font-family:var(--font-mono);">不合规API中转站完整清单_20260920.xlsx</strong></span>' +
     '</div>';
 
   document.getElementById('gm-total').textContent = total.toLocaleString();
   document.getElementById('gm-banner-total').textContent = total;
-  document.title = total + ' 家不合规中转站 · 灰产市场透明化目录 · API优选咨询';
+  document.title = total + ' 家不合规中转站 · 灰产市场透明化目录 · API观察者';
 
   // 绑定筛选
   bindChips('#gm-region-chips', 'region');
@@ -931,7 +932,7 @@ if (!tryBoot()) {
   bar.innerHTML = '<div class="topbar-inner">' +
     '<a href="index.html" class="brand">' +
       '<div class="brand-logo">R</div>' +
-      '<span class="brand-text">API优选咨询</span>' +
+      '<span class="brand-text">API观察者</span>' +
       '<span class="brand-sub">v2.1</span>' +
     '</a>' +
     '<nav class="nav">' + NAV.map(function(n){

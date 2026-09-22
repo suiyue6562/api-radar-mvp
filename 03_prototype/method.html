@@ -6,9 +6,10 @@
 <meta http-equiv="Expires" content="0">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>方法论 · 数据来源 · 评级标准 · 免责声明 - API优选咨询</title>
+<title>方法论 · 数据来源 · 评级标准 · 免责声明 - API观察者</title>
+<link rel="icon" type="image/png" href="assets/logo-icon.png?v=20260922r">
 <meta name="description" content="数据如何采集 · 13 项硬核检测如何打分 · 免责与争议处理 · 贡献者名单。">
-<link rel="stylesheet" href="style.css?v=20260922k">
+<link rel="stylesheet" href="style.css?v=20260922r">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* === Method 页 - okkmax 风格 === */
@@ -27,7 +28,7 @@
 .mtd-source-icon { font-size: 24px; margin-bottom: 6px; }
 .mtd-source-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
 .mtd-source-desc { font-size: 11px; color: var(--muted); line-height: 1.6; }
-.mtd-source-tag { display: inline-block; font-size: 9px; padding: 1px 6px; border-radius: 999px; background: rgba(0, 0, 0, 0.12); color: var(--accent); margin-top: 6px; font-weight: 600; }
+.mtd-source-tag { display: inline-block; font-size: 9px; padding: 1px 6px; border-radius: 999px; background: rgba(0, 0, 0, 0.12); color:var(--accent-ink); margin-top: 6px; font-weight: 600; }
 @media (max-width: 800px) { .mtd-sources { grid-template-columns: 1fr; } }
 
 /* 评级表 */
@@ -35,13 +36,13 @@
 .mtd-rubric th, .mtd-rubric td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 13px; }
 .mtd-rubric thead th { background: var(--bg-deep); color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
 .mtd-rubric td:first-child { font-weight: 600; }
-.mtd-rubric .weight { font-family: var(--font-mono); color: var(--accent); font-weight: 700; }
+.mtd-rubric .weight { font-family: var(--font-mono); color:var(--accent-ink); font-weight: 700; }
 .mtd-rubric tr:hover { background: rgba(0, 0, 0, 0.04); }
 
 /* 检测项 13 项 */
 .mtd-probes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
 .mtd-probe { padding: 10px 12px; border-radius: 8px; background: var(--bg-deep); border: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
-.mtd-probe-num { font-family: var(--font-mono); font-weight: 800; color: var(--accent); font-size: 12px; min-width: 24px; }
+.mtd-probe-num { font-family: var(--font-mono); font-weight: 800; color:var(--accent-ink); font-size: 12px; min-width: 24px; }
 .mtd-probe-name { font-size: 12px; font-weight: 600; }
 .mtd-probe-sub { font-size: 10px; color: var(--muted); margin-top: 1px; }
 @media (max-width: 900px) { .mtd-probes { grid-template-columns: 1fr 1fr; } }
@@ -53,7 +54,7 @@
 .mtd-contrib-info { flex: 1; min-width: 0; }
 .mtd-contrib-name { font-weight: 700; font-size: 13px; }
 .mtd-contrib-role { font-size: 11px; color: var(--muted); }
-.mtd-contrib-commits { font-size: 10px; color: var(--accent); font-family: var(--font-mono); }
+.mtd-contrib-commits { font-size: 10px; color:var(--accent-ink); font-family: var(--font-mono); }
 @media (max-width: 700px) { .mtd-contrib { grid-template-columns: 1fr; } }
 
 /* 免责栏 */
@@ -65,7 +66,7 @@
 
 /* Footer */
 .mtd-footer { text-align: center; padding: 40px 20px 20px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 40px; }
-.mtd-footer a { color: var(--accent); text-decoration: none; }
+.mtd-footer a { color:var(--accent-ink); text-decoration: none; }
 </style>
 </head>
 <body>
@@ -177,7 +178,7 @@
 
     <h3 style="margin-top:20px;font-size:14px;">🛡️ 争议处理流程</h3>
     <ol style="padding-left:20px;font-size:13px;line-height:1.8;color:var(--fg);">
-      <li>发现数据错误？请发 Issue 到 <a href="#" style="color:var(--accent);">github.com/api-radar/data</a> 或邮件至 <code>hello@api.radar</code></li>
+      <li>发现数据错误？请发 Issue 到 <a href="#" style="color:var(--accent-ink);">github.com/api-radar/data</a> 或邮件至 <code>hello@api.radar</code></li>
       <li>我们 48 小时内回复 · 核实后 7 天内更新</li>
       <li>重大错误会立即修正并公告（事件时间线）</li>
       <li>不接受厂商 PR 改写自家负面评价，但欢迎补充客观数据</li>
@@ -246,7 +247,7 @@
 
 
 <script src="data.js?v=20260922k"></script>
-<script src="app.js?v=20260922l"></script>
+<script src="app.js?v=20260922r"></script>
 <script>
 if (typeof renderTopbar === "function") renderTopbar("method");
 </script>

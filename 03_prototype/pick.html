@@ -6,8 +6,9 @@
 <meta http-equiv="Expires" content="0">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>帮我选站 - 4 个问题匹配最适合的 API 中转站 · API优选咨询</title>
-<link rel="stylesheet" href="style.css?v=20260922k">
+<title>帮我选站 - 4 个问题匹配最适合的 API 中转站 · API观察者</title>
+<link rel="icon" type="image/png" href="assets/logo-icon.png?v=20260922r">
+<link rel="stylesheet" href="style.css?v=20260922r">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ===== helpaio「帮我选站」风格 ===== */
@@ -16,12 +17,12 @@
 .quiz-progress { display:flex; gap:6px; margin-bottom:20px; }
 .quiz-step-dot { flex:1; height:4px; border-radius:2px; background:var(--border); }
 .quiz-step-dot.done { background:var(--accent); }
-.quiz-q-num { font-size:11px; font-weight:800; color:var(--accent); font-family:var(--font-mono); letter-spacing:1px; }
+.quiz-q-num { font-size:11px; font-weight:800; color:var(--accent-ink); font-family:var(--font-mono); letter-spacing:1px; }
 .quiz-q { font-size:19px; font-weight:800; margin:6px 0 18px; }
 .quiz-opts { display:flex; flex-direction:column; gap:10px; }
 .quiz-opt { display:flex; align-items:center; gap:12px; padding:13px 16px; border:1px solid var(--border); border-radius:10px;
   cursor:pointer; font-size:13.5px; font-weight:600; transition:all .13s ease; background:var(--bg-deep); text-align:left; width:100%; }
-.quiz-opt:hover { border-color:var(--accent); transform:translateX(2px); }
+.quiz-opt:hover { border-color:var(--accent-ink); transform:translateX(2px); }
 .quiz-opt .opt-emoji { font-size:18px; }
 .quiz-opt .opt-sub { display:block; font-size:11px; color:var(--muted); font-weight:500; margin-top:2px; }
 .quiz-nav { display:flex; justify-content:space-between; margin-top:20px; }
@@ -32,7 +33,7 @@
 .result-head h2 { font-size:20px; font-weight:800; margin:0 0 6px; }
 .result-head p { font-size:12.5px; color:var(--muted); margin:0; }
 .match-card { display:flex; gap:14px; border:1px solid var(--border); border-radius:14px; padding:18px; margin-bottom:12px; background:var(--bg); }
-.match-card.first { border-color:var(--accent); box-shadow:0 6px 20px rgba(0,0,0,.05); }
+.match-card.first { border-color:var(--accent-ink); box-shadow:0 6px 20px rgba(0,0,0,.05); }
 .match-rank { width:34px; height:34px; border-radius:10px; background:var(--accent); color:#fff; font-weight:800; font-family:var(--font-mono);
   display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px; }
 .match-body { flex:1; min-width:0; }
@@ -65,7 +66,7 @@
 
 <script src="data.js?v=20260922k"></script>
 <script src="probe_stats.js?v=ai2026092219"></script>
-<script src="app.js?v=20260922l"></script>
+<script src="app.js?v=20260922r"></script>
 <script>
 {
 /* ================= 帮我选站 · 4 问匹配 ================= */

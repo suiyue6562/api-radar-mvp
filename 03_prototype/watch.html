@@ -6,9 +6,10 @@
 <meta http-equiv="Expires" content="0">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>观察室 · Cross-device Sync · 趋势监控 - API优选咨询</title>
+<title>观察室 · Cross-device Sync · 趋势监控 - API观察者</title>
+<link rel="icon" type="image/png" href="assets/logo-icon.png?v=20260922r">
 <meta name="description" content="跨设备同步实测趋势 · 用户关注列表 · 最新价格变动。">
-<link rel="stylesheet" href="style.css?v=20260922k">
+<link rel="stylesheet" href="style.css?v=20260922r">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* === Watch 页 - okkmax 风格 === */
@@ -27,7 +28,7 @@
 .wtc-watch-input button { padding: 8px 14px; }
 
 .wtc-watch-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 8px; background: var(--bg-deep); border: 1px solid var(--border); margin-bottom: 6px; transition: all 0.15s; }
-.wtc-watch-item:hover { border-color: var(--accent); }
+.wtc-watch-item:hover { border-color:var(--accent-ink); }
 .wtc-watch-item-info { flex: 1; min-width: 0; }
 .wtc-watch-item-name { font-weight: 600; font-size: 12px; }
 .wtc-watch-item-meta { font-size: 10px; color: var(--muted); }
@@ -49,10 +50,10 @@
 .wtc-sync-card { padding: 18px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); }
 .wtc-sync-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 .wtc-sync-stat { padding: 12px; border-radius: 8px; background: var(--bg-deep); border: 1px solid var(--border); text-align: center; }
-.wtc-sync-stat-num { font-family: var(--font-mono); font-size: 20px; font-weight: 800; color: var(--accent); }
+.wtc-sync-stat-num { font-family: var(--font-mono); font-size: 20px; font-weight: 800; color:var(--accent-ink); }
 .wtc-sync-stat-label { font-size: 10px; color: var(--muted); margin-top: 2px; text-transform: uppercase; }
 .wtc-sync-devices { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
-.wtc-sync-device { font-size: 10px; padding: 4px 8px; border-radius: 999px; background: rgba(0, 0, 0, 0.08); color: var(--accent); border: 1px solid rgba(0, 0, 0, 0.2); }
+.wtc-sync-device { font-size: 10px; padding: 4px 8px; border-radius: 999px; background: rgba(0, 0, 0, 0.08); color:var(--accent-ink); border: 1px solid rgba(0, 0, 0, 0.2); }
 @media (max-width: 600px) { .wtc-sync-grid { grid-template-columns: 1fr 1fr; } }
 
 /* 趋势模型图 */
@@ -85,7 +86,7 @@
 
 /* Footer */
 .wtc-footer { text-align: center; padding: 40px 20px 20px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 40px; }
-.wtc-footer a { color: var(--accent); text-decoration: none; }
+.wtc-footer a { color:var(--accent-ink); text-decoration: none; }
 </style>
 </head>
 <body>
@@ -166,7 +167,7 @@
 
 
 <script src="data.js?v=20260922k"></script>
-<script src="app.js?v=20260922l"></script>
+<script src="app.js?v=20260922r"></script>
 <script>
 function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 

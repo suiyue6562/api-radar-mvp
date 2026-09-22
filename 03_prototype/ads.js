@@ -1,4 +1,4 @@
-// API优选咨询 广告系统
+// API观察者 广告系统
 // 用法: <div class="ad-slot" data-slot="home_top"></div>
 // 自动拉广告 + 点击统计
 

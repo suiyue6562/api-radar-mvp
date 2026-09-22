@@ -6,15 +6,16 @@
 <meta http-equiv="Expires" content="0">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI 中转站评测排名 - API优选咨询</title>
-<link rel="stylesheet" href="style.css?v=20260922l">
+<title>AI 中转站观察排名 - API观察者</title>
+<link rel="icon" type="image/png" href="assets/logo-icon.png?v=20260922r">
+<link rel="stylesheet" href="style.css?v=20260922r">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ===== helpaio/transit 风格评测页 ===== */
 .trust-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
 .trust-chip { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border-radius:999px; font-size:12px; font-weight:600;
   background:var(--bg-deep); border:1px solid var(--border); color:var(--muted); }
-.trust-chip b { color:var(--accent); font-family:var(--font-mono); }
+.trust-chip b { color:var(--accent-ink); font-family:var(--font-mono); }
 
 /* 跑马灯风险提醒 */
 .risk-ticker { overflow:hidden; border:1px solid var(--border); border-radius:10px; background:var(--bg-deep); margin:0 0 16px; }
@@ -27,8 +28,8 @@
 .chip { display:inline-flex; align-items:center; gap:4px; padding:6px 12px; border-radius:999px; font-size:12px;
   background:var(--bg-deep); border:1px solid var(--border); color:var(--muted);
   cursor:pointer; user-select:none; transition:all .15s ease; font-weight:500; }
-.chip:hover { border-color:var(--accent); color:var(--fg); }
-.chip.active { background:rgba(0,0,0,.12); border-color:var(--accent); color:var(--accent); box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+.chip:hover { border-color:var(--accent-ink); color:var(--fg); }
+.chip.active { background:rgba(0,0,0,.12); border-color:var(--accent-ink); color:var(--accent-ink); box-shadow:0 1px 3px rgba(0,0,0,0.1); }
 
 /* 主体两栏 */
 .transit-layout { display:grid; grid-template-columns:290px minmax(0,1fr); gap:16px; align-items:start; }
@@ -42,9 +43,9 @@
 .rail-item { display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:8px; cursor:pointer;
   border:1px solid transparent; transition:all .12s ease; }
 .rail-item:hover { background:var(--bg-deep); }
-.rail-item.active { background:var(--bg-deep); border-color:var(--accent); }
+.rail-item.active { background:var(--bg-deep); border-color:var(--accent-ink); }
 .rail-rank { font-family:var(--font-mono); font-weight:800; font-size:13px; width:22px; text-align:center; flex-shrink:0; color:var(--muted); }
-.rail-item:nth-child(1) .rail-rank, .rail-item:nth-child(2) .rail-rank, .rail-item:nth-child(3) .rail-rank { color:var(--accent); }
+.rail-item:nth-child(1) .rail-rank, .rail-item:nth-child(2) .rail-rank, .rail-item:nth-child(3) .rail-rank { color:var(--accent-ink); }
 .rail-name { flex:1; min-width:0; font-size:13px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .rail-score { font-family:var(--font-mono); font-size:12px; color:var(--muted); flex-shrink:0; }
 .rail-trend { font-size:11px; flex-shrink:0; width:32px; text-align:right; font-family:var(--font-mono); }
@@ -60,7 +61,7 @@
 .detail-name { font-size:20px; font-weight:800; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .detail-sub { font-size:12px; color:var(--muted); margin-top:4px; }
 .ai-line { margin-top:8px; font-size:12px; line-height:1.6; color:var(--fg); background:var(--bg-deep); border:1px solid var(--border); border-left:3px solid var(--accent); padding:8px 12px; }
-.ai-line b { color:var(--accent); font-weight:800; margin-right:6px; }
+.ai-line b { color:var(--accent-ink); font-weight:800; margin-right:6px; }
 .detail-score { text-align:right; flex-shrink:0; }
 .detail-score-num { font-size:26px; font-weight:800; font-family:var(--font-mono); }
 .detail-score-formula { font-size:11px; color:var(--muted); font-family:var(--font-mono); }
@@ -95,7 +96,7 @@
 .timeline::before { content:""; position:absolute; left:4px; top:4px; bottom:4px; width:2px; background:var(--border); }
 .tl-item { position:relative; padding:6px 0 6px 12px; }
 .tl-item::before { content:""; position:absolute; left:-16px; top:12px; width:8px; height:8px; border-radius:50%; background:var(--accent); }
-.tl-date { font-family:var(--font-mono); font-size:11px; color:var(--accent); font-weight:700; }
+.tl-date { font-family:var(--font-mono); font-size:11px; color:var(--accent-ink); font-weight:700; }
 .tl-text { font-size:12.5px; line-height:1.7; color:var(--text); margin-top:2px; }
 
 .price-table { width:100%; border-collapse:collapse; font-size:12px; }
@@ -260,7 +261,7 @@
 <script src="radar_ai.js?v=ai2026092219"></script>
 <script src="probe_stats.js?v=ai2026092219"></script>
 <script src="ai_insights.js?v=ai2026092219"></script>
-<script src="app.js?v=20260922l"></script>
+<script src="app.js?v=20260922r"></script>
 <script>
 {
 /* ================= AI 中转站评测 · helpaio/transit 对标重做 ================= */
@@ -515,7 +516,7 @@ function renderDetail(p){
   '</div>'+
   /* 支持模型清单（站级存活率为准，不按模型编造百分比） */
   (maRows.length?
-  '<div class="section-title">🧠 支持模型（站级实测存活率 '+(ps&&ps.survival!=null?'<b style="color:var(--accent);">'+ps.survival.toFixed(1)+'%</b>':'<span style="color:var(--muted);">样本积累中</span>')+'）</div>'+
+  '<div class="section-title">🧠 支持模型（站级实测存活率 '+(ps&&ps.survival!=null?'<b style="color:var(--accent-ink);">'+ps.survival.toFixed(1)+'%</b>':'<span style="color:var(--muted);">样本积累中</span>')+'）</div>'+
   '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px;">'+maRows.map(r=>
     '<span style="font-size:12px;padding:4px 12px;border:1px solid var(--border);border-radius:999px;background:var(--bg-deep);">'+esc(r.name)+'</span>').join('')+'</div>':'')+
   /* 近期探测记录 */
@@ -636,7 +637,7 @@ function renderSponsored(){
       if(ai&&ai.highlights){
         reason='<div style="font-size:11.5px;color:var(--text);line-height:1.5;">✨ '+esc(ai.highlights)+'</div>'
           +((ai.price&&ai.price!=='未披露')
-            ?'<div style="font-size:11px;color:var(--accent);margin-top:3px;">💰 '+esc(ai.price)+'</div>'
+            ?'<div style="font-size:11px;color:var(--accent-ink);margin-top:3px;">💰 '+esc(ai.price)+'</div>'
             :'<div style="font-size:11px;color:var(--muted);margin-top:3px;">💰 价格未披露 · 以官网为准</div>')
           +'<div style="font-size:10.5px;color:var(--muted);margin-top:3px;">'+esc((s.lists||'').split('、').slice(0,2).join('、'))+' 在榜</div>';
       }else{

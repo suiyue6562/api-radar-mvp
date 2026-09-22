@@ -1,4 +1,4 @@
-// API优选咨询 - 首页特色数据
+// API观察者 - 首页特色数据
 // 来源: _featured_data.json
 // 包含：featured_models（周 token 趋势榜）+ best_for（场景榜首）
 window.API_RADAR_FEATURED = {

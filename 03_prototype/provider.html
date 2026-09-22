@@ -6,9 +6,10 @@
 <meta http-equiv="Expires" content="0">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>渠道详情 · API优选咨询</title>
+<title>渠道详情 · API观察者</title>
+<link rel="icon" type="image/png" href="assets/logo-icon.png?v=20260922r">
 <meta name="description" content="AI API 渠道详情：性能 / 支付 / 政策 / 模型覆盖 / 用户口碑。">
-<link rel="stylesheet" href="style.css?v=20260922k">
+<link rel="stylesheet" href="style.css?v=20260922r">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ===== okkmax 风格 商家详情页 ===== */
@@ -21,7 +22,7 @@
 .pvd-hero h1 { font-size: 34px; font-weight: 800; margin: 6px 0 4px; line-height: 1.15; text-align: left; }
 .pvd-hero .meta-line { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
 .pvd-hero .meta-line .pill { padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); background: var(--bg-card); color: var(--fg); }
-.pvd-hero .meta-line .pill.accent { background: rgba(0, 0, 0, 0.04); color: var(--accent); border-color: rgba(0, 0, 0, 0.2); }
+.pvd-hero .meta-line .pill.accent { background: rgba(0, 0, 0, 0.04); color:var(--accent-ink); border-color: rgba(0, 0, 0, 0.2); }
 .pvd-hero .meta-line .pill.purple { background: rgba(0, 0, 0, 0.04); color: var(--accent-2); border-color: rgba(0, 0, 0, 0.2); }
 .pvd-hero .meta-line .pill.success { background: rgba(22,163,74,0.08); color: var(--success); border-color: rgba(22,163,74,0.25); }
 .pvd-hero .meta-line .pill.warning { background: rgba(217,119,6,0.08); color: var(--warning); border-color: rgba(217,119,6,0.25); }
@@ -38,7 +39,7 @@
 .kpi-wall { padding: 14px 12px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); transition: all 0.15s; }
 .kpi-wall:hover { border-color: var(--border-hover); transform: translateY(-1px); }
 .kpi-wall-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; font-weight: 600; }
-.kpi-wall-num { font-family: var(--font-mono); font-size: 22px; font-weight: 800; color: var(--accent); line-height: 1.2; }
+.kpi-wall-num { font-family: var(--font-mono); font-size: 22px; font-weight: 800; color:var(--accent-ink); line-height: 1.2; }
 .kpi-wall-num.purple { color: var(--accent-2); }
 .kpi-wall-num.success { color: var(--success); }
 .kpi-wall-num.pink { color: var(--accent-3); }
@@ -89,17 +90,17 @@
 .ai-feat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:12px; }
 @media(max-width:760px){ .ai-feat-grid { grid-template-columns:1fr; } }
 .ai-feat { font-size:12.5px; line-height:1.6; color:var(--fg); padding:8px 10px; background:var(--bg-deep); border:1px solid var(--border); display:flex; gap:6px; align-items:flex-start; }
-.ai-feat-dot { color:var(--accent); font-weight:800; flex-shrink:0; }
+.ai-feat-dot { color:var(--accent-ink); font-weight:800; flex-shrink:0; }
 .ai-fact-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
 .ai-fact-pill { font-size:11.5px; padding:4px 10px; background:var(--bg-deep); border:1px solid var(--border); color:var(--fg); font-weight:600; }
 .ai-suit-row { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:4px; }
-.ai-chip { font-size:11px; padding:3px 10px; background:rgba(20,124,115,.08); border:1px solid rgba(20,124,115,.25); color:var(--accent); font-weight:600; }
+.ai-chip { font-size:11px; padding:3px 10px; background:rgba(20,124,115,.08); border:1px solid rgba(20,124,115,.25); color:var(--accent-ink); font-weight:600; }
 .ai-ck-row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; border-top:1px dashed var(--border); padding-top:10px; }
 .ai-ck { font-size:11.5px; font-weight:700; }
 .ai-ck.ok { color:var(--success); }
 .ai-ck.bad { color:var(--danger); }
 .ai-issue { font-size:11.5px; color:var(--danger); }
-.pvd-pay-icon.usd { background: rgba(0, 0, 0, 0.15); color: var(--accent); }
+.pvd-pay-icon.usd { background: rgba(0, 0, 0, 0.15); color:var(--accent-ink); }
 .pvd-pay-icon.cny { background: rgba(0, 0, 0, 0.15); color: var(--accent-3); }
 .pvd-pay-info { display: flex; flex-direction: column; }
 .pvd-pay-name { font-size: 12px; font-weight: 600; }
@@ -130,12 +131,12 @@
 .pvd-model-table .col-name { font-weight: 700; font-size: 13px; }
 .pvd-model-table .col-vendor { font-size: 10px; color: var(--muted); margin-top: 2px; }
 .pvd-model-table .col-price { font-family: var(--font-mono); font-weight: 700; }
-.pvd-model-table .col-price .in { color: var(--accent); }
+.pvd-model-table .col-price .in { color:var(--accent-ink); }
 .pvd-model-table .col-price .out { color: var(--accent-2); }
 .pvd-model-table .col-price .sep { color: var(--muted); margin: 0 4px; }
 .pvd-model-table .col-status { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 999px; font-weight: 700; }
 .pvd-model-table .col-status.official { background: rgba(34,197,94,0.15); color: #22c55e; }
-.pvd-model-table .col-status.partner { background: rgba(0, 0, 0, 0.12); color: var(--accent); }
+.pvd-model-table .col-status.partner { background: rgba(0, 0, 0, 0.12); color:var(--accent-ink); }
 .pvd-model-table .col-status.relay { background: rgba(0, 0, 0, 0.12); color: var(--accent-2); }
 .pvd-model-table .col-status .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
 .pvd-model-table .col-status.official .dot { background: #22c55e; }
@@ -148,8 +149,8 @@
 .pvd-review { padding: 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; transition: all 0.15s; }
 .pvd-review:hover { border-color: var(--border-hover); }
 .pvd-review-quote { font-size: 13px; line-height: 1.6; color: var(--fg); margin-bottom: 10px; position: relative; padding-left: 14px; }
-.pvd-review-quote::before { content: '\\201C'; position: absolute; left: 0; top: -6px; font-size: 22px; color: var(--accent); font-family: Georgia, serif; }
-.pvd-review-quote::after { content: '\\201D'; color: var(--accent); font-family: Georgia, serif; font-size: 22px; }
+.pvd-review-quote::before { content: '\\201C'; position: absolute; left: 0; top: -6px; font-size: 22px; color:var(--accent-ink); font-family: Georgia, serif; }
+.pvd-review-quote::after { content: '\\201D'; color:var(--accent-ink); font-family: Georgia, serif; font-size: 22px; }
 .pvd-review-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
 .pvd-review-tag { font-size: 10px; padding: 2px 8px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 6px; color: var(--muted); }
 .pvd-review-tag.bad { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); color: var(--danger); }
@@ -160,17 +161,17 @@
 .pvd-review-name { font-size: 12px; font-weight: 600; }
 .pvd-review-date { font-size: 10px; color: var(--muted); margin-top: 2px; }
 .pvd-review-stars { color: #fbbf24; font-size: 13px; }
-.pvd-review-score { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--accent); margin-left: 4px; }
+.pvd-review-score { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color:var(--accent-ink); margin-left: 4px; }
 @media (max-width: 700px) { .pvd-reviews-grid { grid-template-columns: 1fr; } }
 
 /* Footer */
 .pvd-footer { text-align: center; padding: 40px 20px 20px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 40px; }
-.pvd-footer a { color: var(--accent); text-decoration: none; }
+.pvd-footer a { color:var(--accent-ink); text-decoration: none; }
 
 /* Breadcrumb */
 .pvd-breadcrumb { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
 .pvd-breadcrumb a { color: var(--muted); }
-.pvd-breadcrumb a:hover { color: var(--accent); }
+.pvd-breadcrumb a:hover { color:var(--accent-ink); }
 
 @media (max-width: 700px) {
   .pvd-hero-row { flex-direction: column; gap: 12px; }
@@ -193,7 +194,7 @@
 <script src="probe_stats.js?v=ai2026092219"></script>
 <script src="ai_insights.js?v=ai2026092219"></script>
 <script src="ads.js?v=20260922k"></script>
-<script src="app.js?v=20260922l"></script>
+<script src="app.js?v=20260922r"></script>
 <script>
 function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 function hashStr(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return Math.abs(h); }
@@ -451,7 +452,7 @@ const PAY_CARDS = {
             ${(function(){const aiD=(typeof API_RADAR_AI!=='undefined'&&API_RADAR_AI.providers)?API_RADAR_AI.providers[provider.id]:null;
               if(aiD&&aiD.ai&&(aiD.ai.highlights||'').length)return '<span class="pill" style="background:rgba(22,163,74,.08);color:var(--success);border-color:rgba(22,163,74,.3);" title="AI 总结的站点卖点">✨ ' + escapeHtml(aiD.ai.highlights) + '</span>';
               return '';})()}
-            ${TIER_TXT[tier] ? '<span class="pill" style="background:var(--accent);color:#fff;border-color:var(--accent);">' + TIER_TXT[tier] + '</span>' : ''}
+            ${TIER_TXT[tier] ? '<span class="pill" style="background:var(--accent);color:#fff;border-color:var(--accent-ink);">' + TIER_TXT[tier] + '</span>' : ''}
             <span class="meta-divider">·</span>
             <span style="color:var(--muted);font-size:12px;">已收录 ${daysListed} 天</span>
             ${provider.status === 'online' ? '<span class="pill success">● 在线</span>' : provider.status === 'limited' ? '<span class="pill warning">● 限流</span>' : '<span class="pill warning">● 维护</span>'}
@@ -535,7 +536,7 @@ const PAY_CARDS = {
     </div>
     <div style="position:relative;padding-left:16px;">
       <div style="position:absolute;left:4px;top:4px;bottom:4px;width:2px;background:var(--border);"></div>
-      ${exps.map(e => '<div style="position:relative;padding:6px 0 6px 12px;"><div style="position:absolute;left:-16px;top:12px;width:8px;height:8px;border-radius:50%;background:var(--accent);"></div><div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);font-weight:700;">' + e.date + '</div><div style="font-size:12.5px;line-height:1.7;margin-top:2px;">' + escapeHtml(e.text) + '</div></div>').join('')}
+      ${exps.map(e => '<div style="position:relative;padding:6px 0 6px 12px;"><div style="position:absolute;left:-16px;top:12px;width:8px;height:8px;border-radius:50%;background:var(--accent);"></div><div style="font-family:var(--font-mono);font-size:11px;color:var(--accent-ink);font-weight:700;">' + e.date + '</div><div style="font-size:12.5px;line-height:1.7;margin-top:2px;">' + escapeHtml(e.text) + '</div></div>').join('')}
     </div>
 
     <!-- Payment 横排 -->
@@ -579,7 +580,7 @@ const PAY_CARDS = {
         <div class="pvd-policy-cell">
           <h4>📜 服务条款</h4>
           <div class="val">${tosTxt}</div>
-          <div class="sub">${provider.website ? '<a href="' + escapeHtml(provider.website) + '" target="_blank" rel="noopener" style="color:var(--accent);">查看官网 ToS →</a>' : '联系客服获取最新条款'}</div>
+          <div class="sub">${provider.website ? '<a href="' + escapeHtml(provider.website) + '" target="_blank" rel="noopener" style="color:var(--accent-ink);">查看官网 ToS →</a>' : '联系客服获取最新条款'}</div>
         </div>
         <div class="pvd-policy-cell">
           <h4>🛡 合规 / 地区</h4>
