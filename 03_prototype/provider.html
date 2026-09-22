@@ -16,19 +16,19 @@
 /* Hero */
 .pvd-hero { padding: 28px 0 8px; }
 .pvd-hero-row { display: flex; align-items: flex-start; gap: 18px; }
-.pvd-hero-logo { width: 64px; height: 64px; border-radius: 14px; background: var(--bg-card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 28px; flex-weight: 800; flex-shrink: 0; box-shadow: var(---cyan); }
+.pvd-hero-logo { width: 64px; height: 64px; border-radius: 14px; background: var(--bg-card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; flex-shrink: 0; }
 .pvd-hero-text { flex: 1; min-width: 0; }
 .pvd-hero h1 { font-size: 34px; font-weight: 800; margin: 6px 0 4px; line-height: 1.15; text-align: left; }
 .pvd-hero .meta-line { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
 .pvd-hero .meta-line .pill { padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); background: var(--bg-card); color: var(--fg); }
-.pvd-hero .meta-line .pill.accent { background: rgba(0, 0, 0, 0.12); color: var(--accent); border-color: rgba(0, 0, 0, 0.3); }
-.pvd-hero .meta-line .pill.purple { background: rgba(0, 0, 0, 0.12); color: var(--accent-2); border-color: rgba(0, 0, 0, 0.3); }
-.pvd-hero .meta-line .pill.success { background: rgba(0,255,163,0.12); color: var(--success); border-color: rgba(0,255,163,0.3); }
-.pvd-hero .meta-line .pill.warning { background: rgba(255,184,77,0.12); color: var(--warning); border-color: rgba(255,184,77,0.3); }
+.pvd-hero .meta-line .pill.accent { background: rgba(0, 0, 0, 0.04); color: var(--accent); border-color: rgba(0, 0, 0, 0.2); }
+.pvd-hero .meta-line .pill.purple { background: rgba(0, 0, 0, 0.04); color: var(--accent-2); border-color: rgba(0, 0, 0, 0.2); }
+.pvd-hero .meta-line .pill.success { background: rgba(22,163,74,0.08); color: var(--success); border-color: rgba(22,163,74,0.25); }
+.pvd-hero .meta-line .pill.warning { background: rgba(217,119,6,0.08); color: var(--warning); border-color: rgba(217,119,6,0.25); }
 .pvd-hero .meta-divider { color: var(--muted-foreground); margin: 0 2px; }
 .pvd-hero-cta { display: flex; gap: 8px; margin-top: 14px; }
 .pvd-hero-cta a { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; }
-.pvd-hero-cta .btn-primary { background: var(--grad-primary); color: #001428; box-shadow: var(---cyan); }
+.pvd-hero-cta .btn-primary { background: var(--grad-primary); color: #ffffff; }
 .pvd-hero-cta .btn-ghost { background: rgba(120,160,255,0.06); color: var(--fg); border: 1px solid var(--border); }
 .pvd-hero-cta .btn-ghost:hover { background: rgba(0, 0, 0, 0.08); border-color: var(--border-hover); }
 .pvd-hero-desc { color: var(--muted); font-size: 13px; line-height: 1.7; margin: 14px 0 4px; max-width: 920px; }
@@ -69,8 +69,8 @@
 
 /* 30 天柱状图（迷你） */
 .pvd-perf-bars { display: grid; grid-template-columns: repeat(15, 1fr); gap: 3px; height: 40px; align-items: end; margin-top: 12px; }
-.pvd-perf-bars .b { width: 100%; background: #000000 0%, var(--accent-2) 100%); border-radius: 2px; min-height: 3px; }
-.pvd-perf-bars .b.down { background: #000000 0%, var(--accent-3) 100%); }
+.pvd-perf-bars .b { width: 100%; background: var(--accent-2); border-radius: 2px; min-height: 3px; }
+.pvd-perf-bars .b.down { background: var(--accent-3); }
 
 /* Payment 横排 */
 .pvd-pay-row { display: flex; flex-wrap: wrap; gap: 10px; padding: 18px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; }
@@ -123,9 +123,9 @@
 .pvd-model-table .col-status.partner { background: rgba(0, 0, 0, 0.12); color: var(--accent); }
 .pvd-model-table .col-status.relay { background: rgba(0, 0, 0, 0.12); color: var(--accent-2); }
 .pvd-model-table .col-status .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
-.pvd-model-table .col-status.official .dot { background: #22c55e; box-shadow: 0 0 4px #22c55e; }
-.pvd-model-table .col-status.partner .dot { background: var(--accent); box-shadow: 0 0 4px var(--accent); }
-.pvd-model-table .col-status.relay .dot { background: var(--accent-2); box-shadow: 0 0 4px var(--accent-2); }
+.pvd-model-table .col-status.official .dot { background: #22c55e; }
+.pvd-model-table .col-status.partner .dot { background: var(--accent); }
+.pvd-model-table .col-status.relay .dot { background: var(--accent-2); }
 @media (max-width: 800px) { .pvd-model-table { font-size: 12px; } .pvd-model-table td { padding: 8px; } }
 
 /* Reviews 卡片 */
@@ -174,9 +174,9 @@
 
 
 
-<script src="data.js?v=20260921e"></script>
-<script src="ads.js?v=20260921e"></script>
-<script src="app.js?v=20260921e"></script>
+<script src="data.js?v=20260922b"></script>
+<script src="ads.js?v=20260922b"></script>
+<script src="app.js?v=20260922b"></script>
 <script>
 function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 function hashStr(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return Math.abs(h); }

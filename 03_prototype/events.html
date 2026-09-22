@@ -32,19 +32,19 @@
 /* 时间线 */
 .evt-section-title { display: flex; align-items: center; justify-content: space-between; margin: 24px 0 12px; }
 .evt-section-title h2 { margin: 0; font-size: 18px; font-weight: 700; }
-.evt-section-title .live-dot { display: inline-block; width: 6px; height: 6px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e;  margin-right: 6px; }
+.evt-section-title .live-dot { display: inline-block; width: 6px; height: 6px; background: #22c55e; border-radius: 50%; margin-right: 6px; }
 
 .evt-timeline { position: relative; padding-left: 32px; }
-.evt-timeline::before { content: ''; position: absolute; left: 11px; top: 0; bottom: 0; width: 2px; background: #000000, transparent); }
+.evt-timeline::before { content: ''; position: absolute; left: 11px; top: 0; bottom: 0; width: 2px; background: var(--border); }
 
 .evt-item { position: relative; padding: 14px 16px; margin-bottom: 10px; border-radius: 10px; background: var(--bg-card); border: 1px solid var(--border); transition: all 0.15s; }
 .evt-item:hover { border-color: var(--accent); transform: translateX(2px); }
 .evt-item::before { content: ''; position: absolute; left: -25px; top: 18px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--bg-base); z-index: 1; }
-.evt-item.type-new_model::before { background: #000000; box-shadow: 0 0 8px #000000; }
-.evt-item.type-price_change::before { background: #fbbf24; box-shadow: 0 0 8px #fbbf24; }
-.evt-item.type-outage::before { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
-.evt-item.type-capability_update::before { background: #000000; box-shadow: 0 0 8px #000000; }
-.evt-item.type-policy_change::before { background: #000000; box-shadow: 0 0 8px #000000; }
+.evt-item.type-new_model::before { background: #000000; }
+.evt-item.type-price_change::before { background: #fbbf24; }
+.evt-item.type-outage::before { background: #ef4444; }
+.evt-item.type-capability_update::before { background: #000000; }
+.evt-item.type-policy_change::before { background: #000000; }
 .evt-item.type-model_deprecate::before { background: #94a3b8; }
 
 .evt-item-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
@@ -123,8 +123,8 @@
 
 
 
-<script src="data.js?v=20260921d"></script>
-<script src="app.js?v=20260921d"></script>
+<script src="data.js?v=20260922b"></script>
+<script src="app.js?v=20260922b"></script>
 <script>
 function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 

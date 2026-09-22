@@ -1156,7 +1156,7 @@
   <section class="hero fade-in">
     <div class="hero-tag">
       <span class="hero-tag-dot"></span>
-      <span id="hero-tagline">实时数据 · 38 模型 · 32 渠道 · 193 个价格 · 13 项硬核检测</span>
+      <span id="hero-tagline">实时数据 · 60 模型 · 40 渠道 · 1287 个价格 · 13 项硬核检测</span>
     </div>
     <h1>发现<span class="accent">好用</span>的 AI 中转站</h1>
     <p class="hero-sub">纯度检测、可用性、延迟，逐项实测公开可复现。或者贴一个站，自己测。</p>
@@ -1405,11 +1405,11 @@
   </div>
 </footer>
 
-<script src="data.js?v=20260922a"></script>
-<script src="featured.js?v=20260922a"></script>
-<script src="ads.js?v=20260922a"></script>
-<script src="ab.js?v=20260922a"></script>
-<script src="app.js?v=20260922a"></script>
+<script src="data.js?v=20260922b"></script>
+<script src="featured.js?v=20260922b"></script>
+<script src="ads.js?v=20260922b"></script>
+<script src="ab.js?v=20260922b"></script>
+<script src="app.js?v=20260922b"></script>
 
 <script>
 // ========== 顶部导航激活态 (静态 nav 已渲染，这里只补 JS 行为) ==========
@@ -1577,7 +1577,7 @@ function updateHeroTagline() {
   const events = (D.events || []).length;
   // 真实数字优先，无则 fallback 静态
   if (models > 0) {
-    el.textContent = '实时数据 · ' + models + ' 模型 · ' + providers + ' 渠道 · ' + offerings + ' 个价格 · ' + events + ' 项硬核检测';
+    el.textContent = '实时数据 · ' + models + ' 模型 · ' + providers + ' 渠道 · ' + offerings + ' 个价格 · 13 项硬核检测';
   } else {
     // DOMContentLoaded 后再试（data.js 可能还没解析完）
     setTimeout(updateHeroTagline, 200);
