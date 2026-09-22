@@ -81,14 +81,22 @@ def facts_of(provider, offerings):
 
 
 def probe(url):
-    """返回 {status, latency_ms, title, meta, error}"""
+    """返回 {status, latency_ms, title, meta, error}；latency 为首字节响应时间(TTFB)"""
     import requests
     t0 = time.time()
     try:
         r = requests.get(url, timeout=(4, 7), headers={"User-Agent": UA},
-                         allow_redirects=True, verify=True)
-        latency = int((time.time() - t0) * 1000)
-        html = r.text[:60000]
+                         allow_redirects=True, verify=True, stream=True)
+        latency = int((time.time() - t0) * 1000)  # 收到响应头即计时，不含正文下载
+        html = ""
+        try:
+            for chunk in r.iter_content(8192):
+                html += chunk.decode("utf-8", "ignore")
+                if len(html) >= 60000:
+                    break
+        except Exception:
+            pass
+        r.close()
         title = ""
         mt = re.search(r"<title[^>]*>(.*?)</title>", html, re.S | re.I)
         if mt:
@@ -241,8 +249,14 @@ def radar_probe_step(now):
         t0 = time.time()
         try:
             r = requests.get(url, timeout=(4, 7), headers={"User-Agent": UA},
-                             allow_redirects=True, verify=True)
-            status, lat = r.status_code, int((time.time() - t0) * 1000)
+                             allow_redirects=True, verify=True, stream=True)
+            lat = int((time.time() - t0) * 1000)  # TTFB 首字节响应时间
+            try:
+                next(r.iter_content(256), None)
+            except Exception:
+                pass
+            r.close()
+            status = r.status_code
         except Exception:
             status, lat = 0, int((time.time() - t0) * 1000)
         key = re.sub(r"^https?://", "", url).lower().rstrip("/")

@@ -237,6 +237,8 @@ function avail(p){const s=probeStat(p);return s&&s.survival!=null?s.survival:nul
 function isNew(p){return !!p.is_new||(Date.now()-new Date(p.signup_date||p.added_date||'2026-01-01').getTime())<60*864e5;}
 function tier(p){
   if(p.type==='official'||p.type==='platform')return 9;
+  const ps0=probeStat(p);
+  if(ps0&&ps0.survival!=null&&ps0.probes>=2&&ps0.survival<50)return 5;
   if(isNew(p))return 3;
   const q=baseScore(p);
   if(q>=85&&(p.rating||0)>=4.5)return 1;

@@ -106,6 +106,7 @@
 .table-scroll { overflow-x:auto; }
 
 .badge-mini { display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; }
+.pill { display:inline-block; padding:3px 10px; border-radius:999px; font-size:11px; font-weight:600; border:1px solid var(--border); background:var(--bg-card); color:var(--fg); line-height:1.5; }
 .badge-official { background:var(--bg-deep); border:1px solid var(--border); color:var(--muted); }
 .badge-tier1 { background:var(--accent); color:#fff; }
 .badge-tier2 { background:#fef3c7; color:#92400e; border:1px solid #f59e0b; }
@@ -221,8 +222,8 @@
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
         <select id="radar-sort" style="font-size:12px;padding:6px 8px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);">
-          <option value="avail" selected>按源榜单可用率</option>
-          <option value="probe">按本站实测优先</option>
+          <option value="probe" selected>按本站实测优先</option>
+          <option value="avail">按源榜单可用率</option>
           <option value="score">按榜单评分</option>
           <option value="name">按名称</option>
         </select>
@@ -292,6 +293,8 @@ function daysListed(p){const t=new Date(p.signup_date||p.added_date||'2026-01-01
 function isNewSite(p){const age=Date.now()-new Date(p.signup_date||p.added_date||'2026-01-01').getTime();return !!p.is_new||age<60*864e5;}
 function siteTier(p){
   if(p.type==='official'||p.type==='platform')return 9;
+  const ps0=probeStat(p);
+  if(ps0&&ps0.survival!=null&&ps0.probes>=2&&ps0.survival<50)return 5; // 实测大面积失联 → 风险观察
   if(isNewSite(p))return 3;
   const q=baseScore(p);
   if(q>=85&&(p.rating||0)>=4.5)return 1;
@@ -301,7 +304,8 @@ function siteTier(p){
 const TIER_BADGE={
   1:'<span class="badge-mini badge-tier1" title="基础分≥85 且评分≥4.5">精选</span>',
   2:'<span class="badge-mini badge-tier2" title="调用量或口碑数领先">热门</span>',
-  3:'<span class="badge-mini badge-tier3" title="近 60 天新收录">NEW</span>'};
+  3:'<span class="badge-mini badge-tier3" title="近 60 天新收录">NEW</span>',
+  5:'<span class="badge-mini" style="background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.3);color:var(--danger);" title="本站实测存活率低于 50%">风险观察</span>'};
 
 /* AI 画像一句话（亮点总结，每日两次更新）+ 数据一致性复核结论 */
 function aiLine(pid){
@@ -467,6 +471,15 @@ function renderDetail(p){
         (rankIdx>-1?'<span class="rank-chip">#'+(rankIdx+1)+'</span>':'')+'</div>'+
       '<div class="detail-sub">'+((p.type==='official'||p.type==='platform')?'大厂渠道 · 仅作基准参考，不参与商业排序':'收录于 '+days+' 天前 · '+(p.notes?esc(p.notes):''))+'</div>'+
       aiLine(p.id)+
+      (()=>{const aiD=(typeof API_RADAR_AI!=='undefined'&&API_RADAR_AI.providers)?API_RADAR_AI.providers[p.id]:null;
+        const pills=[];
+        if(aiD&&aiD.facts&&aiD.facts.price_in!=null){
+          const m=MODELS_BY_ID[aiD.facts.price_model];
+          pills.push('<span class="pill" style="background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.3);color:#166534;" title="登记最低价（入/出 每 1M tokens）">💰 最低 $'+esc(String(aiD.facts.price_in))+' / $'+esc(String(aiD.facts.price_out))+(m?' · '+esc(m.display_name||m.name):'')+'</span>');
+        }
+        if(aiD&&aiD.ai&&(aiD.ai.highlights||'').length)pills.push('<span class="pill" style="background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.3);color:#166534;" title="AI 总结的站点卖点（每日两次更新）">✨ '+esc(aiD.ai.highlights)+'</span>');
+        if(pills.length)return '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">'+pills.join('')+'</div>';
+        return '';})()+
     '</div>'+
     '<div class="detail-score">'+
       '<div class="detail-score-num">'+(sc>0?sc.toFixed(2):'—')+'<span style="font-size:12px;color:var(--muted);font-weight:600;"> /100</span></div>'+
@@ -591,7 +604,7 @@ function renderSponsored(){
   /* ================= 收录雷达 ================= */
   const RS=(typeof RADAR_SITES!=='undefined')?RADAR_SITES:[];
   const RPC=(typeof RADAR_PROBE!=='undefined'&&RADAR_PROBE.checked)?RADAR_PROBE.checked:{};
-  const RADAR={q:'',sort:'avail',page:1,per:50};
+  const RADAR={q:'',sort:'probe',page:1,per:50};
   const rkey=s=>((s.url||'').replace(/^https?:\/\//,'')).toLowerCase().replace(/\/$/,'');
   const ralive=st=>(st>=200&&st<400)||st===401||st===403;
   function radarFiltered(){

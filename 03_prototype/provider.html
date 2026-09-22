@@ -443,6 +443,14 @@ const PAY_CARDS = {
             <span class="pill ${TYPE_PILL[provider.type] || ''}">${TYPE_MAP[provider.type] || provider.type || '—'}</span>
             ${regionTxt ? '<span class="pill">' + regionTxt + '</span>' : ''}
             ${provider.sla_uptime ? '<span class="pill success">SLA ' + provider.sla_uptime.toFixed(1) + '%</span>' : ''}
+            ${(function(){const aiD=(typeof API_RADAR_AI!=='undefined'&&API_RADAR_AI.providers)?API_RADAR_AI.providers[provider.id]:null;
+              if(aiD&&aiD.facts&&aiD.facts.price_in!=null){
+                const mo=D.models.find(m=>m.id===aiD.facts.price_model);
+                return '<span class="pill" style="background:rgba(22,163,74,.08);color:var(--success);border-color:rgba(22,163,74,.3);" title="登记最低价（入/出 每 1M tokens）">💰 最低 $' + aiD.facts.price_in + ' / $' + aiD.facts.price_out + (mo?' · ' + escapeHtml(mo.name_zh||mo.name):'') + '</span>';
+              }return '';})()}
+            ${(function(){const aiD=(typeof API_RADAR_AI!=='undefined'&&API_RADAR_AI.providers)?API_RADAR_AI.providers[provider.id]:null;
+              if(aiD&&aiD.ai&&(aiD.ai.highlights||'').length)return '<span class="pill" style="background:rgba(22,163,74,.08);color:var(--success);border-color:rgba(22,163,74,.3);" title="AI 总结的站点卖点">✨ ' + escapeHtml(aiD.ai.highlights) + '</span>';
+              return '';})()}
             ${TIER_TXT[tier] ? '<span class="pill" style="background:var(--accent);color:#fff;border-color:var(--accent);">' + TIER_TXT[tier] + '</span>' : ''}
             <span class="meta-divider">·</span>
             <span style="color:var(--muted);font-size:12px;">已收录 ${daysListed} 天</span>
