@@ -1405,11 +1405,11 @@
   </div>
 </footer>
 
-<script src="data.js?v=20260922b"></script>
-<script src="featured.js?v=20260922b"></script>
-<script src="ads.js?v=20260922b"></script>
-<script src="ab.js?v=20260922b"></script>
-<script src="app.js?v=20260922b"></script>
+<script src="data.js?v=20260922c"></script>
+<script src="featured.js?v=20260922c"></script>
+<script src="ads.js?v=20260922c"></script>
+<script src="ab.js?v=20260922c"></script>
+<script src="app.js?v=20260922c"></script>
 
 <script>
 // ========== 顶部导航激活态 (静态 nav 已渲染，这里只补 JS 行为) ==========
@@ -1420,149 +1420,11 @@ document.querySelectorAll('.nav-menu a').forEach(a => {
   });
 });
 
-// ========== Hero tag 实时更新 ==========
-(function renderHeroTag() {
-  const el = document.getElementById('hero-tagline');
-  if (!el) return;
-  const D = window.API_RADAR_DATA || { providers: [] };
-  const online = D.providers.filter(p => p.status === 'online' || !p.status).length;
-  el.textContent = '实时数据 · ' + (D.models?.length || 60) + ' 模型 · ' + (D.providers?.length || 40) + ' 渠道 · ' + online + ' 在线 · 13 项硬核检测';
-})();
-
-// ========== 卡 1: 模型智商榜 (Top 3) ==========
-(function renderIQList() {
-  const list = document.getElementById('iq-list');
-  const downEl = document.getElementById('iq-downcount');
-  if (!list) return;
-  const D = window.API_RADAR_DATA || { models: [], vendors: [] };
-  if (!D.models.length) { list.innerHTML = '<div class="muted" style="text-align:center;padding:20px;">暂无数据</div>'; return; }
-
-  // 计算 IQ 分（同 app.js 的逻辑精简）
-  const refPrice = 30;
-  const ranked = D.models.map(m => {
-    const inp = m.official_input_usd_m || m.price_input_per_m || 0;
-    const out = m.official_output_usd_m || m.price_output_per_m || 0;
-    const caps = m.capabilities || [];
-    const capScore = Math.min(100, caps.length * 18 + (caps.includes('reasoning') ? 15 : 0) + (caps.includes('tool_use') || caps.includes('agentic_coding') ? 15 : 0));
-    const priceScore = Math.max(0, Math.min(100, (1 - Math.max(inp, out) / refPrice) * 100));
-    const ctxScore = Math.min(100, Math.log10(Math.max(m.context_window || 32000, 1000)) / 6 * 100);
-    const total = Math.round(priceScore * 0.35 + capScore * 0.30 + ctxScore * 0.15 + 50 * 0.20);
-    return { m, score: total };
-  }).sort((a, b) => b.score - a.score).slice(0, 3);
-
-  list.innerHTML = ranked.map((row, i) => {
-    const v = D.vendors.find(x => x.id === row.m.vendor_id) || {};
-    return '<div class="iq-row">' +
-      '<div class="iq-rank">' + (i + 1) + '</div>' +
-      '<div>' +
-        '<div class="iq-name"><span class="vlogo">' + (v.logo || '🤖') + '</span>' + (row.m.display_name || row.m.name || '') + '</div>' +
-        '<div class="iq-bar-wrap"><div class="iq-bar"><div class="iq-bar-fill" style="width:' + row.score + '%;"></div></div></div>' +
-      '</div>' +
-      '<div class="iq-score">' + row.score + '</div>' +
-    '</div>';
-  }).join('');
-
-  if (downEl) downEl.textContent = D.models.filter(m => m.detected_dumber || (m.capabilities || []).length < 3).length || '—';
-})();
-
-// ========== 卡 2: 检测用量统计 + 7 天日历 ==========
-(function renderUsage() {
-  const D = window.API_RADAR_DATA || { providers: [], events: [] };
-  // 真实统计：基于当前数据
-  const totalTests = (D.providers?.length || 0) * 50 + (D.models?.length || 0) * 20;
-  const realOnlineCount = (D.providers || []).filter(p => p.status === 'online').length;
-  const onlineCount = realOnlineCount;
-  const success = D.providers.length ? Math.round(onlineCount / D.providers.length * 100) : 0;
-  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
-  set('usage-tests', fmtNum(totalTests));
-  set('usage-online', onlineCount || 32);
-  set('usage-success', success + '%');
-
-  // 7 天日历（28 格 = 4 行 × 7 列）
-  const cal = document.getElementById('usage-cal');
-  if (!cal) return;
-  // 基于最近 7 天 events 数生成日历
-  const events = D.events || [];
-  const dayBuckets = [0, 0, 0, 0, 0, 0, 0];  // 7 天
-  const today = new Date();
-  events.forEach(e => {
-    const d = new Date(e.date || '');
-    if (!isNaN(d)) {
-      const days = Math.floor((today - d) / 86400000);
-      if (days >= 0 && days < 7) dayBuckets[6 - days]++;
-    }
-  });
-  const maxEv = Math.max(1, ...dayBuckets);
-  let html = '';
-  for (let i = 0; i < 7; i++) {
-    const ratio = dayBuckets[i] / maxEv;
-    let lv = '';
-    if (ratio > 0.6) lv = 'lv3';
-    else if (ratio > 0.3) lv = 'lv2';
-    else if (ratio > 0) lv = 'lv1';
-    const isToday = i === 6 ? ' today' : '';
-    const date = new Date(today.getTime() - (6 - i) * 86400000);
-    const ds = (date.getMonth() + 1) + '/' + date.getDate();
-    html += '<div class="usage-cal-day ' + lv + isToday + '" title="' + ds + ': ' + dayBuckets[i] + ' 事件"></div>';
-  }
-  cal.innerHTML = html;
-})();
-
-function fmtNum(n) {
-  if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-  if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
-  return String(n);
-}
-
-// ========== 卡 3: 最新实测 ==========
-(function renderTests() {
-  const list = document.getElementById('test-list');
-  if (!list) return;
-  const D = window.API_RADAR_DATA || { models: [], vendors: [], events: [] };
-  if (!D.models.length) { list.innerHTML = '<div class="muted" style="text-align:center;padding:20px;">暂无数据</div>'; return; }
-
-  const samples = D.models.slice(0, 4);
-  const today = new Date('2026-09-21');
-  const tags = ['pass', 'pass', 'pass', 'warn', 'fail'];
-  const tagText = { pass: '通过', warn: '部分', fail: '失败' };
-  const tagLabel = { pass: '13/13', warn: '9/13', fail: '5/13' };
-
-  list.innerHTML = samples.map((m, i) => {
-    const v = D.vendors.find(x => x.id === m.vendor_id) || {};
-    const seed = (m.id || '').split('').reduce((s, c) => s + c.charCodeAt(0), 0);
-    const cls = tags[seed % tags.length];
-    const d = new Date(today.getTime() - (seed % 5) * 86400000);
-    const dStr = (d.getMonth() + 1) + '-' + String(d.getDate()).padStart(2, '0');
-    return '<div class="test-row">' +
-      '<div class="test-logo">' + (v.logo || '🤖') + '</div>' +
-      '<div>' +
-        '<div class="test-name">' + (m.display_name || m.name) + '</div>' +
-        '<span class="test-tag ' + cls + '">' + tagText[cls] + ' ' + tagLabel[cls] + '</span>' +
-      '</div>' +
-      '<div class="test-date">' + dStr + '</div>' +
-    '</div>';
-  }).join('');
-})();
-
-// ========== 触发主应用初始化（渲染主表 / 口碑 / 福利 / Featured）==========
+// ========== 触发主应用初始化（渲染 IQ榜/用量/实测/主表/口碑/福利/Featured）==========
 if (window.PAGE_INITIALIZERS && window.PAGE_INITIALIZERS["home"]) {
   window.PAGE_INITIALIZERS["home"]();
 }
-
-// ========== 检测按钮交互 ==========
-document.getElementById('detect-submit')?.addEventListener('click', function() {
-  const url = document.getElementById('detect-url').value.trim();
-  const key = document.getElementById('detect-key').value.trim();
-  if (!url || !key) {
-    alert('请填写 API 接口地址和 KEY');
-    return;
-  }
-  // 跳转到 playground.html 携带参数
-  const model = document.getElementById('detect-model').value;
-  const ctx = document.getElementById('detect-context').checked ? 1 : 0;
-  const qs = new URLSearchParams({ url, key, model, ctx });
-  location.href = 'playground.html?' + qs.toString();
-});
+// detect-submit 绑定由 app.js setupDetectForm() 负责（含占位默认值拦截）
 </script>
 
 <script>

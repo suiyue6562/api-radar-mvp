@@ -156,6 +156,15 @@ def main():
         row["payment_currency"] = j(p.get("payment_currency"), ["USD"])
         row["api_protocol"] = j(p.get("api_protocol"), [])
         row["regions_available"] = j(p.get("regions_available"), [])
+        # sla_uptime 在 D1 是 "99.5%" 字符串，前端调用 .toFixed() 需要数值
+        sla = p.get("sla_uptime")
+        if isinstance(sla, str):
+            try:
+                row["sla_uptime"] = float(sla.rstrip("%").strip())
+            except ValueError:
+                row["sla_uptime"] = None
+        elif sla is not None:
+            row["sla_uptime"] = float(sla)
         for k in PROVIDER_ENRICH:
             if o.get(k) is not None:
                 row[k] = o[k]
@@ -170,7 +179,13 @@ def main():
     new_offerings = [{k: off.get(k) for k in OFFERING_FIELDS} for off in offerings]
 
     # ---------- events ----------
-    events = [{k: e.get(k) for k in EVENT_FIELDS} for e in d1.get("events", [])]
+    events = []
+    for e in d1.get("events", []):
+        row = {k: e.get(k) for k in EVENT_FIELDS}
+        # tags / source_urls 在 D1 是 JSON 字符串，前端需要数组
+        row["tags"] = j(e.get("tags"), [])
+        row["source_urls"] = j(e.get("source_urls"), [])
+        events.append(row)
 
     new_data = {
         "vendors": vendors,

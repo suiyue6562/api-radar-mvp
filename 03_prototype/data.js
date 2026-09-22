@@ -2632,7 +2632,7 @@ var API_RADAR_DATA = {
       "website": "https://console.anthropic.com",
       "invoice_available": 1,
       "min_charge": 5,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "官方直连，USD 充值",
       "payment_currency": [
@@ -2673,7 +2673,7 @@ var API_RADAR_DATA = {
       "website": "https://platform.openai.com",
       "invoice_available": 1,
       "min_charge": 5,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "官方直连",
       "payment_currency": [
@@ -2713,7 +2713,7 @@ var API_RADAR_DATA = {
       "website": "https://aistudio.google.com",
       "invoice_available": 1,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "免费额度+付费层",
       "payment_currency": [
@@ -2754,7 +2754,7 @@ var API_RADAR_DATA = {
       "website": "https://console.x.ai",
       "invoice_available": 1,
       "min_charge": 5,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "官方直连",
       "payment_currency": [
@@ -2794,7 +2794,7 @@ var API_RADAR_DATA = {
       "website": "https://platform.deepseek.com",
       "invoice_available": 1,
       "min_charge": 1,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "国内可直接，海外 OpenAI 兼容",
       "payment_currency": [
@@ -2837,7 +2837,7 @@ var API_RADAR_DATA = {
       "website": "https://bailian.console.aliyun.com",
       "invoice_available": 1,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "Qwen 官方，支持 100+ 模型",
       "payment_currency": [
@@ -2878,7 +2878,7 @@ var API_RADAR_DATA = {
       "website": "https://bigmodel.cn",
       "invoice_available": 1,
       "min_charge": 1,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "GLM 官方",
       "payment_currency": [
@@ -2925,7 +2925,7 @@ var API_RADAR_DATA = {
       "website": "https://platform.moonshot.cn",
       "invoice_available": 1,
       "min_charge": 5,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "Kimi 官方",
       "payment_currency": [
@@ -2968,7 +2968,7 @@ var API_RADAR_DATA = {
       "website": "https://www.volcengine.com/product/doubao",
       "invoice_available": 1,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "豆包官方，企业级",
       "payment_currency": [
@@ -3009,7 +3009,7 @@ var API_RADAR_DATA = {
       "website": "https://cloud.baidu.com/product/qianfan",
       "invoice_available": 1,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "文心官方",
       "payment_currency": [
@@ -3050,7 +3050,7 @@ var API_RADAR_DATA = {
       "website": "https://console.mistral.ai",
       "invoice_available": 1,
       "min_charge": 5,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "官方直连，欧盟合规",
       "payment_currency": [
@@ -3091,7 +3091,7 @@ var API_RADAR_DATA = {
       "website": "https://console.groq.com",
       "invoice_available": 0,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "LPU 推理，极速",
       "payment_currency": [
@@ -3130,7 +3130,7 @@ var API_RADAR_DATA = {
       "website": "https://www.together.ai",
       "invoice_available": 1,
       "min_charge": 5,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "200+ 开源模型，按 token 计费",
       "payment_currency": [
@@ -3170,7 +3170,7 @@ var API_RADAR_DATA = {
       "website": "https://fireworks.ai",
       "invoice_available": 1,
       "min_charge": 5,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "开源模型优化推理",
       "payment_currency": [
@@ -3212,7 +3212,7 @@ var API_RADAR_DATA = {
       "website": "https://www.anyscale.com",
       "invoice_available": 1,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "开源模型生产部署",
       "payment_currency": [
@@ -3254,7 +3254,7 @@ var API_RADAR_DATA = {
       "website": "https://openrouter.ai",
       "invoice_available": 0,
       "min_charge": 5,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "300+ 模型，OpenAI 兼容，5.5% 平台费",
       "payment_currency": [
@@ -3294,7 +3294,7 @@ var API_RADAR_DATA = {
       "website": "https://litellm.ai",
       "invoice_available": 0,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "MIT 开源自托管，140+ 提供商",
       "payment_currency": [
@@ -3337,7 +3337,7 @@ var API_RADAR_DATA = {
       "website": "https://portkey.ai",
       "invoice_available": 1,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "Apache-2.0 企业级网关",
       "payment_currency": [
@@ -3378,7 +3378,7 @@ var API_RADAR_DATA = {
       "website": "https://helicone.ai",
       "invoice_available": 0,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "可观测性优先，免费 10K/月",
       "payment_currency": [
@@ -3417,7 +3417,7 @@ var API_RADAR_DATA = {
       "website": "https://developers.cloudflare.com/ai-gateway",
       "invoice_available": 1,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "Cloudflare 用户免费",
       "payment_currency": [
@@ -3459,7 +3459,7 @@ var API_RADAR_DATA = {
       "website": "https://vercel.com/docs/ai-gateway",
       "invoice_available": 0,
       "min_charge": 5,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "0 标记费",
       "payment_currency": [
@@ -3498,7 +3498,7 @@ var API_RADAR_DATA = {
       "website": "https://github.com/songquanpeng/one-api",
       "invoice_available": 0,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "国内最流行的开源聚合，docker 镜像",
       "payment_currency": [
@@ -3537,7 +3537,7 @@ var API_RADAR_DATA = {
       "website": "https://github.com/QuantumNous/new-api",
       "invoice_available": 0,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "One-API 升级版",
       "payment_currency": [
@@ -3581,7 +3581,7 @@ var API_RADAR_DATA = {
       "website": "https://duckcoding.com",
       "invoice_available": 0,
       "min_charge": 10,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "国内中转，比官方低 30-50%",
       "payment_currency": [
@@ -3619,7 +3619,7 @@ var API_RADAR_DATA = {
       "website": "https://api2d.com",
       "invoice_available": 0,
       "min_charge": 5,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "国内老牌中转",
       "payment_currency": [
@@ -3658,7 +3658,7 @@ var API_RADAR_DATA = {
       "website": "https://aicnb.com",
       "invoice_available": 0,
       "min_charge": 5,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "国内中转，含发票申请",
       "payment_currency": [
@@ -3700,7 +3700,7 @@ var API_RADAR_DATA = {
       "website": "https://closeai.info",
       "invoice_available": 0,
       "min_charge": 5,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "国内 Claude 专线",
       "payment_currency": [
@@ -3743,7 +3743,7 @@ var API_RADAR_DATA = {
       "website": "https://wokaai.com",
       "invoice_available": 0,
       "min_charge": 5,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "国内 Claude/GPT 中转",
       "payment_currency": [
@@ -3781,7 +3781,7 @@ var API_RADAR_DATA = {
       "website": "https://chatfire.cn",
       "invoice_available": 0,
       "min_charge": 1,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "国内低价中转",
       "payment_currency": [
@@ -3819,7 +3819,7 @@ var API_RADAR_DATA = {
       "website": "https://www.volcengine.com/product/ark",
       "invoice_available": 1,
       "min_charge": 50,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "字节跳动旗下，豆包官方平台",
       "payment_currency": [
@@ -3844,7 +3844,7 @@ var API_RADAR_DATA = {
       "website": "https://cloud.tencent.com/product/hunyuan",
       "invoice_available": 1,
       "min_charge": 50,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "腾讯混元官方",
       "payment_currency": [
@@ -3869,7 +3869,7 @@ var API_RADAR_DATA = {
       "website": "https://www.jdcloud.com/cn/products/lingxi",
       "invoice_available": 1,
       "min_charge": 100,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "京东云大模型",
       "payment_currency": [
@@ -3894,7 +3894,7 @@ var API_RADAR_DATA = {
       "website": "https://huggingface.co/inference-endpoints",
       "invoice_available": 1,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "HF 部署开源模型，按 GPU 时长收费",
       "payment_currency": [
@@ -3921,7 +3921,7 @@ var API_RADAR_DATA = {
       "website": "https://replicate.com",
       "invoice_available": 1,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "云端跑开源模型，按秒计费",
       "payment_currency": [
@@ -3948,7 +3948,7 @@ var API_RADAR_DATA = {
       "website": "https://www.cerebrium.ai",
       "invoice_available": 0,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "无服务器 GPU，按请求计费",
       "payment_currency": [
@@ -3975,7 +3975,7 @@ var API_RADAR_DATA = {
       "website": "https://lmstudio.ai",
       "invoice_available": 0,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "本地/云端混合，个人开发者常用",
       "payment_currency": [
@@ -4001,7 +4001,7 @@ var API_RADAR_DATA = {
       "website": "https://www.coze.cn",
       "invoice_available": 1,
       "min_charge": 0,
-      "sla_uptime": "99.5%",
+      "sla_uptime": 99.5,
       "concurrent_rpm": 1000,
       "notes": "字节扣子，国产 GPTs 平台",
       "payment_currency": [
@@ -4027,7 +4027,7 @@ var API_RADAR_DATA = {
       "website": "https://azure.microsoft.com/en-us/products/ai-services/openai-service",
       "invoice_available": 1,
       "min_charge": 0,
-      "sla_uptime": "99.9%",
+      "sla_uptime": 99.9,
       "concurrent_rpm": 1000,
       "notes": "微软 Azure 上的 OpenAI 服务，需企业订阅",
       "payment_currency": [
@@ -4066,7 +4066,7 @@ var API_RADAR_DATA = {
       "website": "https://aws.amazon.com/bedrock",
       "invoice_available": 1,
       "min_charge": 0,
-      "sla_uptime": "99.9%",
+      "sla_uptime": 99.9,
       "concurrent_rpm": 2000,
       "notes": "AWS 托管的多种模型，含 Claude/Titan/Llama",
       "payment_currency": [
@@ -4107,7 +4107,7 @@ var API_RADAR_DATA = {
       "website": "https://cloud.google.com/vertex-ai",
       "invoice_available": 1,
       "min_charge": 0,
-      "sla_uptime": "99.9%",
+      "sla_uptime": 99.9,
       "concurrent_rpm": 1000,
       "notes": "GCP 托管的模型，含 Gemini/Palm",
       "payment_currency": [
@@ -17020,8 +17020,12 @@ var API_RADAR_DATA = {
       "target_type": "model",
       "target_name": "Qwen3.8 Max",
       "severity": "medium",
-      "tags": "[\"new_model\"]",
-      "source_urls": "[\"https://qwen.ai\"]"
+      "tags": [
+        "new_model"
+      ],
+      "source_urls": [
+        "https://qwen.ai"
+      ]
     },
     {
       "id": "e_2026_08_minimax_m3",
@@ -17032,8 +17036,12 @@ var API_RADAR_DATA = {
       "target_type": "model",
       "target_name": "MiniMax M3",
       "severity": "low",
-      "tags": "[\"new_model\"]",
-      "source_urls": "[\"https://api.minimax.chat\"]"
+      "tags": [
+        "new_model"
+      ],
+      "source_urls": [
+        "https://api.minimax.chat"
+      ]
     },
     {
       "id": "e_2026_07_kimi_k3",
@@ -17044,8 +17052,12 @@ var API_RADAR_DATA = {
       "target_type": "model",
       "target_name": "Kimi K3",
       "severity": "medium",
-      "tags": "[\"new_model\"]",
-      "source_urls": "[\"https://kimi.moonshot.cn\"]"
+      "tags": [
+        "new_model"
+      ],
+      "source_urls": [
+        "https://kimi.moonshot.cn"
+      ]
     },
     {
       "id": "e_2026_07_claude_opus_5",
@@ -17056,8 +17068,13 @@ var API_RADAR_DATA = {
       "target_type": "model",
       "target_name": "Claude Opus 5",
       "severity": "high",
-      "tags": "[\"new_model\", \"capability_update\"]",
-      "source_urls": "[\"https://anthropic.com\"]"
+      "tags": [
+        "new_model",
+        "capability_update"
+      ],
+      "source_urls": [
+        "https://anthropic.com"
+      ]
     },
     {
       "id": "e_2026_07_gpt_5_6_sol",
@@ -17068,8 +17085,13 @@ var API_RADAR_DATA = {
       "target_type": "model",
       "target_name": "GPT-5.6 Sol",
       "severity": "high",
-      "tags": "[\"new_model\", \"capability_update\"]",
-      "source_urls": "[\"https://openai.com\"]"
+      "tags": [
+        "new_model",
+        "capability_update"
+      ],
+      "source_urls": [
+        "https://openai.com"
+      ]
     },
     {
       "id": "e_2026_06_glm_5_2",
@@ -17080,8 +17102,12 @@ var API_RADAR_DATA = {
       "target_type": "model",
       "target_name": "GLM-5.2",
       "severity": "medium",
-      "tags": "[\"new_model\"]",
-      "source_urls": "[\"https://zhipuai.cn\"]"
+      "tags": [
+        "new_model"
+      ],
+      "source_urls": [
+        "https://zhipuai.cn"
+      ]
     },
     {
       "id": "e_2026_05_deepseek_v4",
@@ -17092,8 +17118,12 @@ var API_RADAR_DATA = {
       "target_type": "model",
       "target_name": "DeepSeek V4 Pro",
       "severity": "medium",
-      "tags": "[\"price_change\"]",
-      "source_urls": "[\"https://platform.deepseek.com\"]"
+      "tags": [
+        "price_change"
+      ],
+      "source_urls": [
+        "https://platform.deepseek.com"
+      ]
     },
     {
       "id": "e_2026_05_qwen3_7",
@@ -17104,8 +17134,12 @@ var API_RADAR_DATA = {
       "target_type": "model",
       "target_name": "Qwen3.7 Max",
       "severity": "medium",
-      "tags": "[\"new_model\"]",
-      "source_urls": "[\"https://qwen.ai\"]"
+      "tags": [
+        "new_model"
+      ],
+      "source_urls": [
+        "https://qwen.ai"
+      ]
     },
     {
       "id": "e_2026_04_deepseek_v4",
@@ -17116,8 +17150,13 @@ var API_RADAR_DATA = {
       "target_type": "model",
       "target_name": "DeepSeek V4 Pro",
       "severity": "high",
-      "tags": "[\"new_model\", \"capability_update\"]",
-      "source_urls": "[\"https://platform.deepseek.com\"]"
+      "tags": [
+        "new_model",
+        "capability_update"
+      ],
+      "source_urls": [
+        "https://platform.deepseek.com"
+      ]
     },
     {
       "id": "e_2026_04_kimi_k2_6",
@@ -17128,8 +17167,12 @@ var API_RADAR_DATA = {
       "target_type": "model",
       "target_name": "Kimi K2.6",
       "severity": "medium",
-      "tags": "[\"new_model\"]",
-      "source_urls": "[\"https://kimi.moonshot.cn\"]"
+      "tags": [
+        "new_model"
+      ],
+      "source_urls": [
+        "https://kimi.moonshot.cn"
+      ]
     },
     {
       "id": "e_2026_03_glm_5_1",
@@ -17140,8 +17183,12 @@ var API_RADAR_DATA = {
       "target_type": "model",
       "target_name": "GLM-5.1",
       "severity": "low",
-      "tags": "[\"new_model\"]",
-      "source_urls": "[\"https://zhipuai.cn\"]"
+      "tags": [
+        "new_model"
+      ],
+      "source_urls": [
+        "https://zhipuai.cn"
+      ]
     },
     {
       "id": "e_2026_06_portkey_open",
@@ -17152,8 +17199,12 @@ var API_RADAR_DATA = {
       "target_type": "provider",
       "target_name": "Portkey",
       "severity": "low",
-      "tags": "[\"policy_change\"]",
-      "source_urls": "[\"https://portkey.ai\"]"
+      "tags": [
+        "policy_change"
+      ],
+      "source_urls": [
+        "https://portkey.ai"
+      ]
     },
     {
       "id": "e_2026_03_minimax_m2_7",
@@ -17164,8 +17215,13 @@ var API_RADAR_DATA = {
       "target_type": "model",
       "target_name": "MiniMax M2.7",
       "severity": "low",
-      "tags": "[\"new_model\", \"capability_update\"]",
-      "source_urls": "[\"https://api.minimax.chat\"]"
+      "tags": [
+        "new_model",
+        "capability_update"
+      ],
+      "source_urls": [
+        "https://api.minimax.chat"
+      ]
     }
   ],
   "fx_rate": {
