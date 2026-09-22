@@ -2,34 +2,34 @@
 // 来源：02_data/samples/uptime.jsonl 真实 HTTP 探测，请勿手改。
 // survival 口径：2xx/3xx/401/403 计为存活。
 var PROBE_STATS = {
- "generated_at": "2026-09-22T17:51:46",
+ "generated_at": "2026-09-22T18:18:48",
  "stats": {
   "p_anthropic_official": {
-   "probes": 6,
-   "alive": 6,
+   "probes": 7,
+   "alive": 7,
    "last_status": 403,
-   "last_latency_ms": 1382,
-   "last_check_at": "2026-09-22T17:51:46",
+   "last_latency_ms": 1536,
+   "last_check_at": "2026-09-22T18:18:48",
    "survival": 100.0,
-   "latency_avg_ms": 1813
+   "latency_avg_ms": 1773
   },
   "p_openai_official": {
-   "probes": 6,
-   "alive": 6,
+   "probes": 7,
+   "alive": 7,
    "last_status": 403,
-   "last_latency_ms": 660,
-   "last_check_at": "2026-09-22T17:51:46",
+   "last_latency_ms": 699,
+   "last_check_at": "2026-09-22T18:18:48",
    "survival": 100.0,
-   "latency_avg_ms": 743
+   "latency_avg_ms": 737
   },
   "p_google_official": {
-   "probes": 6,
+   "probes": 7,
    "alive": 0,
    "last_status": 0,
-   "last_latency_ms": 40331,
-   "last_check_at": "2026-09-22T17:51:46",
+   "last_latency_ms": 40344,
+   "last_check_at": "2026-09-22T18:18:48",
    "survival": 0.0,
-   "latency_avg_ms": 56873
+   "latency_avg_ms": 54511
   },
   "p_xai_official": {
    "probes": 5,

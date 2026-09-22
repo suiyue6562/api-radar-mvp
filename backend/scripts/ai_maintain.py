@@ -37,8 +37,14 @@ MODEL = "MiniMax-M3"
 PROBE_TIMEOUT = 10
 SAMPLE_CAP = 6000          # uptime.jsonl 最大行数（超出截断保留最新）
 MAX_INSIGHT_AGE_DAYS = 3   # AI 画像在该天数内不重复调用（省 token）
+RADAR_JS = REPO / "03_prototype" / "radar_sites.js"
+RADAR_OUT = REPO / "03_prototype" / "radar_probe.js"
+RADAR_SAMPLES = REPO / "02_data" / "samples" / "radar_uptime.jsonl"
+RADAR_CURSOR = REPO / "02_data" / "samples" / "radar_cursor.json"
+RADAR_BATCH = 70           # 每天探测 70 家雷达站点，约 7 天轮完 500 家直连站
+RADAR_INTERVAL = 1.0       # 请求间隔秒数（礼貌频率）
 
-UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+UA = ("Mozilla/5.0 (Windows NT 10.0; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
 
 
@@ -192,7 +198,7 @@ def write_insights(generated_at, insights):
                      REPO / "03_prototype" / "index.html",
                      REPO / "03_prototype" / "pick.html"):
             txt = html.read_text(encoding="utf-8")
-            txt2 = re.sub(r"(ai_insights|probe_stats)\.js\?v=[^\"']+",
+            txt2 = re.sub(r"(ai_insights|probe_stats|radar_probe)\.js\?v=[^\"']+",
                           lambda m: m.group(1) + ".js?v=" + stamp, txt)
             if txt2 != txt:
                 html.write_text(txt2, encoding="utf-8")
@@ -202,6 +208,75 @@ def write_insights(generated_at, insights):
 
 # 探测可达口径：2xx/3xx=正常，401/403=存活(反爬拦截)，5xx/0=异常
 ALIVE_STATUSES = tuple(list(range(200, 400)) + [401, 403])
+
+
+def load_radar_sites():
+    if not RADAR_JS.exists():
+        return []
+    m = re.search(r"var\s+RADAR_SITES\s*=\s*(\[.*\]);?\s*$",
+                  RADAR_JS.read_text(encoding="utf-8"), re.S)
+    return json.loads(m.group(1)) if m else []
+
+
+def radar_probe_step(now):
+    """分批探测收录雷达直连站官网可达性 → radar_probe.js（每天一批，约 7 天轮完）"""
+    import requests
+    sites = [s for s in load_radar_sites()
+             if not s.get("profile") and (s.get("url") or "").startswith("http")]
+    if not sites:
+        print("  📡 雷达：无直连站点，跳过")
+        return
+    cursor = 0
+    if RADAR_CURSOR.exists():
+        try:
+            cursor = json.loads(RADAR_CURSOR.read_text(encoding="utf-8")).get("cursor", 0)
+        except Exception:
+            cursor = 0
+    if cursor >= len(sites):
+        cursor = 0  # 新一轮
+    batch = sites[cursor:cursor + RADAR_BATCH]
+    checked, rows = {}, []
+    for i, s in enumerate(batch, 1):
+        url = s["url"].strip()
+        t0 = time.time()
+        try:
+            r = requests.get(url, timeout=(4, 7), headers={"User-Agent": UA},
+                             allow_redirects=True, verify=True)
+            status, lat = r.status_code, int((time.time() - t0) * 1000)
+        except Exception:
+            status, lat = 0, int((time.time() - t0) * 1000)
+        key = re.sub(r"^https?://", "", url).lower().rstrip("/")
+        checked[key] = {"status": status, "latency_ms": lat, "checked_at": now}
+        rows.append({"ts": now, "url": key, "status": status, "latency_ms": lat})
+        flag = "✓" if status in ALIVE_STATUSES else "✗"
+        print(f"  📡 [{i:02d}/{len(batch)}] {flag} {(s.get('name') or '')[:22]}: {status} {lat}ms")
+        time.sleep(RADAR_INTERVAL)
+    RADAR_SAMPLES.parent.mkdir(parents=True, exist_ok=True)
+    with RADAR_SAMPLES.open("a", encoding="utf-8") as f:
+        for row in rows:
+            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+    lines = RADAR_SAMPLES.read_text(encoding="utf-8").splitlines()
+    if len(lines) > SAMPLE_CAP:
+        RADAR_SAMPLES.write_text("\n".join(lines[-SAMPLE_CAP:]) + "\n", encoding="utf-8")
+    old = {}
+    if RADAR_OUT.exists():
+        m = re.search(r"var\s+RADAR_PROBE\s*=\s*(\{.*\});?\s*$",
+                      RADAR_OUT.read_text(encoding="utf-8"), re.S)
+        if m:
+            try:
+                old = json.loads(m.group(1)).get("checked", {})
+            except Exception:
+                old = {}
+    old.update(checked)
+    body = json.dumps({"generated_at": now, "total_direct": len(sites),
+                       "checked_today": len(batch), "cursor_end": cursor + len(batch),
+                       "checked": old}, ensure_ascii=False, indent=1)
+    RADAR_OUT.write_text("// 自动生成：backend/scripts/ai_maintain.py\n"
+                         "// 收录雷达直连站分批真实探测（每天约70家 · 1s间隔 · 约7天轮完）\n"
+                         "var RADAR_PROBE = " + body + ";\n", encoding="utf-8")
+    RADAR_CURSOR.write_text(json.dumps({"cursor": cursor + len(batch), "total": len(sites),
+                                        "ran_at": now}, ensure_ascii=False), encoding="utf-8")
+    print(f"  📡 雷达探测：本批 {len(batch)} 家（{cursor}-{cursor + len(batch)}/{len(sites)}）→ radar_probe.js")
 
 
 def write_probe_stats(generated_at):
@@ -246,6 +321,7 @@ def main():
     ap.add_argument("--probe-only", action="store_true")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--offset", type=int, default=0, help="跳过前 N 家（分批跑用）")
+    ap.add_argument("--skip-radar", action="store_true", help="跳过雷达站点探测")
     args = ap.parse_args()
 
     data = load_data()
@@ -277,6 +353,10 @@ def main():
     append_sample(samples)
     print(f"[2/3] 探测样本已写入 {SAMPLES.relative_to(REPO)}")
     write_probe_stats(now)
+    if not args.skip_radar:
+        radar_probe_step(now)
+    else:
+        print("  📡 雷达探测：--skip-radar 跳过")
 
     if args.probe_only:
         return

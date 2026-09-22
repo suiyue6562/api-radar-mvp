@@ -132,3 +132,6 @@
 {"ts": "2026-09-22T17:51:46", "id": "p_azure_openai", "status": 0, "latency_ms": 7219, "title": ""}
 {"ts": "2026-09-22T17:51:46", "id": "p_bedrock", "status": 200, "latency_ms": 704, "title": "Amazon Bedrock – Build genAI applications and agents at production scale – AWS"}
 {"ts": "2026-09-22T17:51:46", "id": "p_vertex_ai", "status": 0, "latency_ms": 40340, "title": ""}
+{"ts": "2026-09-22T18:18:48", "id": "p_anthropic_official", "status": 403, "latency_ms": 1536, "title": "Just a moment..."}
+{"ts": "2026-09-22T18:18:48", "id": "p_openai_official", "status": 403, "latency_ms": 699, "title": "Attention Required! | Cloudflare"}
+{"ts": "2026-09-22T18:18:48", "id": "p_google_official", "status": 0, "latency_ms": 40344, "title": ""}
