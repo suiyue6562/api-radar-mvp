@@ -262,7 +262,7 @@ function renderBody() {
       label: '① 官方价 (输入+输出)',
       cells: models.map(m => m ? {
         text: fmtUSD(m.official_input_usd_m) + ' / ' + fmtUSD(m.official_output_usd_m),
-        sub: 'per 1M tokens'
+        sub: 'per 1M tokens · ≈¥' + (m.official_input_usd_m * FX.USD_CNY).toFixed(2) + ' / ¥' + (m.official_output_usd_m * FX.USD_CNY).toFixed(2)
       } : { text: '—' }),
       win: wins.official
     },
@@ -270,7 +270,7 @@ function renderBody() {
       label: '② 中转均价',
       cells: stats.map(s => s.avgIn !== null ? {
         text: fmtUSD(s.avgIn) + ' / ' + fmtUSD(s.avgOut),
-        sub: s.count + ' 个渠道平均'
+        sub: s.count + ' 个渠道平均 · ≈¥' + (s.avgIn * FX.USD_CNY).toFixed(2) + ' / ¥' + (s.avgOut * FX.USD_CNY).toFixed(2)
       } : { text: '无数据', sub: '尚未收录渠道' }),
       win: wins.avgIn
     },
@@ -278,7 +278,7 @@ function renderBody() {
       label: '③ 中转最低价',
       cells: stats.map(s => s.minIn !== null ? {
         text: fmtUSD(s.minIn) + ' / ' + fmtUSD(s.minOut),
-        sub: '在 ' + s.count + ' 家中'
+        sub: '在 ' + s.count + ' 家中 · ≈¥' + (s.minIn * FX.USD_CNY).toFixed(2) + ' / ¥' + (s.minOut * FX.USD_CNY).toFixed(2)
       } : { text: '—' }),
       win: wins.minIn
     },
@@ -346,7 +346,9 @@ function renderChannels() {
           const p = D.providers.find(pp => pp.id === o.provider_id);
           return '<a href="provider.html?id=' + escapeHtml(o.provider_id) + '" class="chan-card">' +
             '<div class="chan-card-name"><span class="chan-card-status ' + (p?.status || 'online') + '"></span>' + escapeHtml(p?.name_zh || o.provider_id) + '</div>' +
-            '<div class="chan-card-price">' + fmtUSD(o.input_usd_m) + ' / ' + fmtUSD(o.output_usd_m) + '</div>' +
+            '<div class="chan-card-price">' + fmtUSD(o.input_usd_m) + ' / ' + fmtUSD(o.output_usd_m) +
+              ' <span style="font-family:var(--font-mono);font-weight:800;font-size:11px;padding:1px 7px;border-radius:5px;background:#000;color:#fff;">× ' + (o.multiplier || 1).toFixed(2) + '</span></div>' +
+            '<div class="chan-card-meta" style="font-family:var(--font-mono);">≈ ¥' + ((o.input_usd_m || 0) * FX.USD_CNY).toFixed(2) + ' / ¥' + ((o.output_usd_m || 0) * FX.USD_CNY).toFixed(2) + '</div>' +
             '<div class="chan-card-meta">' + (p?.region || 'global') + ' · ' + (p?.sla_uptime ? p.sla_uptime.toFixed(1) + '%' : '—') + ' uptime</div>' +
           '</a>';
         }).join('') + '</div>') +
