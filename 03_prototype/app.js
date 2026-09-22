@@ -336,11 +336,44 @@ function renderKPI() {
   if ($('rank-table-count')) $('rank-table-count').textContent = D.providers.length + ' 家商家';
 }
 
+// ============ 商业推荐体系：优秀站 / 爆款站 / 新站 分层 ============
+// 官方大厂(type=official)不参与商业排序，单独「官方直达」区展示
+function isNewSite(p) {
+  const d = p.signup_date || '';
+  if (d) {
+    const days = (Date.now() - new Date(d).getTime()) / 86400000;
+    if (!isNaN(days) && days >= 0 && days <= 60) return true;
+  }
+  return !!p.is_new;
+}
+function qualityScore(p) {
+  const s = p.sla_uptime || 0, r = (p.rating || 0) * 20,
+        m = Math.min(100, (p.models_count || 0) * 4),
+        b = Math.min(100, Math.log10((p.browse_count || 0) + 1) * 25);
+  return Math.round(s * .3 + r * .3 + m * .2 + b * .2);
+}
+// 1=优秀站 2=爆款站 3=新站 4=常规站（数字小=排前）
+function computeSiteTier(p) {
+  if (isNewSite(p)) return 3;
+  const q = qualityScore(p);
+  if (q >= 85 && (p.rating || 0) >= 4.5) return 1;
+  if ((p.browse_count || 0) >= 800 || (p.review_count || 0) >= 50) return 2;
+  return 4;
+}
+const TIER_BADGE = {
+  1: '<span style="display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#000;color:#fff;margin-left:5px;vertical-align:1px;" title="质量综合分≥85 且评分≥4.5">精选</span>',
+  2: '<span style="display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#fef3c7;color:#92400e;border:1px solid #f59e0b;margin-left:5px;vertical-align:1px;" title="调用量或口碑数领先">热门</span>',
+  3: '<span style="display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#dcfce7;color:#166534;border:1px solid #16a34a;margin-left:5px;vertical-align:1px;" title="近 60 天新收录">NEW</span>',
+};
+
 // ============ 5. Site rankings 主表 (7 列：收藏/站点/运行质量/支付/政策/口碑/覆盖) ============
 function renderSiteRankings() {
   const tbody = $('rank-table-body');
   if (!tbody) return;
-  const providers = (D.providers || []).slice(0, 20);
+  const allProviders = D.providers || [];
+  // 商业排序：官方大厂不参与排名，单独展示
+  const officialList = allProviders.filter(p => p.type === 'official');
+  const providers = allProviders.filter(p => p.type !== 'official');
 
   // 加载收藏状态
   const favKey = 'apiradar_favs';
@@ -364,12 +397,13 @@ function renderSiteRankings() {
     return Object.assign({}, p, {
       _perf: perf, _latency: latency, _rating: rating, _reviewCount: reviewCount,
       _coverage: coverage, _pay: pay, _hasInvoice: hasInvoice, _hasRefund: hasRefund,
-      _addedDate: addedDate, _typeLabel: typeLabel
+      _addedDate: addedDate, _typeLabel: typeLabel,
+      _tier: computeSiteTier(p), _quality: qualityScore(p)
     });
-  }).sort((a, b) => b._perf - a._perf);
+  }).sort((a, b) => a._tier - b._tier || b._quality - a._quality || b._perf - a._perf).slice(0, 20);
 
   const meta = $('rank-table-meta');
-  if (meta) meta.textContent = ranked.length + ' 家 · 每 15 分钟刷新';
+  if (meta) meta.textContent = ranked.length + ' 家中转站' + (officialList.length ? ' · ' + officialList.length + ' 家官方直达' : '') + ' · 每 15 分钟刷新';
 
   tbody.innerHTML = ranked.map((p, i) => {
     const perfCls = p._perf >= 95 ? 'good' : p._perf >= 88 ? 'mid' : 'bad';
@@ -415,7 +449,7 @@ function renderSiteRankings() {
         '<div class="v-cell">' +
           '<div class="v-logo">' + (p.logo || '🏢') + '</div>' +
           '<div>' +
-            '<div class="v-name">' + escapeHtml(p.name_zh || p.name || '') + '</div>' +
+            '<div class="v-name">' + escapeHtml(p.name_zh || p.name || '') + (TIER_BADGE[p._tier] || '') + '</div>' +
             '<div class="v-meta"><span class="badge-mini ' + (p.type || '') + '">' + p._typeLabel + '</span>收录于 ' + p._addedDate + '</div>' +
           '</div>' +
         '</div>' +
@@ -456,6 +490,67 @@ function renderSiteRankings() {
       try { localStorage.setItem(favKey, JSON.stringify(favs)); } catch (e) {}
     });
   });
+
+  // 官方直达区块（不参与商业排序）+ 广告主推荐位
+  renderOfficialStrip(tbody, officialList);
+  renderSponsoredStrip(tbody);
+}
+
+// 官方大厂独立展示：不参与商业排序，避免给大厂免费引流占位
+function renderOfficialStrip(tbody, officialList) {
+  if (typeof tbody.closest !== 'function') return; // 非 DOM 环境（测试桩）直接跳过
+  const wrap = tbody.closest('section') || tbody.parentElement;
+  if (!wrap || !officialList.length) return;
+  if (wrap.querySelector('.official-strip')) return;
+  const box = document.createElement('div');
+  box.className = 'official-strip';
+  box.style.cssText = 'margin-top:16px;padding:16px 18px;background:var(--bg-deep);border:1px dashed var(--border);border-radius:10px;';
+  const pills = officialList.map(p =>
+    '<a href="provider.html?id=' + p.id + '" style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;margin:0 8px 8px 0;border:1px solid var(--border);border-radius:999px;font-size:12px;color:var(--text);text-decoration:none;background:var(--bg);">' +
+    '<span>' + (p.logo || '🏛️') + '</span><span>' + escapeHtml(p.name_zh || p.name || '') + '</span>' +
+    '<span style="color:var(--muted);font-size:10px;">官方</span></a>'
+  ).join('');
+  box.innerHTML =
+    '<div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px;letter-spacing:.5px;">🏛️ 官方直达 · 原厂渠道不参与商业排序</div>' +
+    '<div>' + pills + '</div>';
+  wrap.appendChild(box);
+}
+
+// 广告主推荐位：拉取 /api/ads?slot=home_mid，最多 2 条，明示"推广"
+function renderSponsoredStrip(tbody) {
+  if (typeof tbody.closest !== 'function') return; // 非 DOM 环境（测试桩）直接跳过
+  const wrap = tbody.closest('section') || tbody.parentElement;
+  if (!wrap) return;
+  if (wrap.querySelector('.sponsored-strip')) return;
+  fetch('https://api.apireader.top/api/ads?slot=home_mid')
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      const ads = (data && (data.ads || data)) || [];
+      if (!ads.length) return;
+      const box = document.createElement('div');
+      box.className = 'sponsored-strip';
+      box.style.cssText = 'margin:14px 0;padding:14px 18px;border:1px dashed var(--border);border-radius:10px;background:linear-gradient(135deg, rgba(255,214,0,.06), rgba(255,255,255,0));';
+      const cards = ads.slice(0, 2).map(a =>
+        '<a href="' + escapeHtml(a.target_url || '#') + '" target="_blank" rel="noopener sponsored" data-ad-id="' + escapeHtml(a.id || '') + '" class="ad-card" ' +
+        'style="display:flex;align-items:center;gap:12px;padding:10px 14px;margin-bottom:8px;border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);background:var(--bg);">' +
+        '<span style="font-size:22px;">' + (a.icon || '📡') + '</span>' +
+        '<span style="flex:1;"><span style="display:block;font-weight:700;font-size:13px;">' + escapeHtml(a.title || '') + '</span>' +
+        '<span style="display:block;font-size:12px;color:var(--muted);margin-top:2px;">' + escapeHtml(a.desc || '') + '</span></span>' +
+        '<span style="font-size:10px;color:var(--muted);border:1px solid var(--border);border-radius:3px;padding:1px 5px;flex-shrink:0;">推广</span></a>'
+      ).join('');
+      box.innerHTML =
+        '<div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px;letter-spacing:.5px;">🎯 广告主推荐 · 优选中转站</div>' + cards;
+      box.addEventListener('click', (e) => {
+        const card = e.target.closest('.ad-card');
+        if (card && card.dataset.adId) {
+          try { navigator.sendBeacon('https://api.apireader.top/api/ads/' + card.dataset.adId + '/click'); } catch (err) {}
+        }
+      });
+      // 插在排行表上方
+      const table = wrap.querySelector('.rank-table-wrap') || wrap.querySelector('table') || tbody;
+      table.parentElement.insertBefore(box, table);
+    })
+    .catch(() => {});
 }
 
 // ============ 6. Top Picks 用户口碑精选 ============
@@ -837,6 +932,7 @@ window.API_YOUXUAN = {
   renderFeatured, renderBestFor, setupCalculator, setupSearch, setupTabs,
   loadTrafficStats, getVendor, getProvider, getModel, fmtUSD, fmtCNY, fmtCtx, fmtNum,
   computeWeeklyTokens, computeTrendDelta, computeCompositeScore, computeSubScores,
+  computeSiteTier, qualityScore, isNewSite,
   TOP_PICKS, PERKS
 };
 

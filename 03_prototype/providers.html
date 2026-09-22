@@ -64,6 +64,7 @@
     </div>
     <div class="filter-group sort-select"><div class="filter-group-label">排序</div>
       <select id="sort-select">
+        <option value="recommend" selected>🏆 推荐</option>
         <option value="browse">📈 调用量</option>
         <option value="uptime">🟢 在线率 SLA</option>
         <option value="models">📦 模型覆盖</option>
@@ -81,8 +82,8 @@
 <footer class="footer" id="footer"></footer>
 
 
-<script src="data.js?v=20260922c"></script>
-<script src="app.js?v=20260922c"></script>
+<script src="data.js?v=20260922d"></script>
+<script src="app.js?v=20260922d"></script>
 <script>
 function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&lt;","<":"&lt;",">":"&gt;","\"":"&quot;","\'":"&#39;"})[c]);}
 const TYPE={official:{label:'官方',emoji:'🏛️',cls:'official'},aggregator:{label:'中转',emoji:'🔀',cls:'aggregator'},gateway:{label:'网关',emoji:'🌐',cls:'gateway'},self_host:{label:'自部署',emoji:'🛠️',cls:'self_host'},cloud:{label:'云厂商',emoji:'☁️',cls:'cloud'}};
@@ -90,6 +91,19 @@ const ST={online:{label:'在线',cls:'online'},limited:{label:'限流',cls:'limi
 const CUR={USD:'usd',CNY:'cny',EUR:'eur',BTC:'crypt',USDT:'crypt'};
 const REG={cn:'🇨🇳',global:'🌍','cn/global':'🌏',self:'🛠️'};
 function score(p){const s=p.sla_uptime||0,r=(p.rating||0)*20,m=Math.min(100,(p.models_count||0)*4),b=Math.min(100,Math.log10((p.browse_count||0)+1)*25);return Math.round(s*.3+r*.3+m*.2+b*.2);}
+// 推荐分层：官方=9(排最后) 优秀=1 爆款=2 新站=3 常规=4（数字小=排前）
+function siteTierLocal(p){
+  if(p.type==='official')return 9;
+  const age=Date.now()-new Date(p.signup_date||p.added_date||'2026-01-01').getTime();
+  if(p.is_new||age<60*864e5)return 3;
+  const q=score(p);
+  if(q>=85&&(p.rating||0)>=4.5)return 1;
+  if((p.browse_count||0)>=800||(p.review_count||0)>=50)return 2;
+  return 4;
+}
+const TIER_BADGE_L={1:'<span style="display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#000;color:#fff;margin-left:4px;vertical-align:1px;" title="质量综合分≥85 且评分≥4.5">精选</span>',
+  2:'<span style="display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#fef3c7;color:#92400e;border:1px solid #f59e0b;margin-left:4px;vertical-align:1px;" title="调用量或口碑数领先">热门</span>',
+  3:'<span style="display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#dcfce7;color:#166534;border:1px solid #16a34a;margin-left:4px;vertical-align:1px;" title="近 60 天新收录">NEW</span>'};
 
 function card(p){
   const t=TYPE[p.type]||{label:p.type,emoji:'📦',cls:''},s=ST[p.status]||ST.online;
@@ -105,7 +119,7 @@ function card(p){
     (isN?'<div class="is-new-tag">NEW</div>':'')+
     '<div class="pv-score '+(isN?'is-new-pad ':'')+scC+'" title="综合健康分">'+sc+'</div>'+
     '<div class="pv-head"><div class="pv-logo">'+t.emoji+'</div><div class="pv-title-wrap">'+
-      '<div class="pv-name"><span class="status-dot '+s.cls+'" title="'+s.label+'"></span>'+escapeHtml(p.name)+'</div>'+
+      '<div class="pv-name"><span class="status-dot '+s.cls+'" title="'+s.label+'"></span>'+escapeHtml(p.name)+(TIER_BADGE_L[siteTierLocal(p)]||'')+'</div>'+
       '<div class="pv-name-en">'+(REG[p.region]||'🌐')+' '+escapeHtml(p.name_en||'')+'</div>'+
     '</div></div>'+
     '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">'+
@@ -134,7 +148,7 @@ function card(p){
 function chips(sel){return new Set(Array.from(document.querySelectorAll(sel+' .chip.active')).map(c=>c.dataset[sel.replace('#','').replace('-chips','')]));}
 function bindChips(sel,fn){document.querySelectorAll(sel+' .chip').forEach(c=>c.addEventListener('click',()=>{c.classList.toggle('active');fn();}));}
 
-const S={types:new Set(['']),regions:new Set(['']),pays:new Set(['']),policy:new Set(['']),sort:'browse',q:''};
+const S={types:new Set(['']),regions:new Set(['']),pays:new Set(['']),policy:new Set(['']),sort:'recommend',q:''};
 const K2T={总渠道:'',官方渠道:'official',聚合中转:'aggregator',自部署:'self_host','网关/云':'gateway,cloud'};
 
 (function(){
@@ -181,7 +195,8 @@ const K2T={总渠道:'',官方渠道:'official',聚合中转:'aggregator',自部
     return true;
   }
   function sortBy(a){const s=S.sort,v=a.slice();
-    if(s==='browse')v.sort((x,y)=>(y.browse_count||0)-(x.browse_count||0));
+    if(s==='recommend')v.sort((x,y)=>{const tx=siteTierLocal(x),ty=siteTierLocal(y);if(tx!==ty)return tx-ty;return score(y)-score(x);});
+    else if(s==='browse')v.sort((x,y)=>(y.browse_count||0)-(x.browse_count||0));
     else if(s==='uptime')v.sort((x,y)=>(y.sla_uptime||0)-(x.sla_uptime||0));
     else if(s==='models')v.sort((x,y)=>(y.models_count||0)-(x.models_count||0));
     else if(s==='rating')v.sort((x,y)=>(y.rating||0)-(x.rating||0));
