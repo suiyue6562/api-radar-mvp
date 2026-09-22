@@ -213,7 +213,7 @@ def bump_versions():
                      REPO / "03_prototype" / "index.html",
                      REPO / "03_prototype" / "pick.html"):
             txt = html.read_text(encoding="utf-8")
-            txt2 = re.sub(r"(ai_insights|probe_stats|radar_probe|radar_ai)\.js\?v=[^\"']+",
+            txt2 = re.sub(r"(ai_insights|probe_stats|radar_probe|radar_ai|sponsored_rank)\.js\?v=[^\"']+",
                           lambda m: m.group(1) + ".js?v=" + stamp, txt)
             if txt2 != txt:
                 html.write_text(txt2, encoding="utf-8")

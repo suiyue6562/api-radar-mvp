@@ -174,9 +174,11 @@
     </div>
     <div class="filter-group sort-select"><div class="filter-group-label">排序</div>
       <select id="sort-select">
-        <option value="recommend" selected>🏆 综合推荐</option>
-        <option value="base">🧮 站点基础分</option>
-        <option value="uptime">🟢 可用率 SLA</option>
+        <option value="recommend" selected>🤖 AI 综合推荐</option>
+        <option value="price">💰 价格竞争力</option>
+        <option value="speed">⚡ 响应速度</option>
+        <option value="uptime">🟢 实测存活率</option>
+        <option value="base">🧮 AI 评分明细</option>
         <option value="days">📅 收录天数</option>
         <option value="browse">👁 调用量</option>
       </select>
@@ -206,9 +208,9 @@
       <h4>数据来源</h4>
       排行、可用率、价格均由本站探针持续采集，官方渠道不参与商业排序，单独展示。
       <h4>排序口径</h4>
-      默认综合排序 = 站点基础分 × 可用率 ÷ 100 × 综合降权系数。降权系数通常为 1：新站有降权观察期（×0.85），离线/维护中站点大幅降权（×0.5）。
-      <h4>站点基础分构成</h4>
-      基础分采用 100 分制：SLA 在线率 30% + 用户评分 30% + 模型覆盖 20% + 调用热度 20%。分数越高越好，这是规则计算评分，不是用户星级评价。
+      排行榜采用「AI 推荐 + 广告主投放」双重逻辑：AI 依据本站探针实测数据自动计算综合分（实测存活率 30% + 价格竞争力 25% + 响应速度 15% + 模型覆盖 15% + 用户口碑 15%，无样本维度给中性分），再乘降权系数（新站观察期 ×0.85，离线/维护 ×0.5）。人工唯一干预点是广告主权重（sponsored_rank.js，加成 0~15 分并明示「广告」标识），其余全部由 AI 自动完成。
+      <h4>广告主怎么上榜</h4>
+      两种方式：① 已收录站点可提高排序权重（上限 +15 分，需站点本身达标）；② 投放页内「广告主推荐」广告位（页面顶部，独立于排序）。两种方式均明示广告标识，不影响 AI 评测结论。
       <h4>客观立场</h4>
       从真实用户角度体验，收录为独立判断；页内「推广」位为明示广告，不影响排序与评测结论。中转站存在跑路风险，建议先小额试用，请勿囤积。
     </div>
@@ -261,6 +263,7 @@
 <script src="radar_ai.js?v=ai2026092219"></script>
 <script src="probe_stats.js?v=ai2026092219"></script>
 <script src="ai_insights.js?v=ai2026092219"></script>
+<script src="sponsored_rank.js?v=ai2026092219"></script>
 <script src="app.js?v=20260922r"></script>
 <script>
 {
@@ -276,21 +279,44 @@ const OFFER=D.offerings||[];
 function hash(str){let h=0;for(let i=0;i<str.length;i++){h=(h*31+str.charCodeAt(i))>>>0;}return h;}
 function pseudo(id,salt){return (hash(id+'|'+salt)%1000)/1000;}
 
-/* 基础分 100 制：SLA 30% + 评分 30% + 覆盖 20% + 热度 20% */
+/* ===== AI 综合推荐分（全自动，人工不干预） =====
+   实测存活率 30% + 价格竞争力 25% + 响应速度 15% + 模型覆盖 15% + 用户口碑 15%
+   全部来自本站探针实测与登记数据，无样本的维度给中性分 60（不奖励不惩罚） */
 function baseScore(p){
-  const s=p.sla_uptime!=null?Math.min(100,p.sla_uptime):0,
-        r=(p.rating||0)*20,
-        m=Math.min(100,(p.models_count||0)*4),
-        b=Math.min(100,Math.log10((p.browse_count||0)+1)*25);
-  return Math.round(s*.3+r*.3+m*.2+b*.2);
+  const a=avail3d(p);
+  const surv=a!=null?a:60;
+  // 价格竞争力：该站最低倍率相对全网中位倍率（越低越好）
+  let price=60;
+  const mine=OFFER.filter(o=>o.provider_id===p.id);
+  if(mine.length){
+    const minM=Math.min.apply(null,mine.map(o=>o.multiplier||9));
+    const allM=OFFER.map(o=>o.multiplier||9).sort((x,y)=>x-y);
+    const med=allM[Math.floor(allM.length/2)]||1;
+    price=Math.max(0,Math.min(100,Math.round(100-(minM/med-0.5)*100)));
+  }
+  // 响应速度：TTFB 平均延迟 300ms=满分，每 +20ms 扣 1 分
+  const ps0=probeStat(p);
+  const lat=(ps0&&ps0.latency_avg_ms)||0;
+  const speed=lat<=0?60:Math.max(0,Math.min(100,Math.round(100-(lat-300)/20)));
+  const cover=Math.min(100,(p.models_count||0)*4);
+  const rep=Math.min(100,Math.round((p.rating||0)*14+Math.min(30,Math.log10((p.review_count||0)+1)*15)));
+  return Math.round(surv*.3+price*.25+speed*.15+cover*.15+rep*.15);
 }
+/* 广告主加成（人工唯一干预点：sponsored_rank.js，boost 0~15，超出自动截断） */
+const SPONSORED_MAP={};(typeof SPONSORED_RANK!=='undefined'?SPONSORED_RANK:[]).forEach(x=>{if(x&&x.id)SPONSORED_MAP[x.id]=Math.min(15,Math.max(0,x.boost||0));});
+function boostOf(p){return SPONSORED_MAP[p.id]||0;}
+function isSponsored(p){return boostOf(p)>0;}
+/* 双重逻辑最终分 = AI 综合分 × 降权 + 广告主加成（封顶 100） */
+function rankScore(p){return Math.min(100,Math.round((baseScore(p)*damp(p)+boostOf(p))*100)/100);}
 /* 真实实测存活率（probe_stats.js · 管线每日两次更新）；无数据返回 null，前端显示"—"，绝不编造 */
 const PST=(typeof PROBE_STATS!=='undefined'&&PROBE_STATS.stats)?PROBE_STATS.stats:{};
 function probeStat(p){return PST[p.id]||null;}
 function avail3d(p){const s=probeStat(p);return s&&s.survival!=null?s.survival:null;}
 function damp(p){ if(p.status==='offline'||p.status==='maintenance')return .5; if(p.is_new)return .85; return 1; }
-function rankScore(p){const a=avail3d(p);return Math.round(baseScore(p)*(a==null?100:a)/100*damp(p)*100)/100;}
 function daysListed(p){const t=new Date(p.signup_date||p.added_date||'2026-01-01').getTime();return Math.max(1,Math.round((Date.now()-t)/864e5));}
+/* hvoyai 式排序辅助：最低倍率 / 平均 TTFB 延迟（无数据排最后） */
+function minMult(p){const m=OFFER.filter(o=>o.provider_id===p.id).map(o=>o.multiplier||9);return m.length?Math.min.apply(null,m):9e9;}
+function avgLat(p){const s=probeStat(p);return (s&&s.latency_avg_ms)||9e9;}
 function isNewSite(p){const age=Date.now()-new Date(p.signup_date||p.added_date||'2026-01-01').getTime();return !!p.is_new||age<60*864e5;}
 function siteTier(p){
   if(p.type==='official'||p.type==='platform')return 9;
@@ -415,6 +441,8 @@ function computeRank(){
   const by={
     recommend:(x,y)=>{const tx=siteTier(x),ty=siteTier(y);if(tx!==ty)return tx-ty;return rankScore(y)-rankScore(x);},
     base:(x,y)=>baseScore(y)-baseScore(x),
+    price:(x,y)=>minMult(x)-minMult(y),
+    speed:(x,y)=>avgLat(x)-avgLat(y),
     uptime:(x,y)=>{const ax=avail3d(x),ay=avail3d(y);if(ax==null&&ay==null)return 0;if(ax==null)return 1;if(ay==null)return -1;return ay-ax;},
     days:(x,y)=>daysListed(y)-daysListed(x),
     browse:(x,y)=>(y.browse_count||0)-(x.browse_count||0)
@@ -430,7 +458,7 @@ function renderRail(){
     const t=trendOf(p,i),sc=rankScore(p);
     return '<div class="rail-item'+(S.sel===p.id?' active':'')+'" data-id="'+esc(p.id)+'">'+
       '<span class="rail-rank">'+(i+1)+'</span>'+
-      '<span class="rail-name">'+esc(p.name_zh||p.name)+'</span>'+
+      '<span class="rail-name">'+esc(p.name_zh||p.name)+(isSponsored(p)?' <span class="ad-tag" style="position:static;display:inline-block;margin-left:2px;">广告</span>':'')+'</span>'+
       '<span class="rail-trend '+t.cls+'">'+t.txt+'</span>'+
       '<span class="rail-score">'+(sc>0?sc:'—')+'</span></div>';
   }).join('');
@@ -462,6 +490,15 @@ function renderDetail(p){
   const speedDots=(()=>{const r=p.rating||0,n=r>=4.5?3:r>=4.0?2:r>=3.5?1:0;
     return '<span class="speed-dots">'+[0,1,2].map(i=>'<span class="speed-dot'+(i<n?' on':'')+'"></span>').join('')+'</span> '+['响应较慢','响应中等','响应较快','响应较快'][n];})();
 
+  const spd=avgLat(p),mm=minMult(p);
+  const facts=[
+    (p.models_count||0)>0?'模型 '+(p.models_count||0)+' 个':null,
+    mm<9e9?'最低倍率 ×'+mm.toFixed(2):null,
+    a!=null?'实测存活率 '+a.toFixed(1)+'%':null,
+    spd<9e9?'平均延迟 '+Math.round(spd)+'ms':null,
+    prices.length?('按量 ¥'+Math.min.apply(null,prices.map(r=>parseFloat(r.inp)||9e9)).toFixed(2)+'–'+Math.max.apply(null,prices.map(r=>parseFloat(r.inp)||0)).toFixed(2)+' /1M tokens'):null
+  ].filter(Boolean).join(' · ');
+
   el.innerHTML=
   /* 头部 */
   '<div class="detail-head">'+
@@ -469,8 +506,10 @@ function renderDetail(p){
     '<div class="detail-title">'+
       '<div class="detail-name">'+esc(p.name_zh||p.name)+' '+
         '<span class="badge-mini badge-official">'+TYPE_LABEL[p.type]+'</span> '+(TIER_BADGE[tier]||'')+
+        (isSponsored(p)?'<span class="ad-tag" style="position:static;display:inline-block;">广告</span> ':'')+
         (rankIdx>-1?'<span class="rank-chip">#'+(rankIdx+1)+'</span>':'')+'</div>'+
       '<div class="detail-sub">'+((p.type==='official'||p.type==='platform')?'大厂渠道 · 仅作基准参考，不参与商业排序':'收录于 '+days+' 天前 · '+(p.notes?esc(p.notes):''))+'</div>'+
+      (facts?'<div style="font-size:12px;color:var(--fg);background:var(--bg-deep);border:1px solid var(--border);padding:6px 10px;margin-top:8px;line-height:1.7;">'+facts+'</div>':'')+
       aiLine(p.id)+
       (()=>{const aiD=(typeof API_RADAR_AI!=='undefined'&&API_RADAR_AI.providers)?API_RADAR_AI.providers[p.id]:null;
         const pills=[];
@@ -484,8 +523,8 @@ function renderDetail(p){
     '</div>'+
     '<div class="detail-score">'+
       '<div class="detail-score-num">'+(sc>0?sc.toFixed(2):'—')+'<span style="font-size:12px;color:var(--muted);font-weight:600;"> /100</span></div>'+
-      '<div class="detail-score-formula">'+(sc>0?(a!=null?'= '+base+' × 存活率 '+a.toFixed(1)+'%':'= '+base+' × 存活率待采集'):'数据采集中')+'</div>'+
-      '<div style="margin-top:6px;"><a href="'+esc(siteUrl)+'" target="_blank" rel="noopener" style="display:inline-block;padding:6px 16px;border-radius:8px;background:var(--accent);color:#fff;font-size:12px;font-weight:700;text-decoration:none;">官网 ↗</a>'+
+      '<div class="detail-score-formula">'+(sc>0?('= AI '+base+(damp(p)!==1?' × 降权 '+damp(p):'')+(boostOf(p)>0?' + 广告 '+boostOf(p):'')):'数据采集中')+'</div>'+
+      '<div style="margin-top:6px;"><a href="'+esc(siteUrl)+'" target="_blank" rel="noopener" style="display:inline-block;padding:6px 16px;border-radius:8px;background:var(--accent);color:hsl(40,14%,8%);font-size:12px;font-weight:700;text-decoration:none;">官网 ↗</a>'+
       ' <a href="provider.html?id='+esc(p.id)+'" style="display:inline-block;padding:6px 14px;border-radius:8px;border:1px solid var(--border);color:var(--text);font-size:12px;font-weight:600;text-decoration:none;margin-left:6px;">查看详情</a></div>'+
     '</div>'+
   '</div>'+
