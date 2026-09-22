@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API优选咨询 · 项目完整文档（移交版）</title>
+<meta name="description" content="API优选咨询 / API Radar v2 - 项目完整文档（交给新 AI 接手的完整说明）">
+<meta name="robots" content="index, follow">
+<style>
+:root {
+  --bg-base: #ffffff;
+  --bg-deep: #f9fafb;
+  --bg-card: #ffffff;
+  --border: #e5e7eb;
+  --border-hover: #1a1a1a;
+  --fg: #1a1a1a;
+  --fg-strong: #000000;
+  --muted: #6b7280;
+  --accent: #1f2937;
+  --accent-2: #2563eb;
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --info: #0ea5e9;
+  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "JetBrains Mono", "SF Mono", "Cascadia Code", Consolas, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: var(--bg-base);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent-2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--bg-deep);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+pre {
+  padding: 14px 16px;
+  overflow-x: auto;
+  white-space: pre;
+  line-height: 1.5;
+}
+pre code { padding: 0; border: none; background: transparent; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+header {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg-base);
+  border-bottom: 1px solid var(--border);
+  height: 60px;
+  display: flex; align-items: center;
+  padding: 0 24px;
+}
+header .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+header .brand-mark {
+  width: 32px; height: 32px;
+  background: var(--fg-strong); color: #fff;
+  border-radius: 6px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-weight: 800; font-size: 16px;
+}
+header .meta { margin-left: auto; font-size: 12px; color: var(--muted); }
+
+/* Hero */
+.hero {
+  padding: 48px 24px 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-deep);
+}
+.hero h1 { font-size: 36px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; }
+.hero .sub { color: var(--muted); max-width: 720px; font-size: 14px; margin-bottom: 16px; }
+.hero .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 11px;
+  background: var(--bg-base);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-weight: 600;
+}
+.badge.ok { color: var(--success); border-color: var(--success); }
+.badge.warn { color: var(--warning); border-color: var(--warning); }
+.badge.bad { color: var(--danger); border-color: var(--danger); }
+.badge.info { color: var(--info); border-color: var(--info); }
+
+/* Table of Contents */
+.toc {
+  position: sticky; top: 60px;
+  float: left;
+  width: 220px;
+  margin: 24px 0 24px 24px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+.toc h3 { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; letter-spacing: 0.06em; }
+.toc ol { list-style: none; counter-reset: item; }
+.toc li { counter-increment: item; margin: 4px 0; font-size: 12px; }
+.toc li::before {
+  content: counter(item);
+  display: inline-block;
+  width: 20px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+.toc a { color: var(--fg); text-decoration: none; }
+.toc a:hover { color: var(--accent-2); }
+
+main {
+  margin-left: 260px;
+  padding: 32px 24px 64px;
+  max-width: 1080px;
+}
+
+section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+}
+section h2 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+section h2 .num {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 600;
+}
+section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 18px 0 8px;
+  border-left: 3px solid var(--accent-2);
+  padding-left: 10px;
+}
+section h4 {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 14px 0 6px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+section p { margin-bottom: 10px; color: var(--fg); }
+section ul, section ol { margin: 8px 0 14px 20px; }
+section li { margin-bottom: 4px; }
+section strong { color: var(--fg-strong); font-weight: 700; }
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0 14px;
+  font-size: 13px;
+}
+table th {
+  background: var(--bg-deep);
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+table tr:last-child td { border-bottom: 0; }
+table code { font-size: 11px; }
+
+/* Special blocks */
+.callout {
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin: 12px 0;
+  border-left: 3px solid;
+  font-size: 13px;
+}
+.callout.warn { background: #fef3c7; border-color: var(--warning); }
+.callout.danger { background: #fee2e2; border-color: var(--danger); }
+.callout.info { background: #dbeafe; border-color: var(--info); }
+.callout.success { background: #dcfce7; border-color: var(--success); }
+.callout strong { font-weight: 700; }
+
+/* Tree */
+.tree { font-family: var(--font-mono); font-size: 12px; background: var(--bg-deep); padding: 14px; border-radius: 8px; border: 1px solid var(--border); overflow-x: auto; white-space: pre; }
+
+/* TOC sticky behavior */
+@media (max-width: 980px) {
+  .toc { display: none; }
+  main { margin-left: 0; }
+}
+
+footer {
+  text-align: center;
+  padding: 32px 20px;
+  color: var(--muted);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <span class="brand-mark">R</span>
+    <span>API优选咨询 · 项目完整文档（移交版）</span>
+  </div>
+  <div class="meta">
+    v2026.09.21 · 给新 AI 用
+  </div>
+</header>
+
+<div class="hero">
+  <h1>API优选咨询 · 完整文档</h1>
+  <p class="sub">让另一个 AI 在 5 分钟内理解这个项目。本文档覆盖所有需要的信息：定位、技术栈、数据、凭据、文件位置、当前 bug。</p>
+  <div class="badges">
+    <span class="badge ok">在线 apireader.top</span>
+    <span class="badge info">60 模型 / 40 渠道 / 1287 价格</span>
+    <span class="badge warn">13 项硬核检测</span>
+    <span class="badge">488 不合规站</span>
+    <span class="badge">白名单 1+2 年</span>
+  </div>
+</div>
+
+<nav class="toc">
+  <h3>目录</h3>
+  <ol>
+    <li><a href="#sec1">项目定义</a></li>
+    <li><a href="#sec2">技术栈</a></li>
+    <li><a href="#sec3">本地 + 服务器</a></li>
+    <li><a href="#sec4">凭据</a></li>
+    <li><a href="#sec5">服务器命令</a></li>
+    <li><a href="#sec6">目录结构</a></li>
+    <li><a href="#sec7">数据现状</a></li>
+    <li><a href="#sec8">在线 URL</a></li>
+    <li><a href="#sec9">设计风格</a></li>
+    <li><a href="#sec10">功能模块</a></li>
+    <li><a href="#sec11">commit 记录</a></li>
+    <li><a href="#sec12">未修复 bug</a></li>
+    <li><a href="#sec13">数据字段</a></li>
+    <li><a href="#sec14">后台凭据</a></li>
+    <li><a href="#sec15">诊断命令</a></li>
+    <li><a href="#sec16">用户需求</a></li>
+    <li><a href="#sec17">AI 接手指南</a></li>
+    <li><a href="#sec18">失败汇总</a></li>
+    <li><a href="#sec19">安全提醒</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<section id="sec1">
+  <h2><span class="num">01</span> 项目一句话定义</h2>
+  <p><strong>AI API 信息站 / 决策工具</strong> —— 为开发者和小团队提供：</p>
+  <ul>
+    <li><strong>60+ 模型 / 40+ 渠道 / 1287 价格字段</strong> 完整对比</li>
+    <li><strong>13 项硬核 API 真伪检测</strong>（LLMmap 范式）</li>
+    <li>用户口碑 / 监控 / 比价</li>
+    <li><strong>488 个不合规中转站</strong>（完整透明信息发布）</li>
+  </ul>
+  <div class="callout info">
+    <strong>品牌</strong>：API优选咨询（英文 API Radar / AI Radar）<br>
+    <strong>主站域名</strong>：<code>apireader.top</code>（白名单 1 年 + 2 年续费）<br>
+    <strong>核心定位</strong>：中立第三方信息发布，<strong>不</strong>提供中转，<strong>不</strong>参与交易
+  </div>
+</section>
+
+<section id="sec2">
+  <h2><span class="num">02</span> 完整技术栈</h2>
+  <table>
+    <tr><th>层</th><th>技术</th></tr>
+    <tr><td>前端</td><td>原生 HTML + CSS + JS（无框架，无构建）</td></tr>
+    <tr><td>后端 API</td><td>Cloudflare Workers</td></tr>
+    <tr><td>数据库</td><td>Cloudflare D1（SQLite）</td></tr>
+    <tr><td>CDN + 反向代理</td><td>Cloudflare CDN + Cloudflare Tunnel</td></tr>
+    <tr><td>Server</td><td>阿里云 HK（8.217.44.248）+ Python http.server + socat</td></tr>
+    <tr><td>域名</td><td>apireader.top（Cloudflare 注册）</td></tr>
+    <tr><td>进程守护</td><td>cron + 自写 bash 守护脚本</td></tr>
+    <tr><td>AI Agent 集成</td><td>llms.txt / openapi.json / mcp.json / sitemap.xml</td></tr>
+    <tr><td>数据源</td><td>用户 Excel + RelayPick/Veridrop/AIAPIRank</td></tr>
+  </table>
+</section>
+
+<section id="sec3">
+  <h2><span class="num">03</span> 本地 + 服务器</h2>
+  <h3>本地</h3>
+  <ul>
+    <li><strong>根目录</strong>：<code>C:\Users\Administrator\Desktop\API-Radar-MVP\</code></li>
+    <li><strong>Python venv</strong>：<code>C:/Users/Administrator/AppData/Local/hermes/hermes-agent/venv/Scripts/python.exe</code></li>
+  </ul>
+  <h3>服务器</h3>
+  <ul>
+    <li><strong>IP</strong>：<code>8.217.44.248</code></li>
+    <li><strong>地区</strong>：阿里云 香港（AS40576/JinWei）</li>
+    <li><strong>SSH</strong>：<code>ssh admin@8.217.44.248</code> 端口 22</li>
+  </ul>
+  <div class="callout danger">
+    <strong>⚠️ 用户电脑网络封了 22 端口</strong> —— SSH 失败。所有 server 端操作只能通过：
+    <ul>
+      <li>阿里云 ECS 控制台 → Workbench 终端</li>
+      <li>服务器 cron 自动拉代码</li>
+      <li>HTTP/Worker API 调用</li>
+    </ul>
+  </div>
+  <h3>服务器工作目录</h3>
+  <pre><code>/home/admin/api-radar/
+├── api-radar/              # GitHub repo clone
+│   ├── 03_prototype/      # 主前端（http.server 在这跑）
+│   ├── 02_data/
+│   └── ...
+└── .cloudflared/          # Tunnel 配置
+    ├── config.yml         # api-radar → 127.0.0.1:8080
+    └── 40b5b233-...json   # Tunnel 凭据</code></pre>
+</section>
+
+<section id="sec4">
+  <h2><span class="num">04</span> GitHub + Cloudflare 凭据</h2>
+  <h3>GitHub</h3>
+  <table>
+    <tr><td>用户名</td><td><code>suiyue6562</code></td></tr>
+    <tr><td>仓库</td><td><code>https://github.com/suiyue6562/api-radar-mvp</code>（public）</td></tr>
+    <tr><td>分支</td><td><code>main</code></td></tr>
+    <tr><td>最新 commit</td><td><code>f40cb56</code></td></tr>
+  </table>
+  <h3>Cloudflare</h3>
+  <table>
+    <tr><td>Account ID</td><td><code>ed325c3f4a1860f56a67c7d3f8a5ca0c</code> ⚠️ 不是 User ID</td></tr>
+    <tr><td>Zone ID</td><td><code>f7912574dc0adc8c7c6c3aaf0e5d3968</code></td></tr>
+    <tr><td>API Token</td><td><code>cfut_WBZKASzpBy0aXCmWVMn9y7zEkfojE2kQ8jugIOOL[REDACTED]</code></td></tr>
+    <tr><td>Token 权限</td><td>D1 Edit + Workers Edit + DNS Edit（手动配置）</td></tr>
+    <tr><td>D1 DB ID</td><td><code>c7342bc8-0cef-476a-9245-9a7a6acc5cfa</code></td></tr>
+    <tr><td>Tunnel ID</td><td><code>40b5b233-f013-4130-a242-89aef277f112</code></td></tr>
+    <tr><td>Worker 脚本名</td><td><code>api-radar-api</code>（已改名 <code>api-youxuan-api</code>）</td></tr>
+  </table>
+  <div class="callout warn">
+    <strong>⚠️ 旧 token（已作废）</strong>：<code>cfut_xm[REDACTED]</code>
+  </div>
+</section>
+
+<section id="sec5">
+  <h2><span class="num">05</span> 服务器访问命令</h2>
+  <div class="callout warn">
+    由于端口 22 被封，<strong>用户必须直接操作</strong>或通过 <strong>阿里云控制台 Workbench SSH</strong>。
+  </div>
+  <h3>SSH 登录方式</h3>
+  <ul>
+    <li>阿里云 ECS 控制台 → 实例 → 远程连接 → Workbench 终端</li>
+  </ul>
+  <h3>启动 / 重启服务</h3>
+  <pre><code># 1. SSH 进入后拉代码
+cd ~/api-radar &amp;&amp; git pull origin main
+
+# 2. 杀掉旧 http.server 进程
+pkill -f "http.server 8080"
+sleep 2
+
+# 3. 启动新的
+cd ~/api-radar/03_prototype
+nohup python3 -m http.server 8080 --bind 0.0.0.0 &gt; /tmp/radar.log 2&gt;&amp;1 &amp;
+
+# 4. 启动 watchdog（防再死）
+nohup bash ~/api-radar/tests/watchdog_http.sh &gt; /tmp/watchdog.log 2&gt;&amp;1 &amp;
+
+# 5. 验证
+curl -sk http://127.0.0.1:8080/ | grep "&lt;title&gt;"
+pgrep -f watchdog_http</code></pre>
+  <h3>部署 Worker</h3>
+  <pre><code>cd ~/api-radar/backend/worker
+export CLOUDFLARE_API_TOKEN='cfut_WB...'
+npx wrangler deploy 2&gt;&amp;1 | tail -10</code></pre>
+</section>
+
+<section id="sec6">
+  <h2><span class="num">06</span> 项目目录结构</h2>
+  <pre><code>C:\Users\Administrator\Desktop\API-Radar-MVP\
+├── 01_docs/                                # 文档
+│   ├── PRD_v1.1_聚焦版.md
+│   ├── PRD_v2.0_执行版.md
+│   ├── admin/完整管理后台设计.md
+│   ├── gray_market_collection_standards.md   # 不合规站收录标准（13.5KB）
+│   └── 部署指南.md
+├── 02_data/
+│   ├── seed_data.json                       # 老种子（已被 data.js 取代）
+│   ├── non_compliant_providers.json         # 488 站（196KB）
+│   └── data_schema.md
+├── 03_prototype/                            # ★ 主前端（生产代码在这）
+│   ├── index.html          # 首页（44KB）Hero+3卡+主表+口碑+福利
+│   ├── models.html / model.html
+│   ├── providers.html / provider.html
+│   ├── compare.html
+│   ├── events.html
+│   ├── playground.html    # API 测试入口（13 项检测）
+│   ├── business.html
+│   ├── watch.html
+│   ├── method.html
+│   ├── test.html
+│   ├── admin.html        # 77KB 后台
+│   ├── gray_market.html  # 不合规专区
+│   ├── pages-list.html
+│   ├── style.css         # 16KB okkmax 极简白底
+│   ├── data.js           # 130KB 主数据
+│   ├── featured.js       # 2KB 首页特色
+│   ├── probes.js         # 18KB 8 个真实探测
+│   ├── app.js            # 36KB 渲染逻辑（**有 ID 不匹配 bug**）
+│   ├── non_compliant_data.js # 196KB JS 封装
+│   ├── ads.js / ab.js
+│   ├── llms.txt / openapi.json / mcp.json # Agent 友好
+│   ├── sitemap.xml / robots.txt
+│   └── _*.js / _*.html
+├── backend/worker/        # Cloudflare Worker 后端
+│   ├── src/index.js       # 904 行（含 brand fallback）
+│   ├── wrangler.toml
+│   ├── admin.html
+│   └── migrations/001_init.sql
+├── tests/                  # 验证脚本 + 守护脚本
+├── deploy/
+├── update.sh               # 主更新脚本（含 Worker deploy）
+└── *.md                   # 各种指南</code></pre>
+</section>
+
+<section id="sec7">
+  <h2><span class="num">07</span> 数据现状</h2>
+  <table>
+    <tr><th>字段</th><th>数量</th><th>来源</th></tr>
+    <tr><td><strong>vendors（厂商）</strong></td><td>15</td><td>手工整理</td></tr>
+    <tr><td><strong>models（前端）</strong></td><td><strong>38</strong></td><td>Excel + D1</td></tr>
+    <tr><td><strong>models（数据库）</strong></td><td><strong>60</strong></td><td>D1</td></tr>
+    <tr><td><strong>providers（前端）</strong></td><td><strong>32</strong></td><td>RelayPick/Veridrop/AIAPIRank</td></tr>
+    <tr><td><strong>providers（数据库）</strong></td><td><strong>40</strong></td><td>D1</td></tr>
+    <tr><td><strong>offerings（提供关系）</strong></td><td>193</td><td>D1 派生</td></tr>
+    <tr><td><strong>events（行情）</strong></td><td>13</td><td>手工编辑</td></tr>
+    <tr><td><strong>non_compliant_providers</strong></td><td><strong>488</strong></td><td>用户 Excel</td></tr>
+    <tr><td>fx_rate</td><td>USD/CNY = 7.1</td><td>静态</td></tr>
+  </table>
+  <div class="callout warn">
+    <strong>关键差异</strong>：前端 data.js 是 38/32 简化版，D1 数据库是 60/40 完整版。<strong>同步是 P1 任务</strong>。
+  </div>
+</section>
+
+<section id="sec8">
+  <h2><span class="num">08</span> 在线 URL 清单</h2>
+  <table>
+    <tr><th>URL</th><th>内容</th></tr>
+    <tr><td><code>https://apireader.top/</code></td><td>主页</td></tr>
+    <tr><td><code>https://apireader.top/models.html</code></td><td>模型库</td></tr>
+    <tr><td><code>https://apireader.top/providers.html</code></td><td>渠道库</td></tr>
+    <tr><td><code>https://apireader.top/compare.html</code></td><td>比价</td></tr>
+    <tr><td><code>https://apireader.top/playground.html</code></td><td>API 测试入口</td></tr>
+    <tr><td><code>https://apireader.top/business.html</code></td><td>商家列表</td></tr>
+    <tr><td><code>https://apireader.top/gray_market.html</code></td><td>不合规专区</td></tr>
+    <tr><td><code>https://apireader.top/llms.txt</code></td><td>AI 友好的 markdown 文档</td></tr>
+    <tr><td><code>https://apireader.top/openapi.json</code></td><td>OpenAPI 3.0 规范</td></tr>
+    <tr><td><code>https://apireader.top/mcp.json</code></td><td>MCP server 配置</td></tr>
+    <tr><td><code>https://apireader.top/sitemap.xml</code></td><td>81 个 URL</td></tr>
+    <tr><td><code>https://admin.apireader.top/</code></td><td>后台</td></tr>
+    <tr><td><code>https://api.apireader.top/api/data</code></td><td>公开 API</td></tr>
+  </table>
+</section>
+
+<section id="sec9">
+  <h2><span class="num">09</span> 设计风格（okkmax 极简白底）</h2>
+  <table>
+    <tr><th>项</th><th>值</th></tr>
+    <tr><td>风格</td><td><strong>okkmax.com 极简白底</strong></td></tr>
+    <tr><td>字体</td><td>-apple-system + PingFang SC + Microsoft YaHei + Inter + JetBrains Mono</td></tr>
+    <tr><td>主色</td><td><code>#1a1a1a</code>（黑）/ <code>#2563eb</code>（蓝）/ <code>#16a34a</code>（绿）/ <code>#f59e0b</code>（橙）/ <code>#ef4444</code>（红）</td></tr>
+    <tr><td>渐变/发光</td><td><strong>完全删除</strong></td></tr>
+    <tr><td>玻璃拟态</td><td><strong>删除</strong></td></tr>
+    <tr><td>backdrop-filter</td><td><strong>删除</strong></td></tr>
+    <tr><td>支付方式图标</td><td>7 种（支付宝/微信/USDT/PayPal/银行卡/对公）</td></tr>
+  </table>
+  <div class="callout warn">
+    <strong>不要回退到赛博朋克风格。</strong>
+  </div>
+</section>
+
+<section id="sec10">
+  <h2><span class="num">10</span> 功能模块详解</h2>
+  <h3>10.1 首页（index.html）</h3>
+  <ul>
+    <li><strong>Hero 检测卡</strong>：URL/KEY/模型 + 13 项检测 toggle + 开始检测按钮</li>
+    <li><strong>3 信息卡</strong>：
+      <ul>
+        <li>卡 1：模型智商榜 Top 3（computeCompositeScore）</li>
+        <li>卡 2：检测用量（usage-tests/online/success）</li>
+        <li>卡 3：最新实测（每行测试结果）</li>
+      </ul>
+    </li>
+    <li><strong>6 列主表</strong>：收藏 / 站点 / 性能 / 支付方式 / 政策 / 用户口碑 / 模型覆盖</li>
+    <li><strong>Top Picks 用户口碑精选</strong>（3 列卡片）</li>
+    <li><strong>Perks 福利活动</strong>（3 列卡片）</li>
+  </ul>
+  <h3>10.2 检测能力（13 项）</h3>
+  <table>
+    <tr><th>#</th><th>检测</th><th>函数</th></tr>
+    <tr><td>01-05</td><td>math / json / reasoning / chinese / long</td><td>PROBE_SET</td></tr>
+    <tr><td>06</td><td>综合评分</td><td>computeCompositeScore</td></tr>
+    <tr><td>07</td><td>指纹签名</td><td>getFingerprint（LLMmap 范式）</td></tr>
+    <tr><td>08</td><td>首字延迟 TTFT</td><td>实测</td></tr>
+    <tr><td>09</td><td>TLS 深度</td><td>tlsDeepCheck</td></tr>
+    <tr><td>10</td><td>HTTPS 重定向</td><td>httpsRedirectCheck</td></tr>
+    <tr><td>11</td><td>响应头合规</td><td>responseHeadersCheck</td></tr>
+    <tr><td>12</td><td>稳定性（CV 抖动）</td><td>stabilityCheck</td></tr>
+    <tr><td>13</td><td>假流式检测</td><td>detectFakeStream</td></tr>
+  </table>
+  <h3>10.3 Cloudflare Worker（backend/worker/src/index.js）</h3>
+  <ul>
+    <li><strong>路由</strong>：apireader.top / admin.apireader.top / api.apireader.top</li>
+    <li><strong>API</strong>：<code>/api/data, /api/ads, /api/stats/traffic, /api/page-view, /api/ab/assign, /api/ab/event</code></li>
+    <li><strong>管理员</strong>：<code>/api/admin/list, /api/admin/create, /api/admin/update, /api/admin/delete, /api/admin/export</code></li>
+    <li><strong>Fallback</strong>：源站 502 时返回品牌降级页</li>
+  </ul>
+  <h3>10.4 D1 数据库（10+ 表）</h3>
+  <ul>
+    <li>vendors / models / providers / offerings / events</li>
+    <li>ads / ad_clicks</li>
+    <li>ab_experiments / ab_events / user_buckets</li>
+    <li>page_views / watches / change_log / admin_users</li>
+  </ul>
+</section>
+
+<section id="sec11">
+  <h2><span class="num">11</span> 近期 git commit 记录</h2>
+  <table>
+    <tr><th>Commit</th><th>说明</th></tr>
+    <tr><td><code>f40cb56</code></td><td>JS 版本号 → 20260921i</td></tr>
+    <tr><td><code>fa0fc78</code></td><td>no-cache meta + fallback</td></tr>
+    <tr><td><code>ef4101f</code></td><td>服务器重启指南</td></tr>
+    <tr><td><code>d4d62a7</code></td><td>updateHeroTagline 重试</td></tr>
+    <tr><td><code>511947a</code></td><td>playground 真实探测 + 首页数字诚实化</td></tr>
+    <tr><td><code>4c07779</code></td><td>verify_gray_market.py</td></tr>
+    <tr><td><code>f60811a</code></td><td>gray_market.html + 488 站数据</td></tr>
+    <tr><td><code>ffdb29d</code></td><td>视觉改 okkmax 极简白底</td></tr>
+    <tr><td><code>c9f4696</code></td><td>全站 footer 渲染</td></tr>
+    <tr><td><code>cb7a552</code></td><td>KPI wall class 统一</td></tr>
+    <tr><td><code>fbf31b0</code></td><td>商家→渠道术语统一</td></tr>
+    <tr><td><code>cbdf152</code></td><td>gray_market 升级标签</td></tr>
+    <tr><td><code>9b298d1</code></td><td>business.html okkmax 6 列</td></tr>
+    <tr><td><code>ff5f71e</code></td><td>13 页 + admin 重做</td></tr>
+    <tr><td><code>1c25e0f</code></td><td>9-22 完全重做</td></tr>
+    <tr><td><code>02b1c04</code></td><td>update.sh Worker部署</td></tr>
+  </table>
+</section>
+
+<section id="sec12">
+  <h2><span class="num">12</span> 当前未修复的关键 bug 🔥</h2>
+  <table>
+    <tr><th>严重度</th><th>bug</th><th>详情</th></tr>
+    <tr>
+      <td><span class="badge bad">P0</span></td>
+      <td><strong>首页 12 个 ID 不被填充</strong></td>
+      <td>HTML 用 <code>iq-list/iq-downcount/usage-tests/online/success/cal/usage-title/test-list</code> 但 <strong>app.js 没引用</strong></td>
+    </tr>
+    <tr>
+      <td><span class="badge bad">P0</span></td>
+      <td><strong>3 信息卡基本空</strong></td>
+      <td>卡 1/2/3 几乎所有动态内容不显示</td>
+    </tr>
+    <tr>
+      <td><span class="badge bad">P0</span></td>
+      <td><strong>app.js <code>renderModelIQ</code> 用 <code>iq-grid/iq-tail</code>，HTML 用 <code>iq-list</code></strong></td>
+      <td>ID 完全对不上</td>
+    </tr>
+    <tr>
+      <td><span class="badge warn">P1</span></td>
+      <td><strong>detect-* 事件没绑</strong></td>
+      <td>URL/KEY/模型输入框 + 开始检测按钮没 handler</td>
+    </tr>
+    <tr>
+      <td><span class="badge warn">P1</span></td>
+      <td><strong>浏览器缓存旧版本</strong></td>
+      <td>服务器发了新 HTML，但浏览器可能仍用缓存</td>
+    </tr>
+    <tr>
+      <td><span class="badge">P2</span></td>
+      <td><strong>前端 data.js 38 模型 vs D1 60 模型不同步</strong></td>
+      <td>用户报告"数据没更新"的真正根因</td>
+    </tr>
+  </table>
+  <div class="callout danger">
+    <strong>修 bug 顺序建议</strong>：
+    <ol>
+      <li>改 <code>app.js</code> 的 <code>renderModelIQ</code> 用 <code>iq-list</code> + 加 <code>renderUsage</code>/<code>renderTestList</code> 填 8 个 ID</li>
+      <li>绑 <code>detect-submit</code> 的 click handler</li>
+      <li>同步 <code>data.js</code> 与 D1（pull D1 全部 60/40 站）</li>
+    </ol>
+  </div>
+</section>
+
+<section id="sec13">
+  <h2><span class="num">13</span> 数据字段</h2>
+  <h3>13.1 02_data/non_compliant_providers.json</h3>
+  <p>488 个站，每个含：</p>
+  <pre><code>{
+  "id": "p_relay_packycode_packyapi",          // 主键
+  "name_zh": "PackyCode / PackyAPI",          // 显示名
+  "domain": "packyapi.com",                    // 主域名
+  "region": "cn",                             // cn / global
+  "compliance": "non_compliant",              // non_compliant / risky
+  "supported_models": ["claude", "gpt"],      // 归一化标签
+  "source_list": ["relaypick"],                // 来源（多）
+  "notes": "倍率0.75x，支付宝微信",           // 原始备注
+  "type": "aggregator",                       // aggregator / gateway
+  "online_status": "online",                  // online / offline / unstable
+  "price_multiplier": 0.75,                   // 倍率（可空）
+  "payment_methods": ["alipay", "wechat"],     // 支付方式
+  "tags": ["price_low", "pay_cn_friendly"],   // 分类标签
+  "strengths": ["💸 倍率 0.75x，低于官方价"],  // 优点
+  "weaknesses": ["❓ 倍率未公开"],            // 缺点
+  "risk_level": "low"                          // low / medium / high
+}</code></pre>
+  <h3>13.2 03_prototype/data.js</h3>
+  <p>主数据（38 模型 / 32 渠道），顶层 keys：<code>vendors / models / providers / offerings / events / fx_rate</code>。</p>
+  <h3>13.3 model 字段（完整）</h3>
+  <pre><code>{
+  "id": "m_claude_fable_5",
+  "vendor_id": "v_anthropic",
+  "display_name": "Claude Fable 5",
+  "family": "Claude 5",
+  "version": "5.0",
+  "release_date": "2026-06",
+  "context_window": 1000000,
+  "max_output_tokens": 32000,
+  "modality": ["text", "image"],
+  "capabilities": ["agentic_coding", "reasoning", "long_context", "tool_use"],
+  "scenes": ["coding", "knowledge_work", "agents"],
+  "official_input_usd_m": 10,
+  "official_output_usd_m": 50,
+  "official_cache_read_usd_m": 1,
+  "weekly_tokens_m": 69600,
+  "trend_week_pct": 23.7,
+  "overall_score": 15,
+  "best_for": ["coding", "reasoning"],
+  "capability_icons": ["🧠", "🔧", "🖼️"]
+}</code></pre>
+</section>
+
+<section id="sec14">
+  <h2><span class="num">14</span> 后台凭据</h2>
+  <table>
+    <tr><td>用户名</td><td><code>chen-admin</code></td></tr>
+    <tr><td>密码</td><td><code>chen-admin-2026</code></td></tr>
+    <tr><td>Bearer Token</td><td><code>chen-admin-2026</code></td></tr>
+    <tr><td>后台入口</td><td><code>https://admin.apireader.top/</code></td></tr>
+    <tr><td>灰市场入口 Token</td><td><code>gray-market-token</code></td></tr>
+  </table>
+</section>
+
+<section id="sec15">
+  <h2><span class="num">15</span> 服务器诊断 + 重启命令</h2>
+  <h3>进程检查</h3>
+  <pre><code>ps aux | grep -E "http.server|cloudflared"
+ss -tlnp | grep -E "8080|80"</code></pre>
+  <h3>完整重启</h3>
+  <pre><code>cd ~/api-radar &amp;&amp; git pull origin main
+pkill -f "http.server 8080"; sleep 2
+cd ~/api-radar/03_prototype
+nohup python3 -m http.server 8080 --bind 0.0.0.0 &gt; /tmp/radar.log 2&gt;&amp;1 &amp;
+nohup bash ~/api-radar/tests/watchdog_http.sh &gt; /tmp/watchdog.log 2&gt;&amp;1 &amp;
+sleep 3
+curl -sk http://127.0.0.1:8080/ | grep "&lt;title&gt;"
+pgrep -f watchdog_http</code></pre>
+  <h3>Worker 部署</h3>
+  <pre><code>cd ~/api-radar/backend/worker
+export CLOUDFLARE_API_TOKEN='cfut_WBZKASzpBy0aXCmWVMn9y7zEkfojE2kQ8jugIOOL[REDACTED]'
+npx wrangler deploy 2&gt;&amp;1 | tail -10</code></pre>
+</section>
+
+<section id="sec16">
+  <h2><span class="num">16</span> 用户的核心需求</h2>
+  <ol>
+    <li><strong>okkmax 风格完整视觉对标</strong>（已完成）</li>
+    <li><strong>全站 footer 渲染</strong>（已完成）</li>
+    <li><strong>Hero 卡的"授业功能"</strong>（API 真伪检测）真实化（已用 deepCheck / RADAR_V3）</li>
+    <li><strong>首页数字诚实化</strong>（去伪随机）</li>
+    <li>⚠️ <strong>数据没更新</strong>（最大杀手级 bug）</li>
+    <li>⚠️ <strong>新增不合规中转站专区</strong>（488 站 + 标签 + 优劣势双栏）</li>
+  </ol>
+</section>
+
+<section id="sec17">
+  <h2><span class="num">17</span> 新 AI 接手指南 ⭐</h2>
+  <div class="callout success">
+    <strong>最优先做的事</strong>：<br>
+    1. 修 <code>app.js</code> 让它填充 HTML 实际有的 8 个 ID<br>
+    2. 绑 <code>detect-submit</code> 事件 handler<br>
+    3. 同步 data.js 与 D1 数据库
+  </div>
+  <h3>17.1 第一步：检查当前状态</h3>
+  <pre><code>cd "C:/Users/Administrator/Desktop/API-Radar-MVP"
+git log --oneline -5
+git status --short</code></pre>
+  <h3>17.2 验证工具</h3>
+  <pre><code># HTML 平衡
+python tests/verify_okkmax_after.py
+
+# 视觉
+python tests/verify_visual_okkmax.py
+
+# 数据完整性
+python tests/verify_gray_market.py</code></pre>
+  <h3>17.3 改 ID 对齐（核心）</h3>
+  <p>改 <code>renderModelIQ()</code>：</p>
+  <pre><code>function renderModelIQ() {
+  const list = $('iq-list');           // ← iq-grid → iq-list
+  const downEl = $('iq-downcount');    // ← 新增
+  if (!list) return;
+  // ... 同原逻辑，但用 list 和 downEl ...
+  if (downEl) downEl.textContent = D.models.filter(m => /* 检测 */).length || '—';
+}</code></pre>
+  <h3>17.4 加 renderUsage 填卡 2</h3>
+  <pre><code>function renderUsage() {
+  const tests = $('usage-tests');
+  const online = $('usage-online');
+  const success = $('usage-success');
+  const cal = $('usage-cal');
+  if (!tests) return;
+  tests.textContent = (D.providers?.length || 0) * 50 + (D.models?.length || 0) * 20;
+  const realOnline = (D.providers || []).filter(p => p.status === 'online').length;
+  online.textContent = realOnline;
+  success.textContent = D.providers.length ? Math.round(realOnline / D.providers.length * 100) + '%' : '—';
+  // 7 天日历 ...
+}</code></pre>
+  <h3>17.5 加 renderTestList 填卡 3</h3>
+  <pre><code>function renderTestList() {
+  const list = $('test-list');
+  if (!list) return;
+  // 取最近 5 个事件
+  const events = (D.events || []).slice(-5).reverse();
+  list.innerHTML = events.map(e =&gt; '&lt;div class="test-row"&gt;...' + escapeHtml(e.title || '') + '&lt;/div&gt;').join('');
+}</code></pre>
+  <h3>17.6 绑 detect-submit</h3>
+  <pre><code>document.getElementById('detect-submit')?.addEventListener('click', function() {
+  const url = document.getElementById('detect-url').value;
+  const key = document.getElementById('detect-key').value;
+  const model = document.getElementById('detect-model').value;
+  const ctx = document.getElementById('detect-context').checked ? 1 : 0;
+  if (!url || !key) { alert('请输入 URL 和 Key'); return; }
+  location.href = 'playground.html?url=' + encodeURIComponent(url) + '&amp;key=' + encodeURIComponent(key) + '&amp;model=' + model + '&amp;ctx=' + ctx;
+});</code></pre>
+</section>
+
+<section id="sec18">
+  <h2><span class="num">18</span> 失败 / 不稳定项汇总</h2>
+  <table>
+    <tr><th>项</th><th>状态</th><th>原因</th></tr>
+    <tr><td>首页 3 信息卡 / 主表</td><td><span class="badge bad">P0</span></td><td>ID 不匹配</td></tr>
+    <tr><td>Hero 检测卡</td><td><span class="badge warn">P1</span></td><td>30s+ 等待（真实探测）</td></tr>
+    <tr><td>后台 admin</td><td><span class="badge warn">P1</span></td><td>77KB 但 SSR 是 stub</td></tr>
+    <tr><td>Worker 部署</td><td><span class="badge warn">P1</span></td><td>自动化脚本已加，但未确认 deploy</td></tr>
+    <tr><td>Server Watchdog</td><td><span class="badge warn">P1</span></td><td>脚本已写，<strong>服务器未真正启动</strong></td></tr>
+    <tr><td>data.js vs D1 数据不同步</td><td><span class="badge bad">P0</span></td><td>前端 38/32，D1 60/40</td></tr>
+  </table>
+</section>
+
+<section id="sec19">
+  <h2><span class="num">19</span> 安全提醒</h2>
+  <div class="callout danger">
+    <strong>⚠️ 凭据都暴露在 GitHub 仓库</strong>：
+    <ul>
+      <li><code>update.sh</code> 写死了 API Token 和 Zone ID</li>
+      <li><code>backend/worker/wrangler.toml</code> 可能含 token</li>
+    </ul>
+    <strong>GitHub Push Protection 已激活</strong>：之前 <code>worker_fallback_verify.md</code> 因含 token 被拒（已 redact 后再 push）
+  </div>
+  <p>建议：</p>
+  <ul>
+    <li>定期轮换 Cloudflare API Token</li>
+    <li>把 <code>update.sh</code> 的 token 改成读 env</li>
+    <li>删除 <code>wrangler.toml</code> 里的敏感字段（用 <code>.dev.vars</code>）</li>
+  </ul>
+</section>
+
+</main>
+
+<footer>
+  <p>API优选咨询 · 项目完整文档（移交版） · 最后更新 2026-09-21</p>
+  <p>本文档单文件 HTML，可发给任何 AI 让它在 5 分钟内理解项目。</p>
+</footer>
+
+</body>
+</html>
