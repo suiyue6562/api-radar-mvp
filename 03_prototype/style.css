@@ -216,14 +216,14 @@ input:focus, select:focus, textarea:focus {
   color: var(--fg);
 }
 .btn-primary {
-  background: var(--fg-strong);
+  background: var(--accent);
   color: #ffffff;
-  border-color: var(--fg-strong);
+  border-color: var(--accent);
   font-weight: 600;
 }
 .btn-primary:hover {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--accent-strong, hsl(178, 72%, 24%));
+  border-color: var(--accent-strong, hsl(178, 72%, 24%));
 }
 .btn-ghost {
   background: var(--bg-base);
@@ -526,7 +526,7 @@ tbody tr:hover { background: var(--bg-deep); }
   right: 12px;
   padding: 2px 7px;
   border-radius: 4px;
-  background: var(--fg-strong);
+  background: var(--accent);
   color: #ffffff;
   font-size: 9px;
   font-weight: 800;
@@ -545,7 +545,7 @@ tbody tr:hover { background: var(--bg-deep); }
   font-weight: 800;
   font-size: 13px;
   color: #ffffff;
-  background: var(--fg-strong);
+  background: var(--accent);
   box-shadow: none;
 }
 .pv-score.is-new-pad { right: 50px; }
@@ -798,7 +798,7 @@ tbody tr:hover { background: var(--bg-deep); }
 }
 .rank-table .score-bar-fill {
   height: 100%;
-  background: var(--fg-strong);
+  background: var(--accent);
   border-radius: 2px;
 }
 .rank-table .pay-cell, .rank-table .policy-cell { font-size: 11px; text-align: center; }
