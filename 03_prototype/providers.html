@@ -258,12 +258,11 @@ const TIER_BADGE={
   2:'<span class="badge-mini badge-tier2" title="调用量或口碑数领先">热门</span>',
   3:'<span class="badge-mini badge-tier3" title="近 60 天新收录">NEW</span>'};
 
-/* AI 画像一句话（MiniMax M3 每日两次生成） */
+/* AI 画像一句话（亮点总结，每日两次更新） */
 function aiLine(pid){
   var d=(typeof API_RADAR_AI!=='undefined'&&API_RADAR_AI.providers)?API_RADAR_AI.providers[pid]:null;
   if(!d||!d.ai||!d.ai.highlights)return '';
-  var ck=d.ai.data_check&&!d.ai.data_check.consistent?' <b style="color:var(--danger)">⚠ 数据存疑</b>':'';
-  return '<div class="ai-line"><b>🤖 AI</b>'+esc(d.ai.highlights)+ck+'</div>';
+  return '<div class="ai-line"><b>🤖 AI</b>'+esc(d.ai.highlights)+'</div>';
 }
 
 /* 排名趋势（确定性） */

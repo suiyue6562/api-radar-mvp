@@ -90,7 +90,9 @@
 @media(max-width:760px){ .ai-feat-grid { grid-template-columns:1fr; } }
 .ai-feat { font-size:12.5px; line-height:1.6; color:var(--fg); padding:8px 10px; background:var(--bg-deep); border:1px solid var(--border); display:flex; gap:6px; align-items:flex-start; }
 .ai-feat-dot { color:var(--accent); font-weight:800; flex-shrink:0; }
-.ai-suit-row { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+.ai-fact-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+.ai-fact-pill { font-size:11.5px; padding:4px 10px; background:var(--bg-deep); border:1px solid var(--border); color:var(--fg); font-weight:600; }
+.ai-suit-row { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:4px; }
 .ai-chip { font-size:11px; padding:3px 10px; background:rgba(20,124,115,.08); border:1px solid rgba(20,124,115,.25); color:var(--accent); font-weight:600; }
 .ai-ck-row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; border-top:1px dashed var(--border); padding-top:10px; }
 .ai-ck { font-size:11.5px; font-weight:700; }
@@ -265,36 +267,42 @@ const PAY_CARDS = {
   if (provider.type === 'official') cons.push('官方渠道原价计费，无中转折扣');
   if (!cons.length) cons.push('暂未发现明显短板');
 
-  /* AI 站点画像（MiniMax M3 每日两次复核生成） */
+  /* AI 站点画像（亮点总结 + 价格 + 模型覆盖，每日两次更新） */
   let aiBlock = '';
   {
     const aiData = (typeof API_RADAR_AI !== 'undefined' && API_RADAR_AI.providers)
       ? API_RADAR_AI.providers[provider.id] : null;
     if (aiData && aiData.ai) {
       const a = aiData.ai;
+      const f = aiData.facts || {};
       const feats = (a.features || []).map(t =>
         '<div class="ai-feat"><span class="ai-feat-dot">✓</span>' + escapeHtml(t) + '</div>').join('');
       const suits = (a.suitable_for || []).map(t =>
         '<span class="ai-chip">' + escapeHtml(t) + '</span>').join('');
-      const ck = a.data_check || {};
-      const ckHTML = ck.consistent
-        ? '<span class="ai-ck ok">✓ 登记数据与实测一致</span>'
-        : '<span class="ai-ck bad">⚠ 登记数据存疑</span>' +
-          (ck.issues || []).map(i => '<span class="ai-issue">' + escapeHtml(i) + '</span>').join('');
-      const pr = aiData.probe || {};
-      const prTxt = pr.status > 0
-        ? ('官网实测 HTTP ' + pr.status + ' · ' + (pr.latency_ms || 0) + 'ms')
-        : '官网未达（可能被反爬拦截）';
+      const mName = mid => {
+        const mo = D.models.find(m => m.id === mid);
+        return mo ? (mo.name_zh || mo.name || mid) : mid;
+      };
+      let factRow = '';
+      if (f.price_in != null) {
+        factRow += '<span class="ai-fact-pill">💰 最低 $' + f.price_in + ' / $' + f.price_out +
+                   '（入/出每M · ' + escapeHtml(mName(f.price_model)) + '）</span>';
+      }
+      if (f.model_count) {
+        const names = (f.model_names || []).slice(0, 3).map(mName).join('、');
+        factRow += '<span class="ai-fact-pill">🧩 覆盖 ' + f.model_count + ' 款模型' +
+                   (names ? '：' + escapeHtml(names) + ' 等' : '') + '</span>';
+      }
       aiBlock =
         '<div class="pvd-section" style="margin-top:18px;">' +
           '<h2>🤖 AI 站点画像</h2>' +
-          '<span class="right-meta">MiniMax M3 · ' + escapeHtml(aiData.generated_at || '') + ' · ' + prTxt + '</span>' +
+          '<span class="right-meta">亮点 · 价格 · 模型</span>' +
         '</div>' +
         '<div class="ai-card">' +
           '<div class="ai-highlights">' + escapeHtml(a.highlights || '') + '</div>' +
           '<div class="ai-feat-grid">' + feats + '</div>' +
+          (factRow ? '<div class="ai-fact-row">' + factRow + '</div>' : '') +
           (suits ? '<div class="ai-suit-row">' + suits + '</div>' : '') +
-          '<div class="ai-ck-row">' + ckHTML + '</div>' +
         '</div>';
     }
   }

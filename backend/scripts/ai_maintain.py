@@ -53,13 +53,25 @@ def load_key():
     return None
 
 
-def load_providers():
+def load_data():
     text = DATA_JS.read_text(encoding="utf-8")
     m = re.match(r"\s*var\s+\w+\s*=\s*", text)
     payload = text[m.end():] if m else text
     payload = re.sub(r";\s*$", "", payload.strip())
-    data = json.loads(payload)
-    return data["providers"]
+    return json.loads(payload)
+
+
+def facts_of(provider, offerings):
+    """确定性事实：最低价 + 模型覆盖（不让 AI 编数字）"""
+    mine = [o for o in offerings if o.get("provider_id") == provider["id"]]
+    fact = {"model_count": len(mine), "model_names": []}
+    if mine:
+        fact["model_names"] = [o.get("model_id", "") for o in mine[:5]]
+        cheap = min(mine, key=lambda o: (o.get("input_usd_m", 9e9) + o.get("output_usd_m", 9e9)))
+        fact["price_model"] = cheap.get("model_id", "")
+        fact["price_in"] = cheap.get("input_usd_m")
+        fact["price_out"] = cheap.get("output_usd_m")
+    return fact
 
 
 def probe(url):
@@ -180,7 +192,9 @@ def main():
     ap.add_argument("--offset", type=int, default=0, help="跳过前 N 家（分批跑用）")
     args = ap.parse_args()
 
-    providers = load_providers()
+    data = load_data()
+    providers = data["providers"]
+    offerings = data.get("offerings", [])
     if args.offset:
         providers = providers[args.offset:]
     if args.limit:
@@ -228,6 +242,7 @@ def main():
     insights, ok_cnt, fail_cnt, skip_cnt = dict(old), 0, 0, 0
     for i, p in enumerate(providers, 1):
         pid = p["id"]
+        facts = facts_of(p, offerings)
         prev = old.get(pid) or {}
         prev_ts = prev.get("generated_at", "")
         if prev_ts:
@@ -237,19 +252,21 @@ def main():
             except ValueError:
                 age = 99
             if age < MAX_INSIGHT_AGE_DAYS and prev.get("ai"):
-                insights[pid] = {**prev, "probe": probes[pid], "generated_at": now}
+                insights[pid] = {**prev, "facts": facts, "probe": probes[pid],
+                                 "generated_at": now}
                 skip_cnt += 1
                 continue
         try:
             ai = ai_insight(p, probes[pid], key)
-            insights[pid] = {"ai": ai, "probe": probes[pid], "generated_at": now}
+            insights[pid] = {"ai": ai, "facts": facts, "probe": probes[pid],
+                             "generated_at": now}
             ok_cnt += 1
             print(f"  [{i:02d}/{len(providers)}] 🤖 {p.get('name_zh') or p.get('name')} ✓")
             write_insights(now, insights)  # 逐家落盘，超时/中断不丢进度
         except Exception as e:
             fail_cnt += 1
-            insights[pid] = {**prev, "probe": probes[pid], "generated_at": now,
-                             "ai_error": str(e)[:120]}
+            insights[pid] = {**prev, "facts": facts, "probe": probes[pid],
+                             "generated_at": now, "ai_error": str(e)[:120]}
             print(f"  [{i:02d}/{len(providers)}] ⚠ {p.get('name_zh') or p.get('name')} AI失败: {e}")
         time.sleep(0.5)
 

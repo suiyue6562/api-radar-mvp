@@ -29,7 +29,20 @@ var API_RADAR_AI = {
     "meta": "",
     "error": "ConnectTimeout: HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /inference-endpoints (Caused by Con"
    },
-   "generated_at": "2026-09-22T16:25:58"
+   "generated_at": "2026-09-22T16:25:58",
+   "facts": {
+    "model_count": 60,
+    "model_names": [
+     "m_grok_4_fast",
+     "m_deepseek_v4_pro",
+     "m_hunyuan_turbo",
+     "m_claude_fable_5",
+     "m_claude_opus_5"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.056,
+    "price_out": 0.113
+   }
   },
   "p_replicate": {
    "ai": {
@@ -57,7 +70,20 @@ var API_RADAR_AI = {
     "meta": "Run open-source machine learning models with a cloud API",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:25:58"
+   "generated_at": "2026-09-22T16:25:58",
+   "facts": {
+    "model_count": 60,
+    "model_names": [
+     "m_grok_4_fast",
+     "m_deepseek_v4_pro",
+     "m_hunyuan_turbo",
+     "m_llama_4_70b",
+     "m_claude_fable_5"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.044,
+    "price_out": 0.087
+   }
   },
   "p_cerebrium": {
    "ai": {
@@ -87,7 +113,20 @@ var API_RADAR_AI = {
     "meta": "Deploy voice agents, video models, and LLMs on serverless GPUs with sub-second cold starts. Pay-per-second pricing. No Kubernetes.",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:25:58"
+   "generated_at": "2026-09-22T16:25:58",
+   "facts": {
+    "model_count": 60,
+    "model_names": [
+     "m_grok_4_fast",
+     "m_deepseek_v4_pro",
+     "m_mistral_large_4",
+     "m_hunyuan_turbo",
+     "m_llama_4_70b"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.048,
+    "price_out": 0.095
+   }
   },
   "p_lmstudio_cloud": {
    "ai": {
@@ -119,7 +158,20 @@ var API_RADAR_AI = {
     "meta": "Bionic is LM Studio&#x27;s agent for work and code. Create documents, slides, PDFs, and software with local or frontier open models.",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:25:58"
+   "generated_at": "2026-09-22T16:25:58",
+   "facts": {
+    "model_count": 60,
+    "model_names": [
+     "m_grok_4_fast",
+     "m_deepseek_v4_pro",
+     "m_mistral_large_4",
+     "m_hunyuan_turbo",
+     "m_llama_4_70b"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.027,
+    "price_out": 0.054
+   }
   },
   "p_coze": {
    "ai": {
@@ -147,7 +199,20 @@ var API_RADAR_AI = {
     "meta": "",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:25:58"
+   "generated_at": "2026-09-22T16:25:58",
+   "facts": {
+    "model_count": 60,
+    "model_names": [
+     "m_grok_4_fast",
+     "m_deepseek_v4_pro",
+     "m_mistral_large_4",
+     "m_hunyuan_turbo",
+     "m_llama_4_70b"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.055,
+    "price_out": 0.11
+   }
   },
   "p_azure_openai": {
    "ai": {
@@ -175,7 +240,20 @@ var API_RADAR_AI = {
     "meta": "",
     "error": "ReadTimeout: HTTPSConnectionPool(host='azure.microsoft.com', port=443): Read timed out. (read timeout=7)"
    },
-   "generated_at": "2026-09-22T16:25:58"
+   "generated_at": "2026-09-22T16:25:58",
+   "facts": {
+    "model_count": 28,
+    "model_names": [
+     "m_claude_fable_5",
+     "m_claude_opus_5",
+     "m_claude_sonnet_5",
+     "m_claude_opus_4_7",
+     "m_gpt_5_6_sol"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.034,
+    "price_out": 0.067
+   }
   },
   "p_bedrock": {
    "ai": {
@@ -203,7 +281,20 @@ var API_RADAR_AI = {
     "meta": "Amazon Bedrock: The platform for building generative AI applications and agents at production scale",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:25:58"
+   "generated_at": "2026-09-22T16:25:58",
+   "facts": {
+    "model_count": 28,
+    "model_names": [
+     "m_claude_fable_5",
+     "m_claude_opus_5",
+     "m_claude_sonnet_5",
+     "m_claude_opus_4_7",
+     "m_gpt_5_6_sol"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.035,
+    "price_out": 0.071
+   }
   },
   "p_vertex_ai": {
    "ai": {
@@ -231,7 +322,20 @@ var API_RADAR_AI = {
     "meta": "",
     "error": "ConnectTimeout: HTTPSConnectionPool(host='cloud.google.com', port=443): Max retries exceeded with url: /vertex-ai (Caused by ConnectTime"
    },
-   "generated_at": "2026-09-22T16:25:58"
+   "generated_at": "2026-09-22T16:25:58",
+   "facts": {
+    "model_count": 28,
+    "model_names": [
+     "m_claude_fable_5",
+     "m_claude_opus_5",
+     "m_claude_sonnet_5",
+     "m_claude_opus_4_7",
+     "m_gpt_5_6_sol"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.03,
+    "price_out": 0.061
+   }
   },
   "p_anthropic_official": {
    "probe": {
@@ -243,7 +347,20 @@ var API_RADAR_AI = {
     "error": ""
    },
    "generated_at": "2026-09-22T16:29:46",
-   "ai_error": "no JSON in response"
+   "ai_error": "no JSON in response",
+   "facts": {
+    "model_count": 5,
+    "model_names": [
+     "m_claude_fable_5",
+     "m_claude_opus_5",
+     "m_claude_sonnet_5",
+     "m_claude_opus_4_7",
+     "m_claude_haiku_4_5"
+    ],
+    "price_model": "m_claude_haiku_4_5",
+    "price_in": 1,
+    "price_out": 5
+   }
   },
   "p_openai_official": {
    "ai": {
@@ -274,7 +391,19 @@ var API_RADAR_AI = {
     "meta": "",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:29:46"
+   "generated_at": "2026-09-22T16:29:46",
+   "facts": {
+    "model_count": 4,
+    "model_names": [
+     "m_gpt_5_6_sol",
+     "m_gpt_5_5",
+     "m_gpt_5_5_pro",
+     "m_gpt_5_2"
+    ],
+    "price_model": "m_gpt_5_2",
+    "price_in": 1.75,
+    "price_out": 14
+   }
   },
   "p_google_official": {
    "ai": {
@@ -302,7 +431,19 @@ var API_RADAR_AI = {
     "meta": "",
     "error": "ConnectTimeout: HTTPSConnectionPool(host='aistudio.google.com', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutErr"
    },
-   "generated_at": "2026-09-22T16:29:46"
+   "generated_at": "2026-09-22T16:29:46",
+   "facts": {
+    "model_count": 4,
+    "model_names": [
+     "m_gemini_3_1_pro",
+     "m_gemini_3_5_flash",
+     "m_gemini_3_flash_preview",
+     "m_gemini_3_flash_lite"
+    ],
+    "price_model": "m_gemini_3_flash_lite",
+    "price_in": 0.075,
+    "price_out": 0.3
+   }
   },
   "p_xai_official": {
    "ai": {
@@ -330,7 +471,18 @@ var API_RADAR_AI = {
     "meta": "",
     "error": "ConnectTimeout: HTTPSConnectionPool(host='console.x.ai', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTT"
    },
-   "generated_at": "2026-09-22T16:29:46"
+   "generated_at": "2026-09-22T16:29:46",
+   "facts": {
+    "model_count": 3,
+    "model_names": [
+     "m_grok_4_3",
+     "m_grok_4_fast",
+     "m_grok_4_standard"
+    ],
+    "price_model": "m_grok_4_fast",
+    "price_in": 0.5,
+    "price_out": 1.5
+   }
   },
   "p_deepseek_official": {
    "ai": {
@@ -358,7 +510,20 @@ var API_RADAR_AI = {
     "meta": "Join DeepSeek API platform to access our AI models, developer resources and API documentation.",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:29:46"
+   "generated_at": "2026-09-22T16:29:46",
+   "facts": {
+    "model_count": 6,
+    "model_names": [
+     "m_deepseek_v4_pro",
+     "m_deepseek_v4_flash",
+     "m_deepseek_v3_2",
+     "m_deepseek_r1",
+     "m_deepseek_v4_coder"
+    ],
+    "price_model": "m_deepseek_v4_flash",
+    "price_in": 0.14,
+    "price_out": 0.28
+   }
   },
   "p_qwen_official": {
    "ai": {
@@ -386,7 +551,20 @@ var API_RADAR_AI = {
     "meta": "百炼控制台是阿里云大模型服务平台，提供AI模型训练、部署、推理一站式服务，支持多种大模型框架，助力企业快速构建AI应用。",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:29:46"
+   "generated_at": "2026-09-22T16:29:46",
+   "facts": {
+    "model_count": 7,
+    "model_names": [
+     "m_qwen3_8_max",
+     "m_qwen3_7_max",
+     "m_qwen3_6_max_preview",
+     "m_qwen3_8_flash",
+     "m_qwen3_vl_max"
+    ],
+    "price_model": "m_qwen2_5_coder_32b",
+    "price_in": 0.2,
+    "price_out": 0.6
+   }
   },
   "p_zhipu_official": {
    "ai": {
@@ -414,7 +592,19 @@ var API_RADAR_AI = {
     "meta": "æºè°±å¤§æ¨¡åå¼æ¾å¹³å°-æ°ä¸ä»£å½äº§èªä¸»éç¨AIå¤§æ¨¡åå¼æ¾å¹³å°ï¼æ¯å½å å¤§æ¨¡åæåååçå¤§æ¨¡åç½ç«ï¼ç åäºå¤æ¬¾LLMæ¨¡åï¼å¤æ¨¡æè§è§æ¨¡åäº§åï¼è´åäºå°",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:29:46"
+   "generated_at": "2026-09-22T16:29:46",
+   "facts": {
+    "model_count": 4,
+    "model_names": [
+     "m_glm_5_2",
+     "m_glm_5_1",
+     "m_glm_4_6v",
+     "m_glm_5_3_flash"
+    ],
+    "price_model": "m_glm_5_3_flash",
+    "price_in": 0.1,
+    "price_out": 0.4
+   }
   },
   "p_moonshot_official": {
    "ai": {
@@ -442,7 +632,18 @@ var API_RADAR_AI = {
     "meta": "Kimi API 开放平台，提供 2.8 万亿参数的 Kimi K3 大模型 API，支持 1M token 上下文窗口、多模态理解和 Tool Calling。专业代码生成、智能对话、视觉推理，助力开发者构建下一代 AI 应用。",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:29:46"
+   "generated_at": "2026-09-22T16:29:46",
+   "facts": {
+    "model_count": 3,
+    "model_names": [
+     "m_kimi_k3",
+     "m_kimi_k2_6",
+     "m_kimi_k2_7"
+    ],
+    "price_model": "m_kimi_k2_7",
+    "price_in": 0.3,
+    "price_out": 1.2
+   }
   },
   "p_doubao_official": {
    "ai": {
@@ -470,7 +671,17 @@ var API_RADAR_AI = {
     "meta": "",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:32:51"
+   "generated_at": "2026-09-22T16:32:51",
+   "facts": {
+    "model_count": 2,
+    "model_names": [
+     "m_doubao_seed_2_pro",
+     "m_doubao_seed_2_lite"
+    ],
+    "price_model": "m_doubao_seed_2_lite",
+    "price_in": 0.3,
+    "price_out": 1.5
+   }
   },
   "p_baidu_qianfan": {
    "ai": {
@@ -498,7 +709,16 @@ var API_RADAR_AI = {
     "meta": "百度智能云千帆大模型平台是百度智能云推出的一站式企业级大模型平台，是支持客户做好真实AI应用的“企业级”平台，提供全面易用的模型开发、应用开发全流程工具链，同时融合千帆数据智能平台",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:32:51"
+   "generated_at": "2026-09-22T16:32:51",
+   "facts": {
+    "model_count": 1,
+    "model_names": [
+     "m_ernie_5_1"
+    ],
+    "price_model": "m_ernie_5_1",
+    "price_in": 0.8,
+    "price_out": 3.2
+   }
   },
   "p_mistral_official": {
    "ai": {
@@ -526,7 +746,20 @@ var API_RADAR_AI = {
     "meta": "",
     "error": "ConnectTimeout: HTTPSConnectionPool(host='console.mistral.ai', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutErro"
    },
-   "generated_at": "2026-09-22T16:32:51"
+   "generated_at": "2026-09-22T16:32:51",
+   "facts": {
+    "model_count": 5,
+    "model_names": [
+     "m_mistral_7b_v3",
+     "m_mistral_large_3",
+     "m_mistral_medium_3_5",
+     "m_devstral_2",
+     "m_mistral_large_4"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.05,
+    "price_out": 0.1
+   }
   },
   "p_groq": {
    "ai": {
@@ -554,7 +787,11 @@ var API_RADAR_AI = {
     "meta": "",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:32:51"
+   "generated_at": "2026-09-22T16:32:51",
+   "facts": {
+    "model_count": 0,
+    "model_names": []
+   }
   },
   "p_together_ai": {
    "ai": {
@@ -582,7 +819,20 @@ var API_RADAR_AI = {
     "meta": "Build what&#x27;s next on the AI Native Cloud. Full-stack AI platform for inference, fine-tuning, and GPU clusters — powered by cutting-edge research.",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:32:51"
+   "generated_at": "2026-09-22T16:32:51",
+   "facts": {
+    "model_count": 34,
+    "model_names": [
+     "m_command_r_plus",
+     "m_llama_4_70b",
+     "m_mistral_7b_v3",
+     "m_claude_fable_5",
+     "m_claude_sonnet_5"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.036,
+    "price_out": 0.073
+   }
   },
   "p_fireworks_ai": {
    "ai": {
@@ -610,7 +860,20 @@ var API_RADAR_AI = {
     "meta": "Fireworks’ state of the art training and inference platform take you beyond the frontier, transforming open models into your specialized intelligence.",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:32:51"
+   "generated_at": "2026-09-22T16:32:51",
+   "facts": {
+    "model_count": 32,
+    "model_names": [
+     "m_command_r_plus",
+     "m_mistral_7b_v3",
+     "m_minimax_m2_7",
+     "m_claude_fable_5",
+     "m_claude_opus_5"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.041,
+    "price_out": 0.082
+   }
   },
   "p_anyscale": {
    "probe": {
@@ -622,7 +885,20 @@ var API_RADAR_AI = {
     "error": ""
    },
    "generated_at": "2026-09-22T16:32:51",
-   "ai_error": "HTTPSConnectionPool(host='api.minimaxi.com', port=443): Read timed out. (read timeout=90)"
+   "ai_error": "HTTPSConnectionPool(host='api.minimaxi.com', port=443): Read timed out. (read timeout=90)",
+   "facts": {
+    "model_count": 60,
+    "model_names": [
+     "m_deepseek_v4_pro",
+     "m_deepseek_v4_flash",
+     "m_command_r_plus",
+     "m_mistral_7b_v3",
+     "m_mimo_v2_flash"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.041,
+    "price_out": 0.082
+   }
   },
   "p_openrouter": {
    "ai": {
@@ -650,7 +926,20 @@ var API_RADAR_AI = {
     "meta": "The unified interface for every model. Find the best models &amp; prices for your prompts",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:32:51"
+   "generated_at": "2026-09-22T16:32:51",
+   "facts": {
+    "model_count": 60,
+    "model_names": [
+     "m_deepseek_v4_pro",
+     "m_deepseek_v4_flash",
+     "m_command_r_plus",
+     "m_mistral_7b_v3",
+     "m_step_3_5_flash"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.053,
+    "price_out": 0.105
+   }
   },
   "p_litellm": {
    "ai": {
@@ -678,7 +967,20 @@ var API_RADAR_AI = {
     "meta": "LiteLLM is the open-source AI gateway that puts your full AI stack behind one OpenAI-compatible key. Track and cap LLM spend, route to the right model, and self-host anywhere — even air-gapped. 140+ p",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:36:33"
+   "generated_at": "2026-09-22T16:36:33",
+   "facts": {
+    "model_count": 60,
+    "model_names": [
+     "m_deepseek_v4_pro",
+     "m_command_r_plus",
+     "m_mistral_7b_v3",
+     "m_claude_fable_5",
+     "m_claude_opus_5"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.039,
+    "price_out": 0.078
+   }
   },
   "p_portkey": {
    "ai": {
@@ -706,7 +1008,20 @@ var API_RADAR_AI = {
     "meta": "Democratize and productionize Gen AI across your entire org with Portkey",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:36:33"
+   "generated_at": "2026-09-22T16:36:33",
+   "facts": {
+    "model_count": 32,
+    "model_names": [
+     "m_command_r_plus",
+     "m_mistral_7b_v3",
+     "m_claude_fable_5",
+     "m_claude_opus_5",
+     "m_claude_sonnet_5"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.044,
+    "price_out": 0.088
+   }
   },
   "p_helicone": {
    "ai": {
@@ -734,7 +1049,20 @@ var API_RADAR_AI = {
     "meta": "Routing and monitoring for reliable AI apps - the LLMOps platform behind the fastest-growing AI companies.",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:36:33"
+   "generated_at": "2026-09-22T16:36:33",
+   "facts": {
+    "model_count": 33,
+    "model_names": [
+     "m_command_r_plus",
+     "m_mistral_7b_v3",
+     "m_step_3_5_flash",
+     "m_mimo_v2_flash",
+     "m_claude_opus_5"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.047,
+    "price_out": 0.093
+   }
   },
   "p_cloudflare_ai": {
    "ai": {
@@ -762,7 +1090,20 @@ var API_RADAR_AI = {
     "meta": "Observe and control your AI applications with analytics, caching, rate limiting, and model fallback through AI Gateway.",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:36:33"
+   "generated_at": "2026-09-22T16:36:33",
+   "facts": {
+    "model_count": 33,
+    "model_names": [
+     "m_command_r_plus",
+     "m_mistral_7b_v3",
+     "m_claude_fable_5",
+     "m_claude_opus_5",
+     "m_claude_opus_4_7"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.029,
+    "price_out": 0.059
+   }
   },
   "p_vercel_ai_gateway": {
    "ai": {
@@ -790,7 +1131,20 @@ var API_RADAR_AI = {
     "meta": "width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover\"/><link rel=\"preload\" href=\"https://vercel-docs.vercel.sh/vc-ap-0cca3e/_next/static/immutable/media/vercel-light.3_gxxexgi1nmy.",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:36:33"
+   "generated_at": "2026-09-22T16:36:33",
+   "facts": {
+    "model_count": 34,
+    "model_names": [
+     "m_command_r_plus",
+     "m_mistral_7b_v3",
+     "m_claude_fable_5",
+     "m_claude_opus_5",
+     "m_claude_sonnet_5"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.032,
+    "price_out": 0.064
+   }
   },
   "p_one_api": {
    "ai": {
@@ -824,7 +1178,20 @@ var API_RADAR_AI = {
     "meta": "LLM API 管理 &amp; 分发系统，支持 OpenAI、Azure、Anthropic Claude、Google Gemini、DeepSeek、字节豆包、ChatGLM、文心一言、讯飞星火、通义千问、360 智脑、腾讯混元等主流模型，统一 API 适配，可用于 key 管理与二次分发。单可执行文件，提供 Docker 镜像，一键部署，开箱即用。LLM API management &a",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:36:33"
+   "generated_at": "2026-09-22T16:36:33",
+   "facts": {
+    "model_count": 60,
+    "model_names": [
+     "m_command_r_plus",
+     "m_mistral_7b_v3",
+     "m_step_3_5_flash",
+     "m_claude_fable_5",
+     "m_claude_opus_5"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.028,
+    "price_out": 0.056
+   }
   },
   "p_new_api": {
    "ai": {
@@ -854,7 +1221,20 @@ var API_RADAR_AI = {
     "meta": "A unified AI model hub for aggregation &amp; distribution. It supports cross-converting various LLMs into OpenAI-compatible, Claude-compatible, or Gemini-compatible formats. A centralized gateway for ",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:36:33"
+   "generated_at": "2026-09-22T16:36:33",
+   "facts": {
+    "model_count": 60,
+    "model_names": [
+     "m_command_r_plus",
+     "m_mistral_7b_v3",
+     "m_mimo_v2_flash",
+     "m_claude_fable_5",
+     "m_claude_opus_5"
+    ],
+    "price_model": "m_phi_4",
+    "price_in": 0.041,
+    "price_out": 0.083
+   }
   },
   "p_duckcoding": {
    "ai": {
@@ -882,7 +1262,20 @@ var API_RADAR_AI = {
     "meta": "",
     "error": "SSLError: HTTPSConnectionPool(host='duckcoding.com', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerifi"
    },
-   "generated_at": "2026-09-22T16:36:33"
+   "generated_at": "2026-09-22T16:36:33",
+   "facts": {
+    "model_count": 60,
+    "model_names": [
+     "m_deepseek_v4_pro",
+     "m_command_r_plus",
+     "m_mistral_7b_v3",
+     "m_step_3_5_flash",
+     "m_claude_fable_5"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.039,
+    "price_out": 0.077
+   }
   },
   "p_api2d": {
    "ai": {
@@ -910,7 +1303,20 @@ var API_RADAR_AI = {
     "meta": "",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:38:32"
+   "generated_at": "2026-09-22T16:38:32",
+   "facts": {
+    "model_count": 60,
+    "model_names": [
+     "m_deepseek_v4_pro",
+     "m_command_r_plus",
+     "m_mistral_7b_v3",
+     "m_claude_opus_5",
+     "m_claude_fable_5"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.046,
+    "price_out": 0.092
+   }
   },
   "p_aicnb": {
    "ai": {
@@ -938,7 +1344,20 @@ var API_RADAR_AI = {
     "meta": "",
     "error": "ConnectionError: HTTPSConnectionPool(host='aicnb.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSC"
    },
-   "generated_at": "2026-09-22T16:38:32"
+   "generated_at": "2026-09-22T16:38:32",
+   "facts": {
+    "model_count": 60,
+    "model_names": [
+     "m_command_r_plus",
+     "m_mistral_7b_v3",
+     "m_claude_fable_5",
+     "m_claude_opus_5",
+     "m_claude_opus_4_7"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.032,
+    "price_out": 0.064
+   }
   },
   "p_closeai": {
    "ai": {
@@ -968,7 +1387,20 @@ var API_RADAR_AI = {
     "meta": "",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:38:32"
+   "generated_at": "2026-09-22T16:38:32",
+   "facts": {
+    "model_count": 60,
+    "model_names": [
+     "m_deepseek_v4_pro",
+     "m_command_r_plus",
+     "m_hunyuan_turbo",
+     "m_mistral_7b_v3",
+     "m_step_3_5_flash"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.029,
+    "price_out": 0.058
+   }
   },
   "p_woka_ai": {
    "ai": {
@@ -996,7 +1428,20 @@ var API_RADAR_AI = {
     "meta": "",
     "error": "ConnectionError: HTTPSConnectionPool(host='wokaai.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPS"
    },
-   "generated_at": "2026-09-22T16:38:32"
+   "generated_at": "2026-09-22T16:38:32",
+   "facts": {
+    "model_count": 60,
+    "model_names": [
+     "m_deepseek_v4_pro",
+     "m_command_r_plus",
+     "m_hunyuan_turbo",
+     "m_mimo_v2_flash",
+     "m_claude_fable_5"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.044,
+    "price_out": 0.088
+   }
   },
   "p_chatfire": {
    "probe": {
@@ -1008,7 +1453,20 @@ var API_RADAR_AI = {
     "error": ""
    },
    "generated_at": "2026-09-22T16:38:32",
-   "ai_error": "no JSON in response"
+   "ai_error": "no JSON in response",
+   "facts": {
+    "model_count": 60,
+    "model_names": [
+     "m_deepseek_v4_pro",
+     "m_command_r_plus",
+     "m_hunyuan_turbo",
+     "m_mimo_v2_flash",
+     "m_claude_fable_5"
+    ],
+    "price_model": "m_mistral_7b_v3",
+    "price_in": 0.046,
+    "price_out": 0.091
+   }
   },
   "p_volcengine_official": {
    "ai": {
@@ -1036,7 +1494,11 @@ var API_RADAR_AI = {
     "meta": "",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:38:32"
+   "generated_at": "2026-09-22T16:38:32",
+   "facts": {
+    "model_count": 0,
+    "model_names": []
+   }
   },
   "p_tencent_official": {
    "ai": {
@@ -1064,7 +1526,16 @@ var API_RADAR_AI = {
     "meta": "腾讯混元大模型（Tencent Hunyuan）是由腾讯研发的大语言模型，具备强大的中文创作能力，复杂语境下的逻辑推理能力，以及可靠的任务执行能力。",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:38:32"
+   "generated_at": "2026-09-22T16:38:32",
+   "facts": {
+    "model_count": 1,
+    "model_names": [
+     "m_hunyuan_turbo"
+    ],
+    "price_model": "m_hunyuan_turbo",
+    "price_in": 0.5,
+    "price_out": 1.5
+   }
   },
   "p_jd_official": {
    "ai": {
@@ -1095,7 +1566,11 @@ var API_RADAR_AI = {
     "meta": "抱歉，页面无法访问",
     "error": ""
    },
-   "generated_at": "2026-09-22T16:38:32"
+   "generated_at": "2026-09-22T16:38:32",
+   "facts": {
+    "model_count": 0,
+    "model_names": []
+   }
   }
  }
 };
