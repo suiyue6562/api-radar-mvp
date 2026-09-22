@@ -4,6 +4,7 @@ const path = require('path');
 
 const proto = path.join(__dirname, '..', '03_prototype');
 const dataJs = fs.readFileSync(path.join(proto, 'data.js'), 'utf8');
+const radarJs = fs.readFileSync(path.join(proto, 'radar_sites.js'), 'utf8');
 const appJs = fs.readFileSync(path.join(proto, 'app.js'), 'utf8');
 const html = fs.readFileSync(path.join(proto, 'index.html'), 'utf8');
 const inline = [...html.matchAll(/<script(?![^>]*src)[^>]*>([\s\S]*?)<\/script>/g)].map(m => m[1]).join('\n;\n');
@@ -33,6 +34,8 @@ global.fetch = () => Promise.reject(new Error('offline')); // 广告位请求离
 
 eval(dataJs);
 global.API_RADAR_DATA = API_RADAR_DATA; // data.js 用顶层 var，浏览器自动挂 window，Node 需手动挂
+eval(radarJs);
+global.RADAR_SITES = RADAR_SITES;
 eval(appJs);
 eval(inline); // 块级作用域内自执行
 
@@ -47,7 +50,7 @@ function fill(id) {
 }
 
 // 1. HTML 关键容器存在
-for (const id of ['avail-board-rows', 'stats-band', 'plate-grid', 'mult-compare', 'mon-snapshot', 'news-list', 'faq-list', 'sponsored-slot']) {
+for (const id of ['avail-board-rows', 'stats-band', 'radar-home', 'mult-compare', 'mon-snapshot', 'news-list', 'faq-list', 'sponsored-slot']) {
   check('容器 #' + id, realIds.has(id));
 }
 
@@ -62,10 +65,10 @@ const stats = fill('stats-band');
 check('统计带 ≥4 项', (stats.match(/stat-card/g) || []).length >= 4);
 check('统计带含收录站数', /收录中转站/.test(stats));
 
-// 4. 金刚区：8 个快捷入口，含核心链接
-const plates = fill('plate-grid');
-check('金刚区 8 入口', (plates.match(/class="tile"/g) || []).length === 8);
-check('入口链接齐全', ['providers.html','pick.html','compare.html','playground.html','watch.html','events.html','models.html','method.html'].every(l => plates.includes(l)));
+// 4. 收录雷达：首页紧凑榜有数据行且含总数
+const radar = fill('radar-home');
+check('收录雷达有数据行', (radar.match(/avail-row/g) || []).length >= 10);
+check('收录雷达含来源快照说明', /快照 2026-09-22/.test(radar));
 
 // 5. 模型比价：≥1 条倍率，最低值高亮
 const mult = fill('mult-compare');

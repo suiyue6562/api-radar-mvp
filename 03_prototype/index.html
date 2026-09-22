@@ -166,13 +166,6 @@
     <div class="stats-band" id="stats-band"></div>
   </section>
 
-  <!-- ============ 金刚区 · 快捷入口 ============ -->
-  <div class="sec-title-block">
-    <h2>快速入口</h2>
-    <p>按使用频率排序：先看榜，再选站，比价后实测。</p>
-  </div>
-  <div class="tile-grid" id="plate-grid"></div>
-
   <!-- ============ 数据先行 ============ -->
   <div class="sec-title-block">
     <h2>数据先行：模型比价与可用率监测</h2>
@@ -297,22 +290,6 @@ const stats=[
 document.getElementById('stats-band').innerHTML=stats.map(s=>
   '<div class="stat-card"><div class="stat-num">'+s[0]+'<span>'+s[1]+'</span></div>'+
   '<div class="stat-label">'+s[2]+'</div><div class="stat-sub">'+s[3]+'</div></div>').join('');
-
-/* ---- 金刚区：按交互频率排序的快捷入口 ---- */
-const TILES=[
-  {icon:'🏆',cls:'t1',name:'中转站评测榜',sub:'排名 · 口碑 · 价格表',href:'providers.html'},
-  {icon:'🎯',cls:'t2',name:'帮我选站',sub:'4 个问题匹配最优',href:'pick.html'},
-  {icon:'🏷️',cls:'t3',name:'模型比价',sub:'倍率对比 · ¥换算',href:'compare.html'},
-  {icon:'🧪',cls:'t4',name:'API检测',sub:'13 项硬核实测',href:'playground.html'},
-  {icon:'📡',cls:'t5',name:'可用率监测',sub:'7×24 探针快照',href:'watch.html'},
-  {icon:'🗞️',cls:'t6',name:'行情动态',sub:'调价 · 收录 · 预警',href:'events.html'},
-  {icon:'🧠',cls:'t7',name:'模型库',sub:'60 款模型档案',href:'models.html'},
-  {icon:'📖',cls:'t8',name:'评测方法',sub:'口径公开可复核',href:'method.html'}
-];
-document.getElementById('plate-grid').innerHTML=TILES.map(t=>
-  '<a class="tile" href="'+t.href+'"><span class="tile-icon '+t.cls+'">'+t.icon+'</span>'+
-  '<span class="tile-text"><span class="tile-name">'+t.name+'</span><span class="tile-sub">'+t.sub+'</span></span>'+
-  '<span class="tile-arrow">→</span></a>').join('');
 
 /* ---- 模型比价：旗舰 Claude 模型 × top4 倍率 ---- */
 const MODELS_BY_ID={};PD.models.forEach(m=>MODELS_BY_ID[m.id]=m);
