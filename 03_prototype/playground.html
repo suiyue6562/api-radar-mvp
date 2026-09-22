@@ -172,8 +172,8 @@
 
 
 
-<script src="data.js?v=20260921d"></script>
-<script src="app.js?v=20260921d"></script>
+<script src="data.js?v=20260922a"></script>
+<script src="app.js?v=20260922a"></script>
 <script>
 function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 
@@ -363,6 +363,27 @@ async function runProbes() {
     out.innerHTML = '<div class="pg-warn danger"><span class="pg-warn-icon">✗</span><div class="pg-warn-content"><strong>检测失败</strong>' + escapeHtml(err.message || String(err)) + '<br>请检查 API URL 和 Key 是否正确</div></div>';
   }
 }
+
+// 从首页 Hero 检测卡带参跳转时预填（?url=…&key=…&model=…&ctx=0/1）
+(function prefillFromQuery() {
+  const q = new URLSearchParams(location.search);
+  const url = q.get('url');
+  const key = q.get('key');
+  const model = q.get('model');
+  const ctx = q.get('ctx');
+  if (url) document.getElementById('pg-url').value = url;
+  if (key) document.getElementById('pg-key').value = key;
+  if (model && model !== 'auto') {
+    const sel = document.getElementById('pg-model');
+    if (!Array.from(sel.options).some(o => o.value === model)) sel.add(new Option(model, model));
+    sel.value = model;
+  }
+  // ctx=0 时取消勾选「长上下文」探测项（PROBES 第 12 项，data-idx=11）
+  if (ctx === '0') {
+    const cb = document.querySelector('#pg-probes input[data-idx="11"]');
+    if (cb) cb.checked = false;
+  }
+})();
 
 renderProbes();
 </script>

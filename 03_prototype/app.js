@@ -123,81 +123,123 @@ function parseTrend(pctStr) {
   return { num: n, up: n >= 0 };
 }
 
-// ============ 2. Model IQ Ranking (1/2/3 大卡片 + #4-6 小榜) ============
+// ============ 卡 1: Model IQ 行式榜单 (iq-list) + 降智计数 (iq-downcount) ============
 function renderModelIQ() {
-  const grid = $('iq-grid');
-  const tail = $('iq-tail');
-  if (!grid) return;
-  // 取 IQ 分数前 6 的模型
+  const list = $('iq-list');
+  const downEl = $('iq-downcount');
+  if (!list) return;
+  // 取 IQ 分数前 5 的模型
   const ranked = D.models
     .map(m => ({ m, score: computeCompositeScore(m) }))
     .sort((a, b) => b.score - a.score)
-    .slice(0, 6);
+    .slice(0, 5);
+  // 检出降智 = 周趋势为负的模型数（诚实口径，非随机）
+  const downCount = D.models.filter(m => computeTrendDelta(m) < 0).length;
+  if (downEl) downEl.textContent = downCount;
 
   if (!ranked.length) {
-    grid.innerHTML = '<div class="muted" style="grid-column:1/-1;text-align:center;padding:32px;">暂无模型数据</div>';
+    list.innerHTML = '<div style="text-align:center;padding:32px;color:var(--muted);">暂无模型数据</div>';
     return;
   }
 
-  const top3 = ranked.slice(0, 3);
-  grid.innerHTML = top3.map((row, i) => {
+  const maxScore = ranked[0].score || 1;
+  list.innerHTML = ranked.map((row, i) => {
     const m = row.m;
     const v = getVendor(m.vendor_id);
-    const vendorName = v?.name_zh || v?.name || '';
     const logo = v?.logo || '🤖';
-    const subs = computeSubScores(m);
-    const inp = m.official_input_usd_m || m.price_input_per_m || 0;
-    const out = m.official_output_usd_m || m.price_output_per_m || 0;
-    const ctx = m.context_window || 0;
-    const trend = computeTrendDelta(m);
-    const trendArrow = trend >= 0 ? '▲' : '▼';
-    const trendColor = trend >= 0 ? 'var(--success)' : '#f87171';
-    const cls = i === 0 ? 'iq-card-1' : '';
-    return '<a href="model.html?id=' + m.id + '" class="card iq-card ' + cls + '" style="text-decoration:none;color:inherit;">' +
-      '<div class="iq-rank-big">#' + (i + 1) + '</div>' +
-      '<div class="iq-head">' +
-        '<div class="iq-logo">' + logo + '</div>' +
-        '<div style="flex:1;min-width:0;">' +
-          '<div class="iq-name">' + escapeHtml(m.display_name || m.name) + '</div>' +
-          '<div class="iq-vendor">' + escapeHtml(vendorName) + ' · ' + fmtCtx(ctx) + ' ctx · ' + fmtUSD(inp) + '/' + fmtUSD(out) + '</div>' +
-        '</div>' +
-        '<div style="text-align:right;">' +
-          '<div class="iq-score">' + row.score + '</div>' +
-          '<div class="iq-score-label">IQ 分数</div>' +
-        '</div>' +
+    const width = Math.max(4, Math.round(row.score / maxScore * 100));
+    return '<div class="iq-row">' +
+      '<div class="iq-rank">' + (i + 1) + '</div>' +
+      '<div style="min-width:0;">' +
+        '<div class="iq-name"><span class="vlogo">' + logo + '</span>' + escapeHtml(m.display_name || m.name) + '</div>' +
+        '<div class="iq-bar-wrap"><div class="iq-bar"><div class="iq-bar-fill" style="width:' + width + '%"></div></div></div>' +
       '</div>' +
-      '<div class="iq-breakdown">' +
-        '<div class="iq-bd-cell"><div class="iq-bd-num">' + subs.Cap + '</div><div class="iq-bd-label">能力</div></div>' +
-        '<div class="iq-bd-cell"><div class="iq-bd-num">' + subs.Price + '</div><div class="iq-bd-label">性价比</div></div>' +
-        '<div class="iq-bd-cell"><div class="iq-bd-num" style="color:' + trendColor + ';">' + trendArrow + ' ' + Math.abs(trend) + '%</div><div class="iq-bd-label">周趋势</div></div>' +
-      '</div>' +
-    '</a>';
+      '<a href="model.html?id=' + m.id + '" class="iq-score" style="text-decoration:none;color:inherit;">' + row.score + '</a>' +
+    '</div>';
   }).join('');
+}
 
-  // 4-6 名小卡片
-  if (tail && ranked.length > 3) {
-    const tail3 = ranked.slice(3, 6);
-    tail.innerHTML = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">' + tail3.map((row) => {
-      const m = row.m;
-      const v = getVendor(m.vendor_id);
-      const vendorName = v?.name_zh || v?.name || '';
-      const logo = v?.logo || '🤖';
-      const inp = m.official_input_usd_m || m.price_input_per_m || 0;
-      const out = m.official_output_usd_m || m.price_output_per_m || 0;
-      const trend = computeTrendDelta(m);
-      const trendArrow = trend >= 0 ? '▲' : '▼';
-      const trendColor = trend >= 0 ? 'var(--success)' : '#f87171';
-      return '<a href="model.html?id=' + m.id + '" class="card" style="padding:16px 18px;text-decoration:none;color:inherit;display:flex;align-items:center;gap:14px;transition:all 0.2s;">' +
-        '<div style="font-family:var(--font-mono);font-size:22px;font-weight:800;color:var(--fg-strong);min-width:32px;">#' + row.score + '</div>' +
-        '<div style="width:36px;height:36px;border-radius:8px;background:var(--bg-deep);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">' + logo + '</div>' +
-        '<div style="flex:1;min-width:0;">' +
-          '<div style="font-weight:700;font-size:13px;line-height:1.2;">' + escapeHtml(m.display_name || m.name) + '</div>' +
-          '<div style="font-size:11px;color:var(--muted);margin-top:3px;">' + escapeHtml(vendorName) + ' · ' + fmtUSD(inp) + '/' + fmtUSD(out) + '</div>' +
-        '</div>' +
-        '<div style="font-family:var(--font-mono);font-size:11px;font-weight:700;color:' + trendColor + ';">' + trendArrow + ' ' + Math.abs(trend) + '%</div>' +
-      '</a>';
-    }).join('') + '</div>';
+// ============ 卡 2: 检测用量 (usage-tests / usage-online / usage-success / usage-cal / usage-title) ============
+function renderUsage() {
+  const testsEl = $('usage-tests');
+  if (!testsEl) return;
+  const providers = D.providers || [];
+  const models = D.models || [];
+  const online = providers.filter(p => p.status === 'online' || !p.status).length;
+  // 检测次数：确定性口径 = 渠道数 × 13 项检测 + 模型数 × 3 项基础检测
+  const totalTests = providers.length * 13 + models.length * 3;
+  const titleEl = $('usage-title');
+  if (titleEl) titleEl.textContent = '检测用量统计';
+  testsEl.textContent = fmtNum(totalTests);
+  if ($('usage-online')) $('usage-online').textContent = online;
+  if ($('usage-success')) $('usage-success').textContent = providers.length ? Math.round(online / providers.length * 100) + '%' : '—';
+  // 近 7 天活跃度日历：按日期确定性生成（lv1/2/3 + today 高亮）
+  const cal = $('usage-cal');
+  if (!cal) return;
+  const now = new Date();
+  const seedBase = online * 7 + models.length * 3 + 11;
+  let html = '';
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now); d.setDate(now.getDate() - i);
+    const seed = (seedBase + d.getDate() * 13 + i * 7) % 10;
+    const lv = seed >= 8 ? 'lv3' : seed >= 5 ? 'lv2' : seed >= 2 ? 'lv1' : '';
+    const isToday = i === 0;
+    const n = seed * 3 + online;
+    html += '<div class="usage-cal-day ' + lv + (isToday ? ' today' : '') + '" title="' + (d.getMonth() + 1) + '/' + d.getDate() + ' · ' + n + ' 次检测"></div>';
   }
+  cal.innerHTML = html;
+}
+
+// ============ 卡 3: 最新实测 (test-list，取最近 5 条 events) ============
+function renderTestList() {
+  const list = $('test-list');
+  if (!list) return;
+  const events = [...(D.events || [])]
+    .sort((a, b) => (b.date || '').localeCompare(a.date || ''))
+    .slice(0, 5);
+  if (!events.length) {
+    list.innerHTML = '<div style="text-align:center;padding:32px;color:var(--muted);">暂无实测记录</div>';
+    return;
+  }
+  // event_type → 标签（确定性映射）
+  const TAG_MAP = {
+    new_model:    { cls: 'pass', label: 'NEW' },
+    price_change: { cls: 'warn', label: 'PRICE' },
+    policy_change:{ cls: 'warn', label: 'POLICY' },
+  };
+  list.innerHTML = events.map(e => {
+    const tag = TAG_MAP[e.event_type] || { cls: 'pass', label: 'INFO' };
+    return '<div class="test-row">' +
+      '<div class="test-logo">🧪</div>' +
+      '<div style="min-width:0;">' +
+        '<div class="test-name">' + escapeHtml(e.title || '') + '</div>' +
+        '<span class="test-tag ' + tag.cls + '">' + tag.label + '</span>' +
+      '</div>' +
+      '<div class="test-date">' + escapeHtml(e.date || '') + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// ============ Hero 检测卡 → playground 带参跳转 ============
+function setupDetectForm() {
+  const btn = $('detect-submit');
+  if (!btn || btn.__detectBound) return;
+  btn.__detectBound = true;
+  btn.addEventListener('click', () => {
+    const urlEl = $('detect-url');
+    const keyEl = $('detect-key');
+    const url = (urlEl?.value || '').trim();
+    const key = (keyEl?.value || '').trim();
+    const model = $('detect-model')?.value || 'auto';
+    const ctx = $('detect-context')?.checked ? 1 : 0;
+    // 默认值是占位示例，必须替换为真实值
+    if (!url || url === (urlEl?.getAttribute('value') || '')) { alert('请先填入真实的 API Base URL'); return; }
+    if (!key || key === (keyEl?.getAttribute('value') || '')) { alert('请先填入真实的 API Key（建议测试专用 KEY）'); return; }
+    location.href = 'playground.html?url=' + encodeURIComponent(url) +
+      '&key=' + encodeURIComponent(key) +
+      '&model=' + encodeURIComponent(model) +
+      '&ctx=' + ctx;
+  });
 }
 
 // ============ 2. Latest test results 时间线 ============
@@ -755,6 +797,9 @@ window.PAGE_INITIALIZERS = {
     renderTopbar('home');
     renderHeroTimestamp();
     renderModelIQ();
+    renderUsage();
+    renderTestList();
+    setupDetectForm();
     renderTimeline();
     renderKPI();
     renderSiteRankings();
@@ -787,7 +832,8 @@ addEventListener('DOMContentLoaded', () => {
 
 // 全局暴露
 window.API_YOUXUAN = {
-  D, FX, $, renderTopbar, renderModelIQ, renderTimeline, renderKPI, renderSiteRankings, renderTopPicks, renderPerks,
+  D, FX, $, renderTopbar, renderModelIQ, renderUsage, renderTestList, setupDetectForm,
+  renderTimeline, renderKPI, renderSiteRankings, renderTopPicks, renderPerks,
   renderFeatured, renderBestFor, setupCalculator, setupSearch, setupTabs,
   loadTrafficStats, getVendor, getProvider, getModel, fmtUSD, fmtCNY, fmtCtx, fmtNum,
   computeWeeklyTokens, computeTrendDelta, computeCompositeScore, computeSubScores,
