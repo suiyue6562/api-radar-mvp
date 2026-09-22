@@ -6,3 +6,7 @@ index_wireframe_v1.html
 API_RADAR_粘贴手册.txt
 *.bak
 tests/d1_api_data.json
+.env*
+backend/scripts/.env
+02_data/samples/*.tmp
+__pycache__/

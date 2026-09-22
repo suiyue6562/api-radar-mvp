@@ -59,6 +59,8 @@
 .detail-title { flex:1; min-width:200px; }
 .detail-name { font-size:20px; font-weight:800; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .detail-sub { font-size:12px; color:var(--muted); margin-top:4px; }
+.ai-line { margin-top:8px; font-size:12px; line-height:1.6; color:var(--fg); background:var(--bg-deep); border:1px solid var(--border); border-left:3px solid var(--accent); padding:8px 12px; }
+.ai-line b { color:var(--accent); font-weight:800; margin-right:6px; }
 .detail-score { text-align:right; flex-shrink:0; }
 .detail-score-num { font-size:26px; font-weight:800; font-family:var(--font-mono); }
 .detail-score-formula { font-size:11px; color:var(--muted); font-family:var(--font-mono); }
@@ -214,6 +216,7 @@
 <footer class="footer" id="footer"></footer>
 
 <script src="data.js?v=20260922k"></script>
+<script src="ai_insights.js?v=ai1"></script>
 <script src="app.js?v=20260922k"></script>
 <script>
 {
@@ -254,6 +257,14 @@ const TIER_BADGE={
   1:'<span class="badge-mini badge-tier1" title="基础分≥85 且评分≥4.5">精选</span>',
   2:'<span class="badge-mini badge-tier2" title="调用量或口碑数领先">热门</span>',
   3:'<span class="badge-mini badge-tier3" title="近 60 天新收录">NEW</span>'};
+
+/* AI 画像一句话（MiniMax M3 每日两次生成） */
+function aiLine(pid){
+  var d=(typeof API_RADAR_AI!=='undefined'&&API_RADAR_AI.providers)?API_RADAR_AI.providers[pid]:null;
+  if(!d||!d.ai||!d.ai.highlights)return '';
+  var ck=d.ai.data_check&&!d.ai.data_check.consistent?' <b style="color:var(--danger)">⚠ 数据存疑</b>':'';
+  return '<div class="ai-line"><b>🤖 AI</b>'+esc(d.ai.highlights)+ck+'</div>';
+}
 
 /* 排名趋势（确定性） */
 function trendOf(p,i){
@@ -408,6 +419,7 @@ function renderDetail(p){
         '<span class="badge-mini badge-official">'+TYPE_LABEL[p.type]+'</span> '+(TIER_BADGE[tier]||'')+
         (rankIdx>-1?'<span class="rank-chip">#'+(rankIdx+1)+'</span>':'')+'</div>'+
       '<div class="detail-sub">'+(p.type==='official'?'原厂渠道 · 不参与商业排序':'收录于 '+days+' 天前 · '+(p.notes?esc(p.notes):''))+'</div>'+
+      aiLine(p.id)+
     '</div>'+
     '<div class="detail-score">'+
       '<div class="detail-score-num">'+(sc>0?sc.toFixed(2):'—')+'<span style="font-size:12px;color:var(--muted);font-weight:600;"> /100</span></div>'+
