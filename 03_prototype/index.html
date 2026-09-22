@@ -11,19 +11,29 @@
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* ===== helpaio.com 首页同款结构 ===== */
-.hero { text-align:center; padding:56px 20px 30px; }
-.hero-title { font-size:clamp(30px,5vw,52px); font-weight:800; line-height:1.25; margin:14px 0 12px; letter-spacing:-1px; }
-.hero-sub { font-size:15px; color:var(--muted); max-width:560px; margin:0 auto; line-height:1.8; }
+/* ===== helpaio.com 首页同款结构（紧凑版） ===== */
+.hero { text-align:center; padding:28px 20px 6px; }
+.hero-layout { display:grid; grid-template-columns:1.05fr 1fr; gap:30px; align-items:center; max-width:1080px; margin:0 auto; text-align:left; }
+.hero-left .page-hero-tagline { justify-content:flex-start; }
+.hero-left { min-width:0; }
+.hero-title { font-size:clamp(28px,4vw,44px); font-weight:800; line-height:1.22; margin:12px 0 10px; letter-spacing:-1px; }
+.hero-sub { font-size:14px; color:var(--muted); line-height:1.8; margin:0; }
+.hero-left .hero-ctas { justify-content:flex-start; margin-top:20px; }
+.hero-left .hero-trust { justify-content:flex-start; margin-top:18px; }
+.hero-right { min-width:0; }
+@media (max-width: 920px) {
+  .hero-layout { grid-template-columns:1fr; text-align:center; }
+  .hero-left .page-hero-tagline, .hero-left .hero-ctas, .hero-left .hero-trust { justify-content:center; }
+}
 .hero-ctas { display:flex; gap:12px; justify-content:center; margin-top:24px; flex-wrap:wrap; }
 .hero-trust { display:flex; gap:10px; justify-content:center; margin-top:22px; flex-wrap:wrap; }
-.trust-chip { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border-radius:999px; font-size:12px; font-weight:600;
+.trust-chip { display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:999px; font-size:11.5px; font-weight:600;
   background:var(--bg-deep); border:1px solid var(--border); color:var(--muted); }
 
-.avail-board { max-width:860px; margin:26px auto 0; }
-.avail-board-title { font-size:12px; color:var(--muted); font-weight:700; margin-bottom:10px; text-align:left; }
+.avail-board { margin:0; }
+.avail-board-title { font-size:11.5px; color:var(--muted); font-weight:700; margin-bottom:8px; text-align:left; }
 .avail-board-title b { color:var(--text); }
-.avail-row { display:flex; align-items:center; gap:14px; padding:11px 16px; border:1px solid var(--border); border-radius:10px; margin-bottom:8px;
+.avail-row { display:flex; align-items:center; gap:12px; padding:8px 14px; border:1px solid var(--border); border-radius:10px; margin-bottom:6px;
   background:var(--bg); cursor:pointer; transition:all .15s ease; }
 .avail-row:hover { border-color:var(--accent); }
 .avail-rank { font-family:var(--font-mono); font-weight:800; font-size:15px; width:26px; color:var(--muted); flex-shrink:0; text-align:center; }
@@ -34,16 +44,21 @@
 .avail-metric b { font-family:var(--font-mono); font-size:13px; margin-left:4px; }
 .avail-metric b.good { color:var(--success); } .avail-metric b.mid { color:var(--warning); }
 
-.stats-band { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; max-width:860px; margin:30px auto 0; }
-.stat-card { border:1px dashed var(--border); border-radius:12px; padding:18px; text-align:center; background:var(--bg-deep); }
-.stat-num { font-size:26px; font-weight:800; font-family:var(--font-mono); }
-.stat-num span { font-size:14px; color:var(--accent); font-weight:700; }
-.stat-label { font-size:13px; font-weight:700; margin-top:4px; }
-.stat-sub { font-size:11px; color:var(--muted); margin-top:3px; }
+.stats-band { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; max-width:1080px; margin:20px auto 0; }
+.stat-card { border:1px dashed var(--border); border-radius:12px; padding:12px 14px; text-align:center; background:var(--bg-deep); }
+.stat-num { font-size:22px; font-weight:800; font-family:var(--font-mono); }
+.stat-num span { font-size:13px; color:var(--accent); font-weight:700; }
+.stat-label { font-size:12.5px; font-weight:700; margin-top:2px; }
+.stat-sub { font-size:10.5px; color:var(--muted); margin-top:2px; }
 
-.sec-title-block { text-align:center; margin:60px auto 8px; max-width:640px; }
-.sec-title-block h2 { font-size:24px; font-weight:800; margin:0 0 8px; }
-.sec-title-block p { font-size:13px; color:var(--muted); line-height:1.8; }
+.sec-title-block { text-align:center; margin:34px auto 6px; max-width:640px; }
+.sec-title-block h2 { font-size:21px; font-weight:800; margin:0 0 6px; }
+.sec-title-block p { font-size:12.5px; color:var(--muted); line-height:1.7; }
+
+.bottom-grid { display:grid; grid-template-columns:3fr 2fr; gap:16px; max-width:1080px; margin:24px auto 0; align-items:start; }
+@media (max-width: 920px) { .bottom-grid { grid-template-columns:1fr; } }
+.bottom-col-title { font-size:16px; font-weight:800; margin:0 0 12px; }
+.bottom-col-title span { font-size:11.5px; color:var(--muted); font-weight:500; margin-left:6px; }
 
 .plate-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; max-width:1060px; margin:24px auto 0; }
 .plate { border:1px solid var(--border); border-radius:14px; padding:22px; background:var(--bg); position:relative; transition:all .18s ease; }
@@ -73,28 +88,28 @@
 .mon-name { flex:1; min-width:0; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .mon-val { font-family:var(--font-mono); font-weight:700; }
 
-.news-list { max-width:860px; margin:24px auto 0; }
-.news-item { display:flex; gap:14px; padding:14px 16px; border:1px solid var(--border); border-radius:12px; margin-bottom:10px; background:var(--bg); }
+.news-list { max-width:none; margin:0; }
+.news-item { display:flex; gap:14px; padding:12px 14px; border:1px solid var(--border); border-radius:12px; margin-bottom:8px; background:var(--bg); }
 .news-badge { flex-shrink:0; align-self:flex-start; font-size:11px; font-weight:800; padding:3px 9px; border-radius:6px; background:var(--bg-deep); border:1px solid var(--border); color:var(--accent); font-family:var(--font-mono); }
 .news-body { min-width:0; }
 .news-title { font-size:13.5px; font-weight:700; margin-bottom:3px; }
 .news-desc { font-size:12px; color:var(--muted); line-height:1.7; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 .news-date { flex-shrink:0; font-size:11px; color:var(--muted); font-family:var(--font-mono); }
 
-.faq-list { max-width:760px; margin:24px auto 0; }
-.faq-item { border:1px solid var(--border); border-radius:12px; margin-bottom:10px; background:var(--bg); overflow:hidden; }
-.faq-q { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:15px 18px; cursor:pointer; font-weight:700; font-size:14px; user-select:none; }
+.faq-list { max-width:none; margin:0; }
+.faq-item { border:1px solid var(--border); border-radius:12px; margin-bottom:8px; background:var(--bg); overflow:hidden; }
+.faq-q { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:12px 16px; cursor:pointer; font-weight:700; font-size:13px; user-select:none; }
 .faq-q .arrow { color:var(--muted); transition:transform .15s ease; }
 .faq-item.open .faq-q .arrow { transform:rotate(180deg); }
-.faq-a { display:none; padding:0 18px 15px; font-size:12.5px; color:var(--muted); line-height:1.9; }
+.faq-a { display:none; padding:0 16px 13px; font-size:12px; color:var(--muted); line-height:1.8; }
 .faq-item.open .faq-a { display:block; }
 .faq-a a { color:var(--accent); }
 
-.cta-banner { max-width:860px; margin:56px auto 0; text-align:center; border:1px dashed var(--border); border-radius:16px; padding:38px 24px; background:var(--bg-deep); }
-.cta-banner h2 { font-size:22px; font-weight:800; margin:0 0 8px; }
-.cta-banner p { font-size:13px; color:var(--muted); margin:0 0 18px; }
+.cta-banner { max-width:1080px; margin:36px auto 0; text-align:center; border:1px dashed var(--border); border-radius:16px; padding:26px 24px; background:var(--bg-deep); }
+.cta-banner h2 { font-size:20px; font-weight:800; margin:0 0 6px; }
+.cta-banner p { font-size:12.5px; color:var(--muted); margin:0 0 14px; }
 
-.sponsored-box { max-width:860px; margin:26px auto 0; padding:12px 16px; border:1px dashed var(--border); border-radius:10px;
+.sponsored-box { max-width:none; margin:10px 0 0; padding:10px 14px; border:1px dashed var(--border); border-radius:10px;
   background:linear-gradient(135deg, rgba(255,214,0,.06), rgba(255,255,255,0)); }
 .sponsored-box a { display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text); padding:8px 10px; border-radius:8px; }
 .sponsored-box a:hover { background:var(--bg-deep); }
@@ -112,32 +127,36 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero fade-in">
-    <div class="page-hero-tagline" style="justify-content:center;"><span class="page-hero-tagline-dot"></span><span id="hero-tagline">自费实测 · 无赞助排名 · 数据持续更新</span></div>
-    <h1 class="hero-title">更接地气的<br><span class="gradient-text">AI 中转站评测导航</span></h1>
-    <p class="hero-sub" id="hero-sub">拒绝盲目尝试，快速定位最适合您的 Claude / GPT / Gemini API 中转方案。</p>
-    <div class="hero-ctas">
-      <a href="providers.html" class="btn btn-primary" style="padding:11px 26px;font-size:14px;">进入中转站比价 →</a>
-      <a href="pick.html" class="btn-ghost" style="padding:11px 22px;font-size:14px;">🎯 帮我选站</a>
-      <a href="method.html" class="btn-ghost" style="padding:11px 22px;font-size:14px;">阅读评测方法</a>
-    </div>
-    <div class="hero-trust">
-      <span class="trust-chip">🧪 自费实测 · 明示推广位</span>
-      <span class="trust-chip">📡 7×24 可用率监测</span>
-      <span class="trust-chip">✋ 探针实测才推荐</span>
-    </div>
-
-    <!-- Claude / GPT 3日可用率榜 -->
-    <div class="avail-board" id="avail-board">
-      <div class="avail-board-title"><b>CLAUDE / GPT · 近 3 日可用率</b> · 各站监测均值，按综合榜排序</div>
-      <div id="avail-board-rows"></div>
+    <div class="hero-layout">
+      <div class="hero-left">
+        <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span id="hero-tagline">自费实测 · 无赞助排名 · 数据持续更新</span></div>
+        <h1 class="hero-title">更接地气的<br><span class="gradient-text">AI 中转站评测导航</span></h1>
+        <p class="hero-sub" id="hero-sub">拒绝盲目尝试，快速定位最适合您的 Claude / GPT / Gemini API 中转方案。</p>
+        <div class="hero-ctas">
+          <a href="providers.html" class="btn btn-primary" style="padding:11px 26px;font-size:14px;">进入中转站比价 →</a>
+          <a href="pick.html" class="btn-ghost" style="padding:11px 22px;font-size:14px;">🎯 帮我选站</a>
+          <a href="method.html" class="btn-ghost" style="padding:11px 22px;font-size:14px;">阅读评测方法</a>
+        </div>
+        <div class="hero-trust">
+          <span class="trust-chip">🧪 自费实测 · 明示推广位</span>
+          <span class="trust-chip">📡 7×24 可用率监测</span>
+          <span class="trust-chip">✋ 探针实测才推荐</span>
+        </div>
+      </div>
+      <div class="hero-right">
+        <!-- Claude / GPT 3日可用率榜 -->
+        <div class="avail-board" id="avail-board">
+          <div class="avail-board-title"><b>CLAUDE / GPT · 近 3 日可用率</b> · 各站监测均值，按综合榜排序</div>
+          <div id="avail-board-rows"></div>
+        </div>
+        <!-- 广告主推荐位 -->
+        <div id="sponsored-slot"></div>
+      </div>
     </div>
 
     <!-- 统计带 -->
     <div class="stats-band" id="stats-band"></div>
   </section>
-
-  <!-- ============ 广告主推荐位 ============ -->
-  <div id="sponsored-slot"></div>
 
   <!-- ============ 三大板块 ============ -->
   <div class="sec-title-block">
@@ -165,18 +184,17 @@
     </div>
   </div>
 
-  <!-- ============ 最新动态 ============ -->
-  <div class="sec-title-block">
-    <h2>🗞️ 最新动态</h2>
-    <p>价格变动、新站收录、风控预警，持续更新。</p>
+  <!-- ============ 最新动态 + FAQ 双栏 ============ -->
+  <div class="bottom-grid">
+    <div>
+      <h2 class="bottom-col-title">🗞️ 最新动态 <span>价格变动、新站收录、风控预警</span></h2>
+      <div class="news-list" id="news-list"></div>
+    </div>
+    <div>
+      <h2 class="bottom-col-title">常见问题 <span>评测口径与推广位说明</span></h2>
+      <div class="faq-list" id="faq-list"></div>
+    </div>
   </div>
-  <div class="news-list" id="news-list"></div>
-
-  <!-- ============ FAQ ============ -->
-  <div class="sec-title-block">
-    <h2>常见问题</h2>
-  </div>
-  <div class="faq-list" id="faq-list"></div>
 
   <!-- ============ CTA ============ -->
   <div class="cta-banner">
