@@ -362,7 +362,7 @@ function computeSiteTier(p) {
   return 4;
 }
 const TIER_BADGE = {
-  1: '<span style="display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#000;color:#fff;margin-left:5px;vertical-align:1px;" title="质量综合分≥85 且评分≥4.5">精选</span>',
+  1: '<span style="display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:var(--accent);color:#fff;margin-left:5px;vertical-align:1px;" title="质量综合分≥85 且评分≥4.5">精选</span>',
   2: '<span style="display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#fef3c7;color:#92400e;border:1px solid #f59e0b;margin-left:5px;vertical-align:1px;" title="调用量或口碑数领先">热门</span>',
   3: '<span style="display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#dcfce7;color:#166534;border:1px solid #16a34a;margin-left:5px;vertical-align:1px;" title="近 60 天新收录">NEW</span>',
 };

@@ -162,8 +162,8 @@
 
 
 
-<script src="data.js?v=20260922h"></script>
-<script src="app.js?v=20260922h"></script>
+<script src="data.js?v=20260922i"></script>
+<script src="app.js?v=20260922i"></script>
 <script>
 function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 
@@ -347,7 +347,7 @@ function renderChannels() {
           return '<a href="provider.html?id=' + escapeHtml(o.provider_id) + '" class="chan-card">' +
             '<div class="chan-card-name"><span class="chan-card-status ' + (p?.status || 'online') + '"></span>' + escapeHtml(p?.name_zh || o.provider_id) + '</div>' +
             '<div class="chan-card-price">' + fmtUSD(o.input_usd_m) + ' / ' + fmtUSD(o.output_usd_m) +
-              ' <span style="font-family:var(--font-mono);font-weight:800;font-size:11px;padding:1px 7px;border-radius:5px;background:#000;color:#fff;">× ' + (o.multiplier || 1).toFixed(2) + '</span></div>' +
+              ' <span style="font-family:var(--font-mono);font-weight:800;font-size:11px;padding:1px 7px;border-radius:5px;background:var(--accent);color:#fff;">× ' + (o.multiplier || 1).toFixed(2) + '</span></div>' +
             '<div class="chan-card-meta" style="font-family:var(--font-mono);">≈ ¥' + ((o.input_usd_m || 0) * FX.USD_CNY).toFixed(2) + ' / ¥' + ((o.output_usd_m || 0) * FX.USD_CNY).toFixed(2) + '</div>' +
             '<div class="chan-card-meta">' + (p?.region || 'global') + ' · ' + (p?.sla_uptime ? p.sla_uptime.toFixed(1) + '%' : '—') + ' uptime</div>' +
           '</a>';

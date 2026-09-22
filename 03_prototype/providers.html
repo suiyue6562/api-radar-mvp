@@ -105,7 +105,7 @@
 
 .badge-mini { display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; }
 .badge-official { background:var(--bg-deep); border:1px solid var(--border); color:var(--muted); }
-.badge-tier1 { background:#000; color:#fff; }
+.badge-tier1 { background:var(--accent); color:#fff; }
 .badge-tier2 { background:#fef3c7; color:#92400e; border:1px solid #f59e0b; }
 .badge-tier3 { background:#dcfce7; color:#166534; border:1px solid #16a34a; }
 
@@ -213,8 +213,8 @@
 </main>
 <footer class="footer" id="footer"></footer>
 
-<script src="data.js?v=20260922h"></script>
-<script src="app.js?v=20260922h"></script>
+<script src="data.js?v=20260922i"></script>
+<script src="app.js?v=20260922i"></script>
 <script>
 {
 /* ================= AI 中转站评测 · helpaio/transit 对标重做 ================= */
@@ -392,7 +392,7 @@ function renderDetail(p){
   const prices=priceRows(p),maRows=modelAvailRows(p);
   const tags=p.tags||[],pays=p.payment_currency||[];
   const pros=prosOf(p),cons=consOf(p),exs=experiencesOf(p);
-  const TYPE_LABEL={official:'官方',aggregator:'中转',gateway:'网关',self_host:'自部署',cloud:'云厂商',reseller:'代理'};
+  const TYPE_LABEL={official:'官方',aggregator:'中转',gateway:'网关',self_host:'自部署',cloud:'云厂商',reseller:'代理',platform:'平台',discount:'折扣',individual:'个人',bonus:'返佣'};
   const siteUrl=p.website||'#';
   const inv=tags.includes('可开发票')||p.invoice_available;
   const refund=tags.includes('不支持退款')?'不支持':(tags.includes('退款')||tags.includes('支持退款'))?'支持':'以官网为准';

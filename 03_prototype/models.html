@@ -14,7 +14,7 @@
 /* 模型库 — okkmax 风格 */
 .models-hero{padding:32px 0 8px;text-align:center}
 .models-hero h1{font-size:36px;margin-bottom:6px;font-weight:800}
-.models-hero .gradient-text{background:#000000;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.models-hero .gradient-text{background:var(--accent);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .models-hero p{color:var(--muted);max-width:720px;margin:0 auto 8px;font-size:14px}
 .kpi-wall{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:880px;margin:16px auto 0}
 .models-kpi{padding:14px 8px;text-align:center;border-radius:10px;background:var(--bg-card);border:1px solid var(--border);transition:all .15s}
@@ -53,7 +53,7 @@
 .model-card-badges{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
 .model-card-badge{font-size:9px;padding:1px 6px;border-radius:4px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}.model-card-badge.open{background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3)}.model-card-badge.new{background:rgba(0, 0, 0, .15);color:var(--accent);border:1px solid rgba(0, 0, 0, .3)}.model-card-badge.flag{background:rgba(0, 0, 0, .15);color:#000000;border:1px solid rgba(0, 0, 0, .3)}
 .score-badge{position:absolute;top:14px;right:14px;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#0b0f17;box-shadow: 0 1px 3px rgba(0,0,0,0.1);font-family:var(--font-mono);z-index:1}
-.score-A{background:#000000}.score-B{background:#000000}.score-C{background:#000000}.score-D{background:#000000}
+.score-A{background:var(--accent)}.score-B{background:var(--accent-2)}.score-C{background:var(--theme-violet)}.score-D{background:var(--muted)}
 .model-card-prices{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:10px 8px;background:var(--bg-deep);border-radius:8px;border:1px solid var(--border)}
 .price-cell{text-align:center}
 .price-cell .pl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
@@ -168,8 +168,8 @@
 <footer class="footer" id="footer"></footer>
 
 
-<script src="data.js?v=20260922h"></script>
-<script src="app.js?v=20260922h"></script>
+<script src="data.js?v=20260922i"></script>
+<script src="app.js?v=20260922i"></script>
 <script>
 function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c])}
 const CAP_ICON_MAP={reasoning:{icon:'🧠',label:'Reasoning'},tool_use:{icon:'🔧',label:'Tool Call'},structured:{icon:'📋',label:'Structured'},vision:{icon:'🖼️',label:'Vision'},audio:{icon:'🎤',label:'Audio'}};

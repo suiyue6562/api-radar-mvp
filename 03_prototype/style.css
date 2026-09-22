@@ -1,35 +1,42 @@
 /* ===== API 优选咨询 · okkmax 极简白底设计系统 ===== */
 :root {
+  /* ===== helpaio.com 配色体系（HSL 原值） ===== */
   /* 背景层级 */
-  --bg-base: #ffffff;          /* 页面主背景 */
-  --bg-deep: #f9fafb;          /* 次级背景（悬浮区分） */
-  --bg-card: #ffffff;          /* 卡片背景 */
-  --bg-card-hover: #f9fafb;    /* 卡片 hover */
-  --bg-glass: #ffffff;
+  --bg-base: hsl(210, 20%, 96%);   /* 冷灰蓝页面底 */
+  --bg-deep: hsl(220, 14%, 95%);   /* 次级背景 */
+  --bg-card: hsl(45, 20%, 99%);    /* 暖白卡片 */
+  --bg-card-hover: hsl(220, 14%, 95%);
+  --bg-glass: hsl(45, 20%, 99%);
 
   /* 边框 */
-  --border: #e5e7eb;           /* 默认浅灰 1px */
-  --border-hover: #1a1a1a;     /* hover 加深为黑 */
-  --border-strong: #d1d5db;
+  --border: hsl(220, 16%, 89%);
+  --border-hover: hsl(178, 72%, 29%);  /* hover 改深青 */
+  --border-strong: hsl(220, 16%, 87%);
 
   /* 文字 */
-  --fg: #1a1a1a;               /* 主文字 - 深灰近黑 */
-  --fg-strong: #000000;        /* 强调文字 */
-  --muted: #6b7280;            /* 次级文字 */
-  --muted-foreground: #9ca3af;/* 最弱文字 */
+  --fg: hsl(222, 18%, 14%);        /* 深海军蓝黑 */
+  --fg-strong: hsl(222, 18%, 10%);
+  --muted: hsl(220, 10%, 40%);
+  --muted-foreground: hsl(220, 10%, 55%);
 
-  /* 强调色（单色，不再渐变） */
-  --accent: #1f2937;           /* 主黑 */
-  --accent-2: #2563eb;         /* 蓝 */
-  --accent-3: #dc2626;         /* 红 */
-  --success: #16a34a;          /* 绿 - 上涨/成功 */
-  --warning: #d97706;          /* 橙 - 警告 */
-  --danger: #dc2626;           /* 红 - 失败 */
+  /* 强调色（helpaio shadcn tokens） */
+  --accent: hsl(178, 72%, 29%);    /* 深青 primary */
+  --accent-2: hsl(212, 76%, 48%);  /* 信息蓝 */
+  --accent-3: hsl(352, 66%, 50%);  /* 玫瑰红 */
+  --success: hsl(158, 58%, 38%);   /* emerald */
+  --warning: hsl(38, 90%, 48%);    /* amber */
+  --danger: hsl(352, 66%, 50%);    /* destructive */
 
-  /* 渐变（保留变量名以兼容，但改为单色 fallback） */
-  --grad-primary: #1f2937;
-  --grad-card: #f9fafb;
-  --grad-card: #ffffff;
+  /* 四色图标体系（theme colors + light 底） */
+  --theme-emerald: hsl(158, 46%, 42%);  --theme-emerald-light: hsl(158, 44%, 95%);
+  --theme-violet: hsl(256, 48%, 58%);   --theme-violet-light: hsl(256, 46%, 96%);
+  --theme-coral: hsl(34, 82%, 52%);     --theme-coral-light: hsl(34, 80%, 95%);
+  --theme-teal: hsl(178, 72%, 29%);     --theme-teal-light: hsl(178, 70%, 95%);
+
+  /* 渐变（保留变量名以兼容） */
+  --grad-primary: hsl(178, 72%, 29%);
+  --grad-card: hsl(45, 20%, 99%);
+  --grad-card: hsl(45, 20%, 99%);
 
   /* 阴影（极简、很轻） */
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
@@ -48,6 +55,11 @@
   --radius-lg: 8px;
   --radius-xl: 12px;
 }
+
+/* ===== helpaio UI 基因：直角 + 系统字体 + 深青交互 ===== */
+*, *::before, *::after { border-radius: 0 !important; }
+::selection { background: hsl(178, 72%, 29%); color: #fff; }
+a, button { transition: color .12s ease, border-color .12s ease, background .12s ease; }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -210,8 +222,8 @@ input:focus, select:focus, textarea:focus {
   font-weight: 600;
 }
 .btn-primary:hover {
-  background: #000000;
-  border-color: #000000;
+  background: var(--accent);
+  border-color: var(--accent);
 }
 .btn-ghost {
   background: var(--bg-base);
@@ -694,7 +706,7 @@ tbody tr:hover { background: var(--bg-deep); }
   text-decoration: none;
   transition: background 0.15s;
 }
-.topbar-login:hover { background: #000000; }
+.topbar-login:hover { background: var(--accent); }
 @media (max-width: 1100px) {
   .topbar-actions { padding-left: 8px; }
   .topbar-icon-btn { padding: 0 6px; }

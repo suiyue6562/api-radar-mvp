@@ -40,11 +40,11 @@
 .evt-item { position: relative; padding: 14px 16px; margin-bottom: 10px; border-radius: 10px; background: var(--bg-card); border: 1px solid var(--border); transition: all 0.15s; }
 .evt-item:hover { border-color: var(--accent); transform: translateX(2px); }
 .evt-item::before { content: ''; position: absolute; left: -25px; top: 18px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--bg-base); z-index: 1; }
-.evt-item.type-new_model::before { background: #000000; }
+.evt-item.type-new_model::before { background: var(--accent); }
 .evt-item.type-price_change::before { background: #fbbf24; }
 .evt-item.type-outage::before { background: #ef4444; }
-.evt-item.type-capability_update::before { background: #000000; }
-.evt-item.type-policy_change::before { background: #000000; }
+.evt-item.type-capability_update::before { background: var(--accent); }
+.evt-item.type-policy_change::before { background: var(--accent); }
 .evt-item.type-model_deprecate::before { background: #94a3b8; }
 
 .evt-item-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
@@ -123,8 +123,8 @@
 
 
 
-<script src="data.js?v=20260922h"></script>
-<script src="app.js?v=20260922h"></script>
+<script src="data.js?v=20260922i"></script>
+<script src="app.js?v=20260922i"></script>
 <script>
 function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 

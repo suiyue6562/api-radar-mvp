@@ -19,8 +19,8 @@
 </main>
 <footer class="footer" id="footer"></footer>
 
-<script src="data.js?v=20260922h"></script>
-<script src="app.js?v=20260922h"></script>
+<script src="data.js?v=20260922i"></script>
+<script src="app.js?v=20260922i"></script>
 <script>
 function E(s){var d=document.createElement("div");d.textContent=s||"";return d.innerHTML}
 var CI={reasoning:{i:'🧠'},tool_use:{i:'🔧'},structured:{i:'📋'},vision:{i:'🖼️'},audio:{i:'🎤'},video:{i:'🎬'},coding:{i:'💻'},agentic:{i:'🤖'},long_ctx:{i:'📚'}};
@@ -50,7 +50,7 @@ var oOut=m.official_output_usd_m||m.price_output_per_m||0;
 var oAvg=(oIn+oOut)/2;
 var wT=m.weekly_tokens||0,mT=m.monthly_tokens||wT*4.3;
 var trend=typeof m.trend_week_pct==='number'?m.trend_week_pct:(typeof computeTrendDelta==='function'?computeTrendDelta(m):0);
-var tMap={official:'官方直连',aggregator:'聚合中转',self_host:'自托管开源',gateway:'网关代理',cloud:'云厂商'};
+var tMap={official:'官方直连',aggregator:'聚合中转',self_host:'自托管开源',gateway:'网关代理',cloud:'云厂商',platform:'平台',discount:'折扣站',individual:'个人站',bonus:'返佣站'};
 var pL={alipay:'支',wechat:'微',usdt:'₮',card:'卡',paypal:'P',bank:'公',corp:'公',usd:'$',cny:'¥'};
 var cr=m.official_cache_read_usd_m||m.price_cache_read_per_m||null;
 var cw=m.official_cache_write_usd_m||null;

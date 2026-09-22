@@ -174,14 +174,14 @@
 
 
 
-<script src="data.js?v=20260922h"></script>
-<script src="ads.js?v=20260922h"></script>
-<script src="app.js?v=20260922h"></script>
+<script src="data.js?v=20260922i"></script>
+<script src="ads.js?v=20260922i"></script>
+<script src="app.js?v=20260922i"></script>
 <script>
 function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 function hashStr(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return Math.abs(h); }
 
-const TYPE_MAP = { official: '官方直连', aggregator: '聚合中转', self_host: '自托管开源', gateway: '网关代理', cloud: '云厂商' };
+const TYPE_MAP = { official: '官方直连', aggregator: '聚合中转', self_host: '自托管开源', gateway: '网关代理', cloud: '云厂商', platform: '平台', discount: '折扣站', individual: '个人站', bonus: '返佣站' };
 const TYPE_PILL = { official: 'accent', aggregator: 'purple', self_host: 'success', gateway: 'warning', cloud: '' };
 const REGION_MAP = { global: '🌐 海外', cn: '🇨🇳 国内', self: '🏠 自托管', asia: '🌏 亚太', us: '🇺🇸 美国' };
 
@@ -391,7 +391,7 @@ const PAY_CARDS = {
             <span class="pill ${TYPE_PILL[provider.type] || ''}">${TYPE_MAP[provider.type] || provider.type || '—'}</span>
             ${regionTxt ? '<span class="pill">' + regionTxt + '</span>' : ''}
             ${provider.sla_uptime ? '<span class="pill success">SLA ' + provider.sla_uptime.toFixed(1) + '%</span>' : ''}
-            ${TIER_TXT[tier] ? '<span class="pill" style="background:#000;color:#fff;border-color:#000;">' + TIER_TXT[tier] + '</span>' : ''}
+            ${TIER_TXT[tier] ? '<span class="pill" style="background:var(--accent);color:#fff;border-color:var(--accent);">' + TIER_TXT[tier] + '</span>' : ''}
             <span class="meta-divider">·</span>
             <span style="color:var(--muted);font-size:12px;">已收录 ${daysListed} 天</span>
             ${provider.status === 'online' ? '<span class="pill success">● 在线</span>' : provider.status === 'limited' ? '<span class="pill warning">● 限流</span>' : '<span class="pill warning">● 维护</span>'}
