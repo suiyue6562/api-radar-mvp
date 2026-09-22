@@ -183,6 +183,17 @@ def write_insights(generated_at, insights):
     header = ("// 自动生成：backend/scripts/ai_maintain.py（MiniMax M3）\n"
               "// 每日两次更新，请勿手改。\n")
     OUT_JS.write_text(header + "var API_RADAR_AI = " + body + ";\n", encoding="utf-8")
+    # 每次生成换 URL 版本号，绕过浏览器/Cloudflare 缓存拿到最新数据
+    try:
+        stamp = "ai" + datetime.datetime.now().strftime("%Y%m%d%H")
+        for html in (REPO / "03_prototype" / "provider.html",
+                     REPO / "03_prototype" / "providers.html"):
+            txt = html.read_text(encoding="utf-8")
+            txt2 = re.sub(r"ai_insights\.js\?v=[^\"']+", "ai_insights.js?v=" + stamp, txt)
+            if txt2 != txt:
+                html.write_text(txt2, encoding="utf-8")
+    except Exception as e:
+        print("  ⚠ 版本号更新失败（不影响数据）：", e)
 
 
 def main():
