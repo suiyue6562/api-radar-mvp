@@ -10,7 +10,7 @@
 <title>不合规中转站专区 · 灰产市场透明化目录 · API观察者</title>
 <link rel="icon" type="image/png" href="assets/logo-icon.png?v=20260922r">
 <meta name="description" content="488 家公开可访问的不合规 API 中转站清单 · 仅限中国大陆以外访问 · 含完整收录标准与风险提示">
-<link rel="stylesheet" href="style.css?v=20260922s">
+<link rel="stylesheet" href="style.css?v=20260922t">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ===== gray_market 页 · okkmax 极简风格 ===== */
@@ -913,30 +913,52 @@ if (!tryBoot()) {
     });
 }
 
-// 顶部导航（与其他页面一致）
+// 顶部导航（与全站规范一致 · 品牌图标体系 ICON 规范稿落地）
+// 三大规范变体：气泡=观察室 · 盾牌=API检测 · 方A=方法（与 app.js 同源，改动需同步）
 (function(){
+  var ICONS = {
+    bubble: '<path d="M12 3.5c-4.97 0-9 3.36-9 7.5 0 2.63 1.63 4.94 4.08 6.32-.14 1.05-.63 2.32-1.58 3.18 1.84-.06 3.31-.67 4.33-1.4.73.14 1.48.22 2.17.22 4.97 0 9-3.36 9-7.5s-4.03-7.5-9-7.5z"/><circle cx="8.6" cy="11" r="0.4" fill="currentColor" stroke="none"/><circle cx="12" cy="11" r="0.4" fill="currentColor" stroke="none"/><circle cx="15.4" cy="11" r="0.4" fill="currentColor" stroke="none"/>',
+    shield: '<path d="M12 2.8l7.2 2.6v5.4c0 4.9-3.2 8.5-7.2 10-4-1.5-7.2-5.1-7.2-10V5.4L12 2.8z"/><path d="M8.8 11.8l2.3 2.3 4.2-4.5"/>',
+    'square-a': '<rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><path d="M8.2 16.6L12 7.2l3.8 9.4"/><path d="M9.6 13.6h4.8"/>',
+    home: '<path d="M3.5 10.8L12 3.5l8.5 7.3"/><path d="M5.8 9.6V20.5h12.4V9.6"/><path d="M9.8 20.5v-5.4h4.4v5.4"/>',
+    radar: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.6"/><path d="M12 12l5.4-5.4"/><circle cx="12" cy="12" r="0.6" fill="currentColor" stroke="none"/>',
+    target: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.8"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/>',
+    cube: '<path d="M12 2.8l8 4.4v9.6l-8 4.4-8-4.4V7.2l8-4.4z"/><path d="M4 7.2l8 4.4 8-4.4"/><path d="M12 11.6v9.6"/>',
+    tag: '<path d="M12.6 3.5H20.5v7.9l-8.6 8.6a2 2 0 0 1-2.8 0l-5.1-5.1a2 2 0 0 1 0-2.8l8.6-8.6z"/><circle cx="16" cy="8" r="1.3"/>',
+    pulse: '<path d="M2.8 12h4l2.2-5.6 4 11.2 2.6-6.8 1.4 1.2h4.2"/>'
+  };
+  function icon(name){
+    if (ICONS[name] && !document.getElementById('apiw-icons')) {
+      var s = '<svg id="apiw-icons" style="display:none" xmlns="http://www.w3.org/2000/svg">';
+      for (var k in ICONS) {
+        s += '<symbol id="apiw-' + k + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ICONS[k] + '</symbol>';
+      }
+      var wrap = document.createElement('div');
+      wrap.innerHTML = s + '</svg>';
+      document.body.appendChild(wrap.firstChild);
+    }
+    return '<svg class="nav-ic" aria-hidden="true"><use href="#apiw-' + name + '"/></svg>';
+  }
   var NAV = [
-    { href: 'index.html', label: '首页', id: 'home' },
-    { href: 'models.html', label: '模型库', id: 'models' },
-    { href: 'providers.html', label: '渠道库', id: 'providers' },
-    { href: 'compare.html', label: '比价', id: 'compare' },
-    { href: 'events.html', label: '行情', id: 'events' },
-    { href: 'playground.html', label: 'Playground', id: 'playground' },
-    { href: 'business.html', label: '商家', id: 'business' },
-    { href: 'watch.html', label: '观察室', id: 'watch' },
-    { href: 'method.html', label: '方法', id: 'method' },
-    { href: 'test.html', label: '测 Key', id: 'test' },
+    { href: 'index.html', label: '首页', id: 'home', icon: 'home' },
+    { href: 'providers.html', label: 'AI中转', id: 'providers', icon: 'radar' },
+    { href: 'pick.html', label: '帮我选站', id: 'pick', icon: 'target' },
+    { href: 'models.html', label: '模型库', id: 'models', icon: 'cube' },
+    { href: 'compare.html', label: '比价', id: 'compare', icon: 'tag' },
+    { href: 'events.html', label: '行情', id: 'events', icon: 'pulse' },
+    { href: 'playground.html', label: 'API检测', id: 'playground', icon: 'shield' },
+    { href: 'watch.html', label: '观察室', id: 'watch', icon: 'bubble' },
+    { href: 'method.html', label: '方法', id: 'method', icon: 'square-a' },
   ];
   var bar = document.getElementById('topbar');
   if (!bar) return;
   bar.innerHTML = '<div class="topbar-inner">' +
     '<a href="index.html" class="brand">' +
-      '<div class="brand-logo">R</div>' +
+      '<img class="brand-logo-img" src="assets/logo-icon.png?v=20260922r" alt="API观察者">' +
       '<span class="brand-text">API观察者</span>' +
-      '<span class="brand-sub">v2.1</span>' +
     '</a>' +
     '<nav class="nav">' + NAV.map(function(n){
-      return '<a href="' + n.href + '">' + n.label + '</a>';
+      return '<a href="' + n.href + '"' + (location.pathname.indexOf(n.href) >= 0 ? ' class="active"' : '') + '>' + icon(n.icon) + '<span>' + n.label + '</span></a>';
     }).join('') + '</nav>' +
   '</div>';
 })();

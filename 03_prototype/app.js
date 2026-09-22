@@ -30,17 +30,73 @@ function escapeHtml(s) {
   }[c]));
 }
 
+// ============ 品牌图标体系（品牌视觉系统 v2 · ICON 规范稿落地） ============
+// 三大规范变体：对话气泡(bubble)=观察室 · 盾牌(shield)=API检测 · 方A(square-a)=方法
+// 风格基因：24 网格 / 1.8px 描边 / 圆头圆角 / currentColor / 无填充
+const APIW_ICONS = {
+  'bubble':
+    '<path d="M12 3.5c-4.97 0-9 3.36-9 7.5 0 2.63 1.63 4.94 4.08 6.32-.14 1.05-.63 2.32-1.58 3.18 1.84-.06 3.31-.67 4.33-1.4.73.14 1.48.22 2.17.22 4.97 0 9-3.36 9-7.5s-4.03-7.5-9-7.5z"/>' +
+    '<circle cx="8.6" cy="11" r="0.4" fill="currentColor" stroke="none"/>' +
+    '<circle cx="12" cy="11" r="0.4" fill="currentColor" stroke="none"/>' +
+    '<circle cx="15.4" cy="11" r="0.4" fill="currentColor" stroke="none"/>',
+  'shield':
+    '<path d="M12 2.8l7.2 2.6v5.4c0 4.9-3.2 8.5-7.2 10-4-1.5-7.2-5.1-7.2-10V5.4L12 2.8z"/>' +
+    '<path d="M8.8 11.8l2.3 2.3 4.2-4.5"/>',
+  'square-a':
+    '<rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/>' +
+    '<path d="M8.2 16.6L12 7.2l3.8 9.4"/>' +
+    '<path d="M9.6 13.6h4.8"/>',
+  'home':
+    '<path d="M3.5 10.8L12 3.5l8.5 7.3"/>' +
+    '<path d="M5.8 9.6V20.5h12.4V9.6"/>' +
+    '<path d="M9.8 20.5v-5.4h4.4v5.4"/>',
+  'radar':
+    '<circle cx="12" cy="12" r="8.5"/>' +
+    '<circle cx="12" cy="12" r="4.6"/>' +
+    '<path d="M12 12l5.4-5.4"/>' +
+    '<circle cx="12" cy="12" r="0.6" fill="currentColor" stroke="none"/>',
+  'target':
+    '<circle cx="12" cy="12" r="8.5"/>' +
+    '<circle cx="12" cy="12" r="4.8"/>' +
+    '<circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/>',
+  'cube':
+    '<path d="M12 2.8l8 4.4v9.6l-8 4.4-8-4.4V7.2l8-4.4z"/>' +
+    '<path d="M4 7.2l8 4.4 8-4.4"/>' +
+    '<path d="M12 11.6v9.6"/>',
+  'tag':
+    '<path d="M12.6 3.5H20.5v7.9l-8.6 8.6a2 2 0 0 1-2.8 0l-5.1-5.1a2 2 0 0 1 0-2.8l8.6-8.6z"/>' +
+    '<circle cx="16" cy="8" r="1.3"/>',
+  'pulse':
+    '<path d="M2.8 12h4l2.2-5.6 4 11.2 2.6-6.8 1.4 1.2h4.2"/>',
+};
+
+// 注入 SVG sprite（仅一次），返回 <use> 引用节点
+function navIcon(name) {
+  if (APIW_ICONS[name] && !document.getElementById('apiw-icons')) {
+    const sprite = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    sprite.setAttribute('style', 'display:none');
+    sprite.setAttribute('id', 'apiw-icons');
+    sprite.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    sprite.innerHTML = Object.entries(APIW_ICONS).map(([k, body]) =>
+      '<symbol id="apiw-' + k + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + body + '</symbol>'
+    ).join('');
+    document.body.appendChild(sprite);
+  }
+  return '<svg class="nav-ic" aria-hidden="true"><use href="#apiw-' + name + '"/></svg>';
+}
+
 // ============ 顶部导航 — 仿 okkmax 风格：brand + 8 链接 + 右侧搜索/积分/设置/登录 ============
+// icon 映射品牌图标体系：三大规范变体气泡/盾牌/方A + 同基因补全图标
 const NAV = [
-  { href: 'index.html', label: '首页', id: 'home' },
-  { href: 'providers.html', label: 'AI中转', id: 'providers' },
-  { href: 'pick.html', label: '🎯 帮我选站', id: 'pick' },
-  { href: 'models.html', label: '模型库', id: 'models' },
-  { href: 'compare.html', label: '比价', id: 'compare' },
-  { href: 'events.html', label: '行情', id: 'events' },
-  { href: 'playground.html', label: 'API检测', id: 'playground' },
-  { href: 'watch.html', label: '观察室', id: 'watch' },
-  { href: 'method.html', label: '方法', id: 'method' },
+  { href: 'index.html', label: '首页', id: 'home', icon: 'home' },
+  { href: 'providers.html', label: 'AI中转', id: 'providers', icon: 'radar' },
+  { href: 'pick.html', label: '帮我选站', id: 'pick', icon: 'target' },
+  { href: 'models.html', label: '模型库', id: 'models', icon: 'cube' },
+  { href: 'compare.html', label: '比价', id: 'compare', icon: 'tag' },
+  { href: 'events.html', label: '行情', id: 'events', icon: 'pulse' },
+  { href: 'playground.html', label: 'API检测', id: 'playground', icon: 'shield' },
+  { href: 'watch.html', label: '观察室', id: 'watch', icon: 'bubble' },
+  { href: 'method.html', label: '方法', id: 'method', icon: 'square-a' },
 ];
 
 function renderTopbar(active = '') {
@@ -52,7 +108,7 @@ function renderTopbar(active = '') {
       '<span class="brand-text">API观察者</span>' +
     '</a>' +
     '<nav class="nav">' + NAV.map(n =>
-      '<a href="' + n.href + '" class="' + (active === n.id ? 'active' : '') + '">' + n.label + '</a>'
+      '<a href="' + n.href + '" class="' + (active === n.id ? 'active' : '') + '">' + navIcon(n.icon) + '<span>' + n.label + '</span></a>'
     ).join('') + '</nav>' +
     '<div class="topbar-actions">' +
       '<button class="topbar-icon-btn" title="搜索" aria-label="搜索"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></button>' +

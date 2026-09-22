@@ -174,13 +174,25 @@ input:focus, select:focus, textarea:focus {
   font-size: 13px;
   font-weight: 500;
   transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
-.nav a:hover { color: var(--fg-strong); background: var(--bg-deep); }
+/* 品牌图标体系（规范稿 ICON 变体）：14px 描边图标，随文字色，选中态高亮品牌琥珀 */
+.nav-ic {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.85;
+  transition: opacity 0.15s;
+}
+.nav a:hover .nav-ic { opacity: 1; }
 .nav a.active {
   color: var(--fg-strong);
   background: var(--bg-deep);
   font-weight: 600;
 }
+.nav a.active .nav-ic { opacity: 1; color: var(--accent-ink); }
 
 /* ===== 主容器 ===== */
 .main {
