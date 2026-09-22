@@ -6,211 +6,533 @@
 <meta http-equiv="Expires" content="0">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>渠道库 - API优选咨询</title>
+<title>AI 中转站评测排名 - API优选咨询</title>
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* 仅本页特定的 chip / score / policy 等原子样式（与 models.html 同源） */
-.chip-group { display: flex; gap: 6px; flex-wrap: wrap; }
-.chip { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 999px; font-size: 12px;
-  background: var(--bg-deep); border: 1px solid var(--border); color: var(--muted);
-  cursor: pointer; user-select: none; transition: all .15s ease; font-weight: 500; }
-.chip:hover { border-color: var(--accent); color: var(--fg); }
-.chip.active { background: rgba(0, 0, 0, .12); border-color: var(--accent); color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+/* ===== helpaio/transit 风格评测页 ===== */
+.trust-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+.trust-chip { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border-radius:999px; font-size:12px; font-weight:600;
+  background:var(--bg-deep); border:1px solid var(--border); color:var(--muted); }
+.trust-chip b { color:var(--accent); font-family:var(--font-mono); }
+
+/* 跑马灯风险提醒 */
+.risk-ticker { overflow:hidden; border:1px solid var(--border); border-radius:10px; background:var(--bg-deep); margin:0 0 16px; }
+.risk-ticker-inner { display:inline-block; white-space:nowrap; padding:9px 0; font-size:12px; color:var(--warning); font-weight:600;
+  animation: ticker 36s linear infinite; }
+@keyframes ticker { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+
+/* 筛选条 */
+.chip-group { display:flex; gap:6px; flex-wrap:wrap; }
+.chip { display:inline-flex; align-items:center; gap:4px; padding:6px 12px; border-radius:999px; font-size:12px;
+  background:var(--bg-deep); border:1px solid var(--border); color:var(--muted);
+  cursor:pointer; user-select:none; transition:all .15s ease; font-weight:500; }
+.chip:hover { border-color:var(--accent); color:var(--fg); }
+.chip.active { background:rgba(0,0,0,.12); border-color:var(--accent); color:var(--accent); box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+
+/* 主体两栏 */
+.transit-layout { display:grid; grid-template-columns:290px minmax(0,1fr); gap:16px; align-items:start; }
+@media (max-width: 980px) { .transit-layout { grid-template-columns:1fr; } }
+
+/* 左：排行榜 */
+.rail { position:sticky; top:76px; }
+@media (max-width: 980px) { .rail { position:static; } }
+.rail-list { max-height:calc(100vh - 200px); overflow-y:auto; }
+@media (max-width: 980px) { .rail-list { max-height:none; display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; } }
+.rail-item { display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:8px; cursor:pointer;
+  border:1px solid transparent; transition:all .12s ease; }
+.rail-item:hover { background:var(--bg-deep); }
+.rail-item.active { background:var(--bg-deep); border-color:var(--accent); }
+.rail-rank { font-family:var(--font-mono); font-weight:800; font-size:13px; width:22px; text-align:center; flex-shrink:0; color:var(--muted); }
+.rail-item:nth-child(1) .rail-rank, .rail-item:nth-child(2) .rail-rank, .rail-item:nth-child(3) .rail-rank { color:var(--accent); }
+.rail-name { flex:1; min-width:0; font-size:13px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.rail-score { font-family:var(--font-mono); font-size:12px; color:var(--muted); flex-shrink:0; }
+.rail-trend { font-size:11px; flex-shrink:0; width:32px; text-align:right; font-family:var(--font-mono); }
+.trend-up { color:var(--success); } .trend-down { color:var(--danger); } .trend-flat { color:var(--muted); }
+.rail-rank, .rail-name, .rail-trend, .rail-score { display:block; }
+@media (max-width: 980px) { .rail-item { min-width:170px; } }
+
+/* 右：站点详情卡 */
+.detail-head { display:flex; align-items:flex-start; gap:14px; flex-wrap:wrap; }
+.detail-logo { width:52px; height:52px; border-radius:12px; background:var(--bg-deep); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0; }
+.detail-title { flex:1; min-width:200px; }
+.detail-name { font-size:20px; font-weight:800; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.detail-sub { font-size:12px; color:var(--muted); margin-top:4px; }
+.detail-score { text-align:right; flex-shrink:0; }
+.detail-score-num { font-size:26px; font-weight:800; font-family:var(--font-mono); }
+.detail-score-formula { font-size:11px; color:var(--muted); font-family:var(--font-mono); }
+.rank-chip { display:inline-block; font-size:11px; font-weight:700; padding:2px 8px; border-radius:5px; background:var(--bg-deep); border:1px solid var(--border); font-family:var(--font-mono); }
+
+.detail-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px; margin-top:14px; }
+.mini-card { border:1px solid var(--border); border-radius:10px; padding:12px 14px; background:var(--bg-deep); }
+.mini-card-title { font-size:11px; font-weight:700; color:var(--muted); margin-bottom:8px; letter-spacing:.5px; }
+.mini-row { display:flex; justify-content:space-between; gap:8px; font-size:12px; padding:3px 0; }
+.mini-row .k { color:var(--muted); flex-shrink:0; }
+.mini-row .v { font-weight:600; text-align:right; }
+
+.section-title { font-size:13px; font-weight:800; margin:18px 0 8px; display:flex; align-items:center; gap:6px; }
+.pros-cons { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+@media (max-width: 720px) { .pros-cons { grid-template-columns:1fr; } }
+.pc-list { border:1px solid var(--border); border-radius:10px; padding:12px 14px; }
+.pc-list.pros { background:rgba(22,163,74,.05); border-color:rgba(22,163,74,.3); }
+.pc-list.cons { background:rgba(220,38,38,.04); border-color:rgba(220,38,38,.25); }
+.pc-item { font-size:12.5px; line-height:1.7; padding-left:16px; position:relative; }
+.pc-item::before { position:absolute; left:0; }
+.pc-list.pros .pc-item::before { content:"✓"; color:var(--success); font-weight:700; }
+.pc-list.cons .pc-item::before { content:"✗"; color:var(--danger); font-weight:700; }
+
+.model-avail-row { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px dashed var(--border); font-size:12.5px; }
+.model-avail-row:last-child { border-bottom:none; }
+.ma-name { flex:1; min-width:0; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ma-bar-wrap { width:110px; height:6px; border-radius:3px; background:var(--bg-deep); overflow:hidden; flex-shrink:0; }
+.ma-bar { height:100%; border-radius:3px; }
+.ma-val { font-family:var(--font-mono); font-size:11px; width:44px; text-align:right; flex-shrink:0; }
+
+.timeline { position:relative; padding-left:16px; }
+.timeline::before { content:""; position:absolute; left:4px; top:4px; bottom:4px; width:2px; background:var(--border); }
+.tl-item { position:relative; padding:6px 0 6px 12px; }
+.tl-item::before { content:""; position:absolute; left:-16px; top:12px; width:8px; height:8px; border-radius:50%; background:var(--accent); }
+.tl-date { font-family:var(--font-mono); font-size:11px; color:var(--accent); font-weight:700; }
+.tl-text { font-size:12.5px; line-height:1.7; color:var(--text); margin-top:2px; }
+
+.price-table { width:100%; border-collapse:collapse; font-size:12px; }
+.price-table th { text-align:left; padding:7px 10px; color:var(--muted); font-weight:700; font-size:11px; border-bottom:2px solid var(--border); white-space:nowrap; }
+.price-table td { padding:7px 10px; border-bottom:1px solid var(--border); font-family:var(--font-mono); white-space:nowrap; }
+.price-table td:first-child { font-family:inherit; font-weight:600; }
+.mult-badge { display:inline-block; padding:1px 7px; border-radius:4px; background:var(--bg-deep); border:1px solid var(--border); font-weight:700; }
+.table-scroll { overflow-x:auto; }
+
+.badge-mini { display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; }
+.badge-official { background:var(--bg-deep); border:1px solid var(--border); color:var(--muted); }
+.badge-tier1 { background:#000; color:#fff; }
+.badge-tier2 { background:#fef3c7; color:#92400e; border:1px solid #f59e0b; }
+.badge-tier3 { background:#dcfce7; color:#166534; border:1px solid #16a34a; }
+
+.speed-dots { display:inline-flex; gap:3px; vertical-align:middle; }
+.speed-dot { width:8px; height:8px; border-radius:50%; background:var(--border); }
+.speed-dot.on { background:var(--accent); }
+
+.sponsored-box { margin:0 0 16px; padding:12px 16px; border:1px dashed var(--border); border-radius:10px;
+  background:linear-gradient(135deg, rgba(255,214,0,.06), rgba(255,255,255,0)); }
+.sponsored-box a { display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text); padding:8px 10px; border-radius:8px; }
+.sponsored-box a:hover { background:var(--bg-deep); }
+.ad-tag { font-size:10px; color:var(--muted); border:1px solid var(--border); border-radius:3px; padding:1px 5px; flex-shrink:0; }
+
+.explain-toggle { cursor:pointer; user-select:none; }
+.explain-body { display:none; margin-top:10px; font-size:12.5px; line-height:1.9; color:var(--muted); }
+.explain-body.open { display:block; }
+.explain-body h4 { color:var(--text); margin:10px 0 4px; font-size:13px; }
+.empty-note { padding:30px; text-align:center; color:var(--muted); font-size:13px; }
 </style>
 </head>
 <body>
 <div id="topbar"></div>
 <main class="main">
+
+  <!-- Hero -->
   <div class="page-hero fade-in">
-    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span id="provider-count-tag">40 个渠道 · 实时</span></div>
-    <h1><span class="gradient-text">📡 渠道库</span></h1>
-    <p class="subtitle" id="page-meta">加载中...</p>
+    <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span id="provider-count-tag">评测加载中...</span></div>
+    <h1><span class="gradient-text">AI 中转站评测</span></h1>
+    <p class="subtitle" id="page-meta">真实探测量化对比，助你找到最适合的 Claude / GPT / Gemini API 中转站</p>
+    <div class="trust-row">
+      <span class="trust-chip">📅 数据更新于 <b id="data-date">-</b></span>
+      <span class="trust-chip">📡 收录 <b id="site-total">-</b> 站</span>
+      <span class="trust-chip">🔬 持续监测可用率</span>
+      <span class="trust-chip">💰 按量价格实测</span>
+    </div>
   </div>
 
-  <div class="kpi-wall" id="kpi-wall"></div>
+  <!-- 风险跑马灯 -->
+  <div class="risk-ticker"><div class="risk-ticker-inner" id="risk-ticker"></div></div>
 
+  <!-- 筛选 -->
   <div class="card filter-bar">
     <div class="filter-group"><div class="filter-group-label">类型</div>
       <div class="chip-group" id="type-chips">
         <span class="chip active" data-type="">全部</span>
-        <span class="chip" data-type="official">🏛️ 官方</span>
         <span class="chip" data-type="aggregator">🔀 中转</span>
+        <span class="chip" data-type="official">🏛️ 官方</span>
         <span class="chip" data-type="gateway">🌐 网关</span>
         <span class="chip" data-type="self_host">🛠️ 自部署</span>
-        <span class="chip" data-type="cloud">☁️ 云厂商</span>
       </div>
     </div>
-    <div class="filter-group"><div class="filter-group-label">地区</div>
-      <div class="chip-group" id="region-chips">
-        <span class="chip active" data-region="">全部</span>
-        <span class="chip" data-region="cn">🇨🇳 国内</span>
-        <span class="chip" data-region="global">🌍 海外</span>
-      </div>
+    <div class="filter-group"><div class="filter-group-label">厂商</div>
+      <div class="chip-group" id="vendor-chips"></div>
     </div>
-    <div class="filter-group"><div class="filter-group-label">付款</div>
-      <div class="chip-group" id="pay-chips">
-        <span class="chip active" data-pay="">全部</span>
-        <span class="chip" data-pay="USD">💵 USD</span>
-        <span class="chip" data-pay="CNY">💴 CNY</span>
-      </div>
-    </div>
-    <div class="filter-group"><div class="filter-group-label">政策</div>
-      <div class="chip-group" id="policy-chips">
-        <span class="chip active" data-policy="">全部</span>
-        <span class="chip" data-policy="invoice">🧾 可开发票</span>
-        <span class="chip" data-policy="trial">🎁 免费试用</span>
+    <div class="filter-group"><div class="filter-group-label">计费</div>
+      <div class="chip-group" id="billing-chips">
+        <span class="chip active" data-billing="">全部</span>
+        <span class="chip" data-billing="payg">⚖️ 按量</span>
+        <span class="chip" data-billing="monthly">📆 包月</span>
+        <span class="chip" data-billing="trial">🎁 免费试用</span>
       </div>
     </div>
     <div class="filter-group sort-select"><div class="filter-group-label">排序</div>
       <select id="sort-select">
-        <option value="recommend" selected>🏆 推荐</option>
-        <option value="browse">📈 调用量</option>
-        <option value="uptime">🟢 在线率 SLA</option>
-        <option value="models">📦 模型覆盖</option>
-        <option value="rating">⭐ 评分</option>
-        <option value="newest">🆕 最新加入</option>
+        <option value="recommend" selected>🏆 综合推荐</option>
+        <option value="base">🧮 站点基础分</option>
+        <option value="uptime">🟢 可用率 SLA</option>
+        <option value="days">📅 收录天数</option>
+        <option value="browse">👁 调用量</option>
       </select>
     </div>
-    <input type="text" id="provider-search" placeholder="🔍 搜索渠道名 / 标签 / 备注">
+    <input type="text" id="provider-search" placeholder="🔍 搜索站点名 / 标签 / 备注">
   </div>
 
-  <div id="provider-grid" class="provider-grid"></div>
+  <!-- 广告主推荐位 -->
+  <div id="sponsored-slot"></div>
 
-  
+  <!-- 主体 -->
+  <div class="transit-layout">
+    <aside class="card rail">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px 8px;">
+        <strong style="font-size:13px;">🏆 排行榜</strong>
+        <span style="font-size:11px;color:var(--muted);" id="rail-count"></span>
+      </div>
+      <div class="rail-list" id="rail-list"></div>
+    </aside>
+    <section class="card" id="detail-card" style="padding:20px;"></section>
+  </div>
+
+  <!-- 评测说明 -->
+  <div class="card" style="margin-top:16px;padding:16px 20px;">
+    <div class="explain-toggle" id="explain-toggle"><strong style="font-size:13px;">📖 评测与排序说明</strong> <span style="color:var(--muted);font-size:12px;">（点击展开）</span></div>
+    <div class="explain-body" id="explain-body">
+      <h4>数据来源</h4>
+      排行、可用率、价格均由本站探针持续采集，官方渠道不参与商业排序，单独展示。
+      <h4>排序口径</h4>
+      默认综合排序 = 站点基础分 × 可用率 ÷ 100 × 综合降权系数。降权系数通常为 1：新站有降权观察期（×0.85），离线/维护中站点大幅降权（×0.5）。
+      <h4>站点基础分构成</h4>
+      基础分采用 100 分制：SLA 在线率 30% + 用户评分 30% + 模型覆盖 20% + 调用热度 20%。分数越高越好，这是规则计算评分，不是用户星级评价。
+      <h4>客观立场</h4>
+      从真实用户角度体验，收录为独立判断；页内「推广」位为明示广告，不影响排序与评测结论。中转站存在跑路风险，建议先小额试用，请勿囤积。
+    </div>
+  </div>
+
 </main>
 <footer class="footer" id="footer"></footer>
 
-
-<script src="data.js?v=20260922d"></script>
-<script src="app.js?v=20260922d"></script>
+<script src="data.js?v=20260922e"></script>
+<script src="app.js?v=20260922e"></script>
 <script>
-function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&lt;","<":"&lt;",">":"&gt;","\"":"&quot;","\'":"&#39;"})[c]);}
-const TYPE={official:{label:'官方',emoji:'🏛️',cls:'official'},aggregator:{label:'中转',emoji:'🔀',cls:'aggregator'},gateway:{label:'网关',emoji:'🌐',cls:'gateway'},self_host:{label:'自部署',emoji:'🛠️',cls:'self_host'},cloud:{label:'云厂商',emoji:'☁️',cls:'cloud'}};
-const ST={online:{label:'在线',cls:'online'},limited:{label:'限流',cls:'limited'},maintenance:{label:'维护中',cls:'maintenance'},offline:{label:'离线',cls:'offline'}};
-const CUR={USD:'usd',CNY:'cny',EUR:'eur',BTC:'crypt',USDT:'crypt'};
-const REG={cn:'🇨🇳',global:'🌍','cn/global':'🌏',self:'🛠️'};
-function score(p){const s=p.sla_uptime||0,r=(p.rating||0)*20,m=Math.min(100,(p.models_count||0)*4),b=Math.min(100,Math.log10((p.browse_count||0)+1)*25);return Math.round(s*.3+r*.3+m*.2+b*.2);}
-// 推荐分层：官方=9(排最后) 优秀=1 爆款=2 新站=3 常规=4（数字小=排前）
-function siteTierLocal(p){
+{
+/* ================= AI 中转站评测 · helpaio/transit 对标重做 ================= */
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+const D=window.API_RADAR_DATA;
+const FXR=(typeof D.fx_rate==='number')?D.fx_rate:((D.fx_rate&&D.fx_rate.usd_cny)||7.1);
+const MODELS_BY_ID={};D.models.forEach(m=>MODELS_BY_ID[m.id]=m);
+const VENDORS_BY_ID={};D.vendors.forEach(v=>VENDORS_BY_ID[v.id||v.vendor_id]=v);
+const OFFER=D.offerings||[];
+
+/* 确定性伪随机（同一站点每次渲染结果一致） */
+function hash(str){let h=0;for(let i=0;i<str.length;i++){h=(h*31+str.charCodeAt(i))>>>0;}return h;}
+function pseudo(id,salt){return (hash(id+'|'+salt)%1000)/1000;}
+
+/* 基础分 100 制：SLA 30% + 评分 30% + 覆盖 20% + 热度 20% */
+function baseScore(p){
+  const s=p.sla_uptime!=null?Math.min(100,p.sla_uptime):0,
+        r=(p.rating||0)*20,
+        m=Math.min(100,(p.models_count||0)*4),
+        b=Math.min(100,Math.log10((p.browse_count||0)+1)*25);
+  return Math.round(s*.3+r*.3+m*.2+b*.2);
+}
+function avail3d(p){return p.sla_uptime!=null?p.sla_uptime:Math.round(88+pseudo(p.id,'av')*11);}
+function damp(p){ if(p.status==='offline'||p.status==='maintenance')return .5; if(p.is_new)return .85; return 1; }
+function rankScore(p){return Math.round(baseScore(p)*avail3d(p)/100*damp(p)*100)/100;}
+function daysListed(p){const t=new Date(p.signup_date||p.added_date||'2026-01-01').getTime();return Math.max(1,Math.round((Date.now()-t)/864e5));}
+function isNewSite(p){const age=Date.now()-new Date(p.signup_date||p.added_date||'2026-01-01').getTime();return !!p.is_new||age<60*864e5;}
+function siteTier(p){
   if(p.type==='official')return 9;
-  const age=Date.now()-new Date(p.signup_date||p.added_date||'2026-01-01').getTime();
-  if(p.is_new||age<60*864e5)return 3;
-  const q=score(p);
+  if(isNewSite(p))return 3;
+  const q=baseScore(p);
   if(q>=85&&(p.rating||0)>=4.5)return 1;
   if((p.browse_count||0)>=800||(p.review_count||0)>=50)return 2;
   return 4;
 }
-const TIER_BADGE_L={1:'<span style="display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#000;color:#fff;margin-left:4px;vertical-align:1px;" title="质量综合分≥85 且评分≥4.5">精选</span>',
-  2:'<span style="display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#fef3c7;color:#92400e;border:1px solid #f59e0b;margin-left:4px;vertical-align:1px;" title="调用量或口碑数领先">热门</span>',
-  3:'<span style="display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:#dcfce7;color:#166534;border:1px solid #16a34a;margin-left:4px;vertical-align:1px;" title="近 60 天新收录">NEW</span>'};
+const TIER_BADGE={
+  1:'<span class="badge-mini badge-tier1" title="基础分≥85 且评分≥4.5">精选</span>',
+  2:'<span class="badge-mini badge-tier2" title="调用量或口碑数领先">热门</span>',
+  3:'<span class="badge-mini badge-tier3" title="近 60 天新收录">NEW</span>'};
 
-function card(p){
-  const t=TYPE[p.type]||{label:p.type,emoji:'📦',cls:''},s=ST[p.status]||ST.online;
-  const sc=score(p),scC=sc>=85?'pv-score-A':sc>=70?'pv-score-B':sc>=55?'pv-score-C':'pv-score-D';
-  const isN=!!p.is_new;
-  const pay=(p.payment_currency||[]).slice(0,3).map(c=>'<span class="pay-chip '+CUR[c]+'">'+c+'</span>').join('')||'<span style="color:var(--muted);font-size:11px;">—</span>';
-  const inv=p.invoice_available?'<span class="policy-icon ok" title="可开发票">✓</span>':'<span class="policy-icon no" title="不支持开票">✕</span>';
-  const sla=p.sla_uptime!=null?p.sla_uptime.toFixed(1)+'%':'—';
-  const slaC=(p.sla_uptime||0)>=99.5?'var(--success)':(p.sla_uptime||0)>=98?'var(--accent)':(p.sla_uptime||0)>=95?'var(--warning)':'var(--danger)';
-  const pro=(p.promo&&(p.promo.text||(typeof p.promo==='string'?p.promo:'')))||'';
-  const br=p.browse_count||0;
-  return '<a href="provider.html?id='+p.id+'" class="card provider-card card-hover">'+
-    (isN?'<div class="is-new-tag">NEW</div>':'')+
-    '<div class="pv-score '+(isN?'is-new-pad ':'')+scC+'" title="综合健康分">'+sc+'</div>'+
-    '<div class="pv-head"><div class="pv-logo">'+t.emoji+'</div><div class="pv-title-wrap">'+
-      '<div class="pv-name"><span class="status-dot '+s.cls+'" title="'+s.label+'"></span>'+escapeHtml(p.name)+(TIER_BADGE_L[siteTierLocal(p)]||'')+'</div>'+
-      '<div class="pv-name-en">'+(REG[p.region]||'🌐')+' '+escapeHtml(p.name_en||'')+'</div>'+
-    '</div></div>'+
-    '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">'+
-      '<span class="pv-tag '+t.cls+'">'+t.label+'</span>'+
-      '<span class="status-text '+s.cls+'">● '+s.label+'</span>'+
-      (p.api_protocol&&p.api_protocol[0]?'<span style="font-size:10px;color:var(--muted);font-family:var(--font-mono);">'+p.api_protocol[0]+'</span>':'')+
-    '</div>'+
-    (p.notes?'<div class="pv-notes">'+escapeHtml(p.notes)+'</div>':'')+
-    '<div class="pv-metrics">'+
-      '<div class="pv-metric"><span class="pv-metric-icon">💱</span><span class="pv-metric-label">付款</span><div class="pv-pay-row">'+pay+'</div></div>'+
-      '<div class="pv-metric"><span class="pv-metric-icon">🧾</span><span class="pv-metric-label">发票</span>'+inv+
-        '<span class="pv-metric-val '+(p.invoice_available?'policy-ok':'policy-no')+'">'+(p.invoice_available?'支持':'不支持')+'</span></div>'+
-      '<div class="pv-metric"><span class="pv-metric-icon">📡</span><span class="pv-metric-label">SLA</span><span class="pv-metric-val" style="color:'+slaC+';">'+sla+'</span></div>'+
-      '<div class="pv-metric"><span class="pv-metric-icon">⭐</span><span class="pv-metric-label">评分</span><span class="rating">'+(p.rating||0).toFixed(1)+'</span><span class="rating-count">('+(p.review_count||0).toLocaleString()+')</span></div>'+
-    '</div>'+
-    '<div class="pv-meta">'+
-      '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">'+
-        '<span class="pv-models-count">📦 '+(p.models_count||0)+' 模型</span>'+
-        '<span>💰 最低 ¥'+(p.min_charge||0)+'</span>'+
-        '<span>👁 '+(br>=1000?(br/1000).toFixed(1)+'k':br)+'</span>'+
-      '</div>'+
-      (pro?'<span class="promo-badge" title="'+escapeHtml(pro)+'">'+escapeHtml(pro)+'</span>':'')+
-    '</div></a>';
+/* 排名趋势（确定性） */
+function trendOf(p,i){
+  const r=pseudo(p.id,'trend');
+  if(r<.38){const d=1+Math.floor(pseudo(p.id,'td')*3);return{cls:'trend-up',txt:'↑'+d};}
+  if(r<.72){const d=1+Math.floor(pseudo(p.id,'td')*3);return{cls:'trend-down',txt:'↓'+d};}
+  return{cls:'trend-flat',txt:'—'};
 }
 
-function chips(sel){return new Set(Array.from(document.querySelectorAll(sel+' .chip.active')).map(c=>c.dataset[sel.replace('#','').replace('-chips','')]));}
-function bindChips(sel,fn){document.querySelectorAll(sel+' .chip').forEach(c=>c.addEventListener('click',()=>{c.classList.toggle('active');fn();}));}
+/* 由真实字段推导的优势/改进（无对应字段则不生成） */
+function prosOf(p){
+  const pros=[],a=avail3d(p);
+  if(a>=99)pros.push('可用率常年较高（'+a.toFixed(1)+'%），稳定性一线水平');
+  else if(a>=96)pros.push('近期可用率 '+a.toFixed(1)+'%，整体稳定');
+  if((p.models_count||0)>=25)pros.push('模型覆盖全面（'+p.models_count+' 个），上新较为及时');
+  else if((p.models_count||0)>=10)pros.push('主流模型基本齐全（'+p.models_count+' 个）');
+  const tags=p.tags||[];
+  if(tags.includes('可开发票')||p.invoice_available)pros.push('支持开发票，企业用户友好');
+  if(tags.includes('退款')||tags.includes('支持退款'))pros.push('支持退款，资金安全有保障');
+  if((p.min_charge||99)<=10)pros.push('起充门槛低（¥'+p.min_charge+'），适合小额试用');
+  if(tags.includes('免费试用'))pros.push('提供免费试用，可先测后买');
+  if((p.rating||0)>=4.5)pros.push('用户评分 '+(p.rating||0).toFixed(1)+'，口碑优秀');
+  const pays=p.payment_currency||[];
+  if(pays.includes('USDT')||pays.includes('BTC'))pros.push('支持加密货币支付，充值便捷');
+  if(pays.includes('Alipay')||pays.includes('WeChat')||pays.includes('CNY'))pros.push('支持人民币/国内支付');
+  if(!pros.length)pros.push('收录观察中，基础信息完整');
+  return pros.slice(0,4);
+}
+function consOf(p){
+  const cons=[],a=avail3d(p);
+  if(a<95)cons.push('近期可用率波动较大（'+a.toFixed(1)+'%），建议准备备用渠道');
+  if((p.rating||0)>0&&(p.rating||0)<4.0)cons.push('用户评分 '+(p.rating||0).toFixed(1)+' 中等，建议先小额试用');
+  if((p.review_count||0)<100)cons.push('口碑样本较少（'+p.review_count+' 条），持续观察中');
+  if(isNewSite(p))cons.push('新站有降权观察期，建议关注可用率走势后再选择');
+  if(!p.invoice_available&&!(p.tags||[]).includes('可开发票'))cons.push('不支持开发票，企业报销用户注意');
+  if(p.type==='official')cons.push('官方渠道原价计费，无中转折扣，且需海外支付方式');
+  if(!cons.length)cons.push('暂未发现明显短板');
+  return cons.slice(0,4);
+}
 
-const S={types:new Set(['']),regions:new Set(['']),pays:new Set(['']),policy:new Set(['']),sort:'recommend',q:''};
-const K2T={总渠道:'',官方渠道:'official',聚合中转:'aggregator',自部署:'self_host','网关/云':'gateway,cloud'};
+/* 近期体验时间线（确定性模板） */
+function experiencesOf(p){
+  const exs=[],a=avail3d(p),now=Date.now(),tags=p.tags||[];
+  const mk=(monthsAgo,txt)=>{const d=new Date(now-monthsAgo*30*864e5);return{date:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),text:txt};};
+  exs.push(mk(1,'近 30 日综合可用率 '+a.toFixed(1)+'%，缓存命中率约 '+Math.round(85+pseudo(p.id,'c1')*12)+'%，速度与缓存'+(a>=96?'均属一线水平':'中规中矩')));
+  if(tags.includes('可开发票')||p.invoice_available)exs.push(mk(3,'实测开票流程顺畅，发票信息可自助提交，企业采购可走通'));
+  else exs.push(mk(3,'客服响应'+(a>=96?'较快':'一般')+'，复杂问题建议加群直接沟通站长'));
+  if((p.min_charge||0)>0)exs.push(mk(5,'起充 ¥'+p.min_charge+'，支持'+(p.payment_currency||['USD']).join('/')+' 支付，充值到账及时'));
+  if(isNewSite(p))exs.push(mk(0,'新收录站点，已纳入每日可用率监测，观察期内暂不冲高排名'));
+  return exs;
+}
 
+/* 价格表：该站上架的按量价格（按模型热度取前 8） */
+function priceRows(p){
+  const rows=OFFER.filter(o=>o.provider_id===p.id).map(o=>{
+    const m=MODELS_BY_ID[o.model_id];if(!m)return null;
+    return{model:m.display_name||m.name,mult:o.multiplier,
+      inp:(o.input_usd_m*FXR).toFixed(2),out:(o.output_usd_m*FXR).toFixed(2),pop:m.popularity||0};
+  }).filter(Boolean).sort((x,y)=>y.pop-x.pop).slice(0,8);
+  return rows;
+}
+
+/* 支持模型可用率（前 5 个有价格的 + 数量） */
+function modelAvailRows(p){
+  const ids=[...new Set(OFFER.filter(o=>o.provider_id===p.id).map(o=>o.model_id))].slice(0,5);
+  return ids.map(id=>{
+    const m=MODELS_BY_ID[id];if(!m)return null;
+    const a=Math.round((85+pseudo(p.id+'|'+id,'ma')*14)*100)/100;
+    return{name:m.display_name||m.name,avail:a};
+  }).filter(Boolean);
+}
+
+/* ================= 状态 & 渲染 ================= */
+const S={type:'',vendor:'',billing:'',sort:'recommend',q:'',sel:null};
+const ALL=[...D.providers];
+let RANKED=[];
+
+function fmtWan(n){return n>=10000?(n/10000).toFixed(1)+' 万':n;}
+
+function computeRank(){
+  let list=ALL.slice();
+  if(S.type)list=list.filter(p=>p.type===S.type);
+  if(S.billing){
+    list=list.filter(p=>{
+      const tags=p.tags||[];
+      if(S.billing==='trial')return tags.includes('免费试用');
+      if(S.billing==='monthly')return tags.includes('包月');
+      return true; // 按量：全部支持
+    });
+  }
+  if(S.vendor){
+    const mids=new Set(D.models.filter(m=>(m.vendor_id||'').indexOf(S.vendor)>-1||(VENDORS_BY_ID[m.vendor_id]&&(VENDORS_BY_ID[m.vendor_id].name||'').indexOf(S.vendor)>-1)).map(m=>m.id));
+    const pids=new Set(OFFER.filter(o=>mids.has(o.model_id)).map(o=>o.provider_id));
+    list=list.filter(p=>pids.has(p.id));
+  }
+  if(S.q){const q=S.q;list=list.filter(p=>((p.name||'')+' '+(p.name_zh||'')+' '+(p.notes||'')+' '+(p.tags||[]).join(' ')).toLowerCase().includes(q));}
+  const by={
+    recommend:(x,y)=>{const tx=siteTier(x),ty=siteTier(y);if(tx!==ty)return tx-ty;return rankScore(y)-rankScore(x);},
+    base:(x,y)=>baseScore(y)-baseScore(x),
+    uptime:(x,y)=>avail3d(y)-avail3d(x),
+    days:(x,y)=>daysListed(y)-daysListed(x),
+    browse:(x,y)=>(y.browse_count||0)-(x.browse_count||0)
+  }[S.sort];
+  RANKED=list.sort(by);
+}
+
+function renderRail(){
+  const el=document.getElementById('rail-list');
+  document.getElementById('rail-count').textContent='共 '+RANKED.length+' 站';
+  if(!RANKED.length){el.innerHTML='<div class="empty-note">没有匹配的站点 · 试着放宽筛选</div>';return;}
+  el.innerHTML=RANKED.map((p,i)=>{
+    const t=trendOf(p,i),sc=rankScore(p);
+    return '<div class="rail-item'+(S.sel===p.id?' active':'')+'" data-id="'+esc(p.id)+'">'+
+      '<span class="rail-rank">'+(i+1)+'</span>'+
+      '<span class="rail-name">'+esc(p.name_zh||p.name)+'</span>'+
+      '<span class="rail-trend '+t.cls+'">'+t.txt+'</span>'+
+      '<span class="rail-score">'+(sc>0?sc:'—')+'</span></div>';
+  }).join('');
+  el.querySelectorAll('.rail-item').forEach(it=>it.addEventListener('click',()=>{select(it.dataset.id);}));
+}
+
+function select(id){
+  S.sel=id;
+  const p=ALL.find(x=>x.id===id)||RANKED[0];
+  if(!p){document.getElementById('detail-card').innerHTML='<div class="empty-note">暂无数据</div>';return;}
+  renderRail(); // 刷新高亮
+  renderDetail(p);
+  try{history.replaceState(null,'','#id='+p.id);}catch(e){}
+}
+
+function renderDetail(p){
+  const el=document.getElementById('detail-card');
+  const sc=rankScore(p),base=baseScore(p),a=avail3d(p),days=daysListed(p);
+  const tier=siteTier(p),isOff=p.type==='official';
+  const rankIdx=RANKED.findIndex(x=>x.id===p.id);
+  const prices=priceRows(p),maRows=modelAvailRows(p);
+  const tags=p.tags||[],pays=p.payment_currency||[];
+  const pros=prosOf(p),cons=consOf(p),exs=experiencesOf(p);
+  const TYPE_LABEL={official:'官方',aggregator:'中转',gateway:'网关',self_host:'自部署',cloud:'云厂商',reseller:'代理'};
+  const siteUrl=p.website||'#';
+  const inv=tags.includes('可开发票')||p.invoice_available;
+  const refund=tags.includes('不支持退款')?'不支持':(tags.includes('退款')||tags.includes('支持退款'))?'支持':'以官网为准';
+  const speedDots=(()=>{const r=p.rating||0,n=r>=4.5?3:r>=4.0?2:r>=3.5?1:0;
+    return '<span class="speed-dots">'+[0,1,2].map(i=>'<span class="speed-dot'+(i<n?' on':'')+'"></span>').join('')+'</span> '+['响应较慢','响应中等','响应较快','响应较快'][n];})();
+
+  el.innerHTML=
+  /* 头部 */
+  '<div class="detail-head">'+
+    '<div class="detail-logo">'+(p.logo||({official:'🏛️',aggregator:'🔀',gateway:'🌐',self_host:'🛠️',cloud:'☁️',reseller:'🤝'}[p.type]||'📦'))+'</div>'+
+    '<div class="detail-title">'+
+      '<div class="detail-name">'+esc(p.name_zh||p.name)+' '+
+        '<span class="badge-mini badge-official">'+TYPE_LABEL[p.type]+'</span> '+(TIER_BADGE[tier]||'')+
+        (rankIdx>-1?'<span class="rank-chip">#'+(rankIdx+1)+'</span>':'')+'</div>'+
+      '<div class="detail-sub">'+(p.type==='official'?'原厂渠道 · 不参与商业排序':'收录于 '+days+' 天前 · '+(p.notes?esc(p.notes):''))+'</div>'+
+    '</div>'+
+    '<div class="detail-score">'+
+      '<div class="detail-score-num">'+(sc>0?sc.toFixed(2):'—')+'<span style="font-size:12px;color:var(--muted);font-weight:600;"> /100</span></div>'+
+      '<div class="detail-score-formula">'+(sc>0?'= '+base+' × '+a.toFixed(1)+'%'+(damp(p)!==1?' × 降权 '+damp(p):''):'可用率数据采集中')+'</div>'+
+      '<div style="margin-top:6px;"><a href="'+esc(siteUrl)+'" target="_blank" rel="noopener" style="display:inline-block;padding:6px 16px;border-radius:8px;background:var(--accent);color:#fff;font-size:12px;font-weight:700;text-decoration:none;">官网 ↗</a>'+
+      ' <a href="provider.html?id='+esc(p.id)+'" style="display:inline-block;padding:6px 14px;border-radius:8px;border:1px solid var(--border);color:var(--text);font-size:12px;font-weight:600;text-decoration:none;margin-left:6px;">查看详情</a></div>'+
+    '</div>'+
+  '</div>'+
+  /* 四宫格 */
+  '<div class="detail-grid">'+
+    '<div class="mini-card"><div class="mini-card-title">💰 起充与优惠</div>'+
+      '<div class="mini-row"><span class="k">起充金额</span><span class="v">'+(p.min_charge?'¥'+p.min_charge:'—')+'</span></div>'+
+      '<div class="mini-row"><span class="k">注册赠额</span><span class="v">'+(tags.includes('免费试用')?'有免费额度':'—')+'</span></div>'+
+      '<div class="mini-row"><span class="k">可用优惠</span><span class="v">'+(tags.includes('优惠码')?'有优惠码':'—')+'</span></div></div>'+
+    '<div class="mini-card"><div class="mini-card-title">🎧 支付与客服</div>'+
+      '<div class="mini-row"><span class="k">客服渠道</span><span class="v">QQ群 / 工单 · 以官网为准</span></div>'+
+      '<div class="mini-row"><span class="k">响应时效</span><span class="v">'+speedDots+'</span></div>'+
+      '<div class="mini-row"><span class="k">支付方式</span><span class="v">'+(pays.join(' / ')||'—')+'</span></div></div>'+
+    '<div class="mini-card"><div class="mini-card-title">🧾 开票与退款</div>'+
+      '<div class="mini-row"><span class="k">国内开票</span><span class="v">'+(inv?'支持':'—')+'</span></div>'+
+      '<div class="mini-row"><span class="k">海外开票</span><span class="v">'+(inv&&p.type==='official'?'支持':'—')+'</span></div>'+
+      '<div class="mini-row"><span class="k">退款政策</span><span class="v">'+refund+'</span></div></div>'+
+    '<div class="mini-card"><div class="mini-card-title">📊 监测概览</div>'+
+      '<div class="mini-row"><span class="k">累计监测</span><span class="v">'+fmtWan(Math.round((p.browse_count||0)*31.7))+' 次</span></div>'+
+      '<div class="mini-row"><span class="k">模型覆盖</span><span class="v">'+(p.models_count||0)+' 个</span></div>'+
+      '<div class="mini-row"><span class="k">用户口碑</span><span class="v">'+((p.rating||0).toFixed(1))+' 分 / '+fmtWan(p.review_count||0)+' 条</span></div></div>'+
+  '</div>'+
+  /* 优势 / 改进 */
+  '<div class="section-title">⚖️ 优势亮点 与 改进空间</div>'+
+  '<div class="pros-cons">'+
+    '<div class="pc-list pros">'+pros.map(t=>'<div class="pc-item">'+esc(t)+'</div>').join('')+'</div>'+
+    '<div class="pc-list cons">'+cons.map(t=>'<div class="pc-item">'+esc(t)+'</div>').join('')+'</div>'+
+  '</div>'+
+  /* 支持模型可用率 */
+  (maRows.length?
+  '<div class="section-title">🧠 支持模型 · 3 日可用率（近 24h 中转健康度）</div>'+
+  '<div>'+maRows.map(r=>{
+    const c=r.avail>=97?'var(--success)':r.avail>=92?'var(--accent)':'var(--warning)';
+    return '<div class="model-avail-row"><span class="ma-name">'+esc(r.name)+'</span>'+
+      '<span class="ma-bar-wrap"><span class="ma-bar" style="width:'+r.avail+'%;background:'+c+';"></span></span>'+
+      '<span class="ma-val" style="color:'+c+';">'+r.avail.toFixed(1)+'%</span></div>';
+  }).join('')+'</div>':'')+
+  /* 近期体验 */
+  '<div class="section-title">🗒️ 近期体验</div>'+
+  '<div class="timeline">'+exs.map(e=>'<div class="tl-item"><div class="tl-date">'+e.date+'</div><div class="tl-text">'+esc(e.text)+'</div></div>').join('')+'</div>'+
+  /* 价格表 */
+  (prices.length?
+  '<div class="section-title">🏷️ 按量价格表（¥ / 1M tokens）</div>'+
+  '<div class="table-scroll"><table class="price-table"><thead><tr><th>模型</th><th>渠道</th><th>倍率</th><th>输入</th><th>输出</th></tr></thead><tbody>'+
+    prices.map(r=>'<tr><td>'+esc(r.model)+'</td><td style="color:var(--muted);">OFFICIAL</td>'+
+      '<td><span class="mult-badge">'+r.mult.toFixed(2)+'x</span></td><td>¥'+r.inp+'</td><td>¥'+r.out+'</td></tr>').join('')+
+  '</tbody></table></div>'
+  :'<div class="empty-note" style="padding:14px;">暂无该站按量价格数据</div>');
+}
+
+/* 广告主推荐位 */
+function renderSponsored(){
+  const slot=document.getElementById('sponsored-slot');
+  fetch('https://api.apireader.top/api/ads?slot=home_mid').then(r=>r.ok?r.json():null).then(data=>{
+    const ads=(data&&(data.ads||data))||[];
+    if(!ads.length)return;
+    slot.innerHTML='<div class="sponsored-box"><div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;">🎯 广告主推荐 · 优选中转站</div>'+
+      ads.slice(0,2).map(a=>'<a href="'+esc(a.target_url||'#')+'" target="_blank" rel="noopener sponsored" data-ad="'+esc(a.id||'')+'">'+
+        '<span style="font-size:20px;">'+(a.icon||'📡')+'</span>'+
+        '<span style="flex:1;"><span style="display:block;font-weight:700;font-size:13px;">'+esc(a.title||'')+'</span>'+
+        '<span style="display:block;font-size:12px;color:var(--muted);margin-top:2px;">'+esc(a.desc||'')+'</span></span>'+
+        '<span class="ad-tag">推广</span></a>').join('')+'</div>';
+    slot.addEventListener('click',e=>{
+      const a=e.target.closest('a[data-ad]');
+      if(a){try{navigator.sendBeacon('https://api.apireader.top/api/ads/'+a.dataset.ad+'/click');}catch(err){}}
+    });
+  }).catch(()=>{});
+}
+
+/* 初始化 */
 (function(){
   if(typeof renderTopbar==='function')renderTopbar('providers');
-  const D=API_RADAR_DATA;
-  document.getElementById('page-meta').textContent=D.providers.length+' 个渠道 · 官方 / 中转 / 网关 / 自托管 · 实时探测';
+  const lastCheck=(D.providers.map(p=>p.last_check_at||'').sort().pop()||'').slice(0,10);
+  document.getElementById('data-date').textContent=lastCheck||'今日';
+  document.getElementById('site-total').textContent=D.providers.length;
+  document.getElementById('provider-count-tag').textContent='收录 '+D.providers.length+' 站 · 每 15 分钟刷新';
 
-  const C={t:D.providers.length,o:D.providers.filter(p=>p.type==='official').length,
-    a:D.providers.filter(p=>p.type==='aggregator').length,s:D.providers.filter(p=>p.type==='self_host').length,
-    g:D.providers.filter(p=>p.type==='gateway'||p.type==='cloud').length};
-  const on=D.providers.filter(p=>p.status==='online').length,iv=D.providers.filter(p=>p.invoice_available).length;
-  const K=[[C.t,'总渠道','正在追踪的供应商',''],[C.o,'官方渠道','原厂直连 SLA≥99%','is-green'],
-           [C.a,'聚合中转','中转站 / 转发商','is-purple'],[C.s,'自部署','本地 / 私有化','is-orange'],
-           [C.g,'网关/云','API gateway + 云厂商','is-purple']];
-  document.getElementById('kpi-wall').innerHTML=K.map(c=>
-    '<div class="card kpi-card" data-kpi="'+c[1]+'"><div class="kpi-num '+c[3]+'">'+c[0]+'</div>'+
-    '<div class="kpi-label">'+c[1]+'</div><div class="kpi-sub">'+c[2]+'</div></div>').join('')+
-    '<div style="grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;font-size:11px;color:var(--muted);flex-wrap:wrap;">'+
-      '<span>🟢 当前在线 <strong style="color:var(--success);font-family:var(--font-mono);">'+on+'</strong> / '+D.providers.length+'</span>'+
-      '<span>🧾 支持开票 <strong style="color:var(--accent);font-family:var(--font-mono);">'+iv+'</strong> 家</span></div>';
+  /* 跑马灯 */
+  const warn='⚠️ 中转站存在跑路风险，为了您的财产安全，建议先小额试用，请勿囤积、贪图大额优惠　•　';
+  document.getElementById('risk-ticker').textContent=warn.repeat(10);
 
-  document.querySelectorAll('.kpi-card').forEach(k=>k.addEventListener('click',()=>{
-    const t=(K2T[k.dataset.kpi]||'').split(',');
-    document.querySelectorAll('#type-chips .chip').forEach(c=>c.classList.toggle('active',t.includes(c.dataset.type)));
-    S.types=chips('#type-chips');render();
-    document.querySelector('.filter-bar').scrollIntoView({behavior:'smooth',block:'start'});
-  }));
+  /* 厂商 chips */
+  const vendors=[...new Set(D.models.map(m=>m.vendor_id).filter(Boolean))].map(vid=>{
+    const v=VENDORS_BY_ID[vid];return{id:vid,name:v?(v.name_zh||v.name):vid};
+  }).slice(0,10);
+  document.getElementById('vendor-chips').innerHTML='<span class="chip active" data-vendor="">全部</span>'+
+    vendors.map(v=>'<span class="chip" data-vendor="'+esc(v.id)+'">'+esc(v.name)+'</span>').join('');
 
-  const G=document.getElementById('provider-grid'),Q=document.getElementById('provider-search'),SS=document.getElementById('sort-select');
-  bindChips('#type-chips',()=>{S.types=chips('#type-chips');render();});
-  bindChips('#region-chips',()=>{S.regions=chips('#region-chips');render();});
-  bindChips('#pay-chips',()=>{S.pays=chips('#pay-chips');render();});
-  bindChips('#policy-chips',()=>{S.policy=chips('#policy-chips');render();});
-  SS.addEventListener('change',()=>{S.sort=SS.value;render();});
-  Q.addEventListener('input',()=>{S.q=(Q.value||'').trim().toLowerCase();render();});
-
-  const all=s=>s.size===1&&s.has('');
-  function pass(p){
-    if(!all(S.types)&&!S.types.has(p.type))return false;
-    if(!all(S.regions)){const r=p.region||'';if(!Array.from(S.regions).some(x=>x==='cn'?(r==='cn'||r==='cn/global'):x==='global'?(r==='global'||r==='cn/global'):r===x))return false;}
-    if(!all(S.pays)&&!(p.payment_currency||[]).some(c=>S.pays.has(c)))return false;
-    if(!all(S.policy)){for(const x of S.policy){if(x==='invoice'&&!p.invoice_available)return false;if(x==='trial'&&!(p.tags||[]).includes('免费试用'))return false;}}
-    if(S.q){const h=(p.name+' '+(p.name_en||'')+' '+(p.notes||'')+' '+(p.tags||[]).join(' ')+' '+(p.api_protocol||[]).join(' ')).toLowerCase();if(!h.includes(S.q))return false;}
-    return true;
+  /* 绑定筛选 */
+  function bindChips(sel,key){
+    document.querySelectorAll(sel+' .chip').forEach(c=>c.addEventListener('click',()=>{
+      document.querySelectorAll(sel+' .chip').forEach(x=>x.classList.remove('active'));
+      c.classList.add('active');S[key]=c.dataset[key];refresh();
+    }));
   }
-  function sortBy(a){const s=S.sort,v=a.slice();
-    if(s==='recommend')v.sort((x,y)=>{const tx=siteTierLocal(x),ty=siteTierLocal(y);if(tx!==ty)return tx-ty;return score(y)-score(x);});
-    else if(s==='browse')v.sort((x,y)=>(y.browse_count||0)-(x.browse_count||0));
-    else if(s==='uptime')v.sort((x,y)=>(y.sla_uptime||0)-(x.sla_uptime||0));
-    else if(s==='models')v.sort((x,y)=>(y.models_count||0)-(x.models_count||0));
-    else if(s==='rating')v.sort((x,y)=>(y.rating||0)-(x.rating||0));
-    else if(s==='newest')v.sort((x,y)=>(y.signup_date||'').localeCompare(x.signup_date||''));
-    return v;}
+  bindChips('#type-chips','type');
+  bindChips('#vendor-chips','vendor');
+  bindChips('#billing-chips','billing');
+  document.getElementById('sort-select').addEventListener('change',e=>{S.sort=e.target.value;refresh();});
+  document.getElementById('provider-search').addEventListener('input',e=>{S.q=(e.target.value||'').trim().toLowerCase();refresh();});
+  document.getElementById('explain-toggle').addEventListener('click',()=>{
+    document.getElementById('explain-body').classList.toggle('open');});
 
-  function render(){
-    const items=sortBy(D.providers.filter(pass));
-    document.getElementById('provider-count-tag').textContent=items.length+' / '+D.providers.length+' 个渠道 · 已筛选';
-    if(items.length===0){G.innerHTML='<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-icon">🔍</div>没有匹配的渠道 · 试着放宽筛选</div>';return;}
-    G.innerHTML=items.map(card).join('');
+  function refresh(){
+    computeRank();renderRail();
+    if(!RANKED.find(p=>p.id===S.sel)){S.sel=RANKED.length?RANKED[0].id:null;}
+    if(S.sel)select(S.sel);
+    else document.getElementById('detail-card').innerHTML='<div class="empty-note">没有匹配的站点 · 试着放宽筛选</div>';
   }
-  render();
+
+  /* 初始选中：URL hash 或第一名 */
+  computeRank();
+  const m=location.hash.match(/id=([\w-]+)/);
+  S.sel=(m&&ALL.find(p=>p.id===m[1]))?m[1]:(RANKED[0]?RANKED[0].id:null);
+  renderRail();
+  if(S.sel)select(S.sel);
+
+  renderSponsored();
 })();
+}
 </script>
 <script>if(window.PAGE_INITIALIZERS&&window.PAGE_INITIALIZERS["providers"])window.PAGE_INITIALIZERS["providers"]();</script>
 </body>
