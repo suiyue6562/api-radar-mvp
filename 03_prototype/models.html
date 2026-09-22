@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>模型库 · 60 个 AI 模型对比 - API优选咨询</title>
 <meta name="description" content="60 个 AI 模型横向对比：价格 5 维 / 周 token 用量 / 能力图标 / 综合分数 / Best for。">
-<link rel="stylesheet" href="style.css?v=20260922j">
+<link rel="stylesheet" href="style.css?v=20260922k">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
 /* 模型库 — okkmax 风格 */
@@ -91,7 +91,7 @@
 </style>
 </head>
 <body>
-<div id="topbar"></div>
+<div class="topbar" id="topbar"></div><div class="topbar-spacer"></div>
 <main class="main">
   <div class="models-hero fade-in">
     <div class="page-hero-tagline"><span class="page-hero-tagline-dot"></span><span id="model-count-tag">实时加载中...</span></div>
@@ -168,8 +168,8 @@
 <footer class="footer" id="footer"></footer>
 
 
-<script src="data.js?v=20260922j"></script>
-<script src="app.js?v=20260922j"></script>
+<script src="data.js?v=20260922k"></script>
+<script src="app.js?v=20260922k"></script>
 <script>
 function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c])}
 const CAP_ICON_MAP={reasoning:{icon:'🧠',label:'Reasoning'},tool_use:{icon:'🔧',label:'Tool Call'},structured:{icon:'📋',label:'Structured'},vision:{icon:'🖼️',label:'Vision'},audio:{icon:'🎤',label:'Audio'}};

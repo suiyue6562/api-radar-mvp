@@ -108,12 +108,15 @@ input:focus, select:focus, textarea:focus {
 
 /* ===== 顶部导航栏 - 白底 + 黑字 + 底边 ===== */
 .topbar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 50;
   background: #ffffff;
   border-bottom: 1px solid var(--border);
 }
+.topbar-spacer { height: 62px; }
 .topbar-inner {
   max-width: 1280px;
   margin: 0 auto;
