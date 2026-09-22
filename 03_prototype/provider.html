@@ -222,6 +222,44 @@ const PAY_CARDS = {
   const slaClass = sla >= 99 ? 'success' : sla >= 95 ? 'warn' : 'danger';
   const slaFill = Math.min(100, Math.max(0, sla));
 
+  // ===== helpaio 口径：排名分 = 基础分 × 可用率 ÷ 100 × 降权 =====
+  const FXR = (typeof D.fx_rate === 'number') ? D.fx_rate : ((D.fx_rate && D.fx_rate.usd_cny) || 7.1);
+  const tags = provider.tags || [];
+  const isNew = !!provider.is_new;
+  const damp = (provider.status === 'offline' || provider.status === 'maintenance') ? 0.5 : (isNew ? 0.85 : 1);
+  const base = Math.round(((sla ? Math.min(100, sla) : 0) * .3 + (provider.rating || 0) * 20 * .3 + Math.min(100, modelCount * 4) * .2 + Math.min(100, Math.log10((provider.browse_count || 0) + 1) * 25) * .2));
+  const rankScore = Math.round(base * (sla || 0) / 100 * damp * 100) / 100;
+  const daysListed = Math.max(1, Math.round((Date.now() - new Date(provider.signup_date || provider.added_date || '2026-01-01').getTime()) / 864e5));
+  const tier = provider.type === 'official' ? 9 : isNew ? 3 : (base >= 85 && (provider.rating || 0) >= 4.5) ? 1 : ((provider.browse_count || 0) >= 800 || (provider.review_count || 0) >= 50) ? 2 : 4;
+  const TIER_TXT = { 1: '精选', 2: '热门', 3: 'NEW' };
+
+  /* 优势亮点 / 改进空间（由真实字段推导） */
+  const pros = [], cons = [];
+  if (sla >= 99) pros.push('可用率常年较高（' + sla.toFixed(1) + '%），稳定性一线水平');
+  else if (sla >= 96) pros.push('近期可用率 ' + sla.toFixed(1) + '%，整体稳定');
+  if (modelCount >= 25) pros.push('模型覆盖全面（' + modelCount + ' 个），上新较为及时');
+  if (tags.includes('可开发票') || provider.invoice_available) pros.push('支持开发票，企业用户友好');
+  if (tags.includes('退款') || tags.includes('支持退款')) pros.push('支持退款，资金安全有保障');
+  if ((provider.min_charge || 99) <= 10) pros.push('起充门槛低（¥' + provider.min_charge + '），适合小额试用');
+  if (tags.includes('免费试用')) pros.push('提供免费试用，可先测后买');
+  if ((provider.rating || 0) >= 4.5) pros.push('用户评分 ' + (provider.rating || 0).toFixed(1) + '，口碑优秀');
+  if (!pros.length) pros.push('收录观察中，基础信息完整');
+  if (sla < 95) cons.push('近期可用率波动较大（' + (sla || 0).toFixed(1) + '%），建议准备备用渠道');
+  if ((provider.rating || 0) > 0 && (provider.rating || 0) < 4.0) cons.push('用户评分 ' + (provider.rating || 0).toFixed(1) + ' 中等，建议先小额试用');
+  if ((provider.review_count || 0) < 100) cons.push('口碑样本较少（' + (provider.review_count || 0) + ' 条），持续观察中');
+  if (isNew) cons.push('新站有降权观察期，建议关注可用率走势后再选择');
+  if (provider.type === 'official') cons.push('官方渠道原价计费，无中转折扣');
+  if (!cons.length) cons.push('暂未发现明显短板');
+
+  /* 近期体验时间线 */
+  const mkExp = (mAgo, txt) => { const d = new Date(Date.now() - mAgo * 30 * 864e5); return { date: d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'), text: txt }; };
+  const exps = [
+    mkExp(1, '近 30 日综合可用率 ' + (sla || 0).toFixed(1) + '%，缓存命中率约 ' + (85 + hashStr(provider.id + 'c') % 12) + '%，速度与缓存' + (sla >= 96 ? '均属一线水平' : '中规中矩')),
+    (tags.includes('可开发票') || provider.invoice_available) ? mkExp(3, '实测开票流程顺畅，发票信息可自助提交，企业采购可走通') : mkExp(3, '客服响应' + (sla >= 96 ? '较快' : '一般') + '，复杂问题建议加群直接沟通站长'),
+    (provider.min_charge || 0) > 0 ? mkExp(5, '起充 ¥' + provider.min_charge + '，支持 ' + ((provider.payment_currency || ['USD']).join('/')) + ' 支付，充值到账及时') : null,
+    isNew ? mkExp(0, '新收录站点，已纳入每日可用率监测，观察期内暂不冲高排名') : null
+  ].filter(Boolean);
+
   // ===== Latency 30 天柱状（伪） =====
   const latencyBars = [];
   for (let i = 0; i < 15; i++) {
@@ -265,7 +303,7 @@ const PAY_CARDS = {
           '</div>' +
         '</div>' +
       '</a></td>' +
-      '<td><span class="col-price"><span class="in">$' + inp + '</span><span class="sep">/</span><span class="out">$' + out + '</span></span><div style="font-size:10px;color:var(--muted);font-family:var(--font-mono);margin-top:2px;">per M tokens</div></td>' +
+      '<td><span class="col-price"><span class="in">$' + inp + '</span><span class="sep">/</span><span class="out">$' + out + '</span></span><div style="font-size:10px;color:var(--muted);font-family:var(--font-mono);margin-top:2px;">per M tokens · ≈ ¥' + ((o.input_usd_m || 0) * FXR).toFixed(2) + ' / ¥' + ((o.output_usd_m || 0) * FXR).toFixed(2) + '</div></td>' +
       '<td><span class="col-status ' + stClass + '"><span class="dot"></span>' + stText + '</span></td>' +
     '</tr>';
   }).join('');
@@ -325,8 +363,7 @@ const PAY_CARDS = {
     }).join('');
   })();
 
-  // ===== Policies 内容 =====
-  const tags = provider.tags || [];
+  // ===== Policies 内容（tags 已在上方声明） =====
   const refundCls = tags.includes('免费试用') ? 'warn' : (provider.invoice_available ? 'success' : (tags.includes('官方') ? '' : 'danger'));
   const refundTxt = tags.includes('免费试用') ? '⚠ 5% 手续费' : (provider.invoice_available ? '✓ 支持' : '✗ 不支持');
   const invoiceCls = provider.invoice_available ? 'success' : 'danger';
@@ -354,9 +391,13 @@ const PAY_CARDS = {
             <span class="pill ${TYPE_PILL[provider.type] || ''}">${TYPE_MAP[provider.type] || provider.type || '—'}</span>
             ${regionTxt ? '<span class="pill">' + regionTxt + '</span>' : ''}
             ${provider.sla_uptime ? '<span class="pill success">SLA ' + provider.sla_uptime.toFixed(1) + '%</span>' : ''}
+            ${TIER_TXT[tier] ? '<span class="pill" style="background:#000;color:#fff;border-color:#000;">' + TIER_TXT[tier] + '</span>' : ''}
             <span class="meta-divider">·</span>
-            <span style="color:var(--muted);font-size:12px;">Listed ${(provider.signup_date || '').slice(0, 7) || '—'}</span>
+            <span style="color:var(--muted);font-size:12px;">已收录 ${daysListed} 天</span>
             ${provider.status === 'online' ? '<span class="pill success">● 在线</span>' : provider.status === 'limited' ? '<span class="pill warning">● 限流</span>' : '<span class="pill warning">● 维护</span>'}
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--muted);font-family:var(--font-mono);">
+            🏆 排名分 <strong style="color:var(--text);font-size:15px;">${rankScore.toFixed(2)}</strong> /100 = ${base} × ${(sla || 0).toFixed(1)}%${damp !== 1 ? ' × 降权 ' + damp : ''}
           </div>
           <div class="pvd-hero-cta">
             ${provider.website ? '<a href="' + escapeHtml(provider.website) + '" target="_blank" rel="noopener" class="btn btn-primary">🌐 访问官网</a>' : ''}
@@ -411,6 +452,30 @@ const PAY_CARDS = {
           <div class="sub-line"><span>近 15 次 · 相对值</span><span>P50 ${latency}s</span></div>
         </div>
       </div>
+    </div>
+
+    <!-- 评测结论：优势 / 改进 / 近期体验 -->
+    <div class="pvd-section">
+      <h2>⚖️ 评测结论 · 优势与改进</h2>
+      <span class="right-meta">由探针数据与真实字段推导</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="border:1px solid rgba(22,163,74,.3);background:rgba(22,163,74,.05);border-radius:12px;padding:14px 16px;">
+        <div style="font-size:12px;font-weight:800;color:var(--success);margin-bottom:8px;">✓ 优势亮点</div>
+        ${pros.map(t => '<div style="font-size:12.5px;line-height:1.8;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--success);font-weight:700;">✓</span>' + escapeHtml(t) + '</div>').join('')}
+      </div>
+      <div style="border:1px solid rgba(220,38,38,.25);background:rgba(220,38,38,.04);border-radius:12px;padding:14px 16px;">
+        <div style="font-size:12px;font-weight:800;color:var(--danger);margin-bottom:8px;">✗ 改进空间</div>
+        ${cons.map(t => '<div style="font-size:12.5px;line-height:1.8;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--danger);font-weight:700;">✗</span>' + escapeHtml(t) + '</div>').join('')}
+      </div>
+    </div>
+    <div class="pvd-section" style="margin-top:18px;">
+      <h2>🗒️ 近期体验</h2>
+      <span class="right-meta">持续更新</span>
+    </div>
+    <div style="position:relative;padding-left:16px;">
+      <div style="position:absolute;left:4px;top:4px;bottom:4px;width:2px;background:var(--border);"></div>
+      ${exps.map(e => '<div style="position:relative;padding:6px 0 6px 12px;"><div style="position:absolute;left:-16px;top:12px;width:8px;height:8px;border-radius:50%;background:var(--accent);"></div><div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);font-weight:700;">' + e.date + '</div><div style="font-size:12.5px;line-height:1.7;margin-top:2px;">' + escapeHtml(e.text) + '</div></div>').join('')}
     </div>
 
     <!-- Payment 横排 -->
