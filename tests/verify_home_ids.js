@@ -1,125 +1,91 @@
-// 用最小 DOM shim 在 Node 里真实执行 app.js 的渲染函数，验证首页 12 个 ID 被填充
+// 验证 helpaio 结构首页：真实执行 data.js + app.js + index.html 内联脚本，检查各区块渲染
 const fs = require('fs');
 const path = require('path');
 
 const proto = path.join(__dirname, '..', '03_prototype');
 const dataJs = fs.readFileSync(path.join(proto, 'data.js'), 'utf8');
 const appJs = fs.readFileSync(path.join(proto, 'app.js'), 'utf8');
-
-// 收集 index.html 中真实存在的 id
 const html = fs.readFileSync(path.join(proto, 'index.html'), 'utf8');
+const inline = [...html.matchAll(/<script(?![^>]*src)[^>]*>([\s\S]*?)<\/script>/g)].map(m => m[1]).join('\n;\n');
+
 const realIds = new Set([...html.matchAll(/id="([^"]+)"/g)].map(m => m[1]));
 
-// 最小 DOM 元素
 function makeEl(id) {
   return {
-    id,
-    innerHTML: '',
-    textContent: '',
-    value: '',
-    checked: false,
-    style: {},
-    __listeners: {},
+    id, innerHTML: '', textContent: '', value: '', checked: false, style: {}, __listeners: {},
     addEventListener(ev, fn) { (this.__listeners[ev] = this.__listeners[ev] || []).push(fn); },
-    querySelector() { return null; },
-    querySelectorAll() { return []; },
-    getAttribute(name) { return this.__attrs ? (this.__attrs[name] ?? null) : null; },
-    setAttribute(name, v) { (this.__attrs = this.__attrs || {})[name] = v; },
+    querySelector() { return null; }, querySelectorAll() { return []; },
   };
 }
-
 const els = {};
 global.document = {
-  getElementById(id) {
-    if (!els[id]) {
-      els[id] = makeEl(id);
-      // 模拟 index.html 里 detect 输入框的默认 value（占位示例值）
-      if (id === 'detect-url') { els[id].value = 'https://api.example.com/v1'; els[id].__attrs = { value: 'https://api.example.com/v1' }; }
-      if (id === 'detect-key') { els[id].value = 'sk-test-xxxxxxxxxxxxxxxx'; els[id].__attrs = { value: 'sk-test-xxxxxxxxxxxxxxxx' }; }
-      if (id === 'detect-model') els[id].value = 'auto';
-      if (id === 'detect-context') els[id].checked = true;
-    }
-    return els[id];
-  },
+  getElementById(id) { if (!els[id]) els[id] = makeEl(id); return els[id]; },
   querySelector() { return null; },
   querySelectorAll() { return []; },
-  createElement() { return { set textContent(v) {}, get innerHTML() { return ''; } }; },
+  createElement() { return { style: {}, set textContent(v) {}, get innerHTML() { return ''; } }; },
   addEventListener() {},
 };
 global.window = global;
 global.navigator = {};
 global.location = { pathname: '/', href: '' };
 global.addEventListener = () => {};
+global.fetch = () => Promise.reject(new Error('offline')); // 广告位请求离线，走 catch 静默分支
 
 eval(dataJs);
+global.API_RADAR_DATA = API_RADAR_DATA; // data.js 用顶层 var，浏览器自动挂 window，Node 需手动挂
 eval(appJs);
+eval(inline); // 块级作用域内自执行
 
-// 执行 home 初始化
-window.PAGE_INITIALIZERS.home();
-
-const targets = ['iq-list', 'iq-downcount', 'usage-title', 'usage-tests', 'usage-online', 'usage-success', 'usage-cal', 'test-list'];
 let fail = 0;
-for (const id of targets) {
-  const exists = realIds.has(id);
-  const el = els[id];
-  const filled = el && (String(el.textContent).trim() !== '' || String(el.innerHTML).trim() !== '');
-  const ok = exists && filled;
+function check(name, ok, detail) {
+  console.log((ok ? '✓' : '✗') + ' ' + name + (detail ? ' → ' + detail : ''));
   if (!ok) fail++;
-  console.log((ok ? '✓' : '✗') + ' ' + id + '  [HTML中' + (exists ? '存在' : '缺失') + '] → ' +
-    (filled ? (el.textContent ? JSON.stringify(String(el.textContent).slice(0, 40)) : 'innerHTML ' + String(el.innerHTML).length + ' chars') : '未填充'));
+}
+function fill(id) {
+  const el = els[id];
+  return el ? String(el.innerHTML || el.textContent) : '';
 }
 
-// 验证 usage-cal 生成了 7 天
-const calHtml = els['usage-cal'] ? els['usage-cal'].innerHTML : '';
-const dayCount = (calHtml.match(/usage-cal-day/g) || []).length;
-console.log((dayCount === 7 ? '✓' : '✗') + ' usage-cal 天数 = ' + dayCount + '（应=7）');
-if (dayCount !== 7) fail++;
+// 1. HTML 关键容器存在
+for (const id of ['avail-board-rows', 'stats-band', 'plate-grid', 'mult-compare', 'mon-snapshot', 'news-list', 'faq-list', 'sponsored-slot']) {
+  check('容器 #' + id, realIds.has(id));
+}
 
-// 验证 test-list 行数
-const testHtml = els['test-list'] ? els['test-list'].innerHTML : '';
-const rowCount = (testHtml.match(/test-row/g) || []).length;
-console.log((rowCount === 5 ? '✓' : '✗') + ' test-list 行数 = ' + rowCount + '（应=5）');
-if (rowCount !== 5) fail++;
+// 2. 可用率榜：5 行，含 Claude/GPT 双指标
+const board = fill('avail-board-rows');
+const boardRows = (board.match(/avail-row/g) || []).length;
+check('可用率榜 5 行', boardRows === 5, 'rows=' + boardRows);
+check('可用率榜含 Claude/GPT 指标', board.includes('Claude') && board.includes('GPT'));
 
-// 验证 iq-list 行数与结构
-const iqHtml = els['iq-list'] ? els['iq-list'].innerHTML : '';
-const iqRows = (iqHtml.match(/iq-row/g) || []).length;
-const hasBar = iqHtml.includes('iq-bar-fill');
-console.log((iqRows === 5 && hasBar ? '✓' : '✗') + ' iq-list 行数 = ' + iqRows + '（应=5），含 iq-bar-fill: ' + hasBar);
-if (iqRows !== 5 || !hasBar) fail++;
+// 3. 统计带：4 项且为数字
+const stats = fill('stats-band');
+check('统计带 4 项', (stats.match(/stat-card/g) || []).length === 4);
+check('统计带含收录站数', /收录中转站/.test(stats));
 
-// 验证 detect-submit 绑定 + 跳转 URL 拼接
-const btn = els['detect-submit'];
-const clicks = btn && btn.__listeners.click || [];
-console.log((clicks.length === 1 ? '✓' : '✗') + ' detect-submit 已绑定 click handler');
-if (clicks.length !== 1) fail++;
+// 4. 三大板块：3 张卡
+const plates = fill('plate-grid');
+check('三大板块 3 卡', (plates.match(/plate-num/g) || []).length === 3);
+check('板块链接', plates.includes('providers.html') && plates.includes('compare.html') && plates.includes('events.html'));
 
-// 1) 默认占位值应被拦截
-let alertMsg = null;
-global.alert = (m) => { alertMsg = m; };
-clicks[0]();
-const blocked = !!alertMsg && global.location.href === '';
-console.log((blocked ? '✓' : '✗') + ' 默认占位值被拦截: ' + (alertMsg || '(未拦截!)'));
-if (!blocked) fail++;
+// 5. 模型比价：≥1 条倍率，最低值高亮
+const mult = fill('mult-compare');
+const multCount = (mult.match(/mult-badge/g) || []).length;
+check('比价行 ≥1', multCount >= 1, 'badges=' + multCount);
+check('最低倍率高亮', mult.includes('mult-badge min'));
 
-// 2) 真实值应跳转
-alertMsg = null;
-els['detect-url'].value = 'https://my-gateway.com/v1';
-els['detect-key'].value = 'sk-real-abc123';
-els['detect-model'].value = 'gpt-5';
-clicks[0]();
-const expect = 'playground.html?url=' + encodeURIComponent('https://my-gateway.com/v1') +
-  '&key=' + encodeURIComponent('sk-real-abc123') + '&model=gpt-5&ctx=1';
-const jumped = global.location.href === expect && !alertMsg;
-console.log((jumped ? '✓' : '✗') + ' 真实值跳转: ' + global.location.href);
-if (!jumped) fail++;
+// 6. 可用率快照 5 行
+check('监测快照 5 行', (fill('mon-snapshot').match(/mon-row/g) || []).length === 5);
 
-// 3) ctx=0 时 URL 带 ctx=0
-els['detect-context'].checked = false;
-clicks[0]();
-const ctx0 = global.location.href.endsWith('&ctx=0');
-console.log((ctx0 ? '✓' : '✗') + ' ctx=0 传递: ' + global.location.href.slice(-12));
-if (!ctx0) fail++;
+// 7. 最新动态：有内容
+const news = fill('news-list');
+check('动态列表非空', news.length > 100, news.length + ' chars');
+
+// 8. FAQ：4 条
+check('FAQ 4 条', (fill('faq-list').match(/faq-item/g) || []).length === 4);
+
+// 9. 首页文案
+check('Hero 标题', html.includes('AI 中转站评测导航'));
+check('排名口径声明', html.includes('基础分 × 可用率') || html.includes('基础分'));
 
 console.log(fail === 0 ? '\n🎉 全部通过' : '\n❌ ' + fail + ' 项失败');
 process.exit(fail === 0 ? 0 : 1);
