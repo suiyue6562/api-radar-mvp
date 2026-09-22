@@ -398,9 +398,11 @@ function renderSiteRankings() {
       _perf: perf, _latency: latency, _rating: rating, _reviewCount: reviewCount,
       _coverage: coverage, _pay: pay, _hasInvoice: hasInvoice, _hasRefund: hasRefund,
       _addedDate: addedDate, _typeLabel: typeLabel,
-      _tier: computeSiteTier(p), _quality: qualityScore(p)
+      _tier: computeSiteTier(p), _quality: qualityScore(p),
+      // helpaio 口径：排名分 = 基础分 × 可用率 ÷ 100 × 降权系数
+      _avail: perf, _rank: Math.round(qualityScore(p) * perf / 100 * (isNewSite(p) ? 0.85 : 1) * 100) / 100
     });
-  }).sort((a, b) => a._tier - b._tier || b._quality - a._quality || b._perf - a._perf).slice(0, 20);
+  }).sort((a, b) => a._tier - b._tier || b._rank - a._rank || b._quality - a._quality).slice(0, 20);
 
   const meta = $('rank-table-meta');
   if (meta) meta.textContent = ranked.length + ' 家中转站' + (officialList.length ? ' · ' + officialList.length + ' 家官方直达' : '') + ' · 每 15 分钟刷新';
@@ -445,6 +447,8 @@ function renderSiteRankings() {
 
     return '<tr onclick="if(!event.target.closest(\'.star-btn\'))location.href=\'provider.html?id=' + p.id + '\'">' +
       '<td class="td-star"><button class="star-btn ' + (favs[p.id] ? 'active' : '') + '" data-fav="' + p.id + '" title="收藏">★</button></td>' +
+      '<td class="center" style="font-family:var(--font-mono);font-weight:800;font-size:15px;color:' + (i < 3 ? 'var(--accent)' : 'var(--muted)') + ';">' + (i + 1) +
+        '<div style="font-size:10px;font-weight:600;color:var(--muted);margin-top:2px;">' + p._rank.toFixed(1) + '</div></td>' +
       '<td>' +
         '<div class="v-cell">' +
           '<div class="v-logo">' + (p.logo || '🏢') + '</div>' +
