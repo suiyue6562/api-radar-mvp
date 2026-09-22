@@ -210,7 +210,7 @@
       <h4>排序口径</h4>
       排行榜采用「AI 推荐 + 广告主投放」双重逻辑：AI 依据本站探针实测数据自动计算综合分（实测存活率 30% + 价格竞争力 25% + 响应速度 15% + 模型覆盖 15% + 用户口碑 15%，无样本维度给中性分），再乘降权系数（新站观察期 ×0.85，离线/维护 ×0.5）。人工唯一干预点是广告主权重（sponsored_rank.js，加成 0~15 分并明示「广告」标识），其余全部由 AI 自动完成。
       <h4>广告主怎么上榜</h4>
-      两种方式：① 已收录站点可提高排序权重（上限 +15 分，需站点本身达标）；② 投放页内「广告主推荐」广告位（页面顶部，独立于排序）。两种方式均明示广告标识，不影响 AI 评测结论。
+      两种方式：① 已收录站点可提高排序权重（上限 +15 分，在 admin.html 后台「排序权重」页实时管理，改动立即生效）；② 投放页内「广告主推荐」广告位（页面顶部，独立于排序）。两种方式均明示广告标识，不影响 AI 评测结论。
       <h4>客观立场</h4>
       从真实用户角度体验，收录为独立判断；页内「推广」位为明示广告，不影响排序与评测结论。中转站存在跑路风险，建议先小额试用，请勿囤积。
     </div>
@@ -302,12 +302,26 @@ function baseScore(p){
   const rep=Math.min(100,Math.round((p.rating||0)*14+Math.min(30,Math.log10((p.review_count||0)+1)*15)));
   return Math.round(surv*.3+price*.25+speed*.15+cover*.15+rep*.15);
 }
-/* 广告主加成（人工唯一干预点：sponsored_rank.js，boost 0~15，超出自动截断） */
-const SPONSORED_MAP={};(typeof SPONSORED_RANK!=='undefined'?SPONSORED_RANK:[]).forEach(x=>{if(x&&x.id)SPONSORED_MAP[x.id]=Math.min(15,Math.max(0,x.boost||0));});
+/* 广告主加成（人工唯一干预点；远程 rank_boost 广告位 + 静态 sponsored_rank.js 兜底）
+   最终分 = AI 综合分 × 降权 + 广告主加成（封顶 100） */
+let SPONSORED_MAP={};
+(function(){
+  (typeof SPONSORED_RANK!=='undefined'?SPONSORED_RANK:[]).forEach(x=>{if(x&&x.id)SPONSORED_MAP[x.id]=Math.min(15,Math.max(0,x.boost||0));});
+})();
 function boostOf(p){return SPONSORED_MAP[p.id]||0;}
 function isSponsored(p){return boostOf(p)>0;}
-/* 双重逻辑最终分 = AI 综合分 × 降权 + 广告主加成（封顶 100） */
 function rankScore(p){return Math.min(100,Math.round((baseScore(p)*damp(p)+boostOf(p))*100)/100);}
+/* 远程权重：后台「排序权重」页实时管理，加载完成后自动重排（失败则用静态兜底） */
+function refreshAfterBoost(){
+  computeRank();renderRail();
+  const cur=S.sel||(RANKED[0]&&RANKED[0].id);
+  if(cur)select(cur);
+}
+fetch('https://api.apireader.top/api/ads?slot=rank_boost').then(r=>r.ok?r.json():[]).then(rows=>{
+  let changed=false;
+  (rows||[]).forEach(a=>{if(a&&a.id){SPONSORED_MAP[a.id]=Math.min(15,Math.max(0,a.priority||0));changed=true;}});
+  if(changed)refreshAfterBoost();
+}).catch(()=>{});
 /* 真实实测存活率（probe_stats.js · 管线每日两次更新）；无数据返回 null，前端显示"—"，绝不编造 */
 const PST=(typeof PROBE_STATS!=='undefined'&&PROBE_STATS.stats)?PROBE_STATS.stats:{};
 function probeStat(p){return PST[p.id]||null;}
