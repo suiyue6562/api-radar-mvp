@@ -254,6 +254,7 @@
 
 <script src="data.js?v=20260922k"></script>
 <script src="radar_sites.js?v=20260922a"></script>
+<script src="probe_stats.js?v=ai2026092217"></script>
 <script src="ai_insights.js?v=ai2026092217"></script>
 <script src="app.js?v=20260922l"></script>
 <script>
@@ -278,9 +279,12 @@ function baseScore(p){
         b=Math.min(100,Math.log10((p.browse_count||0)+1)*25);
   return Math.round(s*.3+r*.3+m*.2+b*.2);
 }
-function avail3d(p){return p.sla_uptime!=null?p.sla_uptime:Math.round(88+pseudo(p.id,'av')*11);}
+/* 真实实测存活率（probe_stats.js · 管线每日两次更新）；无数据返回 null，前端显示"—"，绝不编造 */
+const PST=(typeof PROBE_STATS!=='undefined'&&PROBE_STATS.stats)?PROBE_STATS.stats:{};
+function probeStat(p){return PST[p.id]||null;}
+function avail3d(p){const s=probeStat(p);return s&&s.survival!=null?s.survival:null;}
 function damp(p){ if(p.status==='offline'||p.status==='maintenance')return .5; if(p.is_new)return .85; return 1; }
-function rankScore(p){return Math.round(baseScore(p)*avail3d(p)/100*damp(p)*100)/100;}
+function rankScore(p){const a=avail3d(p);return Math.round(baseScore(p)*(a==null?100:a)/100*damp(p)*100)/100;}
 function daysListed(p){const t=new Date(p.signup_date||p.added_date||'2026-01-01').getTime();return Math.max(1,Math.round((Date.now()-t)/864e5));}
 function isNewSite(p){const age=Date.now()-new Date(p.signup_date||p.added_date||'2026-01-01').getTime();return !!p.is_new||age<60*864e5;}
 function siteTier(p){
@@ -296,26 +300,28 @@ const TIER_BADGE={
   2:'<span class="badge-mini badge-tier2" title="调用量或口碑数领先">热门</span>',
   3:'<span class="badge-mini badge-tier3" title="近 60 天新收录">NEW</span>'};
 
-/* AI 画像一句话（亮点总结，每日两次更新） */
+/* AI 画像一句话（亮点总结，每日两次更新）+ 数据一致性复核结论 */
 function aiLine(pid){
   var d=(typeof API_RADAR_AI!=='undefined'&&API_RADAR_AI.providers)?API_RADAR_AI.providers[pid]:null;
   if(!d||!d.ai||!d.ai.highlights)return '';
-  return '<div class="ai-line"><b>🤖 AI</b>'+esc(d.ai.highlights)+'</div>';
+  var chk='';
+  var ck=d.ai.data_check;
+  if(ck&&typeof ck.consistent!=='undefined'){
+    chk=ck.consistent
+      ?'<div class="ai-line" style="color:var(--success);"><b>✅ 数据复核</b>登记信息与官网实测一致</div>'
+      :'<div class="ai-line" style="color:var(--warning);"><b>⚠️ 数据复核</b>'+esc(((ck.issues||[])[0])||'登记信息与官网实测存在差异，以官网为准')+'</div>';
+  }
+  return '<div class="ai-line"><b>🤖 AI</b>'+esc(d.ai.highlights)+'</div>'+chk;
 }
 
-/* 排名趋势（确定性） */
-function trendOf(p,i){
-  const r=pseudo(p.id,'trend');
-  if(r<.38){const d=1+Math.floor(pseudo(p.id,'td')*3);return{cls:'trend-up',txt:'↑'+d};}
-  if(r<.72){const d=1+Math.floor(pseudo(p.id,'td')*3);return{cls:'trend-down',txt:'↓'+d};}
-  return{cls:'trend-flat',txt:'—'};
-}
+/* 排名趋势：历史快照机制上线前不展示涨跌，避免误导 */
+function trendOf(){return{cls:'trend-flat',txt:'—'};}
 
 /* 由真实字段推导的优势/改进（无对应字段则不生成） */
 function prosOf(p){
   const pros=[],a=avail3d(p);
-  if(a>=99)pros.push('可用率常年较高（'+a.toFixed(1)+'%），稳定性一线水平');
-  else if(a>=96)pros.push('近期可用率 '+a.toFixed(1)+'%，整体稳定');
+  if(a!=null&&a>=99)pros.push('实测存活率 '+a.toFixed(1)+'%（'+probeStat(p).probes+' 次探测），稳定性一线水平');
+  else if(a!=null&&a>=90)pros.push('实测存活率 '+a.toFixed(1)+'%，整体稳定');
   if((p.models_count||0)>=25)pros.push('模型覆盖全面（'+p.models_count+' 个），上新较为及时');
   else if((p.models_count||0)>=10)pros.push('主流模型基本齐全（'+p.models_count+' 个）');
   const tags=p.tags||[];
@@ -332,7 +338,8 @@ function prosOf(p){
 }
 function consOf(p){
   const cons=[],a=avail3d(p);
-  if(a<95)cons.push('近期可用率波动较大（'+a.toFixed(1)+'%），建议准备备用渠道');
+  if(a==null)cons.push('实测存活率样本积累中，建议先小额试用');
+  if(a!=null&&a<90)cons.push('实测存活率 '+a.toFixed(1)+'% 偏低，建议准备备用渠道');
   if((p.rating||0)>0&&(p.rating||0)<4.0)cons.push('用户评分 '+(p.rating||0).toFixed(1)+' 中等，建议先小额试用');
   if((p.review_count||0)<100)cons.push('口碑样本较少（'+p.review_count+' 条），持续观察中');
   if(isNewSite(p))cons.push('新站有降权观察期，建议关注可用率走势后再选择');
@@ -342,15 +349,15 @@ function consOf(p){
   return cons.slice(0,4);
 }
 
-/* 近期体验时间线（确定性模板） */
+/* 近期探测事实：只展示真实 HTTP 探测记录，不编造用户体验 */
 function experiencesOf(p){
-  const exs=[],a=avail3d(p),now=Date.now(),tags=p.tags||[];
-  const mk=(monthsAgo,txt)=>{const d=new Date(now-monthsAgo*30*864e5);return{date:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),text:txt};};
-  exs.push(mk(1,'近 30 日综合可用率 '+a.toFixed(1)+'%，缓存命中率约 '+Math.round(85+pseudo(p.id,'c1')*12)+'%，速度与缓存'+(a>=96?'均属一线水平':'中规中矩')));
-  if(tags.includes('可开发票')||p.invoice_available)exs.push(mk(3,'实测开票流程顺畅，发票信息可自助提交，企业采购可走通'));
-  else exs.push(mk(3,'客服响应'+(a>=96?'较快':'一般')+'，复杂问题建议加群直接沟通站长'));
-  if((p.min_charge||0)>0)exs.push(mk(5,'起充 ¥'+p.min_charge+'，支持'+(p.payment_currency||['USD']).join('/')+' 支付，充值到账及时'));
-  if(isNewSite(p))exs.push(mk(0,'新收录站点，已纳入每日可用率监测，观察期内暂不冲高排名'));
+  const s=probeStat(p),exs=[];
+  if(!s){exs.push({date:'—',text:'尚未积累探测样本，已纳入每日两次监测'});return exs;}
+  const d=(s.last_check_at||'').slice(0,10)||'—';
+  const st=(s.last_status>=200&&s.last_status<400)?'正常':(s.last_status===401||s.last_status===403)?'存活（反爬拦截）':(s.last_status>0?'异常':'无法连接');
+  exs.push({date:d,text:'官网实测 HTTP '+s.last_status+' · '+st+' · 延迟 '+s.last_latency_ms+'ms'});
+  exs.push({date:d,text:'累计探测 '+s.probes+' 次 · 存活 '+s.alive+' 次 · 存活率 '+(s.survival!=null?s.survival.toFixed(1)+'%':'—')});
+  if(isNewSite(p))exs.push({date:d,text:'新收录站点，观察期内暂不冲高排名'});
   return exs;
 }
 
@@ -364,13 +371,12 @@ function priceRows(p){
   return rows;
 }
 
-/* 支持模型可用率（前 5 个有价格的 + 数量） */
+/* 支持模型清单（可用率按站级实测展示，不再按模型编造百分比） */
 function modelAvailRows(p){
   const ids=[...new Set(OFFER.filter(o=>o.provider_id===p.id).map(o=>o.model_id))].slice(0,5);
   return ids.map(id=>{
     const m=MODELS_BY_ID[id];if(!m)return null;
-    const a=Math.round((85+pseudo(p.id+'|'+id,'ma')*14)*100)/100;
-    return{name:m.display_name||m.name,avail:a};
+    return{name:m.display_name||m.name};
   }).filter(Boolean);
 }
 
@@ -401,7 +407,7 @@ function computeRank(){
   const by={
     recommend:(x,y)=>{const tx=siteTier(x),ty=siteTier(y);if(tx!==ty)return tx-ty;return rankScore(y)-rankScore(x);},
     base:(x,y)=>baseScore(y)-baseScore(x),
-    uptime:(x,y)=>avail3d(y)-avail3d(x),
+    uptime:(x,y)=>{const ax=avail3d(x),ay=avail3d(y);if(ax==null&&ay==null)return 0;if(ax==null)return 1;if(ay==null)return -1;return ay-ax;},
     days:(x,y)=>daysListed(y)-daysListed(x),
     browse:(x,y)=>(y.browse_count||0)-(x.browse_count||0)
   }[S.sort];
@@ -435,6 +441,7 @@ function select(id){
 function renderDetail(p){
   const el=document.getElementById('detail-card');
   const sc=rankScore(p),base=baseScore(p),a=avail3d(p),days=daysListed(p);
+  const ps=probeStat(p);
   const tier=siteTier(p),isOff=p.type==='official';
   const rankIdx=RANKED.findIndex(x=>x.id===p.id);
   const prices=priceRows(p),maRows=modelAvailRows(p);
@@ -460,7 +467,7 @@ function renderDetail(p){
     '</div>'+
     '<div class="detail-score">'+
       '<div class="detail-score-num">'+(sc>0?sc.toFixed(2):'—')+'<span style="font-size:12px;color:var(--muted);font-weight:600;"> /100</span></div>'+
-      '<div class="detail-score-formula">'+(sc>0?'= '+base+' × '+a.toFixed(1)+'%'+(damp(p)!==1?' × 降权 '+damp(p):''):'可用率数据采集中')+'</div>'+
+      '<div class="detail-score-formula">'+(sc>0?(a!=null?'= '+base+' × 存活率 '+a.toFixed(1)+'%':'= '+base+' × 存活率待采集'):'数据采集中')+'</div>'+
       '<div style="margin-top:6px;"><a href="'+esc(siteUrl)+'" target="_blank" rel="noopener" style="display:inline-block;padding:6px 16px;border-radius:8px;background:var(--accent);color:#fff;font-size:12px;font-weight:700;text-decoration:none;">官网 ↗</a>'+
       ' <a href="provider.html?id='+esc(p.id)+'" style="display:inline-block;padding:6px 14px;border-radius:8px;border:1px solid var(--border);color:var(--text);font-size:12px;font-weight:600;text-decoration:none;margin-left:6px;">查看详情</a></div>'+
     '</div>'+
@@ -479,10 +486,10 @@ function renderDetail(p){
       '<div class="mini-row"><span class="k">国内开票</span><span class="v">'+(inv?'支持':'—')+'</span></div>'+
       '<div class="mini-row"><span class="k">海外开票</span><span class="v">'+(inv&&p.type==='official'?'支持':'—')+'</span></div>'+
       '<div class="mini-row"><span class="k">退款政策</span><span class="v">'+refund+'</span></div></div>'+
-    '<div class="mini-card"><div class="mini-card-title">📊 监测概览</div>'+
-      '<div class="mini-row"><span class="k">累计监测</span><span class="v">'+fmtWan(Math.round((p.browse_count||0)*31.7))+' 次</span></div>'+
-      '<div class="mini-row"><span class="k">模型覆盖</span><span class="v">'+(p.models_count||0)+' 个</span></div>'+
-      '<div class="mini-row"><span class="k">用户口碑</span><span class="v">'+((p.rating||0).toFixed(1))+' 分 / '+fmtWan(p.review_count||0)+' 条</span></div></div>'+
+    '<div class="mini-card"><div class="mini-card-title">📊 实测监测</div>'+
+      '<div class="mini-row"><span class="k">实测探测</span><span class="v">'+(ps?ps.probes+' 次 · 存活 '+ps.alive+' 次':'待积累')+'</span></div>'+
+      '<div class="mini-row"><span class="k">最近探测</span><span class="v">'+(ps&&ps.last_check_at?esc(ps.last_check_at.slice(5,16).replace('T',' ')):'—')+'</span></div>'+
+      '<div class="mini-row"><span class="k">存活率</span><span class="v">'+(ps&&ps.survival!=null?'<b>'+ps.survival.toFixed(1)+'%</b>（官网可达口径）':'—')+'</span></div></div>'+
   '</div>'+
   /* 优势 / 改进 */
   '<div class="section-title">⚖️ 优势亮点 与 改进空间</div>'+
@@ -490,17 +497,13 @@ function renderDetail(p){
     '<div class="pc-list pros">'+pros.map(t=>'<div class="pc-item">'+esc(t)+'</div>').join('')+'</div>'+
     '<div class="pc-list cons">'+cons.map(t=>'<div class="pc-item">'+esc(t)+'</div>').join('')+'</div>'+
   '</div>'+
-  /* 支持模型可用率 */
+  /* 支持模型清单（站级存活率为准，不按模型编造百分比） */
   (maRows.length?
-  '<div class="section-title">🧠 支持模型 · 3 日可用率（近 24h 中转健康度）</div>'+
-  '<div>'+maRows.map(r=>{
-    const c=r.avail>=97?'var(--success)':r.avail>=92?'var(--accent)':'var(--warning)';
-    return '<div class="model-avail-row"><span class="ma-name">'+esc(r.name)+'</span>'+
-      '<span class="ma-bar-wrap"><span class="ma-bar" style="width:'+r.avail+'%;background:'+c+';"></span></span>'+
-      '<span class="ma-val" style="color:'+c+';">'+r.avail.toFixed(1)+'%</span></div>';
-  }).join('')+'</div>':'')+
-  /* 近期体验 */
-  '<div class="section-title">🗒️ 近期体验</div>'+
+  '<div class="section-title">🧠 支持模型（站级实测存活率 '+(ps&&ps.survival!=null?'<b style="color:var(--accent);">'+ps.survival.toFixed(1)+'%</b>':'<span style="color:var(--muted);">样本积累中</span>')+'）</div>'+
+  '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px;">'+maRows.map(r=>
+    '<span style="font-size:12px;padding:4px 12px;border:1px solid var(--border);border-radius:999px;background:var(--bg-deep);">'+esc(r.name)+'</span>').join('')+'</div>':'')+
+  /* 近期探测记录 */
+  '<div class="section-title">🗒️ 近期探测记录（真实 HTTP 实测）</div>'+
   '<div class="timeline">'+exs.map(e=>'<div class="tl-item"><div class="tl-date">'+e.date+'</div><div class="tl-text">'+esc(e.text)+'</div></div>').join('')+'</div>'+
   /* 价格表 */
   (prices.length?
@@ -534,10 +537,11 @@ function renderSponsored(){
 /* 初始化 */
 (function(){
   if(typeof renderTopbar==='function')renderTopbar('providers');
-  const lastCheck=(D.providers.map(p=>p.last_check_at||'').sort().pop()||'').slice(0,10);
+  const pstDate=(typeof PROBE_STATS!=='undefined'&&PROBE_STATS.generated_at)?PROBE_STATS.generated_at.slice(0,10):'';
+  const lastCheck=pstDate||((D.providers.map(p=>p.last_check_at||'').sort().pop()||'').slice(0,10));
   document.getElementById('data-date').textContent=lastCheck||'今日';
   document.getElementById('site-total').textContent=D.providers.length;
-  document.getElementById('provider-count-tag').textContent='收录 '+D.providers.length+' 站 · 每 15 分钟刷新';
+  document.getElementById('provider-count-tag').textContent='收录 '+D.providers.length+' 站 · 探针每日 2 次实测';
 
   /* 跑马灯 */
   const warn='⚠️ 中转站存在跑路风险，为了您的财产安全，建议先小额试用，请勿囤积、贪图大额优惠　•　';

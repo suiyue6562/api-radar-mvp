@@ -190,9 +190,10 @@
 
 
 <script src="data.js?v=20260922k"></script>
+<script src="probe_stats.js?v=ai2026092217"></script>
 <script src="ai_insights.js?v=ai2026092217"></script>
 <script src="ads.js?v=20260922k"></script>
-<script src="app.js?v=20260922k"></script>
+<script src="app.js?v=20260922l"></script>
 <script>
 function escapeHtml(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
 function hashStr(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return Math.abs(h); }
@@ -226,33 +227,32 @@ const PAY_CARDS = {
   const offerings = D.offerings.filter(o => o.provider_id === provider.id);
   const sortedOfferings = [...offerings].sort((a, b) => (a.input_usd_m + a.output_usd_m) - (b.input_usd_m + b.output_usd_m));
 
-  // ===== KPI 计算 =====
-  const sla = provider.sla_uptime || 0;
-  // 伪延迟：基于 sla + id hash 稳定生成
-  const latencyBase = sla >= 99 ? 1.2 : sla >= 95 ? 2.0 : sla >= 90 ? 3.0 : 4.5;
-  const latency = (latencyBase + (hashStr(provider.id + 'l') % 80) / 30).toFixed(1);
+  // ===== KPI 计算（真实探测优先，登记数据兜底并标注） =====
+  const ps = (typeof PROBE_STATS !== 'undefined' && PROBE_STATS.stats) ? (PROBE_STATS.stats[provider.id] || null) : null;
+  const sla = (ps && ps.survival != null) ? ps.survival : (provider.sla_uptime || null);
+  const latency = ps ? ps.last_latency_ms : null; // 真实 HTTP 延迟（ms）
   const rating = provider.rating || 0;
   const reviewCount = provider.review_count || 0;
   const modelCount = offerings.length;
 
-  const slaClass = sla >= 99 ? 'success' : sla >= 95 ? 'warn' : 'danger';
-  const slaFill = Math.min(100, Math.max(0, sla));
+  const slaClass = sla == null ? '' : sla >= 99 ? 'success' : sla >= 90 ? 'warn' : 'danger';
+  const slaFill = Math.min(100, Math.max(0, sla || 0));
 
-  // ===== helpaio 口径：排名分 = 基础分 × 可用率 ÷ 100 × 降权 =====
+  // ===== helpaio 口径：排名分 = 基础分 × 存活率 ÷ 100 × 降权（存活率缺失按中性计） =====
   const FXR = (typeof D.fx_rate === 'number') ? D.fx_rate : ((D.fx_rate && D.fx_rate.usd_cny) || 7.1);
   const tags = provider.tags || [];
   const isNew = !!provider.is_new;
   const damp = (provider.status === 'offline' || provider.status === 'maintenance') ? 0.5 : (isNew ? 0.85 : 1);
   const base = Math.round(((sla ? Math.min(100, sla) : 0) * .3 + (provider.rating || 0) * 20 * .3 + Math.min(100, modelCount * 4) * .2 + Math.min(100, Math.log10((provider.browse_count || 0) + 1) * 25) * .2));
-  const rankScore = Math.round(base * (sla || 0) / 100 * damp * 100) / 100;
+  const rankScore = Math.round(base * (sla == null ? 100 : sla) / 100 * damp * 100) / 100;
   const daysListed = Math.max(1, Math.round((Date.now() - new Date(provider.signup_date || provider.added_date || '2026-01-01').getTime()) / 864e5));
   const tier = provider.type === 'official' ? 9 : isNew ? 3 : (base >= 85 && (provider.rating || 0) >= 4.5) ? 1 : ((provider.browse_count || 0) >= 800 || (provider.review_count || 0) >= 50) ? 2 : 4;
   const TIER_TXT = { 1: '精选', 2: '热门', 3: 'NEW' };
 
-  /* 优势亮点 / 改进空间（由真实字段推导） */
+  /* 优势亮点 / 改进空间（由真实字段推导；存活率无实测时明示） */
   const pros = [], cons = [];
-  if (sla >= 99) pros.push('可用率常年较高（' + sla.toFixed(1) + '%），稳定性一线水平');
-  else if (sla >= 96) pros.push('近期可用率 ' + sla.toFixed(1) + '%，整体稳定');
+  if (sla != null && sla >= 99) pros.push('实测存活率 ' + sla.toFixed(1) + '%（官网可达口径）');
+  else if (sla != null && sla >= 90) pros.push('实测存活率 ' + sla.toFixed(1) + '%');
   if (modelCount >= 25) pros.push('模型覆盖全面（' + modelCount + ' 个），上新较为及时');
   if (tags.includes('可开发票') || provider.invoice_available) pros.push('支持开发票，企业用户友好');
   if (tags.includes('退款') || tags.includes('支持退款')) pros.push('支持退款，资金安全有保障');
@@ -260,10 +260,11 @@ const PAY_CARDS = {
   if (tags.includes('免费试用')) pros.push('提供免费试用，可先测后买');
   if ((provider.rating || 0) >= 4.5) pros.push('用户评分 ' + (provider.rating || 0).toFixed(1) + '，口碑优秀');
   if (!pros.length) pros.push('收录观察中，基础信息完整');
-  if (sla < 95) cons.push('近期可用率波动较大（' + (sla || 0).toFixed(1) + '%），建议准备备用渠道');
+  if (ps == null) cons.push('实测样本积累中，建议先小额试用');
+  if (sla != null && sla < 90) cons.push('实测存活率 ' + sla.toFixed(1) + '% 偏低，建议准备备用渠道');
   if ((provider.rating || 0) > 0 && (provider.rating || 0) < 4.0) cons.push('用户评分 ' + (provider.rating || 0).toFixed(1) + ' 中等，建议先小额试用');
   if ((provider.review_count || 0) < 100) cons.push('口碑样本较少（' + (provider.review_count || 0) + ' 条），持续观察中');
-  if (isNew) cons.push('新站有降权观察期，建议关注可用率走势后再选择');
+  if (isNew) cons.push('新站有降权观察期，建议关注存活率走势后再选择');
   if (provider.type === 'official') cons.push('官方渠道原价计费，无中转折扣');
   if (!cons.length) cons.push('暂未发现明显短板');
 
@@ -307,22 +308,17 @@ const PAY_CARDS = {
     }
   }
 
-  /* 近期体验时间线 */
-  const mkExp = (mAgo, txt) => { const d = new Date(Date.now() - mAgo * 30 * 864e5); return { date: d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'), text: txt }; };
-  const exps = [
-    mkExp(1, '近 30 日综合可用率 ' + (sla || 0).toFixed(1) + '%，缓存命中率约 ' + (85 + hashStr(provider.id + 'c') % 12) + '%，速度与缓存' + (sla >= 96 ? '均属一线水平' : '中规中矩')),
-    (tags.includes('可开发票') || provider.invoice_available) ? mkExp(3, '实测开票流程顺畅，发票信息可自助提交，企业采购可走通') : mkExp(3, '客服响应' + (sla >= 96 ? '较快' : '一般') + '，复杂问题建议加群直接沟通站长'),
-    (provider.min_charge || 0) > 0 ? mkExp(5, '起充 ¥' + provider.min_charge + '，支持 ' + ((provider.payment_currency || ['USD']).join('/')) + ' 支付，充值到账及时') : null,
-    isNew ? mkExp(0, '新收录站点，已纳入每日可用率监测，观察期内暂不冲高排名') : null
-  ].filter(Boolean);
-
-  // ===== Latency 30 天柱状（伪） =====
-  const latencyBars = [];
-  for (let i = 0; i < 15; i++) {
-    const noise = (hashStr(provider.id + 'b' + i) % 30 - 15) / 100;
-    const v = Math.max(0.2, Math.min(1, parseFloat(latency) / 5 + noise));
-    latencyBars.push(v);
+  /* 近期探测记录（真实 HTTP 实测，不编造体验） */
+  const exps = [];
+  if (ps) {
+    const d = (ps.last_check_at || '').slice(0, 10) || '—';
+    const st = (ps.last_status >= 200 && ps.last_status < 400) ? '正常' : (ps.last_status === 401 || ps.last_status === 403) ? '存活（反爬拦截）' : (ps.last_status > 0 ? '异常' : '无法连接');
+    exps.push({ date: d, text: '官网实测 HTTP ' + ps.last_status + ' · ' + st + ' · 延迟 ' + ps.last_latency_ms + 'ms' });
+    exps.push({ date: d, text: '累计探测 ' + ps.probes + ' 次 · 存活 ' + ps.alive + ' 次 · 存活率 ' + (ps.survival != null ? ps.survival.toFixed(1) + '%' : '—') });
+  } else {
+    exps.push({ date: '—', text: '尚未积累探测样本，已纳入每日两次监测' });
   }
+  if (isNew) exps.push({ date: '—', text: '新收录站点，观察期内暂不冲高排名' });
 
   // ===== Payment 横排 =====
   const pays = (provider.payment_currency || []);
@@ -453,7 +449,7 @@ const PAY_CARDS = {
             ${provider.status === 'online' ? '<span class="pill success">● 在线</span>' : provider.status === 'limited' ? '<span class="pill warning">● 限流</span>' : '<span class="pill warning">● 维护</span>'}
           </div>
           <div style="margin-top:10px;font-size:12px;color:var(--muted);font-family:var(--font-mono);">
-            🏆 排名分 <strong style="color:var(--text);font-size:15px;">${rankScore.toFixed(2)}</strong> /100 = ${base} × ${(sla || 0).toFixed(1)}%${damp !== 1 ? ' × 降权 ' + damp : ''}
+            🏆 排名分 <strong style="color:var(--text);font-size:15px;">${rankScore.toFixed(2)}</strong> /100 = ${base} × ${sla != null ? '存活率 ' + sla.toFixed(1) + '%' : '存活率待采集'}${damp !== 1 ? ' × 降权 ' + damp : ''}
           </div>
           <div class="pvd-hero-cta">
             ${provider.website ? '<a href="' + escapeHtml(provider.website) + '" target="_blank" rel="noopener" class="btn btn-primary">🌐 访问官网</a>' : ''}
@@ -468,13 +464,13 @@ const PAY_CARDS = {
     <div class="kpi-wall-wall">
       <div class="kpi-wall">
         <div class="kpi-wall-label">Uptime</div>
-        <div class="kpi-wall-num ${slaClass === 'danger' ? 'pink' : (slaClass === 'warn' ? 'warn' : 'success')}" style="color:${slaClass === 'danger' ? 'var(--danger)' : (slaClass === 'warn' ? '#f59e0b' : 'var(--success)')};">${sla ? sla.toFixed(1) + '%' : '—'}</div>
-        <div class="kpi-wall-sub">SLA · ${sla >= 99 ? '稳定' : sla >= 95 ? '一般' : '需关注'}</div>
+        <div class="kpi-wall-num ${slaClass === 'danger' ? 'pink' : (slaClass === 'warn' ? 'warn' : 'success')}" style="color:${sla == null ? 'var(--muted)' : slaClass === 'danger' ? 'var(--danger)' : (slaClass === 'warn' ? '#f59e0b' : 'var(--success)')};">${sla != null ? sla.toFixed(1) + '%' : '—'}</div>
+        <div class="kpi-wall-sub">${ps && ps.survival != null ? '实测存活率 · ' + ps.probes + ' 次探测' : (provider.sla_uptime ? '登记 SLA（待实测复核）' : '样本积累中')}</div>
       </div>
       <div class="kpi-wall">
         <div class="kpi-wall-label">Latency</div>
-        <div class="kpi-wall-num purple">${latency}<span style="font-size:12px;color:var(--muted);font-weight:600;">s</span></div>
-        <div class="kpi-wall-sub">P50 · 近 30 天</div>
+        <div class="kpi-wall-num purple">${latency != null ? latency + '<span style="font-size:12px;color:var(--muted);font-weight:600;">ms</span>' : '—'}</div>
+        <div class="kpi-wall-sub">${ps ? '最近实测 · 平均 ' + ps.latency_avg_ms + 'ms' : '待积累'}</div>
       </div>
       <div class="kpi-wall">
         <div class="kpi-wall-label">用户评价</div>
@@ -496,16 +492,15 @@ const PAY_CARDS = {
     <div class="pvd-perf-card">
       <div class="pvd-perf-row">
         <div class="pvd-perf-cell">
-          <h3>📈 Uptime · 可用率</h3>
-          <div class="big-num ${slaClass}">${sla ? sla.toFixed(1) : '0.0'}<span class="unit">%</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:${slaFill}%;background:${sla >= 95 ? 'var(--accent)' : 'var(--warning)'};"></div></div>
-          <div class="sub-line"><span>SLA 目标 ≥ 99%</span><span>${sla >= 99 ? '✓ 达标' : '⚠ 未达标'}</span></div>
+          <h3>📈 Uptime · 存活率</h3>
+          <div class="big-num ${slaClass}">${sla != null ? sla.toFixed(1) : '—'}<span class="unit">%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${slaFill}%;background:${sla != null && sla < 90 ? 'var(--warning)' : 'var(--accent)'};"></div></div>
+          <div class="sub-line"><span>官网可达口径 · 每日 2 次探测</span><span>${ps && ps.survival != null ? (ps.survival >= 99 ? '✓ 优秀' : ps.survival >= 90 ? '✓ 良好' : '⚠ 偏低') : '样本积累中'}</span></div>
         </div>
         <div class="pvd-perf-cell">
           <h3>⏱ Latency · 延迟</h3>
-          <div class="big-num ${parseFloat(latency) < 2 ? 'success' : parseFloat(latency) < 3.5 ? 'warn' : 'danger'}">${latency}<span class="unit">s</span></div>
-          <div class="pvd-perf-bars">${latencyBars.map((v, i) => '<div class="b ' + (v > 0.7 ? 'down' : '') + '" style="height:' + Math.round(v * 100) + '%;"></div>').join('')}</div>
-          <div class="sub-line"><span>近 15 次 · 相对值</span><span>P50 ${latency}s</span></div>
+          <div class="big-num ${latency != null ? (latency < 800 ? 'success' : latency < 2000 ? 'warn' : 'danger') : ''}">${latency != null ? latency + '<span class="unit">ms</span>' : '—'}</div>
+          <div class="sub-line"><span>${ps ? '累计 ' + ps.probes + ' 次探测' : '待积累'}</span><span>${ps ? '平均 ' + ps.latency_avg_ms + 'ms' : ''}</span></div>
         </div>
       </div>
     </div>
@@ -527,8 +522,8 @@ const PAY_CARDS = {
     </div>
     ${aiBlock}
     <div class="pvd-section" style="margin-top:18px;">
-      <h2>🗒️ 近期体验</h2>
-      <span class="right-meta">持续更新</span>
+      <h2>🗒️ 近期探测记录</h2>
+      <span class="right-meta">真实 HTTP 实测 · 每日 2 次</span>
     </div>
     <div style="position:relative;padding-left:16px;">
       <div style="position:absolute;left:4px;top:4px;bottom:4px;width:2px;background:var(--border);"></div>

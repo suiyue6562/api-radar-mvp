@@ -5,6 +5,7 @@ const path = require('path');
 const proto = path.join(__dirname, '..', '03_prototype');
 const dataJs = fs.readFileSync(path.join(proto, 'data.js'), 'utf8');
 const radarJs = fs.readFileSync(path.join(proto, 'radar_sites.js'), 'utf8');
+const probeJs = fs.readFileSync(path.join(proto, 'probe_stats.js'), 'utf8');
 const appJs = fs.readFileSync(path.join(proto, 'app.js'), 'utf8');
 const html = fs.readFileSync(path.join(proto, 'index.html'), 'utf8');
 const inline = [...html.matchAll(/<script(?![^>]*src)[^>]*>([\s\S]*?)<\/script>/g)].map(m => m[1]).join('\n;\n');
@@ -36,6 +37,8 @@ eval(dataJs);
 global.API_RADAR_DATA = API_RADAR_DATA; // data.js 用顶层 var，浏览器自动挂 window，Node 需手动挂
 eval(radarJs);
 global.RADAR_SITES = RADAR_SITES;
+eval(probeJs);
+global.PROBE_STATS = PROBE_STATS;
 eval(appJs);
 eval(inline); // 块级作用域内自执行
 
@@ -58,7 +61,7 @@ for (const id of ['avail-board-rows', 'stats-band', 'radar-home', 'mult-compare'
 const board = fill('avail-board-rows');
 const boardRows = (board.match(/avail-row/g) || []).length;
 check('可用率榜 5 行', boardRows === 5, 'rows=' + boardRows);
-check('可用率榜含 Claude/GPT 指标', board.includes('Claude') && board.includes('GPT'));
+check('可用率榜为站级实测口径', board.includes('存活') || board.includes('实测'));
 
 // 3. 统计带：≥4 项且为数字
 const stats = fill('stats-band');

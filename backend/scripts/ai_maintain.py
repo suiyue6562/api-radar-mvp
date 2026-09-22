@@ -183,17 +183,62 @@ def write_insights(generated_at, insights):
     header = ("// 自动生成：backend/scripts/ai_maintain.py（MiniMax M3）\n"
               "// 每日两次更新，请勿手改。\n")
     OUT_JS.write_text(header + "var API_RADAR_AI = " + body + ";\n", encoding="utf-8")
+    write_probe_stats(generated_at)
     # 每次生成换 URL 版本号，绕过浏览器/Cloudflare 缓存拿到最新数据
     try:
         stamp = "ai" + datetime.datetime.now().strftime("%Y%m%d%H")
         for html in (REPO / "03_prototype" / "provider.html",
-                     REPO / "03_prototype" / "providers.html"):
+                     REPO / "03_prototype" / "providers.html",
+                     REPO / "03_prototype" / "index.html",
+                     REPO / "03_prototype" / "pick.html"):
             txt = html.read_text(encoding="utf-8")
-            txt2 = re.sub(r"ai_insights\.js\?v=[^\"']+", "ai_insights.js?v=" + stamp, txt)
+            txt2 = re.sub(r"(ai_insights|probe_stats)\.js\?v=[^\"']+",
+                          lambda m: m.group(1) + ".js?v=" + stamp, txt)
             if txt2 != txt:
                 html.write_text(txt2, encoding="utf-8")
     except Exception as e:
         print("  ⚠ 版本号更新失败（不影响数据）：", e)
+
+
+# 探测可达口径：2xx/3xx=正常，401/403=存活(反爬拦截)，5xx/0=异常
+ALIVE_STATUSES = tuple(list(range(200, 400)) + [401, 403])
+
+
+def write_probe_stats(generated_at):
+    """从 uptime.jsonl 计算每家真实探测统计 → probe_stats.js（前端唯一可信实测数据源）"""
+    stats = {}
+    if SAMPLES.exists():
+        for line in SAMPLES.read_text(encoding="utf-8").splitlines():
+            try:
+                row = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            pid = row.get("id")
+            if not pid:
+                continue
+            s = stats.setdefault(pid, {"probes": 0, "alive": 0, "latency_sum": 0,
+                                       "last_status": 0, "last_latency_ms": 0,
+                                       "last_check_at": ""})
+            s["probes"] += 1
+            if row.get("status") in ALIVE_STATUSES:
+                s["alive"] += 1
+            s["latency_sum"] += row.get("latency_ms", 0)
+            if row.get("ts", "") >= s["last_check_at"]:
+                s["last_check_at"] = row.get("ts", "")
+                s["last_status"] = row.get("status", 0)
+                s["last_latency_ms"] = row.get("latency_ms", 0)
+    for pid, s in stats.items():
+        s["survival"] = round(s["alive"] / s["probes"] * 100, 1) if s["probes"] else None
+        s["latency_avg_ms"] = round(s["latency_sum"] / s["probes"]) if s["probes"] else 0
+        del s["latency_sum"]
+    body = json.dumps({"generated_at": generated_at, "stats": stats},
+                      ensure_ascii=False, indent=1)
+    header = ("// 自动生成：backend/scripts/ai_maintain.py\n"
+              "// 来源：02_data/samples/uptime.jsonl 真实 HTTP 探测，请勿手改。\n"
+              "// survival 口径：2xx/3xx/401/403 计为存活。\n")
+    (REPO / "03_prototype" / "probe_stats.js").write_text(
+        header + "var PROBE_STATS = " + body + ";\n", encoding="utf-8")
+    print(f"  📊 probe_stats.js：{len(stats)} 家有真实探测数据")
 
 
 def main():
@@ -231,6 +276,7 @@ def main():
               f"{pr.get('status', 0)} {pr.get('latency_ms', 0)}ms")
     append_sample(samples)
     print(f"[2/3] 探测样本已写入 {SAMPLES.relative_to(REPO)}")
+    write_probe_stats(now)
 
     if args.probe_only:
         return

@@ -64,7 +64,8 @@
 <footer class="footer" id="footer"></footer>
 
 <script src="data.js?v=20260922k"></script>
-<script src="app.js?v=20260922k"></script>
+<script src="probe_stats.js?v=ai2026092217"></script>
+<script src="app.js?v=20260922l"></script>
 <script>
 {
 /* ================= 帮我选站 · 4 问匹配 ================= */
@@ -74,7 +75,9 @@ const OFFER=PD.offerings||[];
 const MODELS_BY_ID={};PD.models.forEach(m=>MODELS_BY_ID[m.id]=m);
 function h32(s){let h=0;for(let i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))>>>0;}return h;}
 function pseudo(id,salt){return (h32(id+'|'+salt)%1000)/1000;}
-function avail(p){return p.sla_uptime!=null?p.sla_uptime:Math.round(88+pseudo(p.id,'av')*11);}
+/* 真实实测存活率（probe_stats.js）；无数据返回 null，不给理由不加分 */
+const PST=(typeof PROBE_STATS!=='undefined'&&PROBE_STATS.stats)?PROBE_STATS.stats:{};
+function avail(p){const s=PST[p.id];return s&&s.survival!=null?s.survival:null;}
 function isNew(p){return !!p.is_new||(Date.now()-new Date(p.signup_date||p.added_date||'2026-01-01').getTime())<60*864e5;}
 function baseScore(p){
   const s=p.sla_uptime!=null?Math.min(100,p.sla_uptime):0,r=(p.rating||0)*20,
@@ -82,8 +85,8 @@ function baseScore(p){
   return Math.round(s*.3+r*.3+m*.2+b*.2);
 }
 function rankScore(p){
-  const damp=(p.status==='offline'||p.status==='maintenance')?0.5:(isNew(p)?0.85:1);
-  return Math.round(baseScore(p)*avail(p)/100*damp*100)/100;
+  const a=avail(p),damp=(p.status==='offline'||p.status==='maintenance')?0.5:(isNew(p)?0.85:1);
+  return Math.round(baseScore(p)*(a==null?100:a)/100*damp*100)/100;
 }
 /* 厂商关键词 → 匹配模型 */
 function vendorHits(p,vendorKey){
@@ -146,7 +149,7 @@ function renderResult(){
   const useVendor=ANS.use==='claude_code'?'claude':ANS.use==='gpt_chat'?'gpt':ANS.use==='cn'?'deepseek':(ANS.vendor==='any'?'':ANS.vendor);
   const budgetMax=ANS.budget==='micro'?10:ANS.budget==='small'?50:Infinity;
 
-  const scored=(PD.providers||[]).filter(p=>p.type!=='official'&&p.status!=='offline').map(p=>{
+  const scored=(PD.providers||[]).filter(p=>p.type!=='official'&&p.type!=='platform'&&p.status!=='offline').map(p=>{
     let score=rankScore(p);
     const reasons=[];
     /* 厂商/用途覆盖 */
@@ -170,8 +173,10 @@ function renderResult(){
       if(p.invoice_available||(p.tags||[]).includes('可开发票')){score+=12;reasons.push('可开发票');}
       else score-=20;
     }
-    /* 质量加成 */
-    if(avail(p)>=99){score+=6;reasons.push('可用率 '+avail(p).toFixed(1)+'%');}
+    /* 质量加成（仅真实实测数据才给理由） */
+    const av=avail(p);
+    if(av!=null){if(av>=97){score+=6;reasons.push('实测存活率 '+av.toFixed(1)+'%');}
+      else if(av<90){score-=6;reasons.push('实测存活率 '+av.toFixed(1)+'% 偏低');}}
     return{p,score:Math.round(score*10)/10,reasons};
   }).sort((a,b)=>b.score-a.score).slice(0,3);
 

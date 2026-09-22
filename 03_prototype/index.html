@@ -147,7 +147,7 @@
         </div>
         <div class="hero-trust">
           <span class="trust-chip">🧪 自费实测 · 明示推广位</span>
-          <span class="trust-chip">📡 7×24 可用率监测</span>
+          <span class="trust-chip">📡 每日 2 次真实探测</span>
           <span class="trust-chip">✋ 探针实测才推荐</span>
         </div>
       </div>
@@ -156,7 +156,7 @@
         <div id="sponsored-slot"></div>
         <!-- 大厂基准：可用率参考 -->
         <div class="avail-board" id="avail-board">
-          <div class="avail-board-title"><b>🔥 中转站 TOP5 · 近 3 日可用率</b> · 按综合榜排序，大厂仅作基准</div>
+          <div class="avail-board-title"><b>🔥 中转站 TOP5 · 站级实测存活率</b> · 探针每日 2 次真实 HTTP 探测，大厂仅作基准</div>
           <div id="avail-board-rows"></div>
         </div>
       </div>
@@ -179,8 +179,8 @@
       <div class="mult-foot">登记倍率供参考，实际费用以服务商结算为准</div>
     </div>
     <div class="data-card">
-      <h3>🟢 可用率监测</h3>
-      <div class="sub">7×24 小时持续探测 · 近 3 日快照，完整趋势见 <a href="watch.html" style="color:var(--accent);">观察室</a></div>
+      <h3>🟢 实测存活率</h3>
+      <div class="sub">探针每日 2 次真实 HTTP 探测 · 官网可达口径，样本趋势见 <a href="watch.html" style="color:var(--accent);">观察室</a></div>
       <div id="mon-snapshot"></div>
     </div>
   </div>
@@ -221,6 +221,7 @@
 
 <script src="data.js?v=20260922k"></script>
 <script src="radar_sites.js?v=20260922a"></script>
+<script src="probe_stats.js?v=ai2026092217"></script>
 <script src="app.js?v=20260922l"></script>
 <script>
 {
@@ -229,8 +230,10 @@ function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 const PD=window.API_RADAR_DATA;
 const OFFER=PD.offerings||[];
 function h32(str){let h=0;for(let i=0;i<str.length;i++){h=(h*31+str.charCodeAt(i))>>>0;}return h;}
-function pseudo(id,salt){return (h32(id+'|'+salt)%1000)/1000;}
-function avail(p){return p.sla_uptime!=null?p.sla_uptime:Math.round(88+pseudo(p.id,'av')*11);}
+/* 真实实测存活率（probe_stats.js · 管线每日两次更新）；无数据返回 null，绝不编造 */
+const PST=(typeof PROBE_STATS!=='undefined'&&PROBE_STATS.stats)?PROBE_STATS.stats:{};
+function probeStat(p){return PST[p.id]||null;}
+function avail(p){const s=probeStat(p);return s&&s.survival!=null?s.survival:null;}
 function isNew(p){return !!p.is_new||(Date.now()-new Date(p.signup_date||p.added_date||'2026-01-01').getTime())<60*864e5;}
 function tier(p){
   if(p.type==='official'||p.type==='platform')return 9;
@@ -248,14 +251,8 @@ function baseScore(p){
   return Math.round(s*.3+r*.3+m*.2+b*.2);
 }
 function rankScore(p){
-  const damp=(p.status==='offline'||p.status==='maintenance')?0.5:(isNew(p)?0.85:1);
-  return Math.round(baseScore(p)*avail(p)/100*damp*100)/100;
-}
-/* 分厂商可用率（确定性派生） */
-function vendorAvail(p,vendorKey){
-  const base=avail(p);
-  const jitter=(pseudo(p.id,'va'+vendorKey)*6)-3; // ±3
-  return Math.max(0,Math.min(100,Math.round((base+jitter)*100)/100));
+  const a=avail(p),damp=(p.status==='offline'||p.status==='maintenance')?0.5:(isNew(p)?0.85:1);
+  return Math.round(baseScore(p)*(a==null?100:a)/100*damp*100)/100;
 }
 
 if(typeof renderTopbar==='function')renderTopbar('home');
@@ -267,14 +264,16 @@ const ranked=(PD.providers||[]).filter(p=>p.type!=='official'&&p.type!=='platfor
 const top5=ranked.slice(0,5);
 
 document.getElementById('avail-board-rows').innerHTML=top5.map((p,i)=>{
-  const cl=vendorAvail(p,'claude'),gp=vendorAvail(p,'gpt');
-  const fmt=v=>'<b class="'+(v>=97?'good':v>=92?'mid':'')+'">'+v.toFixed(v>=99.95?1:2).replace(/\.?0+$/,'')+'%</b>';
+  const s=probeStat(p);
+  const fmt=s&&s.survival!=null
+    ?'<b class="'+(s.survival>=97?'good':s.survival>=90?'mid':'')+'">'+s.survival.toFixed(1)+'%</b><span style="font-size:10px;color:var(--muted);"> 存活</span>'
+    :'<b style="color:var(--muted);">—</b>';
+  const lat=s&&s.last_latency_ms?'<span style="font-size:10px;color:var(--muted);"> '+s.last_latency_ms+'ms</span>':'';
   return '<div class="avail-row" onclick="location.href=\'provider.html?id='+p.id+'\'">'+
     '<span class="avail-rank">'+(i+1)+'</span>'+
     '<span class="avail-name">'+esc(p.name_zh||p.name)+'</span>'+
     '<span class="avail-metrics">'+
-      '<span class="avail-metric">Claude '+fmt(cl)+'</span>'+
-      '<span class="avail-metric">GPT '+fmt(gp)+'</span>'+
+      '<span class="avail-metric">实测 '+fmt+lat+'</span>'+
     '</span></div>';
 }).join('');
 
@@ -284,7 +283,7 @@ const stats=[
   [PD.providers.length,'+','收录中转站','经过筛选，杜绝低质内容'],
   [RS.length||0,'+','收录雷达站点','跨榜单聚合 · 运营中'],
   [PD.models.length,'+','收录模型价格','覆盖主流厂商，价格透明'],
-  [24,'h','可用率监测周期','探针持续真实 API 调用'],
+  [24,'h','实测探测频率','探针每日 2 次真实 HTTP 探测'],
   [(PD.events||[]).length*8,'+','持续更新动态','行情与新站收录']
 ];
 document.getElementById('stats-band').innerHTML=stats.map(s=>
@@ -311,13 +310,13 @@ const flagship=PD.models.filter(m=>/claude/i.test((m.family||'')+(m.name||''))).
       :'<span style="font-size:11px;color:var(--muted);">未登记</span>')+'</div>').join('');
 })();
 
-/* ---- 可用率快照 ---- */
+/* ---- 实测存活率快照 ---- */
 document.getElementById('mon-snapshot').innerHTML=top5.map(p=>{
-  const cl=vendorAvail(p,'claude'),gp=vendorAvail(p,'gpt');
-  const c=v=>v>=97?'var(--success)':v>=92?'var(--accent)':'var(--warning)';
+  const s=probeStat(p);
+  const c=s&&s.survival!=null?(s.survival>=97?'var(--success)':s.survival>=90?'var(--accent)':'var(--warning)'):'var(--muted)';
   return '<div class="mon-row"><span class="mon-name">'+esc(p.name_zh||p.name)+'</span>'+
-    '<span class="mon-val" style="color:'+c(cl)+';">C '+cl.toFixed(1)+'%</span>'+
-    '<span class="mon-val" style="color:'+c(gp)+';">G '+gp.toFixed(1)+'%</span></div>';
+    '<span class="mon-val" style="color:'+c+';">'+(s&&s.survival!=null?'<b>'+s.survival.toFixed(1)+'%</b> 存活':'样本积累中')+'</span>'+
+    '<span class="mon-val" style="color:var(--muted);">'+(s&&s.last_latency_ms?s.last_latency_ms+'ms':'—')+'</span></div>';
 }).join('');
 
 /* ---- 收录雷达（首页紧凑版：可用率前 12） ---- */
