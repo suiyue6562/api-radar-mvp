@@ -38,6 +38,8 @@ REPO = Path(__file__).resolve().parents[2]
 RADAR_JS = REPO / "03_prototype" / "radar_sites.js"
 RADAR_OUT = REPO / "03_prototype" / "radar_probe.js"
 SAMPLES = REPO / "02_data" / "samples" / "radar_uptime.jsonl"
+# 线上上报配置（含密钥，不入库）：{"endpoint": "...", "secret": "..."}
+INGEST_CONFIG = Path(__file__).resolve().parent / "probe_ingest.config.json"
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
@@ -95,6 +97,36 @@ def probe_site(site):
     }
 
 
+def report_to_live(checked):
+    """把大陆实测结果上报到线上平台库（platform_probes.region='cn'）。
+
+    配置在 probe_ingest.config.json（未入库），缺失时跳过上报。
+    状态口径：官网不可达=down；可达 <1500ms=ok，否则=slow。
+    """
+    if not INGEST_CONFIG.exists():
+        print("[cn-probe] 未找到 probe_ingest.config.json，跳过线上上报")
+        return False
+    cfg = json.loads(INGEST_CONFIG.read_text(encoding="utf-8"))
+    rows = []
+    for domain, v in checked.items():
+        reachable = v["status"] and (200 <= v["status"] < 400 or v["status"] in (301, 302))
+        if not reachable:
+            status = "down"
+        else:
+            status = "ok" if v["latency_ms"] < 1500 else "slow"
+        rows.append({"domain": domain, "status": status,
+                     "latencyMs": v["latency_ms"]})
+    body = {"json": {"secret": cfg["secret"], "node": "cn-mainland", "rows": rows}}
+    r = requests.post(cfg["endpoint"], json=body, timeout=60)
+    if r.status_code != 200:
+        print(f"[cn-probe] 线上上报失败 HTTP {r.status_code}: {r.text[:200]}")
+        return False
+    res = r.json().get("json", {})
+    print(f"[cn-probe] 线上上报成功：写入 {res.get('inserted')}/{len(rows)}，"
+          f"未匹配域名 {res.get('unmatched', '?')} 个")
+    return True
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=0)
@@ -143,6 +175,9 @@ def main():
         print(f"[cn-probe] 试跑完成，结果写入 {test_out.name}（未提交）")
         return
     RADAR_OUT.write_text(out, encoding="utf-8")
+
+    # 上报线上平台库（大陆实测 → platform_probes region='cn'）
+    report_to_live(checked)
 
     SAMPLES.parent.mkdir(parents=True, exist_ok=True)
     with SAMPLES.open("a", encoding="utf-8") as f:

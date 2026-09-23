@@ -10,3 +10,4 @@ tests/d1_api_data.json
 backend/scripts/.env
 02_data/samples/*.tmp
 __pycache__/
+backend/scripts/probe_ingest.config.json
