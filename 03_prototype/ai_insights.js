@@ -1,7 +1,7 @@
 // 自动生成：backend/scripts/ai_maintain.py（MiniMax M3）
 // 每日两次更新，请勿手改。
 var API_RADAR_AI = {
- "generated_at": "2026-09-22T20:37:47",
+ "generated_at": "2026-09-23T08:21:31",
  "providers": {
   "p_huggingface_inference": {
    "ai": {
@@ -23,13 +23,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 0,
-    "latency_ms": 9119,
+    "latency_ms": 8058,
     "final_url": "",
     "title": "",
     "meta": "",
     "error": "ConnectTimeout: HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /inference-endpoints (Caused by Con"
    },
-   "generated_at": "2026-09-22T20:34:09",
+   "generated_at": "2026-09-23T08:20:25",
    "facts": {
     "model_count": 60,
     "model_names": [
@@ -64,13 +64,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 1239,
+    "latency_ms": 1197,
     "final_url": "https://replicate.com/",
     "title": "Replicate - Run AI with an API",
     "meta": "Run open-source machine learning models with a cloud API",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:34:09",
+   "generated_at": "2026-09-23T08:20:25",
    "facts": {
     "model_count": 60,
     "model_names": [
@@ -107,13 +107,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 1149,
+    "latency_ms": 1656,
     "final_url": "https://cerebrium.ai/",
     "title": "Serverless GPU Infrastructure for Real-Time AI | Cerebrium",
     "meta": "Deploy voice agents, video models, and LLMs on serverless GPUs with sub-second cold starts. Pay-per-second pricing. No Kubernetes.",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:34:09",
+   "generated_at": "2026-09-23T08:20:25",
    "facts": {
     "model_count": 60,
     "model_names": [
@@ -152,13 +152,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 2177,
+    "latency_ms": 739,
     "final_url": "https://lmstudio.ai/",
     "title": "LM Studio Bionic - Agent for Work and Code",
     "meta": "Bionic is LM Studio&#x27;s agent for work and code. Create documents, slides, PDFs, and software with local or frontier open models.",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:34:09",
+   "generated_at": "2026-09-23T08:20:25",
    "facts": {
     "model_count": 60,
     "model_names": [
@@ -193,13 +193,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 373,
+    "latency_ms": 119,
     "final_url": "https://www.coze.cn/",
     "title": "",
     "meta": "",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:34:09",
+   "generated_at": "2026-09-23T08:20:25",
    "facts": {
     "model_count": 60,
     "model_names": [
@@ -233,14 +233,14 @@ var API_RADAR_AI = {
     }
    },
    "probe": {
-    "status": 0,
-    "latency_ms": 7899,
-    "final_url": "",
-    "title": "",
-    "meta": "",
-    "error": "ReadTimeout: HTTPSConnectionPool(host='azure.microsoft.com', port=443): Read timed out. (read timeout=7)"
+    "status": 503,
+    "latency_ms": 889,
+    "final_url": "https://azure.microsoft.com/en-us/products/ai-services/openai-service",
+    "title": "Azure error",
+    "meta": "Check the current Azure health status.",
+    "error": ""
    },
-   "generated_at": "2026-09-22T20:34:09",
+   "generated_at": "2026-09-23T08:20:25",
    "facts": {
     "model_count": 28,
     "model_names": [
@@ -275,13 +275,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 2243,
+    "latency_ms": 680,
     "final_url": "https://aws.amazon.com/bedrock/",
     "title": "Amazon Bedrock – Build genAI applications and agents at production scale – AWS",
     "meta": "Amazon Bedrock: The platform for building generative AI applications and agents at production scale",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:34:09",
+   "generated_at": "2026-09-23T08:20:25",
    "facts": {
     "model_count": 28,
     "model_names": [
@@ -316,13 +316,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 0,
-    "latency_ms": 40771,
+    "latency_ms": 40109,
     "final_url": "",
     "title": "",
     "meta": "",
     "error": "ConnectTimeout: HTTPSConnectionPool(host='cloud.google.com', port=443): Max retries exceeded with url: /vertex-ai (Caused by ConnectTime"
    },
-   "generated_at": "2026-09-22T20:34:09",
+   "generated_at": "2026-09-23T08:20:25",
    "facts": {
     "model_count": 28,
     "model_names": [
@@ -372,13 +372,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 403,
-    "latency_ms": 3641,
+    "latency_ms": 1523,
     "final_url": "https://platform.claude.com/",
     "title": "Just a moment...",
     "meta": "",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:35:32"
+   "generated_at": "2026-09-23T08:17:42"
   },
   "p_openai_official": {
    "ai": {
@@ -403,13 +403,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 403,
-    "latency_ms": 622,
+    "latency_ms": 698,
     "final_url": "https://platform.openai.com/",
     "title": "Attention Required! | Cloudflare",
     "meta": "",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:35:32",
+   "generated_at": "2026-09-23T08:17:42",
    "facts": {
     "model_count": 4,
     "model_names": [
@@ -443,13 +443,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 0,
-    "latency_ms": 40112,
+    "latency_ms": 40141,
     "final_url": "",
     "title": "",
     "meta": "",
     "error": "ConnectTimeout: HTTPSConnectionPool(host='aistudio.google.com', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutErr"
    },
-   "generated_at": "2026-09-22T20:35:32",
+   "generated_at": "2026-09-23T08:17:42",
    "facts": {
     "model_count": 4,
     "model_names": [
@@ -483,13 +483,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 0,
-    "latency_ms": 8048,
+    "latency_ms": 8054,
     "final_url": "",
     "title": "",
     "meta": "",
     "error": "ConnectTimeout: HTTPSConnectionPool(host='console.x.ai', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTT"
    },
-   "generated_at": "2026-09-22T20:35:32",
+   "generated_at": "2026-09-23T08:17:42",
    "facts": {
     "model_count": 3,
     "model_names": [
@@ -522,13 +522,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 198,
+    "latency_ms": 191,
     "final_url": "https://platform.deepseek.com/",
     "title": "DeepSeek",
     "meta": "Join DeepSeek API platform to access our AI models, developer resources and API documentation.",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:35:32",
+   "generated_at": "2026-09-23T08:17:42",
    "facts": {
     "model_count": 6,
     "model_names": [
@@ -563,13 +563,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 181,
+    "latency_ms": 180,
     "final_url": "https://bailian.console.aliyun.com/",
     "title": "大模型服务平台百炼控制台",
     "meta": "百炼控制台是阿里云大模型服务平台，提供AI模型训练、部署、推理一站式服务，支持多种大模型框架，助力企业快速构建AI应用。",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:35:32",
+   "generated_at": "2026-09-23T08:17:42",
    "facts": {
     "model_count": 7,
     "model_names": [
@@ -604,13 +604,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 213,
+    "latency_ms": 178,
     "final_url": "https://bigmodel.cn/",
     "title": "智谱丨BigModel 平台",
     "meta": "智谱大模型开放平台-新一代国产自主通用AI大模型开放平台，是国内大模型排名前列的大模型网站，研发了多款LLM模型，多模态视觉模型产品，致力于将AI产品技术与行业场景双轮驱动的中国先进的认知智能技术和千行百业应用相结合，构建更高精度、高效率、通用化的AI开发新模式和企业级解决方案，实现智谱大模型的产业化，将AI的好处带给每个人。",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:35:32",
+   "generated_at": "2026-09-23T08:17:42",
    "facts": {
     "model_count": 4,
     "model_names": [
@@ -644,13 +644,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 959,
+    "latency_ms": 728,
     "final_url": "https://platform.kimi.com/",
     "title": "Kimi API 开放平台",
     "meta": "Kimi API 开放平台，提供 2.8 万亿参数的 Kimi K3 大模型 API，支持 1M token 上下文窗口、多模态理解和 Tool Calling。专业代码生成、智能对话、视觉推理，助力开发者构建下一代 AI 应用。",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:35:32",
+   "generated_at": "2026-09-23T08:17:42",
    "facts": {
     "model_count": 3,
     "model_names": [
@@ -683,13 +683,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 256,
+    "latency_ms": 227,
     "final_url": "https://www.volcengine.com/product/doubao",
     "title": "",
     "meta": "",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:37:47",
+   "generated_at": "2026-09-23T08:21:31",
    "facts": {
     "model_count": 2,
     "model_names": [
@@ -721,13 +721,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 167,
+    "latency_ms": 201,
     "final_url": "https://cloud.baidu.com/product-s/qianfan_home",
     "title": "千帆大模型平台-企业级一站式大模型开发及应用开发平台-百度智能云",
     "meta": "百度智能云千帆大模型平台是百度智能云推出的一站式企业级大模型平台，是支持客户做好真实AI应用的“企业级”平台，提供全面易用的模型开发、应用开发全流程工具链，同时融合千帆数据智能平台",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:37:47",
+   "generated_at": "2026-09-23T08:21:31",
    "facts": {
     "model_count": 1,
     "model_names": [
@@ -758,13 +758,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 0,
-    "latency_ms": 8058,
+    "latency_ms": 8037,
     "final_url": "",
     "title": "",
     "meta": "",
     "error": "ConnectTimeout: HTTPSConnectionPool(host='console.mistral.ai', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutErro"
    },
-   "generated_at": "2026-09-22T20:37:47",
+   "generated_at": "2026-09-23T08:21:31",
    "facts": {
     "model_count": 5,
     "model_names": [
@@ -799,13 +799,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 403,
-    "latency_ms": 623,
+    "latency_ms": 680,
     "final_url": "https://console.groq.com/",
     "title": "",
     "meta": "",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:37:47",
+   "generated_at": "2026-09-23T08:21:31",
    "facts": {
     "model_count": 0,
     "model_names": []
@@ -831,13 +831,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 951,
+    "latency_ms": 713,
     "final_url": "https://www.together.ai/",
     "title": "Together AI | The AI Native Cloud",
     "meta": "Build what&#x27;s next on the AI Native Cloud. Full-stack AI platform for inference, fine-tuning, and GPU clusters — powered by cutting-edge research.",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:37:47",
+   "generated_at": "2026-09-23T08:21:31",
    "facts": {
     "model_count": 34,
     "model_names": [
@@ -872,13 +872,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 807,
+    "latency_ms": 895,
     "final_url": "https://fireworks.ai/",
     "title": "Own Your Specialized Intelligence | Fireworks",
     "meta": "Fireworks’ state of the art training and inference platform take you beyond the frontier, transforming open models into your specialized intelligence.",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:37:47",
+   "generated_at": "2026-09-23T08:21:31",
    "facts": {
     "model_count": 32,
     "model_names": [
@@ -894,16 +894,23 @@ var API_RADAR_AI = {
    }
   },
   "p_anyscale": {
-   "probe": {
-    "status": 200,
-    "latency_ms": 1756,
-    "final_url": "https://www.anyscale.com/",
-    "title": "Production-scale AI with Ray | Anyscale",
-    "meta": "Powered by Ray, Anyscale helps AI builders run data-intensive workloads to build and deploy Foundation Models and AI at scale on any cloud.",
-    "error": ""
+   "ai": {
+    "features": [
+     "聚合多种开源模型，OpenAI协议接入",
+     "基于Ray框架的生产级部署",
+     "支持多云环境弹性扩展"
+    ],
+    "highlights": "聚合主流开源大模型，OpenAI兼容，生产部署能力强",
+    "data_check": {
+     "consistent": true,
+     "issues": []
+    },
+    "suitable_for": [
+     "开源模型API开发者",
+     "大规模AI训练部署团队",
+     "多云架构企业用户"
+    ]
    },
-   "generated_at": "2026-09-22T20:37:47",
-   "ai_error": "no JSON in response",
    "facts": {
     "model_count": 60,
     "model_names": [
@@ -916,7 +923,16 @@ var API_RADAR_AI = {
     "price_model": "m_mistral_7b_v3",
     "price_in": 0.041,
     "price_out": 0.082
-   }
+   },
+   "probe": {
+    "status": 200,
+    "latency_ms": 1009,
+    "final_url": "https://www.anyscale.com/",
+    "title": "Production-scale AI with Ray | Anyscale",
+    "meta": "Powered by Ray, Anyscale helps AI builders run data-intensive workloads to build and deploy Foundation Models and AI at scale on any cloud.",
+    "error": ""
+   },
+   "generated_at": "2026-09-23T08:21:31"
   },
   "p_openrouter": {
    "ai": {
@@ -938,13 +954,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 1903,
+    "latency_ms": 681,
     "final_url": "https://openrouter.ai/",
     "title": "OpenRouter",
     "meta": "The unified interface for every model. Find the best models &amp; prices for your prompts",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:37:47",
+   "generated_at": "2026-09-23T08:21:31",
    "facts": {
     "model_count": 60,
     "model_names": [
@@ -979,13 +995,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 1560,
+    "latency_ms": 2127,
     "final_url": "https://www.litellm.ai/",
     "title": "LiteLLM — Open-Source AI Gateway &amp; LLM Proxy",
     "meta": "LiteLLM is the open-source AI gateway that puts your full AI stack behind one OpenAI-compatible key. Track and cap LLM spend, route to the right model, and self-host anywhere — even air-gapped. 140+ p",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:32:55",
+   "generated_at": "2026-09-23T08:19:32",
    "facts": {
     "model_count": 60,
     "model_names": [
@@ -1020,13 +1036,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 908,
+    "latency_ms": 811,
     "final_url": "https://portkey.ai/",
     "title": "Production Stack for Gen AI Builders|Portkey",
     "meta": "Democratize and productionize Gen AI across your entire org with Portkey",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:32:55",
+   "generated_at": "2026-09-23T08:19:32",
    "facts": {
     "model_count": 32,
     "model_names": [
@@ -1061,13 +1077,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 1489,
+    "latency_ms": 1398,
     "final_url": "https://www.helicone.ai/",
     "title": "Helicone / AI Gateway &amp; LLM Observability",
     "meta": "Routing and monitoring for reliable AI apps - the LLMOps platform behind the fastest-growing AI companies.",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:32:55",
+   "generated_at": "2026-09-23T08:19:32",
    "facts": {
     "model_count": 33,
     "model_names": [
@@ -1102,13 +1118,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 947,
+    "latency_ms": 960,
     "final_url": "https://developers.cloudflare.com/ai-gateway/",
     "title": "Overview · Cloudflare AI Gateway docs",
     "meta": "Observe and control your AI applications with analytics, caching, rate limiting, and model fallback through AI Gateway.",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:32:55",
+   "generated_at": "2026-09-23T08:19:32",
    "facts": {
     "model_count": 33,
     "model_names": [
@@ -1143,13 +1159,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 399,
+    "latency_ms": 366,
     "final_url": "https://vercel.com/docs/ai-gateway",
     "title": "Vercel AI Gateway: Models, Routing, and Observability",
     "meta": "width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover\"/><link rel=\"preload\" href=\"https://vercel-docs.vercel.sh/vc-ap-0cca3e/_next/static/immutable/media/vercel-light.3_gxxexgi1nmy.",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:32:55",
+   "generated_at": "2026-09-23T08:19:32",
    "facts": {
     "model_count": 34,
     "model_names": [
@@ -1189,14 +1205,14 @@ var API_RADAR_AI = {
     }
    },
    "probe": {
-    "status": 0,
-    "latency_ms": 7253,
-    "final_url": "",
-    "title": "",
-    "meta": "",
-    "error": "ReadTimeout: HTTPSConnectionPool(host='github.com', port=443): Read timed out. (read timeout=7)"
+    "status": 200,
+    "latency_ms": 822,
+    "final_url": "https://github.com/songquanpeng/one-api",
+    "title": "GitHub - songquanpeng/one-api: LLM API 管理 &amp; 分发系统，支持 OpenAI、Azure、Anthropic Claude、Google Gemini、DeepSeek、字节豆包、ChatGL",
+    "meta": "LLM API 管理 &amp; 分发系统，支持 OpenAI、Azure、Anthropic Claude、Google Gemini、DeepSeek、字节豆包、ChatGLM、文心一言、讯飞星火、通义千问、360 智脑、腾讯混元等主流模型，统一 API 适配，可用于 key 管理与二次分发。单可执行文件，提供 Docker 镜像，一键部署，开箱即用。LLM API management &a",
+    "error": ""
    },
-   "generated_at": "2026-09-22T20:32:55",
+   "generated_at": "2026-09-23T08:19:32",
    "facts": {
     "model_count": 60,
     "model_names": [
@@ -1232,14 +1248,14 @@ var API_RADAR_AI = {
     }
    },
    "probe": {
-    "status": 0,
-    "latency_ms": 4029,
-    "final_url": "",
-    "title": "",
-    "meta": "",
-    "error": "ConnectTimeout: HTTPSConnectionPool(host='github.com', port=443): Max retries exceeded with url: /QuantumNous/new-api (Caused by Connect"
+    "status": 200,
+    "latency_ms": 797,
+    "final_url": "https://github.com/QuantumNous/new-api",
+    "title": "GitHub - QuantumNous/new-api: A unified AI model hub for aggregation &amp; distribution. It supports cross-converting va",
+    "meta": "A unified AI model hub for aggregation &amp; distribution. It supports cross-converting various LLMs into OpenAI-compatible, Claude-compatible, or Gemini-compatible formats. A centralized gateway for ",
+    "error": ""
    },
-   "generated_at": "2026-09-22T20:32:55",
+   "generated_at": "2026-09-23T08:19:32",
    "facts": {
     "model_count": 60,
     "model_names": [
@@ -1274,13 +1290,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 0,
-    "latency_ms": 246,
+    "latency_ms": 639,
     "final_url": "",
     "title": "",
     "meta": "",
     "error": "SSLError: HTTPSConnectionPool(host='duckcoding.com', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerifi"
    },
-   "generated_at": "2026-09-22T20:32:55",
+   "generated_at": "2026-09-23T08:19:32",
    "facts": {
     "model_count": 60,
     "model_names": [
@@ -1315,13 +1331,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 1576,
+    "latency_ms": 959,
     "final_url": "https://api2d.com/",
     "title": "API2D",
     "meta": "",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:33:29",
+   "generated_at": "2026-09-23T08:19:55",
    "facts": {
     "model_count": 60,
     "model_names": [
@@ -1356,13 +1372,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 0,
-    "latency_ms": 30,
+    "latency_ms": 302,
     "final_url": "",
     "title": "",
     "meta": "",
     "error": "ConnectionError: HTTPSConnectionPool(host='aicnb.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSC"
    },
-   "generated_at": "2026-09-22T20:33:29",
+   "generated_at": "2026-09-23T08:19:55",
    "facts": {
     "model_count": 60,
     "model_names": [
@@ -1399,13 +1415,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 451,
-    "latency_ms": 653,
+    "latency_ms": 1202,
     "final_url": "https://closeai.info/",
     "title": "地区访问限制 - CloseAI",
     "meta": "",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:33:29",
+   "generated_at": "2026-09-23T08:19:55",
    "facts": {
     "model_count": 60,
     "model_names": [
@@ -1440,13 +1456,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 0,
-    "latency_ms": 31,
+    "latency_ms": 105,
     "final_url": "",
     "title": "",
     "meta": "",
     "error": "ConnectionError: HTTPSConnectionPool(host='wokaai.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPS"
    },
-   "generated_at": "2026-09-22T20:33:29",
+   "generated_at": "2026-09-23T08:19:55",
    "facts": {
     "model_count": 60,
     "model_names": [
@@ -1494,13 +1510,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 211,
+    "latency_ms": 173,
     "final_url": "https://chatfire.cn/",
     "title": "New API",
     "meta": "Unified AI API gateway and admin dashboard.",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:33:29"
+   "generated_at": "2026-09-23T08:19:55"
   },
   "p_volcengine_official": {
    "ai": {
@@ -1522,13 +1538,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 263,
+    "latency_ms": 353,
     "final_url": "https://www.volcengine.com/product/ark",
     "title": "",
     "meta": "",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:33:29",
+   "generated_at": "2026-09-23T08:19:55",
    "facts": {
     "model_count": 0,
     "model_names": []
@@ -1554,13 +1570,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 383,
+    "latency_ms": 301,
     "final_url": "https://cloud.tencent.com/product/tclm",
     "title": "腾讯混元大模型_大语言模型_自然语言大模型- 腾讯云",
     "meta": "腾讯混元大模型（Tencent Hunyuan）是由腾讯研发的大语言模型，具备强大的中文创作能力，复杂语境下的逻辑推理能力，以及可靠的任务执行能力。",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:33:29",
+   "generated_at": "2026-09-23T08:19:55",
    "facts": {
     "model_count": 1,
     "model_names": [
@@ -1594,13 +1610,13 @@ var API_RADAR_AI = {
    },
    "probe": {
     "status": 200,
-    "latency_ms": 576,
+    "latency_ms": 656,
     "final_url": "https://www.jdcloud.com/cn/pages/end",
     "title": "抱歉，页面无法访问-京东云",
     "meta": "抱歉，页面无法访问",
     "error": ""
    },
-   "generated_at": "2026-09-22T20:33:29",
+   "generated_at": "2026-09-23T08:19:55",
    "facts": {
     "model_count": 0,
     "model_names": []
