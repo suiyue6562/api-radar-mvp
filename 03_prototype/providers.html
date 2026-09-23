@@ -671,7 +671,7 @@ function renderSponsored(){
       const rk=a=>{const c=RPC[rkey(a)];return c?(ralive(c.status)?0:(c.status>0?1:2)):3;};
       list.sort((a,b)=>{const ra=rk(a),rb=rk(b);if(ra!==rb)return ra-rb;
         const ca=RPC[rkey(a)],cb=RPC[rkey(b)];
-        return((cb?cb.latency_ms:9e9)-(ca?ca.latency_ms:9e9));});
+        return((ca?ca.latency_ms:9e9)-(cb?cb.latency_ms:9e9));});
     }
     else list.sort((a,b)=>a.name.localeCompare(b.name,'zh'));
     return list;

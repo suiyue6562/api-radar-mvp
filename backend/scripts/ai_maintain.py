@@ -234,7 +234,12 @@ def load_radar_sites():
 
 
 def radar_probe_step(now):
-    """分批探测收录雷达直连站官网可达性 → radar_probe.js（每天一批，约 7 天轮完）"""
+    """分批探测收录雷达直连站官网可达性 → radar_probe.js（每天一批，约 7 天轮完）
+    国内 vantage 接管：若仓库存在 probe_cn.lock（由 backend/scripts/radar_probe_cn.py
+    在中国大陆网络探测并推送），本步骤跳过，避免境外节点数据覆盖国内真实体验数据。"""
+    if (REPO / "02_data" / "samples" / "probe_cn.lock").exists():
+        print("  📡 雷达探测：已由国内节点接管（probe_cn.lock），境外节点跳过")
+        return
     import requests
     sites = [s for s in load_radar_sites()
              if not s.get("profile") and (s.get("url") or "").startswith("http")]

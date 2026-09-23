@@ -1,0 +1,6 @@
+国内探测节点接管标记
+
+本文件存在时，backend/scripts/ai_maintain.py 的境外雷达探测步骤自动跳过，
+radar_probe.js 改由 backend/scripts/radar_probe_cn.py 在中国大陆网络环境探测生成
+（TTFB 为 3 次中位数，含 /v1/models 端点探测），数据代表国内用户真实访问体验。
+如需交还境外节点，删除本文件即可。
