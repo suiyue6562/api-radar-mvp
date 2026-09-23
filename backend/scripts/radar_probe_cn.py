@@ -168,8 +168,55 @@ def main():
         return
     git("-c", "user.name=cn-probe", "-c", "user.email=cn-probe@local",
         "commit", "-m", f"data: 国内节点雷达探测 {now[:16]} — 存活{alive}/{len(checked)} API端点{api_ok} TTFB中位{med}ms")
-    p = git("push", "origin", "HEAD:main")
-    print("[cn-probe] push:", p.stdout.strip() or p.stderr.strip()[:200])
+    p = None
+    for attempt in range(3):
+        p = git("push", "origin", "HEAD:main")
+        if p.returncode == 0:
+            break
+        print(f"[cn-probe] git push 第{attempt + 1}次失败，3秒后重试")
+        time.sleep(3)
+    if p is not None and p.returncode == 0:
+        print("[cn-probe] push:", p.stdout.strip() or p.stderr.strip()[:200])
+        return
+    # 兜底：github.com:443 不可达时走 REST API（api.github.com 通常可达）
+    print("[cn-probe] git push 失败，改走 GitHub REST API …")
+    try:
+        api_push_fallback()
+        print("[cn-probe] API push 完成")
+    except Exception as e:
+        print(f"[cn-probe] API push 也失败：{e}（数据已落盘，下次运行会重试提交）")
+
+
+def api_push_fallback():
+    """以当前工作树创建提交并推到 origin/main（绕过 github.com:443）"""
+    import urllib.request
+
+    remote = subprocess.run(["git", "remote", "get-url", "origin"], cwd=REPO,
+                            capture_output=True, text=True, encoding="utf-8").stdout.strip()
+    token = re.search(r"(ghp_[A-Za-z0-9]+)@", remote).group(1)
+
+    def api(method, path, body=None, raw=False):
+        req = urllib.request.Request(
+            f"https://api.github.com{path}", method=method,
+            data=None if body is None else json.dumps(body).encode(),
+            headers={"Authorization": f"Bearer {token}",
+                     "Accept": "application/vnd.github+json",
+                     "Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            data = r.read()
+            return data if raw else json.loads(data.decode())
+
+    head = api("GET", "/repos/suiyue6562/api-radar-mvp/git/ref/heads/main")["object"]["sha"]
+    base = api("GET", f"/repos/suiyue6562/api-radar-mvp/git/commits/{head}")
+    paths = ["03_prototype/radar_probe.js", "02_data/samples/radar_uptime.jsonl",
+             "02_data/samples/probe_cn.lock"]
+    tree = [{"path": p, "mode": "100644", "type": "blob",
+             "content": (REPO / p).read_text(encoding="utf-8")} for p in paths]
+    t = api("POST", "/repos/suiyue6562/api-radar-mvp/git/trees",
+            {"base_tree": base["tree"]["sha"], "tree": tree})
+    c = api("POST", "/repos/suiyue6562/api-radar-mvp/git/commits",
+            {"message": f"data: 国内节点雷达探测(API推送)", "tree": t["sha"], "parents": [head]})
+    api("PATCH", "/repos/suiyue6562/api-radar-mvp/git/refs/heads/main", {"sha": c["sha"]})
 
 
 if __name__ == "__main__":
