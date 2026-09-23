@@ -52,6 +52,19 @@
 .stat-label { font-size:12.5px; font-weight:700; margin-top:2px; }
 .stat-sub { font-size:10.5px; color:var(--muted); margin-top:2px; }
 
+/* 宽屏：统计带收成左右两侧悬浮侧栏，不占主栏纵向空间；窄屏维持原横带 */
+.stats-rail { display:contents; }
+@media (min-width:1500px) {
+  .stats-band { display:block; max-width:none; margin:0; }
+  .stats-rail { display:flex; flex-direction:column; gap:10px; position:fixed; top:50%; transform:translateY(-50%); width:172px; z-index:40; }
+  .rail-left  { left:calc((100vw - 1100px)/2 - 196px); }
+  .rail-right { right:calc((100vw - 1100px)/2 - 196px); }
+  .stats-rail .stat-card { padding:9px 10px; text-align:left; cursor:default; }
+  .stats-rail .stat-num { font-size:17px; }
+  .stats-rail .stat-label { font-size:11.5px; margin-top:0; }
+  .stats-rail .stat-sub { display:none; }
+}
+
 .sec-title-block { text-align:center; margin:34px auto 6px; max-width:640px; }
 .sec-title-block h2 { font-size:21px; font-weight:800; margin:0 0 6px; }
 .sec-title-block p { font-size:12.5px; color:var(--muted); line-height:1.7; }
@@ -157,7 +170,7 @@
         <div id="sponsored-slot"></div>
         <!-- 大厂基准：可用率参考 -->
         <div class="avail-board" id="avail-board">
-          <div class="avail-board-title"><b>🔥 中转站 TOP5 · 站级实测存活率</b> · 探针每日 2 次真实 HTTP 探测，大厂仅作基准</div>
+          <div class="avail-board-title"><b>🔥 小站实测 TOP5 · 站级存活率</b> · 探针每日 2 次真实 HTTP 探测，只推荐中小中转站</div>
           <div id="avail-board-rows"></div>
         </div>
       </div>
@@ -258,29 +271,36 @@ function rankScore(p){
   return Math.round(baseScore(p)*(a==null?100:a)/100*damp*100)/100;
 }
 
+/* 大厂认定：官方/平台/网关/自托管/个人云 + 聚合型里的大厂（Together/Fireworks/Anyscale/OpenRouter/API2D）
+   首页只为用户推荐好用的小站，大厂不给免费占位 */
+const BIG_TECH=new Set(['p_together_ai','p_fireworks_ai','p_anyscale','p_openrouter','p_api2d']);
+function isBigTech(p){return p.type==='official'||p.type==='platform'||p.type==='gateway'||p.type==='self_host'||p.type==='individual'||BIG_TECH.has(p.id);}
+
 if(typeof renderTopbar==='function')renderTopbar('home');
 
-/* ---- 榜单：非官方按综合排名取前 5 ---- */
-const ranked=(PD.providers||[]).filter(p=>p.type!=='official'&&p.type!=='platform').sort((x,y)=>{
+/* ---- 小站实测 TOP5：来自收录雷达的存活小站（大厂/官方/榜单档案页不入榜），按可用率+评分优选 ---- */
+const RSQ=(typeof RADAR_SITES!=='undefined')?RADAR_SITES:[];
+const bigRe=/vercel|litellm|openrouter|fireworks|anyscale|together\s*ai|api2d|groq|deepinfra|硅基流动|openai\.fm|lm\s*studio/i;
+const radarAlive=RSQ.filter(s=>s.avail!=null&&s.avail>=90&&!s.profile&&!bigRe.test((s.name||'')+(s.url||'')))
+  .sort((a,b)=>b.avail-a.avail||((b.score||0)-(a.score||0)));
+const top5=radarAlive.slice(0,5);
+
+document.getElementById('avail-board-rows').innerHTML=top5.length?top5.map((s,i)=>{
+  const fmt='<b class="'+(s.avail>=99?'good':s.avail>=95?'mid':'')+'">'+s.avail.toFixed(1)+'%</b><span style="font-size:10px;color:var(--muted);"> 存活</span>';
+  return '<div class="avail-row" onclick="window.open(\''+esc(s.url)+'\',\'_blank\',\'noopener\')" style="cursor:pointer;">'+
+    '<span class="avail-rank">'+(i+1)+'</span>'+
+    '<span class="avail-name">'+esc(s.name)+'</span>'+
+    '<span class="avail-metrics">'+
+      '<span class="avail-metric">实测 '+fmt+(s.score!=null?' <span style="font-size:10px;color:var(--muted);">评分 '+esc(s.score)+'</span>':'')+'</span>'+
+    '</span></div>';
+}).join(''):'<div style="padding:16px;text-align:center;color:var(--muted);font-size:12px;">暂无达标小站，等待探针样本积累</div>';
+
+/* ---- 商家榜（模型比价用）：排除大厂后按综合排名 ---- */
+const ranked=(PD.providers||[]).filter(p=>!isBigTech(p)).sort((x,y)=>{
   const tx=tier(x),ty=tier(y);if(tx!==ty)return tx-ty;return rankScore(y)-rankScore(x);
 });
-const top5=ranked.slice(0,5);
 
-document.getElementById('avail-board-rows').innerHTML=top5.map((p,i)=>{
-  const s=probeStat(p);
-  const fmt=s&&s.survival!=null
-    ?'<b class="'+(s.survival>=97?'good':s.survival>=90?'mid':'')+'">'+s.survival.toFixed(1)+'%</b><span style="font-size:10px;color:var(--muted);"> 存活</span>'
-    :'<b style="color:var(--muted);">—</b>';
-  const lat=s&&s.last_latency_ms?'<span style="font-size:10px;color:var(--muted);"> '+s.last_latency_ms+'ms</span>':'';
-  return '<div class="avail-row" onclick="location.href=\'provider.html?id='+p.id+'\'">'+
-    '<span class="avail-rank">'+(i+1)+'</span>'+
-    '<span class="avail-name">'+esc(p.name_zh||p.name)+'</span>'+
-    '<span class="avail-metrics">'+
-      '<span class="avail-metric">实测 '+fmt+lat+'</span>'+
-    '</span></div>';
-}).join('');
-
-/* ---- 统计带 ---- */
+/* ---- 统计带：宽屏拆到左右空白侧栏，窄屏保持横带 ---- */
 const RS=(typeof RADAR_SITES!=='undefined')?RADAR_SITES:[];
 const stats=[
   [PD.providers.length,'+','收录中转站','经过筛选，杜绝低质内容'],
@@ -289,9 +309,11 @@ const stats=[
   [24,'h','实测探测频率','探针每日 2 次真实 HTTP 探测'],
   [(PD.events||[]).length*8,'+','持续更新动态','行情与新站收录']
 ];
-document.getElementById('stats-band').innerHTML=stats.map(s=>
-  '<div class="stat-card"><div class="stat-num">'+s[0]+'<span>'+s[1]+'</span></div>'+
-  '<div class="stat-label">'+s[2]+'</div><div class="stat-sub">'+s[3]+'</div></div>').join('');
+const statCard=s=>'<div class="stat-card" title="'+esc(s[3])+'"><div class="stat-num">'+s[0]+'<span>'+s[1]+'</span></div>'+
+  '<div class="stat-label">'+s[2]+'</div><div class="stat-sub">'+s[3]+'</div></div>';
+document.getElementById('stats-band').innerHTML=
+  '<div class="stats-rail rail-left">'+stats.filter((_,i)=>i%2===0).map(statCard).join('')+'</div>'+
+  '<div class="stats-rail rail-right">'+stats.filter((_,i)=>i%2===1).map(statCard).join('')+'</div>';
 
 /* ---- 模型比价：旗舰 Claude 模型 × top4 倍率 ---- */
 const MODELS_BY_ID={};PD.models.forEach(m=>MODELS_BY_ID[m.id]=m);
@@ -300,7 +322,7 @@ const flagship=PD.models.filter(m=>/claude/i.test((m.family||'')+(m.name||''))).
   const box=document.getElementById('mult-compare');
   if(!flagship){box.innerHTML='<div style="font-size:12px;color:var(--muted);">暂无比价数据</div>';return;}
   document.getElementById('compare-sub').textContent=flagship.display_name+' · 按量登记倍率对比 · 高亮为最低';
-  const rows=top5.slice(0,4).map(p=>{
+  const rows=ranked.slice(0,4).map(p=>{
     const o=OFFER.filter(x=>x.provider_id===p.id&&x.model_id===flagship.id)[0];
     return{p,mult:o?o.multiplier:null};
   });
@@ -314,7 +336,7 @@ const flagship=PD.models.filter(m=>/claude/i.test((m.family||'')+(m.name||''))).
 })();
 
 /* ---- 实测存活率快照 ---- */
-document.getElementById('mon-snapshot').innerHTML=top5.map(p=>{
+document.getElementById('mon-snapshot').innerHTML=ranked.slice(0,6).map(p=>{
   const s=probeStat(p);
   const c=s&&s.survival!=null?(s.survival>=97?'var(--success)':s.survival>=90?'var(--accent)':'var(--warning)'):'var(--muted)';
   return '<div class="mon-row"><span class="mon-name">'+esc(p.name_zh||p.name)+'</span>'+
@@ -328,7 +350,8 @@ document.getElementById('mon-snapshot').innerHTML=top5.map(p=>{
   if(!box)return;
   document.getElementById('radar-total').textContent=RS.length;
   if(!RS.length){box.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px;">收录雷达数据加载中</div>';return;}
-  const top=RS.filter(s=>s.avail!=null).slice(0,12);
+  const top5url=new Set(top5.map(s=>s.url));
+  const top=RS.filter(s=>s.avail!=null&&!top5url.has(s.url)).slice(0,12);
   const c=a=>a>=99?'var(--success)':a>=95?'var(--accent)':'var(--warning)';
   box.innerHTML='<div style="padding:10px 16px 4px;font-size:11.5px;color:var(--muted);font-weight:700;">可用率优先 · 快照 2026-09-22 · 其中 '+RS.filter(s=>s.avail!=null).length+' 家有可用率数据</div>'+
     top.map((s,i)=>
